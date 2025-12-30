@@ -1,0 +1,19 @@
+{
+  "name": "within7-plugins-tools",
+  "metadata": {
+    "description": "Official Within7 plugin tools marketplace for Claude Code extensions",
+    "version": "1.0.0"
+  },
+  "owner": {
+    "name": "Within7",
+    "email": "www@within7.com"
+  },
+  "plugins": [
+    {
+      "name": "skill-creator",
+      "description": "专用skills创建工具",
+      "source": "./skill-creator",
+      "category": "productivity"
+    }
+  ]
+}

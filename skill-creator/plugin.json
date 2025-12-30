@@ -1,0 +1,10 @@
+{
+  "name": "skill-creator",
+  "displayName": "skill-creator",
+  "version": "1.0.0",
+  "description": "专用skills创建工具",
+  "keywords": [
+    "skill",
+    "creator"
+  ]
+}
