@@ -1,158 +1,298 @@
 ---
 name: pyspider-dev
-description: Guide for developing PySpider web crawlers. Use when creating, modifying, or debugging PySpider projects. Covers crawler architecture, BaseHandler patterns, database integration, proxy management, and common workflows for scraping web content with Python. Includes templates and best practices for production-ready crawlers.
+description: Guide for developing PySpider web crawlers. Covers GET/POST requests, proxy management, header rotation, error handling, pagination, and enterprise-grade crawling patterns. Includes standard templates with detailed explanations.
 ---
 
 # PySpider Development
 
 ## Overview
 
-PySpider is a powerful web crawling framework built on Python. This skill provides workflows, patterns, and templates for developing production-ready crawlers.
+PySpider is a powerful web crawling framework. This skill provides production-ready patterns covering GET/POST requests, proxy pools, dynamic headers, error handling, and enterprise-level crawling strategies.
 
 ## Core Architecture
 
-Every PySpider crawler inherits from `BaseHandler` and implements key lifecycle methods:
+Every PySpider crawler inherits from `BaseHandler`:
+
+**Required Methods**:
+- `on_start()`: Entry point - initiate crawling tasks
+- `callback functions`: Process HTTP responses
+
+**Optional Methods**:
+- `on_message(project, message)`: Handle inter-project messages and data storage
+- `on_error(exception, response)`: Handle errors with retry logic
+
+## ⚠️ 重要警告
+
+**PySpider 中没有 `on_result` 方法！**
+
+- ❌ **错误**: `def on_result(self, result):`
+- ✅ **正确**: `def on_message(self, project, message):`
+
+所有代码必须使用 `on_message` 方法来处理跨项目消息和数据存储。**严禁使用 `on_result`**，因为 PySpider 框架根本不支持这个方法。
+
+**Optional Decorators**:
+- `@every(minutes=60)`: Only add when scheduled execution is explicitly required
+- `@config(priority=2)`: Only add when priority is specifically specified
+- `@config(age=...)`: Cache time in seconds (commonly used)
 
 ```python
 from pyspider.libs.base_handler import *
-from pyspider import database
 
-class MyCrawler(BaseHandler):
+class Handler(BaseHandler):
     crawl_config = {
-        'connect_timeout': 2,
-        'timeout': 30,
-        'retries': 5,
-        'age': 0
+        'user_agent': 'Mozilla/5.0...',
+        'timeout': 60,
+        'connect_timeout': 10,
     }
     
     def on_start(self):
-        """Entry point - initiate crawling tasks"""
-        pass
+        self.crawl('https://example.com', callback=self.parse)
     
-    def on_message(self, project, message):
-        """Handle inter-project messages"""
-        pass
-    
-    def some_callback(self, response):
-        """Process HTTP response"""
-        pass
+    def parse(self, response):
+        return {'url': response.url, 'title': response.doc('title').text()}
 ```
 
-## Quick Start
+## Quick Start Templates
 
-### 1. Basic Crawler Structure
-
-Create a new crawler file:
+### 1. Standard GET Request Crawler (Basic)
 
 ```python
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-# Created on 2025-01-04
-# Project: MyCrawler
+# Created on 2024-01-04
+# Project: standard_spider
 
 from pyspider.libs.base_handler import *
-from pyspider import database
-import re
-import urllib.parse
-import logging
 
-myLogger = logging.getLogger('handler_screen')
-
-class MyCrawler(BaseHandler):
+class Handler(BaseHandler):
+    # Global config - applies to all requests
     crawl_config = {
-        'connect_timeout': 2,
-        'timeout': 30,
-        'retries': 5,
-        'age': 0
+        'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'headers': {
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+        },
+        'timeout': 60,
+        'connect_timeout': 10,
+        'validate_cert': True,
+        'itag': 'v1',  # Version tag - changes trigger re-crawl
     }
     
     def on_start(self):
-        """Initiate crawling"""
-        url = 'https://example.com'
-        self.crawl(url, callback=self.index_page)
+        """Entry point - initiate crawling tasks (REQUIRED)"""
+        self.crawl('https://httpbin.org/get', callback=self.parse_page)
     
-    def index_page(self, response):
-        """Process index page"""
-        for each in response.doc('a[href^="http"]').items():
-            self.crawl(each.attr.href, callback=self.detail_page)
-    
-    def detail_page(self, response):
-        """Process detail page"""
-        data = {
-            'url': response.url,
-            'title': response.doc('title').text(),
-        }
-        self.save_to_database(data)
-```
-
-### 2. Database Integration
-
-Connect to result database:
-
-```python
-from pyspider import database
-
-class MyCrawler(BaseHandler):
-    __RESULTDB = database.connect_database({
-        'host': 'localhost',
-        'port': 27017,
-        'database': 'results'
-    })
-    __DB_NAME = 'MyCrawler'
-    
-    def save_data(self, data):
-        self.__RESULTDB.save(self.__DB_NAME, data)
-    
-    def query_existing(self, filter_dict):
-        results = list(self.__RESULTDB.select(self.__DB_NAME, filter=filter_dict))
-        return results
-```
-
-### 3. Proxy Management
-
-Configure proxy pools:
-
-```python
-class MyCrawler(BaseHandler):
-    # Static proxy
-    __PROXY = 'http://proxy.example.com:8080'
-    
-    # Auto proxy pool
-    __PROXY = 'auto'
-    
-    # Residential proxy
-    __PROXY = 'residential_proxy_config'
-    
-    def crawl_with_proxy(self, url):
-        self.crawl(
-            url,
-            proxy=self.__PROXY,
-            headers={'User-Agent': 'Mozilla/5.0...'},
-            callback=self.process_response
-        )
-```
-
-### 4. Inter-Project Messaging
-
-Send messages between projects:
-
-```python
-class MyCrawler(BaseHandler):
     def on_message(self, project, message):
-        """Handle incoming messages"""
+        """Handle inter-project messages and data storage (REQUIRED)"""
         if project == self.project_name:
             return message
-        
-        if 'url' in message:
-            self.crawl(message['url'], callback=self.process_url)
+        # Process message from other projects
+        return message
     
-    def send_result(self, data):
-        """Send result to self or other projects"""
-        self.send_message(
-            self.project_name,
-            {'keywords': data['keyword'], 'count': data['count']},
-            url=f'data:,on_message?keywords={data["keyword"]}'
+    @config(age=10 * 24 * 60 * 60)  # Cache 10 days
+    def parse_page(self, response):
+        """Parse page callback - receives Response object"""
+        title = response.doc('title').text()
+        
+        # Extract and crawl links
+        for each in response.doc('a[href^="http"]').items():
+            self.crawl(each.attr.href, callback=self.parse_page)
+        
+        return {
+            'url': response.url,
+            'title': title,
+            'status_code': response.status_code,
+        }
+```
+
+### 2. POST Request with Proxy (Advanced)
+
+```python
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+# Created on 2024-01-04
+# Project: post_spider_with_proxy
+
+from pyspider.libs.base_handler import *
+import json
+
+class Handler(BaseHandler):
+    crawl_config = {
+        'user_agent': 'Mozilla/5.0...',
+        'headers': {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        'timeout': 30,
+        'proxy': 'http://username:password@proxy_ip:port',  # Global proxy
+    }
+    
+    proxy_pool = [
+        'http://proxy1:port',
+        'http://proxy2:port',
+    ]
+    
+    def on_start(self):
+        # GET with params
+        self.crawl(
+            'https://api.example.com/data',
+            params={'page': 1, 'size': 20},  # GET parameters
+            callback=self.parse_get_data,
+            proxy=self.proxy_pool[0]
         )
+        
+        # POST JSON
+        self.crawl(
+            'https://api.example.com/login',
+            method='POST',  # HTTP method (default: GET)
+            data=json.dumps({'user': 'test'}),  # String for JSON
+            headers={'Content-Type': 'application/json'},
+            callback=self.parse_login
+        )
+        
+        # POST Form
+        self.crawl(
+            'https://example.com/search',
+            method='POST',
+            data={'search': 'python'},  # Dict for form data
+            callback=self.parse_search
+        )
+    
+    def parse_get_data(self, response):
+        data = response.json  # Auto-parse JSON
+        # Pagination with save state
+        current_page = response.save.get('page', 1)
+        if current_page < 10:
+            self.crawl(
+                'https://api.example.com/data',
+                params={'page': current_page + 1, 'size': 20},
+                callback=self.parse_get_data,
+                save={'page': current_page + 1}
+            )
+        return data
+    
+    def parse_login(self, response):
+        login_result = response.json
+        if login_result.get('success'):
+            token = login_result.get('token')
+            # Use token in subsequent requests
+            self.crawl(
+                'https://api.example.com/profile',
+                headers={'Authorization': f'Bearer {token}'},
+                callback=self.parse_profile
+            )
+        return login_result
+```
+
+### 3. Dynamic Proxy + Header Rotation (Enterprise)
+
+```python
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+# Created on 2024-01-04
+# Project: enterprise_spider
+
+from pyspider.libs.base_handler import *
+import random
+import time
+
+class Handler(BaseHandler):
+    PROXY_POOL = [
+        'http://user1:pass1@192.168.1.100:8080',
+        'http://user2:pass2@192.168.1.101:8080',
+    ]
+    
+    USER_AGENTS = [
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/91...',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/91...',
+    ]
+    
+    crawl_config = {
+        'timeout': 45,
+        'fetch_type': 'js',  # Enable JS rendering (requires PhantomJS)
+        'js_run_at': 'document-end',
+    }
+    
+    def get_random_proxy(self):
+        return random.choice(self.PROXY_POOL)
+    
+    def get_random_user_agent(self):
+        return random.choice(self.USER_AGENTS)
+    
+    def get_headers(self):
+        return {
+            'User-Agent': self.get_random_user_agent(),
+            'Accept-Language': 'zh-CN,zh;q=0.9',
+        }
+    
+    def on_start(self):
+        self.crawl(
+            'https://httpbin.org/get',
+            headers=self.get_headers(),
+            proxy=self.get_random_proxy(),
+            callback=self.parse_response
+        )
+    
+    def parse_response(self, response):
+        return {
+            'url': response.url,
+            'status': response.status_code,
+            'data': response.json if hasattr(response, 'json') else {},
+        }
+    
+    def on_error(self, exception, response):
+        """Error handler with retry logic"""
+        if hasattr(response, 'save') and response.save.get('retry_count', 0) < 3:
+            self.crawl(
+                response.url,
+                save={**response.save, 'retry_count': response.save.get('retry_count', 0) + 1},
+                proxy=self.get_random_proxy()
+            )
+```
+
+## Key Parameters Reference
+
+### `self.crawl()` Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `url` | str | Target URL |
+| `callback` | function | Response handler |
+| `method` | str | 'GET', 'POST', 'PUT', 'DELETE' (default: GET) |
+| `params` | dict | GET parameters → URL query string |
+| `data` | dict/str | POST data: dict=form, str=JSON |
+| `headers` | dict | HTTP request headers |
+| `proxy` | str | 'http://user:pass@ip:port' |
+| `timeout` | int | Timeout in seconds |
+| `save` | dict | State passed to callback |
+| `priority` | int | Task priority (higher = priority) |
+
+### `crawl_config` Options
+
+| Option | Description |
+|--------|-------------|
+| `user_agent` | Default User-Agent |
+| `headers` | Global request headers |
+| `timeout` | Request timeout |
+| `connect_timeout` | Connection timeout |
+| `proxy` | Global proxy |
+| `fetch_type` | 'js' or 'html' |
+| `itag` | Version tag |
+| `validate_cert` | SSL verification |
+
+### Response Object Attributes
+
+```python
+response.url          # Request URL
+response.text         # Response text
+response.content      # Binary content
+response.json         # Auto-parsed JSON
+response.doc          # PyQuery for HTML
+response.status_code  # HTTP status
+response.headers      # Response headers
+response.cookies      # Cookies
+response.time         # Request duration
+response.save         # Saved state
 ```
 
 ## Common Patterns
@@ -160,83 +300,43 @@ class MyCrawler(BaseHandler):
 ### Pagination Pattern
 
 ```python
-class PaginatedCrawler(BaseHandler):
-    __PAGE_SIZE = 20
-    __MAX_PAGES = 10
+def crawl_page(self, page=1):
+    self.crawl(
+        f'https://example.com/list?page={page}',
+        save={'page': page},
+        callback=self.process_page
+    )
+
+def process_page(self, response):
+    page = response.save['page']
+    for item in response.doc('.item').items():
+        yield {'title': item.text()}
     
-    def crawl_page(self, page=1):
-        url = f'https://example.com/list?page={page}'
-        self.crawl(
-            url,
-            save={'page': page},
-            callback=self.process_page
-        )
-    
-    def process_page(self, response):
-        page = response.save['page']
-        
-        # Extract data
-        for item in response.doc('.item').items():
-            yield {'title': item.text()}
-        
-        # Next page
-        if page < self.__MAX_PAGES:
-            self.crawl_page(page + 1)
+    if page < 10:
+        self.crawl_page(page + 1)
 ```
 
 ### Retry Pattern
 
 ```python
-class RobustCrawler(BaseHandler):
-    retry_delay = {'': 10}
-    
-    def fetch_with_retry(self, url, retry=0):
+def on_error(self, exception, response):
+    if hasattr(response, 'save') and response.save.get('retry_count', 0) < 3:
+        retry_count = response.save.get('retry_count', 0) + 1
         self.crawl(
-            url,
-            save={'retry': retry},
-            callback=self.handle_response
-        )
-    
-    def handle_response(self, response):
-        retry = response.save.get('retry', 0)
-        
-        if not response.ok:
-            if retry < 3:
-                time.sleep(2 ** retry)  # Exponential backoff
-                self.fetch_with_retry(response.url, retry + 1)
-            else:
-                self.log_error(response.url)
-```
-
-### Keyword Batch Processing
-
-```python
-class KeywordCrawler(BaseHandler):
-    __KEYWORDS = ['keyword1', 'keyword2', 'keyword3']
-    
-    def on_start(self):
-        for keyword in self.__KEYWORDS:
-            self.crawl_keyword(keyword)
-    
-    def crawl_keyword(self, keyword, priority=1):
-        url = f'https://example.com/search?q={keyword}'
-        self.crawl(
-            url,
-            save={'keyword': keyword},
-            priority=priority,
-            taskid=f"{url}|{time.time()}",
-            callback=self.process_search_result
+            response.url,
+            save={**response.save, 'retry_count': retry_count},
+            proxy=self.get_random_proxy()
         )
 ```
 
-## Response Processing
-
-### HTML Parsing with CSS Selectors
+### HTML Parsing
 
 ```python
-def process_html(self, response):
-    # Extract elements
-    titles = response.doc('h1.title').text()
+def parse_html(self, response):
+    # Extract text
+    title = response.doc('h1.title').text()
+    
+    # Extract links
     links = [a.attr.href for a in response.doc('a.link').items()]
     
     # Extract attributes
@@ -246,92 +346,47 @@ def process_html(self, response):
     content = response.doc('.container .content').text()
 ```
 
-### Regex Extraction
-
-```python
-def extract_data(self, text):
-    # Find all matches
-    pattern = r'<div class="data">(.*?)</div>'
-    matches = re.findall(pattern, text, re.DOTALL)
-    
-    # Search with groups
-    result = re.search(r'(\d+) results', text)
-    if result:
-        count = int(result.group(1))
-    
-    return matches
-```
-
 ### JSON Response Handling
 
 ```python
-def process_json(self, response):
+def parse_json(self, response):
     data = response.json
     if 'results' in data:
         for item in data['results']:
             self.save_item(item)
 ```
 
-## Error Handling
-
-```python
-class SafeCrawler(BaseHandler):
-    def safe_process(self, response):
-        try:
-            if not response.ok:
-                myLogger.error(f"HTTP {response.status_code}: {response.url}")
-                return
-            
-            if response.text.count('Error') > 0:
-                myLogger.warning(f"Error page detected: {response.url}")
-                return
-            
-            # Process normally
-            self.extract_data(response)
-            
-        except Exception as e:
-            myLogger.error(f"Processing failed: {str(e)}")
-```
-
 ## Best Practices
 
-1. **Task ID uniqueness**: Use timestamp in taskid to prevent caching
+1. **Decorators**:
+   - `@every`: Only add when scheduled execution is explicitly required
+   - `@config(priority=N)`: Only add when priority is specifically specified
+   - `@config(age=...)`: Commonly used for caching
+
+2. **Methods**:
+   - `on_start()`: REQUIRED - entry point
+   - `on_message(project, message)`: REQUIRED for inter-project communication and data storage
+   - `on_error()`: Optional - for error handling with retry
+
+**⚠️ 重要提醒**：
+   - 永远使用 `on_message`，**不要使用 `on_result`**（PySpider 不支持此方法）
+   - `on_message` 的第一个参数是 `project`（项目名），第二个参数是 `message`（消息数据）
+
+3. **Error handling**: Implement `on_error` with retry
+4. **Proxy rotation**: Use proxy pools to avoid blocking
+5. **State management**: Use `save` for pagination
+6. **Task uniqueness**: Use timestamp in taskid
    ```python
    taskid=f"{url}|{time.time()}"
    ```
-
-2. **Priority management**: Set higher priority for important tasks
-   ```python
-   self.crawl(url, priority=10, callback=...)
-   ```
-
-3. **Rate limiting**: Use delays between requests
-   ```python
-   crawl_config = {'connect_timeout': 2, 'timeout': 30}
-   ```
-
-4. **Logging**: Use structured logging
-   ```python
-   myLogger.info(f"Processing: {keyword}")
-   ```
-
-5. **Data deduplication**: Check database before processing
-   ```python
-   existing = list(self.__RESULTDB.select(__DB_NAME, 
-           filter={'url': url}))
-   if not existing:
-       self.process_new_url(url)
-   ```
+7. **Data validation**: Verify response integrity
+8. **Logging**: Log key steps and errors
+9. **Request intervals**: Set reasonable delays
 
 ## Resources
 
 ### scripts/
 - `init_crawler.py` - Generate new crawler template
-- `validate_crawler.py` - Validate crawler syntax
 
 ### references/
-- `API_REFERENCE.md` - Complete PySpider API documentation
-- `PATTERNS.md` - Advanced crawling patterns and workflows
-
-### assets/
-- `templates/` - Crawler template files
+- `api_reference.md` - Complete PySpider API documentation
