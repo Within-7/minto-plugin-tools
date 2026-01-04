@@ -1,0 +1,10 @@
+{
+  "name": "pyspider-dev",
+  "displayName": "Pyspider Dev",
+  "version": "1.0.0",
+  "description": "[TODO: Complete description of what this skill does]",
+  "keywords": [
+    "skill",
+    "claude"
+  ]
+}

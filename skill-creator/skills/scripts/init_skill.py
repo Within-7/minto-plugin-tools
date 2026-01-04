@@ -185,6 +185,34 @@ Example asset files from other skills:
 Note: This is a text placeholder. Actual assets can be any file type.
 """
 
+# Plugin JSON templates
+ROOT_PLUGIN_JSON = '''{{
+  "name": "{skill_name}",
+  "displayName": "{skill_title}",
+  "version": "1.0.0",
+  "description": "[TODO: Complete description of what this skill does]",
+  "keywords": [
+    "skill",
+    "claude"
+  ]
+}}
+'''
+
+CLAUDE_PLUGIN_JSON = '''{{
+  "name": "{skill_name}",
+  "displayName": "{skill_title}",
+  "version": "1.0.0",
+  "description": "[TODO: Complete description of what this skill does]",
+  "author": "[TODO: Author name]",
+  "capabilities": [
+    "[TODO: List main capabilities, e.g., 'file-processing', 'data-analysis']"
+  ],
+  "categories": [
+    "[TODO: Category, e.g., 'productivity', 'development']"
+  ]
+}}
+'''
+
 
 def title_case_skill_name(skill_name):
     """Convert hyphenated skill name to Title Case for display."""
@@ -260,12 +288,38 @@ def init_skill(skill_name, path):
         print(f"❌ Error creating resource directories: {e}")
         return None
 
+    # Create plugin configuration files
+    try:
+        # Create root plugin.json
+        root_plugin = skill_dir / 'plugin.json'
+        root_plugin.write_text(ROOT_PLUGIN_JSON.format(
+            skill_name=skill_name,
+            skill_title=skill_title
+        ))
+        print("✅ Created plugin.json (root)")
+
+        # Create .claude-plugin directory
+        claude_plugin_dir = skill_dir / '.claude-plugin'
+        claude_plugin_dir.mkdir(exist_ok=True)
+        
+        # Create .claude-plugin/plugin.json
+        claude_plugin = claude_plugin_dir / 'plugin.json'
+        claude_plugin.write_text(CLAUDE_PLUGIN_JSON.format(
+            skill_name=skill_name,
+            skill_title=skill_title
+        ))
+        print("✅ Created .claude-plugin/plugin.json")
+    except Exception as e:
+        print(f"❌ Error creating plugin configuration files: {e}")
+        return None
+
     # Print next steps
     print(f"\n✅ Skill '{skill_name}' initialized successfully at {skill_dir}")
     print("\nNext steps:")
     print("1. Edit SKILL.md to complete the TODO items and update the description")
-    print("2. Customize or delete the example files in scripts/, references/, and assets/")
-    print("3. Run the validator when ready to check the skill structure")
+    print("2. Update plugin.json files with accurate skill information")
+    print("3. Customize or delete the example files in scripts/, references/, and assets/")
+    print("4. Run the validator when ready to check the skill structure")
 
     return skill_dir
 
