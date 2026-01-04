@@ -14,6 +14,12 @@
       "description": "专用skills创建工具",
       "source": "./skill-creator",
       "category": "productivity"
+    },
+     {
+      "name": "pyspider-dev",
+      "description": "PySpider开发爬虫",
+      "source": "./pyspider-dev",
+      "category": "productivity"
     }
   ]
 }
