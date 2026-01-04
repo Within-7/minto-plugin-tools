@@ -15,13 +15,13 @@
       "source": "./skill-creator",
       "category": "productivity"
     },
-     {
+    {
       "name": "pyspider-dev",
       "description": "PySpider开发爬虫",
       "source": "./pyspider-dev",
       "category": "productivity"
     },
-     {
+    {
       "name": "mcp-builder",
       "description": "MCP项目构建工具",
       "source": "./mcp-builder",
