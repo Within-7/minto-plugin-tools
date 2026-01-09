@@ -208,3 +208,6 @@ __marimo__/
 
 # minto
 .minto/
+
+# 测试文件
+test/

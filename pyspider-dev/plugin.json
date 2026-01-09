@@ -1,10 +1,13 @@
 {
   "name": "pyspider-dev",
-  "displayName": "Pyspider Dev",
+  "displayName": "PySpider Development",
   "version": "1.0.0",
-  "description": "[TODO: Complete description of what this skill does]",
+  "description": "Production-ready PySpider web crawler development toolkit. Covers GET/POST requests, proxy management, header rotation, error handling, pagination, and enterprise-grade crawling patterns. Use when: (1) Creating new PySpider crawlers, (2) Implementing web scraping tasks, (3) Handling complex crawling scenarios with proxies and retries",
   "keywords": [
-    "skill",
-    "claude"
+    "pyspider",
+    "web-crawler",
+    "scraping",
+    "proxy",
+    "enterprise"
   ]
 }
