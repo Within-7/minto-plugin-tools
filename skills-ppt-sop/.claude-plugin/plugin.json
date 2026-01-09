@@ -1,0 +1,13 @@
+{
+  "name": "skills-ppt-sop",
+  "version": "1.0.0",
+  "description": "转为within7公司制定专业的HTML幻灯片生成技能",
+  "author": {
+    "name": "within7",
+    "email": "wxj@within-7.com"
+  },
+  "commands": [
+  ],
+  "agents": [
+  ]
+}

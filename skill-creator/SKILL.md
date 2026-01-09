@@ -30,7 +30,7 @@ Skills change this:
 
 ```
 Skill approach:
-Edit SKILL.md → Save → Takes effect on next trigger
+Edit skills/SKILL.md → Save → Takes effect on next trigger
 Cost: $0
 Timeline: Instant
 ```
@@ -162,7 +162,7 @@ Problem: Agents don't read references, or read too many.
 ### Creating New Document
 
 **MANDATORY - READ ENTIRE FILE**: Before proceeding, you MUST read
-[`docx-js.md`](references/docx-js.md) (~500 lines) completely.
+[`skills/references/docx-js.md`](skills/references/docx-js.md) (~500 lines) completely.
 **NEVER set range limits when reading this file.**
 ```
 
@@ -183,7 +183,7 @@ Problem: Agents don't read references, or read too many.
 
 **Characteristics**:
 - No technical details, transfers thinking patterns
-- All content in SKILL.md
+- All content in skills/SKILL.md
 - No references directory
 - Emphasizes taste, differentiation, anti-patterns
 
@@ -196,7 +196,7 @@ This agent asks key questions before writing code: What problem does this solve?
 - Differentiation comes from "how to think" not "what to know"
 - No domain-specific knowledge needed
 
-**No loading triggers needed** - load entire SKILL.md at once.
+**No loading triggers needed** - load entire skills/SKILL.md at once.
 
 ---
 
@@ -275,8 +275,8 @@ This agent doesn't start creating immediately. It first establishes a design phi
 **Representative**: internal-comms (33 lines)
 
 **Characteristics**:
-- SKILL.md is minimalist, just a router
-- Detailed content in examples/ subdirectory
+- skills/SKILL.md is minimalist, just a router
+- Detailed content in skills/examples/ subdirectory
 - Quick scenario identification, routes to corresponding file
 
 **Structure**:
@@ -504,9 +504,9 @@ Analyze each example:
 2. Identify scripts, references, assets that would help
 
 **Analysis examples**:
-- PDF rotation → same code rewritten repeatedly → Include `scripts/rotate_pdf.py`
-- Frontend projects → always need boilerplate → Include `assets/hello-world/`
-- BigQuery → constantly rediscovering schemas → Include `references/schema.md`
+- PDF rotation → same code rewritten repeatedly → Include `skills/scripts/rotate_pdf.py`
+- Frontend projects → always need boilerplate → Include `skills/assets/hello-world/`
+- BigQuery → constantly rediscovering schemas → Include `skills/references/schema.md`
 
 ### Step 3: Initialize Skill Structure
 
@@ -517,9 +517,10 @@ scripts/init_skill.py <skill-name> --path <output-directory>
 ```
 
 The script creates:
-- Skill directory
-- SKILL.md template with proper frontmatter
-- Example directories: `scripts/`, `references/`, `assets/`
+- Skill directory with `skills/` subdirectory
+- Root-level `plugin.json` and `.claude-plugin/plugin.json`
+- `skills/SKILL.md` template with proper frontmatter
+- Example directories: `skills/scripts/`, `skills/references/`, `skills/assets/`
 
 ### Step 4: Implement Resources
 
@@ -532,7 +533,7 @@ The script creates:
 - Remove placeholder files created by init script
 - Most skills don't need all three resource types
 
-### Step 5: Write SKILL.md
+### Step 5: Write skills/SKILL.md
 
 **Writing guidelines**:
 - Use imperative/infinitive form ("Create" not "Creates")
@@ -590,7 +591,7 @@ The script will:
    - `name` + `description` only
    - Primary triggering mechanism
 
-2. **SKILL.md body** (<5k tokens, target <500 lines) - On trigger
+2. **skills/SKILL.md body** (<5k tokens, target <500 lines) - On trigger
    - Core workflow and procedural instructions
    - Lean and focused
 
@@ -611,23 +612,27 @@ Extract text with pdfplumber:
 
 ## Advanced features
 
-- **Form filling**: See [FORMS.md](FORMS.md) for complete guide
-- **API reference**: See [REFERENCE.md](REFERENCE.md) for all methods
+- **Form filling**: See [skills/references/FORMS.md](skills/references/FORMS.md) for complete guide
+- **API reference**: See [skills/references/REFERENCE.md](skills/references/REFERENCE.md) for all methods
 ```
 
 ### Pattern 2: Domain-Specific Organization
 
 ```
 bigquery-skill/
-├── SKILL.md (overview and navigation)
-└── references/
-    ├── finance.md (revenue, billing)
-    ├── sales.md (opportunities, pipeline)
-    ├── product.md (API usage, features)
-    └── marketing.md (campaigns, attribution)
+├── plugin.json
+├── .claude-plugin/
+│   └── plugin.json
+└── skills/
+    ├── SKILL.md (overview and navigation)
+    └── references/
+        ├── finance.md (revenue, billing)
+        ├── sales.md (opportunities, pipeline)
+        ├── product.md (API usage, features)
+        └── marketing.md (campaigns, attribution)
 ```
 
-When user asks about sales → load only `sales.md`
+When user asks about sales → load only `skills/references/sales.md`
 
 ### Pattern 3: Conditional Details
 
@@ -635,54 +640,60 @@ When user asks about sales → load only `sales.md`
 # DOCX Processing
 
 ## Creating documents
-Use docx-js. See [DOCX-JS.md](DOCX-JS.md).
+Use docx-js. See [skills/references/DOCX-JS.md](skills/references/DOCX-JS.md).
 
 ## Editing documents
 For simple edits, modify XML directly.
-**For tracked changes**: See [REDLINING.md](REDLINING.md)
-**For OOXML details**: See [OOXML.md](OOXML.md)
+**For tracked changes**: See [skills/references/REDLINING.md](skills/references/REDLINING.md)
+**For OOXML details**: See [skills/references/OOXML.md](skills/references/OOXML.md)
 ```
 
 ## Skill Structure
 
 ```
 skill-name/
-├── SKILL.md (required)
-│   ├── YAML frontmatter (name, description)
-│   └── Markdown instructions
-└── Bundled Resources (optional)
-    ├── scripts/      - Executable code
-    ├── references/   - Documentation loaded as needed
-    └── assets/       - Files used in output
+├── plugin.json (required - root level)
+├── .claude-plugin/
+│   └── plugin.json (required - Claude plugin metadata)
+└── skills/
+    ├── SKILL.md (required)
+    │   ├── YAML frontmatter (name, description)
+    │   └── Markdown instructions
+    └── Bundled Resources (optional)
+        ├── scripts/      - Executable code
+        ├── references/   - Documentation loaded as needed
+        └── assets/       - Files used in output
 ```
 
-### Scripts (`scripts/`)
+### Scripts (`skills/scripts/`)
 
 **When to include**: Same code rewritten repeatedly OR deterministic reliability needed
-**Example**: `scripts/rotate_pdf.py`
+**Example**: `skills/scripts/rotate_pdf.py`
 **Benefits**: Token efficient, deterministic, may execute without loading
 
-### References (`references/`)
+### References (`skills/references/`)
 
 **When to include**: Documentation Claude should reference while working
-**Examples**: `references/finance.md`, `references/api_docs.md`
+**Examples**: `skills/references/finance.md`, `skills/references/api_docs.md`
 **Use cases**: Schemas, API docs, domain knowledge, policies
-**Best practice**: If files >10k words, include grep patterns in SKILL.md
-**Avoid duplication**: Info lives in SKILL.md OR references, not both
+**Best practice**: If files >10k words, include grep patterns in skills/SKILL.md
+**Avoid duplication**: Info lives in skills/SKILL.md OR references, not both
 
-### Assets (`assets/`)
+### Assets (`skills/assets/`)
 
 **When to include**: Files used in final output, NOT in context
-**Examples**: `assets/logo.png`, `assets/slides.pptx`, `assets/font.ttf`
+**Examples**: `skills/assets/logo.png`, `skills/assets/slides.pptx`, `skills/assets/font.ttf`
 **Use cases**: Templates, images, icons, boilerplate, fonts
 
 ### What NOT to Include
 
-- README.md
-- INSTALLATION_GUIDE.md
-- QUICK_REFERENCE.md
-- CHANGELOG.md
-- LICENSE.md (unless required)
+- README.md (use skills/SKILL.md instead)
+- INSTALLATION_GUIDE.md (installation info in skills/SKILL.md)
+- QUICK_REFERENCE.md (quick reference in skills/SKILL.md)
+- CHANGELOG.md (not needed for skills)
+- LICENSE.md (unless required by dependencies)
+
+**Note**: All skill-related content should be within the `skills/` subdirectory. Only `plugin.json` and `.claude-plugin/plugin.json` should be at the root level.
 - Any user-facing documentation
 
 **Skills are for AI agents, not humans.**
@@ -695,7 +706,7 @@ Use this checklist before deploying a skill:
 Basic Compliance
 [ ] Valid YAML frontmatter (name, description present)
 [ ] Description includes both WHAT and WHEN to use
-[ ] SKILL.md < 500 lines
+[ ] skills/SKILL.md < 500 lines
 
 Content Quality
 [ ] No explanation of concepts Claude already knows
@@ -716,8 +727,8 @@ Freedom Calibration
 File Organization
 [ ] No extraneous files (README, CHANGELOG, etc.)
 [ ] All scripts tested and deterministic
-[ ] References correctly linked from SKILL.md
-[ ] No duplication between SKILL.md and references
+[ ] References correctly linked from skills/SKILL.md
+[ ] No duplication between skills/SKILL.md and references
 [ ] All example files removed or customized
 ```
 
@@ -731,7 +742,7 @@ Embed forced loading in workflow steps:
 ### Creating New Document
 
 **MANDATORY - READ ENTIRE FILE**: Before proceeding, you MUST read
-[`docx-js.md`](references/docx-js.md) (~500 lines) completely.
+[`skills/references/docx-js.md`](skills/references/docx-js.md) (~500 lines) completely.
 **NEVER set any range limits when reading this file.**
 ```
 
@@ -742,9 +753,9 @@ Keywords: "MANDATORY", "MUST", "NEVER" - no ambiguity.
 ```markdown
 | Task Type | Must Load | Do NOT Load |
 |-----------|-----------|-------------|
-| New document | `docx-js.md` | `ooxml.md`, `redlining.md` |
-| Simple edits | `ooxml.md` | `docx-js.md` |
-| Tracked changes | `redlining.md` | `docx-js.md` |
+| New document | `skills/references/docx-js.md` | `skills/references/ooxml.md`, `skills/references/redlining.md` |
+| Simple edits | `skills/references/ooxml.md` | `skills/references/docx-js.md` |
+| Tracked changes | `skills/references/redlining.md` | `skills/references/docx-js.md` |
 ```
 
 Tell Agent what to read AND what not to read.
@@ -754,11 +765,11 @@ Tell Agent what to read AND what not to read.
 ```markdown
 **Scenario A: New Project**
 - User says: "Build X from scratch", "Create a new..."
-- **Must load**: `references/greenfield.md`
+- **Must load**: `skills/references/greenfield.md`
 
 **Scenario B: Fix Bug**
 - User says: "X is broken", "Fix this bug"
-- **Must load**: `references/bugfix.md`
+- **Must load**: `skills/references/bugfix.md`
 ```
 
 Route based on user input keywords.
@@ -767,8 +778,8 @@ Route based on user input keywords.
 
 Consult these guides based on your skill's needs:
 
-- **Multi-step processes**: See [workflows.md](references/workflows.md) for sequential workflows and conditional logic
-- **Specific output formats**: See [output-patterns.md](references/output-patterns.md) for template and example patterns
+- **Multi-step processes**: See [skills/references/workflows.md](skills/references/workflows.md) for sequential workflows and conditional logic
+- **Specific output formats**: See [skills/references/output-patterns.md](skills/references/output-patterns.md) for template and example patterns
 
 ## Security Considerations
 

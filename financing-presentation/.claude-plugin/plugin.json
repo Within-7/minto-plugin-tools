@@ -1,0 +1,13 @@
+{
+  "name": "financing-presentation",
+  "displayName": "Financing Presentation",
+  "version": "1.0.0",
+  "description": "[TODO: Complete description of what this skill does]",
+  "author": "[TODO: Author name]",
+  "capabilities": [
+    "[TODO: List main capabilities, e.g., 'file-processing', 'data-analysis']"
+  ],
+  "categories": [
+    "[TODO: Category, e.g., 'productivity', 'development']"
+  ]
+}

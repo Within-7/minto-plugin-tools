@@ -13,10 +13,13 @@ def validate_skill(skill_path):
     """Basic validation of a skill"""
     skill_path = Path(skill_path)
 
-    # Check SKILL.md exists
+    # Check SKILL.md exists - try both root and skills/ subdirectory
     skill_md = skill_path / 'SKILL.md'
     if not skill_md.exists():
-        return False, "SKILL.md not found"
+        # Try skills/ subdirectory
+        skill_md = skill_path / 'skills' / 'SKILL.md'
+        if not skill_md.exists():
+            return False, "SKILL.md not found (checked both root and skills/ subdirectory)"
 
     # Read and validate frontmatter
     content = skill_md.read_text()

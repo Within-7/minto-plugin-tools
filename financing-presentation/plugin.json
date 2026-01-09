@@ -1,0 +1,15 @@
+{
+  "name": "financing-presentation",
+  "displayName": "Financing Presentation",
+  "version": "1.0.0",
+  "description": "Generate professional HTML financing presentations for startups and businesses. Creates 12-page investment pitch decks covering cover, problem & opportunity, solution, product demo, market size, competition, business model, traction, team, financial projections, funding needs, and investment highlights.",
+  "keywords": [
+    "financing",
+    "presentation",
+    "pitch-deck",
+    "investment",
+    "startup",
+    "fundraising",
+    "html"
+  ]
+}

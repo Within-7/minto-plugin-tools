@@ -17,7 +17,7 @@ from pathlib import Path
 
 SKILL_TEMPLATE = """---
 name: {skill_name}
-description: [TODO: Complete and informative explanation of what the skill does and when to use it. Include WHEN to use this skill - specific scenarios, file types, or tasks that trigger it.]
+description: "TODO: Complete and informative explanation of what the skill does and when to use it. Include WHEN to use this skill - specific scenarios, file types, or tasks that trigger it."
 ---
 
 # {skill_title}
@@ -66,28 +66,28 @@ Delete this entire "Structuring This Skill" section when done - it's just guidan
 
 This skill includes example resource directories that demonstrate how to organize different types of bundled resources:
 
-### scripts/
+### skills/scripts/
 Executable code (Python/Bash/etc.) that can be run directly to perform specific operations.
 
 **Examples from other skills:**
-- PDF skill: `fill_fillable_fields.py`, `extract_form_field_info.py` - utilities for PDF manipulation
-- DOCX skill: `document.py`, `utilities.py` - Python modules for document processing
+- PDF skill: `skills/scripts/fill_fillable_fields.py`, `skills/scripts/extract_form_field_info.py` - utilities for PDF manipulation
+- DOCX skill: `skills/scripts/document.py`, `skills/scripts/utilities.py` - Python modules for document processing
 
 **Appropriate for:** Python scripts, shell scripts, or any executable code that performs automation, data processing, or specific operations.
 
 **Note:** Scripts may be executed without loading into context, but can still be read by Claude for patching or environment adjustments.
 
-### references/
+### skills/references/
 Documentation and reference material intended to be loaded into context to inform Claude's process and thinking.
 
 **Examples from other skills:**
-- Product management: `communication.md`, `context_building.md` - detailed workflow guides
+- Product management: `skills/references/communication.md`, `skills/references/context_building.md` - detailed workflow guides
 - BigQuery: API reference documentation and query examples
 - Finance: Schema documentation, company policies
 
 **Appropriate for:** In-depth documentation, API references, database schemas, comprehensive guides, or any detailed information that Claude should reference while working.
 
-### assets/
+### skills/assets/
 Files not intended to be loaded into context, but rather used within the output Claude produces.
 
 **Examples from other skills:**
@@ -129,9 +129,9 @@ This is a placeholder for detailed reference documentation.
 Replace with actual reference content or delete if not needed.
 
 Example real reference docs from other skills:
-- product-management/references/communication.md - Comprehensive guide for status updates
-- product-management/references/context_building.md - Deep-dive on gathering context
-- bigquery/references/ - API references and query examples
+- product-management/skills/references/communication.md - Comprehensive guide for status updates
+- product-management/skills/references/context_building.md - Deep-dive on gathering context
+- bigquery/skills/references/ - API references and query examples
 
 ## When Reference Docs Are Useful
 
@@ -168,10 +168,10 @@ Asset files are NOT intended to be loaded into context, but rather used within
 the output Claude produces.
 
 Example asset files from other skills:
-- Brand guidelines: logo.png, slides_template.pptx
-- Frontend builder: hello-world/ directory with HTML/React boilerplate
-- Typography: custom-font.ttf, font-family.woff2
-- Data: sample_data.csv, test_dataset.json
+- Brand guidelines: skills/assets/logo.png, skills/assets/slides_template.pptx
+- Frontend builder: skills/assets/hello-world/ directory with HTML/React boilerplate
+- Typography: skills/assets/custom-font.ttf, skills/assets/font-family.woff2
+- Data: skills/assets/sample_data.csv, skills/assets/test_dataset.json
 
 ## Common Asset Types
 
@@ -246,49 +246,58 @@ def init_skill(skill_name, path):
         print(f"❌ Error creating directory: {e}")
         return None
 
-    # Create SKILL.md from template
+    # Create skills/ subdirectory for skill content
+    try:
+        skills_dir = skill_dir / 'skills'
+        skills_dir.mkdir(exist_ok=True)
+        print("✅ Created skills/ subdirectory")
+    except Exception as e:
+        print(f"❌ Error creating skills/ subdirectory: {e}")
+        return None
+
+    # Create SKILL.md in skills/ from template
     skill_title = title_case_skill_name(skill_name)
     skill_content = SKILL_TEMPLATE.format(
         skill_name=skill_name,
         skill_title=skill_title
     )
 
-    skill_md_path = skill_dir / 'SKILL.md'
+    skill_md_path = skills_dir / 'SKILL.md'
     try:
         skill_md_path.write_text(skill_content)
-        print("✅ Created SKILL.md")
+        print("✅ Created skills/SKILL.md")
     except Exception as e:
         print(f"❌ Error creating SKILL.md: {e}")
         return None
 
-    # Create resource directories with example files
+    # Create resource directories with example files in skills/
     try:
         # Create scripts/ directory with example script
-        scripts_dir = skill_dir / 'scripts'
+        scripts_dir = skills_dir / 'scripts'
         scripts_dir.mkdir(exist_ok=True)
         example_script = scripts_dir / 'example.py'
         example_script.write_text(EXAMPLE_SCRIPT.format(skill_name=skill_name))
         example_script.chmod(0o755)
-        print("✅ Created scripts/example.py")
+        print("✅ Created skills/scripts/example.py")
 
         # Create references/ directory with example reference doc
-        references_dir = skill_dir / 'references'
+        references_dir = skills_dir / 'references'
         references_dir.mkdir(exist_ok=True)
         example_reference = references_dir / 'api_reference.md'
         example_reference.write_text(EXAMPLE_REFERENCE.format(skill_title=skill_title))
-        print("✅ Created references/api_reference.md")
+        print("✅ Created skills/references/api_reference.md")
 
         # Create assets/ directory with example asset placeholder
-        assets_dir = skill_dir / 'assets'
+        assets_dir = skills_dir / 'assets'
         assets_dir.mkdir(exist_ok=True)
         example_asset = assets_dir / 'example_asset.txt'
         example_asset.write_text(EXAMPLE_ASSET)
-        print("✅ Created assets/example_asset.txt")
+        print("✅ Created skills/assets/example_asset.txt")
     except Exception as e:
         print(f"❌ Error creating resource directories: {e}")
         return None
 
-    # Create plugin configuration files
+    # Create plugin configuration files in root
     try:
         # Create root plugin.json
         root_plugin = skill_dir / 'plugin.json'
@@ -315,10 +324,20 @@ def init_skill(skill_name, path):
 
     # Print next steps
     print(f"\n✅ Skill '{skill_name}' initialized successfully at {skill_dir}")
+    print("\nDirectory structure:")
+    print(f"  {skill_name}/")
+    print(f"  ├── .claude-plugin/")
+    print(f"  │   └── plugin.json")
+    print(f"  ├── skills/")
+    print(f"  │   ├── SKILL.md")
+    print(f"  │   ├── assets/")
+    print(f"  │   ├── scripts/")
+    print(f"  │   └── references/")
+    print(f"  └── plugin.json")
     print("\nNext steps:")
-    print("1. Edit SKILL.md to complete the TODO items and update the description")
+    print("1. Edit skills/SKILL.md to complete the TODO items and update the description")
     print("2. Update plugin.json files with accurate skill information")
-    print("3. Customize or delete the example files in scripts/, references/, and assets/")
+    print("3. Customize or delete the example files in skills/scripts/, skills/references/, and skills/assets/")
     print("4. Run the validator when ready to check the skill structure")
 
     return skill_dir

@@ -1,0 +1,7 @@
+{
+  "name": "skills-xlsx",
+  "displayName": "skills-xlsx",
+  "version": "1.0.0",
+  "description": "专门读取 Excel 文件工具",
+  "keywords": []
+}
