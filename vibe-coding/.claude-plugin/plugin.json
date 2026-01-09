@@ -1,0 +1,13 @@
+{
+  "name": "vibe-coding",
+  "version": "1.0.0",
+  "description": "协助编程开发工具",
+  "author": {
+    "name": "within7",
+    "email": "wxj@within-7.com"
+  },
+  "commands": [
+  ],
+  "agents": [
+  ]
+}
