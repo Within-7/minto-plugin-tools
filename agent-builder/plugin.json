@@ -1,0 +1,16 @@
+{
+  "name": "agent-builder",
+  "displayName": "agent-builder",
+  "version": "1.0.0",
+  "description": "Design and build AI agents for any domain - customer service, research, operations, creative work, or specialized business processes. Covers agent philosophy, three elements (capabilities, knowledge, context), progressive complexity, anti-patterns, and implementation patterns. Use when creating agents, understanding agent architecture, or diagnosing agent issues.",
+  "keywords": [
+    "agent",
+    "builder",
+    "ai-agent",
+    "autonomous",
+    "workflow",
+    "tool-use",
+    "multi-step",
+    "orchestration"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "agent-builder",
+  "version": "1.0.0",
+  "description": "AI Agent 构建工具",
+  "author": {
+    "name": "within7",
+    "email": "wxj@within-7.com"
+  },
+  "commands": [
+  ],
+  "agents": [
+  ]
+}

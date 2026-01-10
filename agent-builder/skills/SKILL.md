@@ -14,6 +14,17 @@ description: |
 
 Build AI agents for any domain - customer service, research, operations, creative work, or specialized business processes.
 
+## Quick Start
+
+**What are you trying to do?**
+
+| Goal | First Step | Resources |
+|------|-----------|-----------|
+| Understand how agents work | Read philosophy | `references/agent-philosophy.md` |
+| Build your first agent | Start with 3-5 capabilities | `references/minimal-agent.py` |
+| Fix context pollution | Use subagents | `references/subagent-pattern.py` |
+| Generate agent scaffold | Run init script | `scripts/init_agent.py` |
+
 ## The Core Philosophy
 
 > **The model already knows how to be an agent. Your job is to get out of the way.**
@@ -95,13 +106,23 @@ The pattern is universal. Only the capabilities change.
 
 ## Anti-Patterns
 
-| Pattern | Problem | Solution |
-|---------|---------|----------|
-| Over-engineering | Complexity before need | Start simple |
-| Too many capabilities | Model confusion | 3-5 to start |
-| Rigid workflows | Can't adapt | Let model decide |
-| Front-loaded knowledge | Context bloat | Load on-demand |
-| Micromanagement | Undercuts intelligence | Trust the model |
+| Pattern | Symptoms | Why it fails | Fix |
+|---------|----------|--------------|-----|
+| **Over-engineering** | Complex state machines, workflow engines, planning systems before seeing real usage | You're guessing what's needed. The model can reason if you give it capabilities | Start with 3-5 capabilities. Add complexity only when real usage reveals the need |
+| **Too many capabilities** | Agent struggles to choose, makes irrelevant calls, gets stuck in loops | Decision paralysis. More options = harder to reason about | Start with 3-5. Add one at a time when agent consistently fails without it |
+| **Rigid workflows** | Hardcoded step sequences, if-then chains, state machines | Can't adapt to edge cases. Model intelligence is wasted | Give capabilities, let model decide order. Trust the reasoning |
+| **Front-loaded knowledge** | Massive system prompts, always-load references, verbose policies | Context bloat. Expensive tokens, slower responses, degraded performance | Load knowledge on-demand. Make it available, not mandatory |
+| **Micromanagement** | Pre-specifying "first do X, then Y", validation rules on every step | Undercuts model intelligence. You're doing the thinking | Give goal + capabilities. Let model figure out the path |
+| **No context isolation** | Long conversations with multiple subtasks, exploration pollutes main thread | Context window fills with irrelevant details. Model loses focus | Use subagents for noisy subtasks. Return only summaries |
+
+## NEVER Do These
+
+- Don't build a "planning system" before seeing if the model can plan on its own
+- Don't add 10+ capabilities "just in case"
+- Don't hardcode workflows with if-then chains
+- Don't load all knowledge upfront
+- Don't validate every step - let the model reason
+- Don't mix exploration and execution in the same context
 
 ## Resources
 
@@ -115,6 +136,18 @@ The pattern is universal. Only the capabilities change.
 
 **Scaffolding**:
 - `scripts/init_agent.py` - Generate new agent projects
+
+### Loading Instructions
+
+**MANDATORY - READ ENTIRE FILE**: When user asks about agent philosophy, theory, or "why do agents work?", you MUST read [`references/agent-philosophy.md`](references/agent-philosophy.md) completely. **NEVER set range limits when reading this file.**
+
+**For implementation help**:
+| Task | Must Load | Do NOT Load |
+|------|-----------|-------------|
+| First agent build | `minimal-agent.py` | `subagent-pattern.py`, `agent-philosophy.md` |
+| Context pollution issues | `subagent-pattern.py` | `minimal-agent.py` |
+| Generate scaffold | `scripts/init_agent.py` | Any reference files |
+| Deep theory questions | `agent-philosophy.md` | Implementation files |
 
 ## The Agent Mindset
 
