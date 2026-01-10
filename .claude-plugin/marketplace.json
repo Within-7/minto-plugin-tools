@@ -26,6 +26,48 @@
       "description": "MCP项目构建工具",
       "source": "./mcp-builder",
       "category": "productivity"
+    },
+    {
+      "name": "skills-xlsx",
+      "description": "专门读取 Excel 文件工具",
+      "source": "./skills-xlsx",
+      "category": "productivity"
+    },
+    {
+      "name": "financing-presentation",
+      "description": "Generate professional HTML financing presentations for startups and businesses",
+      "source": "./financing-presentation",
+      "category": "productivity"
+    },
+    {
+      "name": "skills-ppt-sop",
+      "description": "公司专业生产标准HTML幻灯片工具",
+      "source": "./skills-ppt-sop",
+      "category": "productivity"
+    },
+    {
+      "name": "skills-pdf",
+      "description": "专门读取 PDF 文件工具",
+      "source": "./skills-pdf",
+      "category": "productivity"
+    },
+    {
+      "name": "skills-pptx",
+      "description": "专门读取 PPTX 文件工具",
+      "source": "./skills-pptx",
+      "category": "productivity"
+    },
+    {
+      "name": "vibe-coding",
+      "description": "协助编程开发工具",
+      "source": "./vibe-coding",
+      "category": "productivity"
+    },
+    {
+      "name": "test-skill-new-structure",
+      "description": "Test skill for new structure validation",
+      "source": "./test-skill-new-structure",
+      "category": "development"
     }
   ]
 }
