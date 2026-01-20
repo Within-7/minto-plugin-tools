@@ -1,0 +1,13 @@
+{
+  "name": "okr-planner",
+  "displayName": "OKR Planner",
+  "version": "1.0.0",
+  "description": "Design and structure OKRs (Objectives and Key Results) with monthly planning cycles. Create measurable goals, track progress, and establish quarterly objectives with monthly milestones.",
+  "keywords": [
+    "okr",
+    "planning",
+    "goals",
+    "productivity",
+    "management"
+  ]
+}
