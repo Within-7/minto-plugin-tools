@@ -1,5 +1,5 @@
 ---
-name: skill-creator
+name: creator
 description: Creates a new skill based on user description. Use when user wants to create a skill about a specific topic or functionality.
 ---
 
@@ -11,7 +11,7 @@ This command helps you create a new skill based on your description. It will gui
 
 Run this command with a description of the skill you want to create:
 ```
-/skill-creator:create 帮我创建一个关于 [skill description] 的 skill
+/skill-creator:creator 帮我创建一个关于 [skill description] 的 skill
 ```
 
 ## Process
@@ -33,9 +33,9 @@ When this command is triggered:
 
 ## Examples
 
-- `/skill-creator:create 帮我创建一个关于PDF处理的skill` → Creates a PDF processing skill
-- `/skill-creator:create 帮我创建一个关于前端设计的skill` → Creates a frontend design skill
-- `/skill-creator:create 帮我创建一个关于数据分析的skill` → Creates a data analysis skill
+- `/skill-creator:creator 帮我创建一个关于PDF处理的skill` → Creates a PDF processing skill
+- `/skill-creator:creator 帮我创建一个关于前端设计的skill` → Creates a frontend design skill
+- `/skill-creator:creator 帮我创建一个关于数据分析的skill` → Creates a data analysis skill
 
 ## Notes
 

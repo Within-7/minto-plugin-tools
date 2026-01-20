@@ -7,7 +7,7 @@
     "email": "wxj@within-7.com"
   },
   "commands": [
-    "./commands/skill-creator.md"
+    "./commands/creator.md"
   ],
   "agents": [
   ]
