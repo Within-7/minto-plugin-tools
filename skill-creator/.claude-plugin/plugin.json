@@ -7,10 +7,7 @@
     "email": "wxj@within-7.com"
   },
   "commands": [
-    {
-      "name": "create",
-      "description": "创建一个新的skill。使用方法：/skill-creator:create 帮我创建一个关于[描述]的skill"
-    }
+    "./commands/skill-creator.md"
   ],
   "agents": [
   ]

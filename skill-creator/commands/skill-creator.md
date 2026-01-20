@@ -1,5 +1,5 @@
 ---
-name: create
+name: skill-creator
 description: Creates a new skill based on user description. Use when user wants to create a skill about a specific topic or functionality.
 ---
 
