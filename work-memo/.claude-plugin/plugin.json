@@ -1,0 +1,20 @@
+{
+  "name": "work-memo",
+  "displayName": "Work Memo",
+  "version": "1.0.0",
+  "description": "Personal work record management with multi-dimensional tracking, natural language search, and smart prioritization. Record-only system for work events with comprehensive filtering and reporting capabilities.",
+  "author": {
+    "name": "OpenCode",
+    "email": "contact@opencode.ai"
+  },
+  "capabilities": [
+    "work-tracking",
+    "natural-language-search",
+    "report-generation",
+    "priority-scoring"
+  ],
+  "categories": [
+    "productivity",
+    "task-management"
+  ]
+}

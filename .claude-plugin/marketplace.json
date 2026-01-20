@@ -68,6 +68,12 @@
       "description": "Test skill for new structure validation",
       "source": "./test-skill-new-structure",
       "category": "development"
+    },
+    {
+      "name": "work-memo",
+      "description": "Personal info record management with multi-dimensional tracking, natural language search, and smart prioritization. Record-only system for work events with comprehensive filtering and reporting capabilities.",
+      "source": "./work-memo",
+      "category": "development"
     }
   ]
 }
