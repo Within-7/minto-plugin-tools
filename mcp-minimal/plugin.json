@@ -3,6 +3,10 @@
   "displayName": "MCP Minimal Client",
   "version": "1.0.0",
   "description": "Minimal MCP client plugin for connecting to remote MCP services via SSE. Provides simple interface to interact with MCP tools like global-data-mcp-hello.",
+  "author": {
+    "name": "within7",
+    "email": "wxj@within-7.com"
+  },
   "keywords": [
     "mcp",
     "remote",
