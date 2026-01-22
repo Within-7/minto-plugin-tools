@@ -10,6 +10,12 @@
   },
   "plugins": [
     {
+      "name": "agent-builder",
+      "description": "Design and build AI agents for any domain - customer service, research, operations, creative work",
+      "source": "./agent-builder",
+      "category": "productivity"
+    },
+    {
       "name": "skill-creator",
       "description": "专用skills创建工具",
       "source": "./skill-creator",
@@ -22,10 +28,28 @@
       "category": "productivity"
     },
     {
+      "chrome-extension-dev",
+      "description": "Chrome extension development tools and templates",
+      "source": "./chrome-extension-dev",
+      "category": "development"
+    },
+    {
+      "name": "create-plan",
+      "description": "Project planning and requirement gathering tools",
+      "source": "./create-plan",
+      "category": "productivity"
+    },
+    {
       "name": "mcp-builder",
       "description": "MCP项目构建工具",
       "source": "./mcp-builder",
       "category": "productivity"
+    },
+    {
+      "name": "mcp-minimal",
+      "description": "Minimal MCP client for connecting to remote MCP services via SSE",
+      "source": "./mcp-minimal",
+      "category": "integration"
     },
     {
       "name": "skills-xlsx",
@@ -40,10 +64,22 @@
       "category": "productivity"
     },
     {
+      "name": "okr-planner",
+      "description": "Objectives and Key Results planning framework",
+      "source": "./okr-planner",
+      "category": "productivity"
+    },
+    {
       "name": "skills-ppt-sop",
       "description": "公司专业生产标准HTML幻灯片工具",
       "source": "./skills-ppt-sop",
       "category": "productivity"
+    },
+    {
+      "name": "skill-judge",
+      "description": "Skill quality evaluation and assessment tools",
+      "source": "./skill-judge",
+      "category": "development"
     },
     {
       "name": "skills-pdf",
@@ -52,10 +88,22 @@
       "category": "productivity"
     },
     {
-      "name": "skills-pptx",
+      "skills-pptx",
       "description": "专门读取 PPTX 文件工具",
       "source": "./skills-pptx",
       "category": "productivity"
+    },
+    {
+      "name": "ui-ux-pro-max",
+      "description": "Professional UI/UX design and enhancement tools",
+      "source": "./ui-ux-pro-max",
+      "category": "design"
+    },
+    {
+      "name": "html-presentation-beautifier",
+      "description": "HTML presentation enhancement and styling tools",
+      "source": "./html-presentation-beautifier",
+      "category": "design"
     },
     {
       "name": "vibe-coding",
@@ -64,16 +112,16 @@
       "category": "productivity"
     },
     {
-      "name": "test-skill-new-structure",
+      "test-skill-new-structure",
       "description": "Test skill for new structure validation",
       "source": "./test-skill-new-structure",
       "category": "development"
     },
     {
       "name": "work-memo",
-      "description": "Personal info record management with multi-dimensional tracking, natural language search, and smart prioritization. Record-only system for work events with comprehensive filtering and reporting capabilities.",
+      "description": "Personal work record management with multi-dimensional tracking, natural language search, and smart prioritization",
       "source": "./work-memo",
-      "category": "development"
+      "category": "productivity"
     }
   ]
 }
