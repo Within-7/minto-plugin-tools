@@ -34,6 +34,16 @@ python3 skills/scripts/cli.py search "紧急"
 
 - Python 3.9+
 - TinyDB: `pip install tinydb`
+- Requests: `pip install requests`
+- BeautifulSoup4: `pip install beautifulsoup4`
+
+## 网页抓取功能
+
+如果需要使用 `/memo` 命令的URL功能（抓取并总结网页内容），需要安装额外的依赖：
+
+```bash
+pip install requests beautifulsoup4
+```
 
 ## 数据存储
 
