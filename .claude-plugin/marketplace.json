@@ -28,7 +28,7 @@
       "category": "productivity"
     },
     {
-      "chrome-extension-dev",
+      "name": "chrome-extension-dev",
       "description": "Chrome extension development tools and templates",
       "source": "./chrome-extension-dev",
       "category": "development"
@@ -88,7 +88,7 @@
       "category": "productivity"
     },
     {
-      "skills-pptx",
+      "name": "skills-pptx",
       "description": "专门读取 PPTX 文件工具",
       "source": "./skills-pptx",
       "category": "productivity"
@@ -112,7 +112,7 @@
       "category": "productivity"
     },
     {
-      "test-skill-new-structure",
+      "name": "test-skill-new-structure",
       "description": "Test skill for new structure validation",
       "source": "./test-skill-new-structure",
       "category": "development"
