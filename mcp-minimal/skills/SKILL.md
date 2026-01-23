@@ -4,7 +4,7 @@ description: Minimal MCP client for connecting to remote MCP services via SSE. S
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0"
+  version: "2.0"
   author: within-7
   category: integration
 ---
@@ -15,6 +15,7 @@ Minimal MCP client plugin for connecting to and interacting with remote MCP serv
 
 ## What I Do
 
+- **Auto-Configuration**: Automatically configure MCP services in `~/.minto.json`
 - **Connect to MCP Services**: Establish SSE connection to remote MCP servers
 - **Call MCP Tools**: Invoke remote tools and receive responses
 - **Simple Interface**: Natural language interaction with MCP capabilities
@@ -38,9 +39,16 @@ This plugin uses SSE (Server-Sent Events) to communicate with remote MCP service
 Minto (Client) <--SSE--> MCP Server (e.g., http://13.58.80.11:32086/sse)
 ```
 
-### Configuration
+### Quick Start (Auto-Configuration)
 
-MCP services are configured in `~/.minto.json`:
+When user installs this plugin, I should:
+
+1. **Check if MCP service is configured** in `~/.minto.json`
+2. **If not configured, add the MCP service** to `mcpServers` section
+3. **Run `/mcp` command** to refresh MCP connections
+4. **Test the connection** by calling a tool
+
+#### Example Configuration
 
 ```json
 {
@@ -52,6 +60,50 @@ MCP services are configured in `~/.minto.json`:
     }
   }
 }
+```
+
+### Configuration Steps
+
+**Step 1: Add MCP Service to Config**
+
+When user says "配置 MCP 服务" or "安装 mcp-minimal 插件":
+
+1. Read `~/.minto.json`
+2. Check if `mcpServers.global-data-mcp-hello` exists
+3. If not, add the configuration:
+
+```bash
+# Use FileEdit tool to update ~/.minto.json
+# Add to mcpServers section:
+{
+  "global-data-mcp-hello": {
+    "type": "sse",
+    "url": "http://13.58.80.11:32086/sse",
+    "enabled": true
+  }
+}
+```
+
+**Step 2: Refresh MCP Connections**
+
+After configuration, run:
+
+```bash
+/mcp
+```
+
+This will:
+- Refresh MCP server connections
+- Load available tools from the MCP service
+- Make tools available for use
+
+**Step 3: Test Connection**
+
+Call a tool to verify:
+
+```bash
+"调用 global-data-mcp-hello 的 ping 工具，参数是 hello"
+"测试 MCP 连接"
 ```
 
 ### Usage Patterns
@@ -98,6 +150,8 @@ To add a new MCP service, update `~/.minto.json`:
   }
 }
 ```
+
+Then run `/mcp` to refresh.
 
 ## Examples
 
@@ -147,19 +201,31 @@ If MCP tools fail to connect:
 2. **Validate URL**: Ensure the SSE endpoint is correct
 3. **Network access**: Confirm firewall allows connections
 4. **Authentication**: Check if credentials are required
+5. **Refresh MCP**: Run `/mcp` to reload connections
 
 ### Debug Commands
 
 ```bash
-# Test service manually (if curl available)
-curl -I http://13.58.80.11:32086/sse
-
 # Check Minto configuration
 cat ~/.minto.json | grep -A 10 mcpServers
 
-# View MCP logs (if available)
-tail -f ~/.minto/logs/mcp.log
+# Refresh MCP connections
+/mcp
+
+# Test service manually (if curl available)
+curl -I http://13.58.80.11:32086/sse
 ```
+
+### Common Issues
+
+**Issue**: MCP tools not available
+- **Solution**: Run `/mcp` to refresh connections
+
+**Issue**: Connection timeout
+- **Solution**: Check if MCP server is running and URL is correct
+
+**Issue**: Tools not found
+- **Solution**: Verify MCP service is configured and enabled in `~/.minto.json`
 
 ## Architecture
 
@@ -168,6 +234,7 @@ tail -f ~/.minto/logs/mcp.log
 │           Minto (Client)            │
 │  ┌───────────────────────────────┐  │
 │  │   mcp-minimal Plugin          │  │
+│  │  - Auto-Configuration        │  │
 │  │  - Natural Language Parsing  │  │
 │  │  - Tool Discovery            │  │
 │  │  - SSE Connection Management │  │
@@ -192,6 +259,7 @@ tail -f ~/.minto/logs/mcp.log
 - Multiple MCP services can be configured simultaneously
 - Tool discovery is automatic upon connection
 - All interactions use natural language - no special syntax needed
+- **Important**: Always run `/mcp` after adding new MCP services
 
 ## See Also
 
