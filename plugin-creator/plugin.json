@@ -1,0 +1,17 @@
+{
+  "name": "plugin-creator",
+  "version": "1.0.0",
+  "description": "A comprehensive tool for creating Claude Code plugins following best practices. Includes templates, validation scripts, and detailed documentation.",
+  "author": "Plugin Creator",
+  "homepage": "https://github.com/Within-7/minto-plugin-tools",
+  "repository": "https://github.com/Within-7/minto-plugin-tools",
+  "commands": [
+    "./commands/cc-plugin.md"
+  ],
+  "agents": [
+    "./agents/plugin-builder.md"
+  ],
+  "skills": [
+    "./skills/plugin-creator.md"
+  ]
+}

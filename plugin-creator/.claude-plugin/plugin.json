@@ -1,0 +1,16 @@
+{
+  "name": "plugin-creator",
+  "version": "0.1.0",
+  "description": "claude code plugin according to best practices.",
+  "author": {
+    "name": "Plugin Developer",
+    "email": "developer@example.com"
+  },
+  "keywords": [
+    "plugin",
+    "creator",
+    "best-practices",
+    "quality",
+    "plugin-development"
+  ]
+}
