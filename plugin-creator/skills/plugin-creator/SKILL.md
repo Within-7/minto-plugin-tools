@@ -1,6 +1,6 @@
 ---
 name: plugin-creator
-description: Guide for creating Claude Code plugins. Use when developing new plugins, understanding plugin architecture, implementing commands/agents/skills/hooks, or troubleshooting plugin issues. Covers component structure, best practices, validation, and common patterns for production-ready plugins.
+description: Guide for creating Claude Code plugins. Use when user asks to "create a plugin", "build a plugin", "develop a plugin", "understand plugin structure", "implement commands/agents/skills/hooks", or "troubleshoot plugin issues". Covers component structure, best practices, validation, and common patterns for production-ready plugins.
 ---
 
 # Plugin Creator
@@ -66,7 +66,7 @@ A Claude Code plugin consists of:
 
 ### 2. Implement Components
 
-Choose component types based on your needs. See [COMPONENTS.md](references/COMPONENTS.md) for complete templates.
+Choose component types based on needs. See [COMPONENTS.md](references/COMPONENTS.md) for complete templates.
 
 **Quick Templates:**
 
@@ -91,7 +91,7 @@ Choose component types based on your needs. See [COMPONENTS.md](references/COMPO
 
 ### 4. Validation & Packaging
 
-Use the provided helper scripts:
+Use helper scripts:
 
 ```bash
 # Validate plugin structure and content
