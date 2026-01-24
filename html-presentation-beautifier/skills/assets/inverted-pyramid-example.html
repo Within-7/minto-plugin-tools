@@ -104,15 +104,21 @@
             text-align: center;
             color: white;
             font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: all 0.3s;
+            box-shadow:
+                0 4px 10px rgba(0,0,0,0.15),
+                inset 0 2px 4px rgba(255,255,255,0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            line-height: 1.4;
         }
 
         .pyramid-level:hover {
-            transform: translateX(-50%) scale(1.05);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            transform: translateX(-50%) translateY(-5px) scale(1.02);
+            box-shadow:
+                0 8px 20px rgba(0,0,0,0.25),
+                inset 0 2px 4px rgba(255,255,255,0.3);
             z-index: 10;
+            filter: brightness(1.1);
         }
 
         .info-box {
@@ -148,6 +154,73 @@
             margin-bottom: 10px;
         }
 
+        /* Style 2: 3D Layered Style (3D层叠风格) */
+        .pyramid-style2 .pyramid-wrapper {
+            perspective: 1200px;
+        }
+
+        .pyramid-style2 .pyramid-level {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            transform-style: preserve-3d;
+            border: 3px solid rgba(255,255,255,0.3);
+            box-shadow:
+                0 8px 20px rgba(0,0,0,0.2),
+                inset 0 2px 8px rgba(255,255,255,0.3),
+                0 0 0 1px rgba(0,0,0,0.1);
+        }
+
+        .pyramid-style2 .pyramid-level::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0.3) 0%,
+                transparent 50%,
+                rgba(0,0,0,0.2) 100%
+            );
+            pointer-events: none;
+        }
+
+        .pyramid-style2 .pyramid-level:hover {
+            transform: translateX(-50%) translateY(-8px) rotateX(5deg) scale(1.03);
+            box-shadow:
+                0 15px 35px rgba(0,0,0,0.3),
+                inset 0 2px 8px rgba(255,255,255,0.4),
+                0 0 0 2px rgba(255,255,255,0.5);
+        }
+
+        /* 为每层设置不同的渐变色 */
+        .pyramid-style2 .pyramid-level:nth-child(1) {
+            background: linear-gradient(135deg, #F85d42, #ff7961);
+        }
+
+        .pyramid-style2 .pyramid-level:nth-child(2) {
+            background: linear-gradient(135deg, #556EE6, #7986cb);
+        }
+
+        .pyramid-style2 .pyramid-level:nth-child(3) {
+            background: linear-gradient(135deg, #34c38f, #66bb6a);
+        }
+
+        /* 添加层级编号 */
+        .pyramid-level-number {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            width: 32px;
+            height: 32px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
         footer {
             margin-top: 60px;
             padding-top: 20px;
@@ -176,32 +249,40 @@
     <div class="container">
         <h1>🔻 倒金字塔图示例</h1>
         <p class="description">
-            McKinsey 风格倒置层级结构图 | 从宽到窄的三角形布局<br>
-            适用于从基础到顶层的递进关系
+            McKinsey 风格倒置层级结构图 | 上宽下窄的倒三角形布局<br>
+            适用于从顶层到基础的递减关系，或从广泛到专精的聚焦过程
         </p>
 
         <div class="pyramid-showcase">
             <div class="pyramid-section">
                 <h2>示例 1：技术栈分层</h2>
                 <p class="description">
-                    展示从底层基础设施到顶层应用的完整技术栈
+                    展示从上层应用到底层基础设施的倒金字塔结构<br>
+                    上层应用最广泛，底层基础设施最专精
                 </p>
 
                 <div class="pyramid-container">
                     <div class="pyramid-wrapper">
-                        <div class="pyramid-level" style="top: 200px; width: 420px; height: 100px; background-color: var(--accent-green); font-size: 17px; clip-path: polygon(0% 0%, 100% 0%, 83.33% 100%, 16.67% 100%); padding: 10px 60px 30px 60px;">
-                            基础设施<br>
-                            <span style="font-size: 0.85em;">(服务器、数据库)</span>
+                        <!-- 倒金字塔：上宽下窄 -->
+                        <!-- 第一层（最上面，最宽） -->
+                        <!-- 宽度480px，高度100px，每侧收窄40px -->
+                        <div class="pyramid-level" style="top: 0; width: 480px; height: 100px; background-color: var(--accent-primary); font-size: 18px; clip-path: polygon(0% 0%, 100% 0%, 91.67% 100%, 8.33% 100%); padding: 25px 60px 15px 60px;">
+                            应用层<br>
+                            <span style="font-size: 0.85em;">(UI、业务逻辑)</span>
                         </div>
 
-                        <div class="pyramid-level" style="top: 95px; width: 280px; height: 90px; background-color: var(--accent-blue); font-size: 15px; clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); padding: 10px 40px 20px 40px;">
+                        <!-- 第二层（中间） -->
+                        <!-- 宽度400px（接第一层底部），高度95px，每侧收窄38px，保持相同斜率 -->
+                        <div class="pyramid-level" style="top: 115px; width: 400px; height: 95px; background-color: var(--accent-blue); font-size: 16px; clip-path: polygon(0% 0%, 100% 0%, 90.5% 100%, 9.5% 100%); padding: 22px 55px 15px 55px;">
                             中间件层<br>
                             <span style="font-size: 0.85em;">(API、缓存)</span>
                         </div>
 
-                        <div class="pyramid-level" style="top: 0; width: 140px; height: 80px; background-color: var(--accent-primary); font-size: 13px; clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); padding: 40px 20px 10px 20px;">
-                            应用层<br>
-                            <span style="font-size: 0.85em;">(UI、业务逻辑)</span>
+                        <!-- 第三层（最下面，最窄） -->
+                        <!-- 宽度324px（接第二层底部），高度90px，每侧收窄36px，保持相同斜率 -->
+                        <div class="pyramid-level" style="top: 225px; width: 324px; height: 90px; background-color: var(--accent-green); font-size: 14px; clip-path: polygon(0% 0%, 100% 0%, 88.89% 100%, 11.11% 100%); padding: 22px 48px 15px 48px;">
+                            基础设施<br>
+                            <span style="font-size: 0.85em;">(服务器、数据库)</span>
                         </div>
                     </div>
                 </div>
@@ -209,10 +290,55 @@
                 <div class="info-box">
                     <h4>💡 应用场景</h4>
                     <ul style="line-height: 1.8;">
-                        <li><strong>技术架构</strong>：从基础设施到应用的分层</li>
-                        <li><strong>组织结构</strong>：从基层到高层的层级</li>
-                        <li><strong>产品定位</strong>：从入门到高级的产品线</li>
-                        <li><strong>服务分层</strong>：从基础服务到增值服务</li>
+                        <li><strong>新闻写作</strong>：倒金字塔结构，最重要信息在最上面</li>
+                        <li><strong>用户漏斗</strong>：从广泛的潜在用户到核心付费用户</li>
+                        <li><strong>信息筛选</strong>：从大量数据到精选洞察</li>
+                        <li><strong>决策流程</strong>：从多个选项到最终决策</li>
+                        <li><strong>学习路径</strong>：从广泛了解到专精掌握</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Style 2: 3D Layered Style -->
+            <div class="pyramid-section">
+                <h2>示例 2：用户转化漏斗 (3D层叠风格)</h2>
+                <p class="description">
+                    3D视觉效果，展示从广泛流量到核心用户的转化过程<br>
+                    层叠立体设计，更具视觉冲击力
+                </p>
+
+                <div class="pyramid-container pyramid-style2">
+                    <div class="pyramid-wrapper">
+                        <!-- 第一层（最上面，最宽） -->
+                        <div class="pyramid-level" style="top: 0; width: 480px; height: 100px; font-size: 18px; clip-path: polygon(0% 0%, 100% 0%, 91.67% 100%, 8.33% 100%); padding: 25px 60px 15px 60px;">
+                            <div class="pyramid-level-number">1</div>
+                            访问用户<br>
+                            <span style="font-size: 0.85em;">(100万 UV/月)</span>
+                        </div>
+
+                        <!-- 第二层（中间） -->
+                        <div class="pyramid-level" style="top: 115px; width: 400px; height: 95px; font-size: 16px; clip-path: polygon(0% 0%, 100% 0%, 90.5% 100%, 9.5% 100%); padding: 22px 55px 15px 55px;">
+                            <div class="pyramid-level-number">2</div>
+                            注册用户<br>
+                            <span style="font-size: 0.85em;">(20万注册)</span>
+                        </div>
+
+                        <!-- 第三层（最下面，最窄） -->
+                        <div class="pyramid-level" style="top: 225px; width: 324px; height: 90px; font-size: 14px; clip-path: polygon(0% 0%, 100% 0%, 88.89% 100%, 11.11% 100%); padding: 22px 48px 15px 48px;">
+                            <div class="pyramid-level-number">3</div>
+                            付费用户<br>
+                            <span style="font-size: 0.85em;">(5万付费)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 转化率分析</h4>
+                    <ul style="line-height: 1.8;">
+                        <li><strong>访问→注册</strong>：20% 转化率，需优化落地页设计</li>
+                        <li><strong>注册→付费</strong>：25% 转化率，需加强产品价值传递</li>
+                        <li><strong>整体转化</strong>：5% 最终转化率，行业中等水平</li>
+                        <li><strong>优化重点</strong>：提升首次访问到注册的转化</li>
                     </ul>
                 </div>
             </div>
@@ -220,7 +346,7 @@
 
         <footer>
             <p>HTML Presentation Beautifier - McKinsey Style Inverted Pyramid Example</p>
-            <p>基于 CSS clip-path 的倒三角形层级图表</p>
+            <p>基于 CSS clip-path 的倒三角形层级图表 - 2种风格</p>
         </footer>
     </div>
 </body>

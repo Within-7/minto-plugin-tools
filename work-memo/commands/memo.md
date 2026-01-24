@@ -53,20 +53,23 @@ When this command is triggered:
 ### For URL Input
 
 1. Validate the URL format
-2. Fetch webpage content using `web_scraper.py`
-3. Extract main content from the webpage
-4. Generate a summary of the content
-5. Record to database with:
+2. Use MCP web_reader tool to fetch and convert webpage content to markdown format
+3. Use AI to analyze and summarize the webpage content:
+   - Extract main title and key information
+   - Generate intelligent summary using AI understanding
+   - Identify relevant tags and context
+4. Record to Markdown storage with:
    - Webpage title as record title
    - URL stored in contexts
-   - Content summary in description
+   - AI-generated summary in description
+   - AI analysis with suggestions and insights
    - Default type: research
    - Default tags: web, reading
-6. Return confirmation with:
+5. Return confirmation with:
    - Webpage title
    - URL
-   - Content summary
-   - Record details
+   - AI-generated summary
+   - Record details with file location
 
 ## Examples
 

@@ -27,6 +27,12 @@ class PresentationGenerator:
             'blue': '#50a5f1',
             'yellow': '#f1b44c'
         }
+    
+    @staticmethod
+    def hex_to_rgb(hex_color: str) -> str:
+        """Convert hex color to RGB string."""
+        hex_color = hex_color.lstrip('#')
+        return f'{int(hex_color[0:2], 16)}, {int(hex_color[2:4], 16)}, {int(hex_color[4:6], 16)}'
 
     def generate(
         self,
@@ -1616,15 +1622,77 @@ document.addEventListener('DOMContentLoaded', init);"""
                 # Generate chart for numerical data
                 chart_num += 1
                 chart_id = f"chart{chart_num}"
+
+                # Determine chart type with scenario-aware detection
                 chart_type = self._determine_chart_type(section_data)
-                chart_container_class = self._get_chart_container_class(chart_type)
-                chart_type_name = self._get_chart_type_display_name(chart_type)
+                chart_type = self._update_decision_tree_for_new_charts(section_data, section, chart_type)
 
-                insights_html = '\n                    '.join([
-                    f'<li>{insight.strip()}</li>' for insight in insights if insight.strip()
-                ])
-
-                slide = f'''        <div class="slide" data-slide="{slide_num}">
+                # Use new rendering methods for advanced chart types
+                if chart_type == 'combo':
+                    chart_html = self._render_combo_chart(section_data)
+                    insights_list = [f'<li>{insight.strip()}</li>' for insight in insights if insight.strip()]
+                    insights_html = '\n                    '.join(insights_list)
+                    slide = f'''        <div class="slide" data-slide="{slide_num}">
+            <div class="header-bar">
+                <h1 class="slide-title">{section.get('title', 'Data Analysis')}</h1>
+            </div>
+            <div class="slide-content">
+                <div class="column">
+                    {chart_html}
+                </div>
+                <div class="column">
+                    <h3 class="section-header">Key Insights</h3>
+                    <ul class="bullet-points">
+                        {insights_html}
+                    </ul>
+                </div>
+            </div>
+        </div>'''
+                elif chart_type == 'scatter_regression':
+                    chart_html = self._render_scatter_with_regression(section_data)
+                    insights_list = [f'<li>{insight.strip()}</li>' for insight in insights if insight.strip()]
+                    insights_html = '\n                    '.join(insights_list)
+                    slide = f'''        <div class="slide" data-slide="{slide_num}">
+            <div class="header-bar">
+                <h1 class="slide-title">{section.get('title', 'Data Analysis')}</h1>
+            </div>
+            <div class="slide-content">
+                <div class="column">
+                    {chart_html}
+                </div>
+                <div class="column">
+                    <h3 class="section-header">Key Insights</h3>
+                    <ul class="bullet-points">
+                        {insights_html}
+                    </ul>
+                </div>
+            </div>
+        </div>'''
+                elif chart_type == 'timeline':
+                    chart_html = self._render_timeline(section_data)
+                    insights_list = [f'<li>{insight.strip()}</li>' for insight in insights if insight.strip()]
+                    insights_html = '\n                    '.join(insights_list)
+                    slide = f'''        <div class="slide" data-slide="{slide_num}">
+            <div class="header-bar">
+                <h1 class="slide-title">{section.get('title', 'Data Analysis')}</h1>
+            </div>
+            <div class="slide-content">
+                {chart_html}
+                <div class="column">
+                    <h3 class="section-header">Key Insights</h3>
+                    <ul class="bullet-points">
+                        {insights_html}
+                    </ul>
+                </div>
+            </div>
+        </div>'''
+                else:
+                    chart_container_class = self._get_chart_container_class(chart_type)
+                    chart_type_name = self._get_chart_type_display_name(chart_type)
+                    insights_list = [f'<li>{insight.strip()}</li>' for insight in insights if insight.strip()]
+                    insights_html = '\n                    '.join(insights_list)
+                    
+                    slide = f'''        <div class="slide" data-slide="{slide_num}">
             <div class="header-bar">
                 <h1 class="slide-title">{section.get('title', 'Data Analysis')}</h1>
             </div>
@@ -2688,15 +2756,22 @@ document.addEventListener('DOMContentLoaded', init);"""
         # Extract task information
         tasks = []
         for dp in data_points:
-            task = {{
-                'label': dp.get('label', dp.get('task', 'Task')),
-                'start': dp.get('start', '2024-01'),
-                'end': dp.get('end', '2024-12'),
-                'duration': dp.get('duration', dp.get('progress', 0)),
-                'progress': dp.get('progress', dp.get('progress', 0)),
-                'category': dp.get('category', '')
-            }}
-            tasks.append(task)
+            task_label = dp.get('label', dp.get('task', 'Task'))
+            task_start = dp.get('start', '2024-01')
+            task_end = dp.get('end', '2024-12')
+            task_duration = dp.get('duration', dp.get('progress', 0))
+            task_progress = dp.get('progress', 0)
+            task_category = dp.get('category', '')
+
+            task_info = {
+                'label': task_label,
+                'start': task_start,
+                'end': task_end,
+                'duration': task_duration,
+                'progress': task_progress,
+                'category': task_category
+            }
+            tasks.append(task_info)
         
         chart_id = f"gantt_{id(data_points)}"
         
@@ -3453,85 +3528,6 @@ if __name__ == "__main__":
         </div>
         '''
     
-    def _render_timeline(self, data_points: List[Dict]) -> str:
-        """Render Timeline: Sequential events or milestones."""
-        if not data_points or len(data_points) < 2:
-            return '<p class="body-text">Timeline requires at least 2 events</p>'
-        
-        events_html = ""
-        for i, dp in enumerate(data_points):
-            date = dp.get('date', dp.get('time', dp.get('label', f'Event {i+1}')))
-            title = dp.get('title', dp.get('name', ''))
-            description = dp.get('description', dp.get('detail', ''))
-            position = 'left' if i % 2 == 0 else 'right'
-            
-            events_html += f'''
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content timeline-{position}">
-                    <div class="timeline-date" style="color: {self.colors['primary']}; font-weight: bold;">{date}</div>
-                    <div class="timeline-title" style="font-size: 16px; font-weight: 600; margin: 5px 0;">{title}</div>
-                    <div class="timeline-desc" style="font-size: 14px; color: #74788d;">{description}</div>
-                </div>
-            </div>
-            '''
-        
-        return f'''
-        <div class="chart-container timeline-container" style="padding: 20px;">
-            <span class="chart-type-badge">Timeline (时间轴)</span>
-            <div class="timeline">
-                {events_html}
-            </div>
-        </div>
-        <style>
-        .timeline {{
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto;
-        }}
-        .timeline::before {{
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: {self.colors['secondary']};
-            transform: translateX(-50%);
-        }}
-        .timeline-item {{
-            position: relative;
-            margin-bottom: 40px;
-        }}
-        .timeline-dot {{
-            position: absolute;
-            left: 50%;
-            top: 0;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: {self.colors['primary']};
-            transform: translateX(-50%);
-            border: 3px solid white;
-            box-shadow: 0 0 0 3px {self.colors['primary']}33;
-        }}
-        .timeline-content {{
-            position: relative;
-            width: 45%;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid {self.colors['primary']};
-        }}
-        .timeline-left {{
-            left: 0;
-        }}
-        .timeline-right {{
-            left: 55%;
-        }}
-        </style>
-        '''
-    
     def _render_flowchart(self, data_points: List[Dict]) -> str:
         """Render Flowchart: Process with decision points using CSS."""
         if not data_points or len(data_points) < 2:
@@ -3607,7 +3603,465 @@ if __name__ == "__main__":
                     border-right: 8px solid transparent;
                     border-top: 10px solid {self.colors['secondary']};
                 "></div>
-                '''
+        '''
+
+    # ========== NEW OPTIMIZED CHARTS (Based on Four-Dimensional Framework) ==========
+
+    def _render_combo_chart(self, data_points: List[Dict]) -> str:
+        """
+        Render combo chart with dual Y-axes for comparing different metrics.
+
+        Framework Mapping:
+        - Cognitive Level: Medium (interpretive conclusions)
+        - Analysis Purpose: Trend + Comparison
+        - Data Characteristics: Temporal + Numerical
+        - Application Scenario: Business BI (performance + trend)
+
+        Four-dimensional framework implementation.
+        """
+        if not data_points or len(data_points) < 2:
+            return '<p class="body-text">组合图需要至少2个数据点</p>'
+
+        # Split data into two series (first half as bar, second half as line)
+        mid_point = len(data_points) // 2
+        bar_data = data_points[:mid_point]
+        line_data = data_points[mid_point:]
+
+        chart_id = f"combo_{id(data_points)}"
+
+        # Extract labels, values
+        bar_labels = [dp.get('label', '') for dp in bar_data]
+        bar_values = [dp.get('value', 0) for dp in bar_data]
+        line_labels = [dp.get('label', '') for dp in line_data]
+        line_values = [dp.get('value', 0) for dp in line_data]
+
+        bar_data_json = json.dumps(bar_values)
+        line_data_json = json.dumps(line_values)
+        bar_labels_json = json.dumps(bar_labels)
+        line_labels_json = json.dumps(line_labels)
+
+        return f'''
+        <div class="chart-container combo-chart-container">
+            <span class="chart-type-badge">组合图 (Combo Chart)</span>
+            <canvas id="{chart_id}" style="height: 450px !important;"></canvas>
+        </div>
+        <script>
+        new Chart(document.getElementById('{chart_id}'), {{
+            data: {{
+                labels: {bar_labels_json},
+                datasets: [
+                    {{
+                        type: 'bar',
+                        label: 'Primary Metric',
+                        data: {bar_data_json},
+                        backgroundColor: 'rgba(85, 110, 230, 0.7)',
+                        borderColor: 'rgba(85, 110, 230, 1)',
+                        borderWidth: 2,
+                        yAxisID: 'y'
+                    }},
+                    {{
+                        type: 'line',
+                        label: 'Trend',
+                        data: {line_data_json},
+                        borderColor: 'rgba(52, 195, 143, 1)',
+                        backgroundColor: 'rgba(52, 195, 143, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        yAxisID: 'y1',
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }}
+                ]
+            }},
+            options: {{
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {{
+                    mode: 'index',
+                    intersect: false
+                }},
+                plugins: {{
+                    legend: {{
+                        display: true,
+                        position: 'top'
+                    }},
+                    tooltip: {{
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        titleFont: {{size: 14, weight: 'bold'}},
+                        bodyFont: {{size: 13}}
+                    }}
+                }},
+                scales: {{
+                    x: {{
+                        grid: {{color: '#e0e0e0'}}
+                    }},
+                    y: {{
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {{display: true, text: 'Primary Metric', font: {{size: 14, weight: '600'}}}},
+                        grid: {{color: '#e0e0e0'}},
+                        beginAtZero: true
+                    }},
+                    y1: {{
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {{display: true, text: 'Trend', font: {{size: 14, weight: '600'}}}},
+                        grid: {{
+                            drawOnChartArea: false
+                        }},
+                        beginAtZero: true
+                    }}
+                }}
+            }}
+        }}
+        }});
+        </script>
+        '''
+
+    def _render_scatter_with_regression(self, data_points: List[Dict]) -> str:
+        """
+        Render scatter plot with linear regression trend line.
+
+        Framework Mapping:
+        - Cognitive Level: High (analytical conclusions)
+        - Analysis Purpose: Relationship
+        - Data Characteristics: Numerical + XY data
+        - Application Scenario: Scientific Research (hypothesis validation)
+
+        Four-dimensional framework implementation.
+        """
+        if not data_points or len(data_points) < 3:
+            return '<p class="body-text">回归分析需要至少3个数据点</p>'
+
+        # Extract x, y values
+        x_values = []
+        y_values = []
+        for dp in data_points:
+            x_val = dp.get('x', dp.get('value', 0))
+            y_val = dp.get('y', dp.get('value', 0))
+            x_values.append(x_val)
+            y_values.append(y_val)
+
+        # Calculate linear regression (least squares)
+        n = len(x_values)
+        sum_x = sum(x_values)
+        sum_y = sum(y_values)
+        sum_xy = sum(x * y for x, y in zip(x_values, y_values))
+        sum_x2 = sum(x ** 2 for x in x_values)
+
+        # Avoid division by zero
+        denominator = n * sum_x2 - sum_x ** 2
+        if abs(denominator) < 1e-10:
+            return '<p class="body-text">无法计算回归线（x值无变化）</p>'
+
+        # Calculate slope (m) and intercept (b)
+        m = (n * sum_xy - sum_x * sum_y) / denominator
+        b = (sum_y - m * sum_x) / n
+
+        # Calculate R-squared
+        y_mean = sum_y / n
+        ss_total = sum((y - y_mean) ** 2 for y in y_values)
+        ss_residual = sum((y_values[i] - (m * x_values[i] + b)) ** 2 for i in range(n))
+        r_squared = 1 - (ss_residual / ss_total) if ss_total > 1e-10 else 0
+
+        # Generate regression line points
+        min_x, max_x = min(x_values), max(x_values)
+        regression_line = [
+            {'x': min_x, 'y': m * min_x + b},
+            {'x': max_x, 'y': m * max_x + b}
+        ]
+
+        chart_id = f"regression_{id(data_points)}"
+
+        # Convert data to JSON
+        scatter_data = json.dumps([{'x': x, 'y': y} for x, y in zip(x_values, y_values)])
+        regression_data = json.dumps(regression_line)
+
+        return f'''
+        <div class="chart-container regression-container">
+            <span class="chart-type-badge">散点图 + 回归线 (Scatter with Regression)</span>
+            <div class="regression-stats" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--primary-accent);">
+                <p style="margin: 5px 0;"><strong>回归方程:</strong> y = {m:.4f}x + {b:.4f}</p>
+                <p style="margin: 5px 0;"><strong>判定系数 (R²):</strong> {r_squared:.4f}</p>
+                <p style="margin: 5px 0; font-size: 12px; color: #666;">{'强正相关' if r_squared > 0.7 else ('中度相关' if r_squared > 0.3 else '弱相关或无相关')}</p>
+            </div>
+            <canvas id="{chart_id}" style="height: 450px !important;"></canvas>
+        </div>
+        <script>
+        new Chart(document.getElementById('{chart_id}'), {{
+            type: 'scatter',
+            data: {{
+                datasets: [
+                    {{
+                        label: '数据点',
+                        data: {scatter_data},
+                        backgroundColor: 'rgba(85, 110, 230, 0.7)',
+                        borderColor: 'rgba(85, 110, 230, 1)',
+                        pointRadius: 8,
+                        pointHoverRadius: 10
+                    }},
+                    {{
+                        label: '回归线',
+                        data: {regression_data},
+                        type: 'line',
+                        borderColor: 'rgba(255, 59, 48, 1)',
+                        backgroundColor: 'rgba(255, 59, 48, 0.1)',
+                        borderWidth: 3,
+                        pointRadius: 0,
+                        tension: 0
+                    }}
+                ]
+            }},
+            options: {{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {{
+                    legend: {{
+                        display: true,
+                        position: 'top'
+                    }},
+                    tooltip: {{
+                        callbacks: {{
+                            label: function(context) {{
+                                if (context.dataset.label === '回归线') {{
+                                    return null;
+                                }}
+                                return `X: ${{context.parsed.x.toFixed(2)}}, Y: ${{context.parsed.y.toFixed(2)}}`;
+                            }}
+                        }}
+                    }}
+                }},
+                scales: {{
+                    x: {{
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {{display: true, text: 'X 变量', font: {{size: 14, weight: '600'}}}},
+                        grid: {{color: '#e0e0e0'}}
+                    }},
+                    y: {{
+                        title: {{display: true, text: 'Y 变量', font: {{size: 14, weight: '600'}}}},
+                        grid: {{color: '#e0e0e0'}}
+                    }}
+                }}
+            }}
+        }}
+        }});
+        </script>
+        '''
+
+    def _render_timeline(self, data_points: List[Dict]) -> str:
+        """
+        Render vertical/horizontal timeline with milestones.
+
+        Framework Mapping:
+        - Cognitive Level: Medium (interpretive conclusions)
+        - Analysis Purpose: Trend
+        - Data Characteristics: Temporal data
+        - Application Scenario: Public Communication + Project Management
+
+        Four-dimensional framework implementation.
+        """
+        if not data_points:
+            return '<p class="body-text">时间轴需要至少一个数据点</p>'
+
+        # Sort data by date/timestamp
+        sorted_data = sorted(
+            data_points,
+            key=lambda x: x.get('date', x.get('timestamp', ''))
+        )
+
+        return f'''
+        <div class="timeline-container">
+            <h3 class="timeline-title" style="font-size: 24px; font-weight: 600; margin-bottom: 30px; color: var(--text-primary);">项目时间轴</h3>
+            <div class="timeline-items">
+                {self._render_timeline_items(sorted_data)}
+            </div>
+        </div>
+        <style>
+        .timeline-container {{
+            padding: 30px 0;
+        }}
+        .timeline-title {{
+            text-align: center;
+        }}
+        .timeline-items {{
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }}
+        .timeline-items::before {{
+            content: '';
+            position: absolute;
+            left: 50px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--primary-accent), var(--deep-blue));
+        }}
+        .timeline-item {{
+            position: relative;
+            padding: 20px 20px 20px 60px;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out forwards;
+        }}
+        .timeline-item:nth-child(1) {{ animation-delay: 0.1s; }}
+        .timeline-item:nth-child(2) {{ animation-delay: 0.2s; }}
+        .timeline-item:nth-child(3) {{ animation-delay: 0.3s; }}
+        .timeline-item:nth-child(4) {{ animation-delay: 0.4s; }}
+        .timeline-item:nth-child(5) {{ animation-delay: 0.5s; }}
+        .timeline-marker {{
+            position: absolute;
+            left: 18px;
+            top: 25px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-accent);
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(248, 93, 66, 0.4);
+        }}
+        .timeline-content {{
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary-accent);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }}
+        .timeline-content:hover {{
+            transform: translateX(5px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }}
+        .timeline-date {{
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary-accent);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }}
+        .timeline-title {{
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }}
+        .timeline-description {{
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }}
+        .timeline-item-completed .timeline-marker {{
+            background: var(--green);
+            box-shadow: 0 2px 8px rgba(52, 195, 143, 0.4);
+        }}
+        .timeline-item-completed .timeline-content {{
+            border-left-color: var(--green);
+        }}
+        .timeline-item-pending .timeline-marker {{
+            background: var(--secondary-accent);
+        }}
+        @keyframes fadeInUp {{
+            from {{
+                opacity: 0;
+                transform: translateY(20px);
+            }}
+            to {{
+                opacity: 1;
+                transform: translateY(0);
+            }}
+        }}
+        </style>
+        '''
+
+    def _render_timeline_items(self, data_points: List[Dict]) -> str:
+        """Render individual timeline items."""
+        items = []
+        for i, dp in enumerate(data_points):
+            status = dp.get('status', 'pending')
+            status_class = f'timeline-item-{status}'
+
+            date = dp.get('date', dp.get('timestamp', ''))
+            title = dp.get('label', '')
+            description = dp.get('description', dp.get('content', dp.get('title', '')))
+
+            items.append(f'''
+            <div class="timeline-item {status_class}" style="animation-delay: {i * 0.1}s;">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">{date}</div>
+                    <div class="timeline-title">{title}</div>
+                    <div class="timeline-description">{description}</div>
+                </div>
+            </div>
+            ''')
+
+        return ''.join(items)
+
+    def _detect_application_scenario(self, section: Dict, data_points: List[Dict]) -> str:
+        """
+        Detect application scenario based on context (Four-dimensional framework).
+
+        Returns: 'bi', 'academic', 'project', 'public'
+        """
+        title = section.get('title', '').lower()
+        content = section.get('content', '').lower()
+        all_text = ' '.join([title, content])
+
+        # BI/商业智能场景
+        bi_keywords = ['kpi', 'dashboard', 'revenue', 'profit', 'sales', 'conversion',
+                      '漏斗', '转化', '业绩', '收入', '利润', '销售额', '业绩', '目标']
+        if any(kw in all_text for kw in bi_keywords):
+            return 'bi'
+
+        # 学术研究场景
+        academic_keywords = ['experiment', 'hypothesis', 'correlation', 'regression',
+                           'statistical', 'significant', '实验', '假设', '相关', '统计', '显著', '回归']
+        if any(kw in all_text for kw in academic_keywords):
+            return 'academic'
+
+        # 项目管理场景
+        project_keywords = ['milestone', 'progress', 'gantt', 'task', 'deadline',
+                          '里程碑', '进度', '任务', '截止', '项目']
+        if any(kw in all_text for kw in project_keywords):
+            return 'project'
+
+        # 公共传播场景（默认）
+        return 'public'
+
+    def _update_decision_tree_for_new_charts(self, data_points: List[Dict], section: Dict, chart_type: str) -> str:
+        """
+        Enhanced decision tree with new chart types from four-dimensional framework.
+        Updates chart type selection based on scenario detection.
+        """
+        scenario = self._detect_application_scenario(section, data_points)
+
+        # Scenario-based adjustments
+        if scenario == 'bi':
+            # BI场景优先使用组合图、仪表盘
+            if len(data_points) > 5 and chart_type in ['bar', 'line']:
+                return 'combo'
+            elif 'kpi' in section.get('title', '').lower():
+                return 'dashboard'
+
+        elif scenario == 'academic':
+            # 学术研究优先使用回归线、误差线
+            if chart_type == 'scatter':
+                return 'scatter_regression'
+            elif chart_type == 'bar' and any('error' in str(dp).lower() or 'std' in str(dp).lower() for dp in data_points):
+                return 'bar_with_error'
+
+        elif scenario == 'project':
+            # 项目管理优先使用时间轴、甘特图
+            if chart_type == 'line' and 'time' in section.get('title', '').lower():
+                return 'timeline'
+
+        # Default: return original chart type
+        return chart_type
         
         total_height = len(data_points) * 140 + 100
         
@@ -4003,7 +4457,7 @@ if __name__ == "__main__":
                 {position}
                 width: calc(50% - 15px);
                 height: calc(50% - 15px);
-                background: rgba({hex_to_rgb(quad['color'])}, 0.1);
+                background: rgba({self.hex_to_rgb(quad['color'])}, 0.1);
                 border: 2px solid {quad['color']};
                 border-radius: 10px;
                 padding: 20px;
@@ -4051,7 +4505,7 @@ if __name__ == "__main__":
             {reg['pos'] == 'bottom-left' and 'left: 0; bottom: 0;' or reg['pos'] == 'top-left' and 'left: 0; top: 0;' or reg['pos'] == 'top-right' and 'right: 0; top: 0;' or 'right: 0; bottom: 0;'}
             width: calc(50% - 10px);
             height: calc(50% - 10px);
-            background: rgba({hex_to_rgb(reg['color'])}, 0.15);
+            background: rgba({self.hex_to_rgb(reg['color'])}, 0.15);
             border: 2px solid {reg['color']};
             border-radius: 8px;
             padding: 15px;
@@ -4089,7 +4543,7 @@ if __name__ == "__main__":
             {q['key'] == 'market_development' and 'left: 0; top: 0;' or q['key'] == 'diversification' and 'right: 0; top: 0;' or q['key'] == 'market_penetration' and 'left: 0; bottom: 0;' or 'right: 0; bottom: 0;'}
             width: calc(50% - 10px);
             height: calc(50% - 10px);
-            background: rgba({hex_to_rgb(q['color'])}, 0.15);
+            background: rgba({self.hex_to_rgb(q['color'])}, 0.15);
             border: 3px solid {q['color']};
             border-radius: 10px;
             padding: 20px;

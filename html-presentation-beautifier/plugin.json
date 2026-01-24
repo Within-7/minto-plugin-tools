@@ -24,6 +24,12 @@
   "commands": [
     "./commands/beauty.md"
   ],
+  "agents": [
+    "./agents/presentation-merger.md",
+    "./agents/content-merger.md",
+    "./agents/visualization-optimizer.md",
+    "./agents/content-reviewer.md"
+  ],
   "categories": [
     "productivity",
     "presentation",

@@ -217,12 +217,14 @@
         .timeline-horizontal::before {
             content: '';
             position: absolute;
-            left: 50px;
-            top: 50%;
-            right: 50px;
-            height: 3px;
-            background: var(--accent-blue);
-            transform: translateY(-50%);
+            left: 5%;
+            top: 14px;
+            right: 5%;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-blue-light));
+            border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(85, 110, 230, 0.2);
+            z-index: 1;
         }
 
         .timeline-item-horizontal {
@@ -238,50 +240,374 @@
         }
 
         .timeline-dot-horizontal {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 24px;
-            height: 24px;
+            position: relative;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: var(--accent-primary);
-            transform: translate(-50%, -50%);
-            border: 4px solid white;
-            box-shadow: 0 0 0 4px var(--accent-primary)33;
+            border: 5px solid white;
+            box-shadow: 0 0 0 4px rgba(248, 93, 66, 0.2), 0 4px 12px rgba(248, 93, 66, 0.3);
             z-index: 2;
+            transition: all 0.3s ease;
+            margin: 0 auto 30px;
+        }
+
+        .timeline-dot-horizontal:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 6px rgba(248, 93, 66, 0.3), 0 6px 16px rgba(248, 93, 66, 0.4);
+        }
+
+        .timeline-dot-horizontal::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .timeline-dot-horizontal::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 30px;
+            background: linear-gradient(to bottom, var(--accent-primary), transparent);
         }
 
         .timeline-content-horizontal {
             position: relative;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid var(--accent-primary);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-top: 30px;
+            padding: 24px 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 12px;
+            border-top: 4px solid var(--accent-primary);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            min-height: 160px;
+        }
+
+        .timeline-content-horizontal:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
         }
 
         .timeline-date-horizontal {
             color: var(--accent-primary);
             font-weight: bold;
-            font-size: 14px;
-            margin-bottom: 8px;
+            font-size: 15px;
+            margin-bottom: 10px;
             text-align: center;
+            letter-spacing: 0.5px;
         }
 
         .timeline-title-horizontal {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             color: var(--text-main);
             text-align: center;
+            line-height: 1.4;
         }
 
         .timeline-desc-horizontal {
             font-size: 13px;
             color: var(--text-light);
-            line-height: 1.5;
+            line-height: 1.6;
             text-align: center;
+        }
+
+        /* 为不同的时间节点添加不同的强调色 */
+        .timeline-item-horizontal:nth-child(1) .timeline-dot-horizontal {
+            background: var(--accent-primary);
+        }
+
+        .timeline-item-horizontal:nth-child(1) .timeline-content-horizontal {
+            border-top-color: var(--accent-primary);
+        }
+
+        .timeline-item-horizontal:nth-child(2) .timeline-dot-horizontal {
+            background: var(--accent-blue);
+            box-shadow: 0 0 0 4px rgba(85, 110, 230, 0.2), 0 4px 12px rgba(85, 110, 230, 0.3);
+        }
+
+        .timeline-item-horizontal:nth-child(2) .timeline-content-horizontal {
+            border-top-color: var(--accent-blue);
+        }
+
+        .timeline-item-horizontal:nth-child(2) .timeline-dot-horizontal::after {
+            background: linear-gradient(to bottom, var(--accent-blue), transparent);
+        }
+
+        .timeline-item-horizontal:nth-child(3) .timeline-dot-horizontal {
+            background: var(--accent-green);
+            box-shadow: 0 0 0 4px rgba(52, 195, 143, 0.2), 0 4px 12px rgba(52, 195, 143, 0.3);
+        }
+
+        .timeline-item-horizontal:nth-child(3) .timeline-content-horizontal {
+            border-top-color: var(--accent-green);
+        }
+
+        .timeline-item-horizontal:nth-child(3) .timeline-dot-horizontal::after {
+            background: linear-gradient(to bottom, var(--accent-green), transparent);
+        }
+
+        .timeline-item-horizontal:nth-child(4) .timeline-dot-horizontal {
+            background: var(--accent-yellow);
+            box-shadow: 0 0 0 4px rgba(241, 180, 76, 0.2), 0 4px 12px rgba(241, 180, 76, 0.3);
+        }
+
+        .timeline-item-horizontal:nth-child(4) .timeline-content-horizontal {
+            border-top-color: var(--accent-yellow);
+        }
+
+        .timeline-item-horizontal:nth-child(4) .timeline-dot-horizontal::after {
+            background: linear-gradient(to bottom, var(--accent-yellow), transparent);
+        }
+
+        .timeline-item-horizontal:nth-child(5) .timeline-dot-horizontal {
+            background: var(--accent-blue-light);
+            box-shadow: 0 0 0 4px rgba(80, 165, 241, 0.2), 0 4px 12px rgba(80, 165, 241, 0.3);
+        }
+
+        .timeline-item-horizontal:nth-child(5) .timeline-content-horizontal {
+            border-top-color: var(--accent-blue-light);
+        }
+
+        .timeline-item-horizontal:nth-child(5) .timeline-dot-horizontal::after {
+            background: linear-gradient(to bottom, var(--accent-blue-light), transparent);
+        }
+
+        /* Horizontal Timeline Alternating (上下交替布局) */
+        .timeline-horizontal-alt {
+            position: relative;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 120px 20px;
+            overflow: visible;
+        }
+
+        .timeline-horizontal-alt::before {
+            content: '';
+            position: absolute;
+            left: 5%;
+            top: 50%;
+            right: 5%;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-blue-light));
+            border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(85, 110, 230, 0.2);
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+
+        .timeline-item-horizontal-alt {
+            position: relative;
+            display: inline-block;
+            width: 18%;
+            margin-right: 2%;
+            vertical-align: middle;
+        }
+
+        .timeline-item-horizontal-alt:last-child {
+            margin-right: 0;
+        }
+
+        /* 奇数项在上方 */
+        .timeline-item-horizontal-alt:nth-child(odd) {
+            vertical-align: top;
+        }
+
+        /* 偶数项在下方 */
+        .timeline-item-horizontal-alt:nth-child(even) {
+            vertical-align: bottom;
+        }
+
+        .timeline-dot-horizontal-alt {
+            position: relative;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            border: 6px solid white;
+            box-shadow: 0 0 0 4px rgba(248, 93, 66, 0.2), 0 4px 12px rgba(248, 93, 66, 0.3);
+            z-index: 3;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+        }
+
+        .timeline-dot-horizontal-alt:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 6px rgba(248, 93, 66, 0.3), 0 6px 16px rgba(248, 93, 66, 0.4);
+        }
+
+        .timeline-dot-horizontal-alt::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* 奇数项：内容在上，圆点在下 */
+        .timeline-item-horizontal-alt:nth-child(odd) .timeline-content-horizontal-alt {
+            margin-bottom: 40px;
+        }
+
+        .timeline-item-horizontal-alt:nth-child(odd) .timeline-dot-horizontal-alt {
+            margin-bottom: 0;
+        }
+
+        /* 偶数项：圆点在上，内容在下 */
+        .timeline-item-horizontal-alt:nth-child(even) .timeline-dot-horizontal-alt {
+            margin-bottom: 40px;
+            margin-top: 0;
+        }
+
+        .timeline-content-horizontal-alt {
+            position: relative;
+            padding: 24px 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            min-height: 140px;
+            z-index: 2;
+        }
+
+        /* 奇数项内容在上方，使用底部边框 */
+        .timeline-item-horizontal-alt:nth-child(odd) .timeline-content-horizontal-alt {
+            border-bottom: 4px solid var(--accent-primary);
+        }
+
+        /* 奇数项添加从内容到圆点的连接线 */
+        .timeline-item-horizontal-alt:nth-child(odd) .timeline-content-horizontal-alt::after {
+            content: '';
+            position: absolute;
+            bottom: -44px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--accent-primary), transparent);
+            z-index: 1;
+        }
+
+        /* 偶数项内容在下方，使用顶部边框 */
+        .timeline-item-horizontal-alt:nth-child(even) .timeline-content-horizontal-alt {
+            border-top: 4px solid var(--accent-primary);
+        }
+
+        /* 偶数项添加从圆点到内容的连接线 */
+        .timeline-item-horizontal-alt:nth-child(even) .timeline-content-horizontal-alt::before {
+            content: '';
+            position: absolute;
+            top: -44px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, var(--accent-primary));
+            z-index: 1;
+        }
+
+        .timeline-content-horizontal-alt:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .timeline-date-horizontal-alt {
+            color: var(--accent-primary);
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 10px;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .timeline-title-horizontal-alt {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-main);
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .timeline-desc-horizontal-alt {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* 为不同的时间节点添加不同的强调色 - 交替布局 */
+        .timeline-item-horizontal-alt:nth-child(1) .timeline-dot-horizontal-alt {
+            background: var(--accent-primary);
+        }
+
+        .timeline-item-horizontal-alt:nth-child(1) .timeline-content-horizontal-alt {
+            border-bottom-color: var(--accent-primary);
+        }
+
+        .timeline-item-horizontal-alt:nth-child(2) .timeline-dot-horizontal-alt {
+            background: var(--accent-blue);
+            box-shadow: 0 0 0 4px rgba(85, 110, 230, 0.2), 0 4px 12px rgba(85, 110, 230, 0.3);
+        }
+
+        .timeline-item-horizontal-alt:nth-child(2) .timeline-content-horizontal-alt {
+            border-top-color: var(--accent-blue);
+        }
+
+        .timeline-item-horizontal-alt:nth-child(2) .timeline-dot-horizontal-alt::after {
+            background: linear-gradient(to top, var(--accent-blue), transparent);
+        }
+
+        .timeline-item-horizontal-alt:nth-child(3) .timeline-dot-horizontal-alt {
+            background: var(--accent-green);
+            box-shadow: 0 0 0 4px rgba(52, 195, 143, 0.2), 0 4px 12px rgba(52, 195, 143, 0.3);
+        }
+
+        .timeline-item-horizontal-alt:nth-child(3) .timeline-content-horizontal-alt {
+            border-bottom-color: var(--accent-green);
+        }
+
+        .timeline-item-horizontal-alt:nth-child(3) .timeline-dot-horizontal-alt::after {
+            background: linear-gradient(to bottom, var(--accent-green), transparent);
+        }
+
+        .timeline-item-horizontal-alt:nth-child(4) .timeline-dot-horizontal-alt {
+            background: var(--accent-yellow);
+            box-shadow: 0 0 0 4px rgba(241, 180, 76, 0.2), 0 4px 12px rgba(241, 180, 76, 0.3);
+        }
+
+        .timeline-item-horizontal-alt:nth-child(4) .timeline-content-horizontal-alt {
+            border-top-color: var(--accent-yellow);
+        }
+
+        .timeline-item-horizontal-alt:nth-child(4) .timeline-dot-horizontal-alt::after {
+            background: linear-gradient(to top, var(--accent-yellow), transparent);
+        }
+
+        .timeline-item-horizontal-alt:nth-child(5) .timeline-dot-horizontal-alt {
+            background: var(--accent-blue-light);
+            box-shadow: 0 0 0 4px rgba(80, 165, 241, 0.2), 0 4px 12px rgba(80, 165, 241, 0.3);
+        }
+
+        .timeline-item-horizontal-alt:nth-child(5) .timeline-content-horizontal-alt {
+            border-bottom-color: var(--accent-blue-light);
+        }
+
+        .timeline-item-horizontal-alt:nth-child(5) .timeline-dot-horizontal-alt::after {
+            background: linear-gradient(to bottom, var(--accent-blue-light), transparent);
         }
 
         /* Responsive */
@@ -315,12 +641,47 @@
             }
 
             .timeline-dot-horizontal {
-                top: 0;
-                left: 50%;
+                margin-bottom: 20px;
+            }
+
+            .timeline-dot-horizontal::after {
+                display: none;
             }
 
             .timeline-content-horizontal {
-                margin-top: 20px;
+                min-height: auto;
+            }
+
+            /* 横向交替布局响应式 */
+            .timeline-horizontal-alt {
+                padding: 40px 10px;
+            }
+
+            .timeline-item-horizontal-alt {
+                width: 100%;
+                display: block;
+                margin-right: 0;
+                margin-bottom: 40px;
+                vertical-align: top !important;
+            }
+
+            .timeline-horizontal-alt::before {
+                display: none;
+            }
+
+            .timeline-dot-horizontal-alt {
+                margin-bottom: 20px;
+            }
+
+            .timeline-dot-horizontal-alt::after {
+                display: none;
+            }
+
+            .timeline-item-horizontal-alt:nth-child(odd) .timeline-content-horizontal-alt,
+            .timeline-item-horizontal-alt:nth-child(even) .timeline-content-horizontal-alt {
+                border-top: 4px solid var(--accent-primary);
+                border-bottom: none;
+                min-height: auto;
             }
 
             .timeline-content {
@@ -507,8 +868,65 @@
             </div>
         </div>
 
-        <!-- Example 4: Product Evolution -->
-        <h2>示例 3：产品演进历程</h2>
+        <!-- Example 4: Horizontal Timeline Alternating -->
+        <h2>示例 4：横向时间轴(上下交替)</h2>
+        <p class="description">
+            上下交替布局，更具视觉节奏感和层次
+        </p>
+
+        <div class="timeline-container">
+            <span class="chart-type-badge">Timeline (横向上下交替)</span>
+
+            <div class="timeline-horizontal-alt">
+                <div class="timeline-item-horizontal-alt">
+                    <div class="timeline-content-horizontal-alt">
+                        <div class="timeline-date-horizontal-alt">第一阶段</div>
+                        <div class="timeline-title-horizontal-alt">需求调研</div>
+                        <div class="timeline-desc-horizontal-alt">深入市场调研，收集用户需求</div>
+                    </div>
+                    <div class="timeline-dot-horizontal-alt"></div>
+                </div>
+
+                <div class="timeline-item-horizontal-alt">
+                    <div class="timeline-dot-horizontal-alt"></div>
+                    <div class="timeline-content-horizontal-alt">
+                        <div class="timeline-date-horizontal-alt">第二阶段</div>
+                        <div class="timeline-title-horizontal-alt">方案设计</div>
+                        <div class="timeline-desc-horizontal-alt">完成技术架构设计与规划</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item-horizontal-alt">
+                    <div class="timeline-content-horizontal-alt">
+                        <div class="timeline-date-horizontal-alt">第三阶段</div>
+                        <div class="timeline-title-horizontal-alt">开发实施</div>
+                        <div class="timeline-desc-horizontal-alt">按模块推进开发与测试</div>
+                    </div>
+                    <div class="timeline-dot-horizontal-alt"></div>
+                </div>
+
+                <div class="timeline-item-horizontal-alt">
+                    <div class="timeline-dot-horizontal-alt"></div>
+                    <div class="timeline-content-horizontal-alt">
+                        <div class="timeline-date-horizontal-alt">第四阶段</div>
+                        <div class="timeline-title-horizontal-alt">测试优化</div>
+                        <div class="timeline-desc-horizontal-alt">全面测试与性能优化</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item-horizontal-alt">
+                    <div class="timeline-content-horizontal-alt">
+                        <div class="timeline-date-horizontal-alt">第五阶段</div>
+                        <div class="timeline-title-horizontal-alt">上线运营</div>
+                        <div class="timeline-desc-horizontal-alt">正式发布与持续迭代</div>
+                    </div>
+                    <div class="timeline-dot-horizontal-alt"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 5: Product Evolution -->
+        <h2>示例 5：产品演进历程</h2>
         <p class="description">
             展示产品从1.0到当前版本的演进路线
         </p>

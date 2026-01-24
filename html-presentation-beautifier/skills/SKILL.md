@@ -57,10 +57,13 @@ This skill follows a structured multi-phase process:
 
 **Checklist**:
 - [ ] Document format identified and readable
-- [ ] Document structure parsed (headings, lists, data tables, conclusions)
-- [ ] Key data points and metrics extracted
-- [ ] Main conclusions and insights identified
-- [ ] Content hierarchy mapped (H1 → H2 → H3)
+- [ ] Document structure parsed (headings, lists, data tables, conclusions) - COMPLETELY
+- [ ] ALL data points and metrics extracted (complete datasets, not samples)
+- [ ] ALL conclusions and insights identified (every single one)
+- [ ] Content hierarchy mapped (H1 → H2 → H3) - full hierarchy
+- [ ] ALL bullet points and list items counted and extracted
+- [ ] ALL sections and subsections catalogued
+- [ ] Complete inventory of content created (counts must match source exactly)
 
 **Steps**:
 1. Read the source document completely without modification
@@ -158,11 +161,13 @@ Return a structured slide plan in JSON format:
 }}
 
 CRITICAL RULES:
-- Preserve ALL original conclusions and recommendations exactly
+- Preserve ALL original conclusions and recommendations exactly - 100% of them
 - Do NOT fabricate data or insights
-- Maximum 5-8 key points per slide
-- Each slide must have ONE clear message
-- Use exact text from source document
+- Do NOT compress or summarize - include ALL content regardless of count
+- Do NOT limit bullet points - show every item from source documents
+- Each slide must have ONE clear message, but create as many slides as needed to fit ALL content
+- Use exact text from source document - verbatim, no paraphrasing
+- Create sufficient slides to accommodate 100% of source content
 """
 )
 ```
@@ -170,12 +175,16 @@ CRITICAL RULES:
 **Checklist**:
 - [ ] Subagent invoked with proper context
 - [ ] Slide plan generated with clear structure
+- [ ] Sufficient slides planned to fit ALL content (no compression)
 - [ ] Data visualization types assigned intelligently
 - [ ] Conceptual types detected for non-numerical content
-- [ ] All original conclusions preserved exactly
+- [ ] ALL original conclusions preserved exactly (100% - zero deletions)
 - [ ] No content lost or fabricated
+- [ ] No summarization or compression applied
+- [ ] All bullet points accounted for (counts match source)
+- [ ] All data points included (complete datasets)
 
-**Exit Criteria**: Structured slide plan received from subagent with all slides defined, visualizations assigned, and zero content loss.
+**Exit Criteria**: Structured slide plan received from subagent with all slides defined, visualizations assigned, zero content loss, and VERIFIED counts that match source documents (same number of bullets, sections, data points, conclusions).
 
 ## Phase 3: Design & Layout
 
@@ -349,11 +358,14 @@ TECHNICAL REQUIREMENTS:
 
 **Checklist**:
 - [ ] Subagent invoked with slide plan and design system
-- [ ] HTML structure generated with all slides
+- [ ] HTML structure generated with ALL slides (no slides skipped)
 - [ ] McKinsey-style CSS applied inline
 - [ ] JavaScript interactivity implemented
 - [ ] Chart.js configurations included
-- [ ] All original content preserved exactly
+- [ ] ALL original content preserved exactly (verified word-for-word)
+- [ ] All bullet points shown (counts match source)
+- [ ] All data visualized/shown (complete datasets)
+- [ ] No summarization or compression in output
 - [ ] Single-file, self-contained output received
 
 **Exit Criteria**: Complete HTML presentation file generated, ready to open in browser, with all slides, styling, and interactivity working correctly.
@@ -658,14 +670,18 @@ presentation.html (single file)
 
 ## NEVER Do These
 
-- **NEVER modify original content or conclusions**: The presentation must preserve all original meaning, data, and conclusions exactly
+- **NEVER modify original content or conclusions**: The presentation must preserve all original meaning, data, and conclusions exactly - 100% of them
+- **NEVER delete, skip, or omit any content**: Include every section, bullet, data point, regardless of count
+- **NEVER summarize or compress information**: Show complete detail level, create more slides if needed
+- **NEVER truncate lists**: If source has 15 items, show all 15 items
+- **NEVER paraphrase or rephrase**: Use exact wording from source documents
 - **NEVER add fabricated data**: Only use data from the source document
 - **NEVER use AI-generated placeholder text**: Use actual content from source
 - **NEVER deviate from color scheme**: Strict adherence to the specified McKinsey-style palette
 - **NEVER use inconsistent typography**: Maintain hierarchy and style across all slides
-- **NEVER overcrowd slides**: Use generous white space and focus on key messages
-- **NEVER use generic clipart or icons**: Maintain professional, business-appropriate visuals
-- **NEVER sacrifice clarity for style**: Ensure data and conclusions are easily understood
+- **NEVER sacrifice content for aesthetics**: Better to have many dense slides than few incomplete ones
+- **NEVER sample or truncate data**: Show complete datasets in tables or charts
+- **NEVER remove context or qualifiers**: Include all conditions, exceptions, nuances
 
 ## Resources
 
@@ -972,7 +988,53 @@ Return ONLY the complete HTML file content."""
 - Test in browser before final delivery
 
 **Common Adjustments**:
-- Too many slides? Ask subagent to consolidate
 - Wrong chart type? Specify data characteristics
-- Missing insights? Ensure source document has clear conclusions
+- Missing insights? Re-source document and ensure all conclusions are captured
 - Layout issues? Specify alternative layout in slide plan
+- Content appears compressed? VERIFY counts immediately - this is a critical issue
+
+## Content Integrity Verification (MANDATORY)
+
+### Before Finalizing Presentation
+
+You MUST verify that 100% of source content is preserved:
+
+**Step 1: Count Source Document Elements**
+```
+Source Document Inventory:
+- Total sections: _____
+- Total subsections: _____
+- Total bullet points: _____
+- Total numbered list items: _____
+- Total data points: _____
+- Total conclusions/recommendations: _____
+```
+
+**Step 2: Count Presentation Elements**
+```
+Presentation Inventory:
+- Total sections shown: _____
+- Total bullet points shown: _____
+- Total data points visualized: _____
+- Total conclusions included: _____
+```
+
+**Step 3: Verify Match**
+- [ ] Section counts match ✓
+- [ ] Bullet counts match ✓
+- [ ] Data point counts match ✓
+- [ ] Conclusion counts match ✓
+- [ ] Exact wording used (no paraphrasing) ✓
+
+**IF ANY COUNT DOES NOT MATCH, THE PRESENTATION MUST BE REGENERATED.**
+
+### Red Flags That Indicate Content Loss
+
+Watch for these warning signs:
+- "Key points" or "Summary" instead of complete lists
+- Charts showing only top N items instead of full dataset
+- Bullet counts that don't match source
+- Sections missing or merged
+- Phrasing that doesn't match source exactly
+
+**When you see red flags, STOP and request regeneration with full content.**
