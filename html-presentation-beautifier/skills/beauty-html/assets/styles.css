@@ -29,6 +29,7 @@ body {
     color: var(--text-secondary);
     line-height: 1.6;
     overflow: hidden;
+    touch-action: manipulation;
 }
 
 /* Navigation Bar */
@@ -60,6 +61,12 @@ body {
 
 .nav-btn:hover {
     background-color: #e04a31;
+}
+
+/* Focus visible - only show focus ring on keyboard focus */
+.nav-btn:focus-visible {
+    outline: 2px solid var(--text-primary);
+    outline-offset: 2px;
 }
 
 .nav-btn:disabled {
@@ -119,6 +126,15 @@ body {
     color: var(--text-primary);
     margin-bottom: 30px;
     letter-spacing: -1px;
+    text-wrap: balance;
+}
+
+.subtitle {
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--primary-accent);
+    margin-bottom: 20px;
+    text-wrap: balance;
 }
 
 .subtitle {
@@ -146,6 +162,7 @@ body {
     font-weight: 700;
     color: var(--text-light);
     letter-spacing: -0.5px;
+    text-wrap: balance;
 }
 
 /* Slide Content */
@@ -205,6 +222,7 @@ body {
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 20px;
+    text-wrap: balance;
 }
 
 .accent-text {
@@ -374,6 +392,12 @@ body {
     background-color: var(--secondary-accent);
 }
 
+/* Focus visible - only show focus ring on keyboard focus */
+.fullscreen-btn:focus-visible {
+    outline: 2px solid var(--text-primary);
+    outline-offset: 2px;
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
     .slide {
@@ -440,4 +464,15 @@ body {
 
 .slide::-webkit-scrollbar-thumb:hover {
     background: var(--primary-accent);
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }

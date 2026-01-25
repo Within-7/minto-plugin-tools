@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Presentation</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" integrity="sha384-..." crossorigin="anonymous"></script>
     <style>
         /* CSS will be inlined by generator_v3.py */
         /* See styles.css for complete McKinsey-style design */
@@ -12,9 +13,9 @@
 </head>
 <body>
     <nav class="navbar">
-        <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">← Previous</button>
+        <button class="nav-btn" id="prevBtn" aria-label="Previous slide">← Previous</button>
         <span class="slide-counter">Slide <span id="currentSlide">1</span> of <span id="totalSlides">1</span></span>
-        <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Next →</button>
+        <button class="nav-btn" id="nextBtn" aria-label="Next slide">Next →</button>
     </nav>
 
     <!-- Slides Container -->
@@ -96,7 +97,7 @@
         </div>
     </div>
 
-    <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+    <button class="fullscreen-btn" id="fullscreenBtn" aria-label="Toggle fullscreen mode">⛶ Fullscreen</button>
 
     <script>
         // JavaScript will be inlined by generator_v3.py
@@ -108,6 +109,11 @@
             totalSlides = slides.length;
             document.getElementById('totalSlides').textContent = totalSlides;
             document.addEventListener('keydown', handleKeyPress);
+
+            // Add event listeners instead of onclick
+            document.getElementById('prevBtn').addEventListener('click', () => navigate(-1));
+            document.getElementById('nextBtn').addEventListener('click', () => navigate(1));
+            document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
         }
 
         function navigate(direction) {

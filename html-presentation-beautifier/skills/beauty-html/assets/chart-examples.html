@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chart Examples - McKinsey Style</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <style>
         body {
             padding: 40px;
             overflow-y: auto;
+            touch-action: manipulation;
         }
         .chart-section {
             margin-bottom: 60px;
@@ -31,11 +31,17 @@
             font-weight: 600;
             color: #000000;
             margin-bottom: 10px;
+            text-wrap: balance;
         }
         .chart-description {
             color: #74788d;
             font-size: 16px;
             margin-top: 15px;
+        }
+        /* Focus visible styles for interactive elements */
+        button:focus-visible {
+            outline: 2px solid #000000;
+            outline-offset: 2px;
         }
     </style>
 </head>
@@ -247,5 +253,18 @@
             }
         });
     </script>
+
+    <!-- Reduced Motion Support -->
+    <style>
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
 </body>
 </html>

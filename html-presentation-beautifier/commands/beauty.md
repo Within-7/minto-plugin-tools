@@ -1,6 +1,6 @@
 ---
 name: beauty
-description: 将文档、数据、结论等信息转化为通俗连贯、明确清晰的 HTML 格式幻灯片。使用 McKinsey 风格设计系统，通过丰富的图表形式可视化展示结论、概念和数据。不修改原文档内容，仅进行展示性美化输出。
+description: Transform documents and data into professional HTML presentations with McKinsey-style design. Use for: presentation creation, slide beautification, data visualization, McKinsey formatting. 将文档、数据、结论转化为通俗连贯的HTML幻灯片，使用McKinsey风格设计系统，通过图表可视化展示结论。不修改原文档内容，仅进行展示性美化输出。
 ---
 
 # Beauty 命令
