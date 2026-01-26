@@ -1,310 +1,163 @@
 # HTML Presentation Beautifier
 
-> Transform your documents into beautiful McKinsey-style HTML presentations
+Transform documents and data into professional McKinsey-style HTML presentations with intelligent chart selection and interactive navigation.
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/your-repo/html-presentation-beautifier)
-[![Python](https://img.shields.io/badge/python-3.7+-green.svg)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
+## Features
 
----
+- **McKinsey/BCG Style Design** - Professional business presentation appearance
+- **50+ Chart Types** - Intelligent chart selection based on content structure
+- **Multi-format Support** - Markdown, JSON, Text
+- **Single File Output** - All CSS/JavaScript inline, no external dependencies
+- **Responsive Design** - Perfect display on any device
+- **Keyboard Navigation** - Smooth presentation experience
+- **100% Content Preservation** - No summarization or content loss
 
-## ✨ 特性
+## Quick Start
 
-- 🎨 **McKinsey/BCG 风格设计** - 专业的商业演示文稿外观
-- 📊 **50+ 种图表类型** - 智能选择最适合的图表
-- 🔄 **多格式支持** - Markdown, JSON, Text
-- ⚡ **单文件输出** - 所有 CSS/JavaScript 内联，无需额外依赖
-- 📱 **响应式设计** - 在任何设备上都能完美显示
-- ⌨️ **键盘导航** - 流畅的演示体验
-- 🎯 **零配置** - 开箱即用
-
----
-
-## 🚀 快速开始
-
-### 安装插件
-
-插件已经在当前目录配置完成。你可以直接使用：
+### As a Claude Code Plugin
 
 ```bash
-# 使用 /beauty 命令
+# Use the /beauty command
 /beauty your_document.md
 ```
 
-### 在其他项目中使用
+The plugin automatically:
+1. Parses document structure and data
+2. Plans slides with appropriate visualizations
+3. Applies McKinsey design system
+4. Generates interactive HTML presentation
+5. Reviews quality and integrity
+
+### Installation in Other Projects
 
 ```bash
-# 进入你的项目目录
+# Navigate to your project directory
 cd /path/to/your-project
 
-# 运行启用脚本
+# Run the enable script
 /path/to/html-presentation-beautifier/enable-plugin.sh
 ```
 
-详见 [安装指南](INSTALLATION.md)。
-
----
-
-## 💻 使用方法
-
-### 作为 Claude Code 命令使用
-
-```
-/beauty document.md
-```
-
-### 使用 Python 脚本
+## Usage Examples
 
 ```bash
-# 1. 解析文档
-python3 skills/scripts/parser.py document.md -o parsed.json
+# Single document
+/beauty report.md
 
-# 2. 生成演示文稿
-python3 skills/scripts/generator_v3.py parsed.json presentation.html
+# Multiple documents with consistent styling
+/beauty report.md analysis.md summary.md
 
-# 3. 在浏览器中打开
-open presentation.html
+# JSON data to visualization
+/beauty data.json
+
+# Existing HTML beautification
+/beauty presentation.html
 ```
 
----
+## Design System
 
-## 📖 示例
+### Color Palette (McKinsey/BCG Style)
 
-### 输入文档 (Markdown)
+| Color Type | Hex Code | Usage |
+|------------|----------|-------|
+| Primary Background | `#FFFFFF` | Slide background |
+| Header Background | `#000000` | Header bar |
+| Primary Accent | `#F85d42` | Key highlights |
+| Secondary Accent | `#74788d` | Supporting text |
+| Deep Blue | `#556EE6` | Chart data |
+| Green | `#34c38f` | Success metrics |
+| Blue | `#50a5f1` | Neutral emphasis |
+| Yellow | `#f1b44c` | Warnings/caution |
 
-```markdown
-# 季度销售报告
+### Typography
 
-## 销售数据
-- Q1: 120万元
-- Q2: 150万元
-- Q3: 180万元
-- Q4: 210万元
+- **Titles**: 48-64px, bold, black (`#000000`)
+- **Subtitles**: 28-36px, bold, accent color
+- **Body**: 16-20px, regular, dark gray (`#333333`)
+- **Chart Labels**: 12-14px, clear and readable
 
-## Conclusions
-1. 全年销售额660万元，同比增长32%
-2. Q4表现最佳，建议加强相关策略
-```
+## Chart Types
 
-### 输出演示文稿
+### Basic Charts
+- Bar Chart, Horizontal Bar, Line Chart, Pie Chart, Doughnut Chart
 
-- ✅ 标题页
-- ✅ 执行摘要
-- ✅ 数据可视化（交互式图表）
-- ✅ 结论与建议
-- ✅ 键盘导航
-- ✅ 全屏模式
+### Advanced Charts
+- Radar Chart, Funnel Chart, Gantt Chart, Heatmap, Waterfall Chart, Sankey Diagram, BCG Matrix, Box Plot, Bubble Chart
 
----
+### Conceptual Charts
+- Pyramid, Timeline, Flowchart, Venn Diagram, Mind Map, SWOT Analysis, Pros-Cons, Problem-Solution, Strategy Roadmap
 
-## 🎨 图表类型
+## Interactive Features
 
-### 基础图表
-- 柱状图 (Bar Chart)
-- 条形图 (Horizontal Bar)
-- 折线图 (Line Chart)
-- 饼图 (Pie Chart)
-- 环形图 (Doughnut Chart)
+### Navigation
+- **Mouse**: Previous/Next buttons
+- **Keyboard**: Arrow keys (←/→), Space (next), Escape (exit fullscreen)
 
-### 高级图表
-- 雷达图 (Radar Chart)
-- 漏斗图 (Funnel Chart)
-- 甘特图 (Gantt Chart)
-- 热力图 (Heatmap)
-- 瀑布图 (Waterfall Chart)
-- 桑基图 (Sankey Diagram)
-- BCG 矩阵 (BCG Matrix)
-- 箱型图 (Box Plot)
-- 气泡图 (Bubble Chart)
+### Chart Interaction
+- Hover for detailed values
+- Click legend to toggle data series
+- Smooth animations
 
-### 概念图表
-- 金字塔图 (Pyramid)
-- 时间轴 (Timeline)
-- 流程图 (Flowchart)
-- 韦恩图 (Venn Diagram)
-- 思维导图 (Mind Map)
+### Fullscreen Mode
+- Click fullscreen button or press F11
+- Perfect presentation experience
 
----
-
-## 🎯 设计系统
-
-### 配色方案 (McKinsey/BCG 风格)
-
-| 颜色类型 | Hex Code | 用途 |
-|---------|----------|------|
-| 主背景 | `#FFFFFF` | 幻灯片背景 |
-| 标题栏 | `#000000` | 标题栏背景 |
-| 主强调色 | `#F85d42` | 关键高亮 |
-| 次要强调色 | `#74788d` | 辅助文本 |
-| 深蓝色 | `#556EE6` | 图表数据 |
-| 绿色 | `#34c38f` | 成功指标 |
-| 蓝色 | `#50a5f1` | 中性强调 |
-| 黄色 | `#f1b44c` | 警告/注意 |
-
-### 排版
-
-- **标题**: 48-64px, 粗体, 黑色
-- **副标题**: 28-36px, 粗体, 强调色
-- **正文**: 16-20px, 常规, 深灰色
-- **图表标签**: 12-14px, 清晰可读
-
----
-
-## 📂 项目结构
+## Project Structure
 
 ```
 html-presentation-beautifier/
-├── .claude-plugin/          # Claude Code 插件配置
-│   └── plugin.json
-├── commands/                # 命令定义
-│   └── beauty.md
-├── skills/                  # 技能定义
-│   ├── SKILL.md             # 技能文档
-│   ├── scripts/             # Python 脚本
-│   │   ├── parser.py
-│   │   ├── generator_v3.py
-│   │   └── generator_optimized.py
-│   ├── assets/              # 样式和模板
-│   └── references/          # 参考文档
-├── install.sh               # 安装脚本
-├── enable-plugin.sh         # 快速启用脚本
-├── INSTALLATION.md          # 安装指南
-├── QUICK_START.md           # 快速开始
-├── PLUGIN_TEST_REPORT.md    # 测试报告
-└── README.md                # 本文件
+├── .claude-plugin/
+│   └── plugin.json              # Plugin manifest
+├── commands/
+│   └── beauty.md                # /beauty command
+├── agents/
+│   ├── presentation-merger.md   # Multi-file merging
+│   ├── content-merger.md        # Content consolidation
+│   ├── visualization-optimizer.md  # Chart optimization
+│   ├── content-reviewer.md      # Content integrity check
+│   └── html-presentation-reviewer.md  # Quality review
+├── skills/
+│   └── beauty-html/
+│       ├── SKILL.md            # Main skill definition
+│       ├── assets/             # Chart examples and templates
+│       ├── references/         # Design guides and prompts
+│       ├── scripts/            # Python utilities
+│       └── templates/          # Slide templates
+├── docs/
+│   ├── guides/                 # Usage guides
+│   └── reports/                # Development reports
+├── install.sh                  # Installation script
+├── enable-plugin.sh            # Quick enable script
+└── README.md                   # This file
 ```
 
----
+## Documentation
 
-## 🔧 安装脚本
+- **[Skill Documentation](skills/beauty-html/SKILL.md)** - Complete workflow and usage
+- **[Chart Examples](skills/beauty-html/assets/CHART_EXAMPLES_INDEX.md)** - Available chart types
+- **[Design System](skills/beauty-html/references/mckinsey-design-system.md)** - Complete design specifications
 
-### install.sh - 完整安装脚本
+## Supported Document Formats
 
-```bash
-# 显示插件信息
-./install.sh
-
-# 在当前目录创建符号链接
-./install.sh link
-
-# 全局安装
-./install.sh global
-```
-
-### enable-plugin.sh - 快速启用脚本
-
-```bash
-# 在任何项目中快速启用插件
-./enable-plugin.sh
-```
-
----
-
-## 📚 文档
-
-- **[安装指南](INSTALLATION.md)** - 详细的安装说明
-- **[快速开始](QUICK_START.md)** - 快速使用指南
-- **[测试报告](PLUGIN_TEST_REPORT.md)** - 功能测试报告
-- **[安装总结](INSTALLATION_SUMMARY.md)** - 安装完成总结
-- **[命令文档](commands/beauty.md)** - /beauty 命令说明
-- **[技能文档](skills/SKILL.md)** - 完整技能定义
-
----
-
-## 🎮 交互功能
-
-### 导航控制
-
-- **鼠标**: Previous/Next 按钮
-- **键盘**:
-  - `→` 或 `空格`: 下一页
-  - `←`: 上一页
-  - `ESC`: 退出全屏
-
-### 图表交互
-
-- 鼠标悬停查看详细数值
-- 点击图例隐藏/显示数据系列
-- 平滑的动画效果
-
-### 全屏模式
-
-- 点击全屏按钮或按 `F11`
-- 完美的演示体验
-
----
-
-## 🌟 支持的文档格式
-
-| 格式 | 扩展名 | 支持 |
-|------|--------|------|
+| Format | Extension | Support |
+|--------|-----------|---------|
 | Markdown | `.md` | ✅ |
 | JSON | `.json` | ✅ |
 | Text | `.txt` | ✅ |
 | HTML | `.html` | ✅ |
 
----
+## Use Cases
 
-## 💡 使用场景
+- 📊 Business reports
+- 🎓 Academic presentations
+- 💼 Project reviews
+- 📈 Data analysis presentations
+- 📝 Research reports
 
-- 📊 商业报告
-- 🎓 学术演示
-- 💼 项目汇报
-- 📈 数据分析展示
-- 📝 研究成果汇报
-
----
-
-## 🐛 故障排除
-
-### 问题：命令无法识别
-
-**解决方案**:
-1. 确认符号链接已正确创建
-2. 检查 `.claude-plugin/plugin.json` 存在
-3. 重启 Claude Code
-
-### 问题：Python 脚本无法运行
-
-**解决方案**:
-```bash
-# 检查 Python 版本
-python3 --version  # 需要 3.7+
-
-# 添加执行权限
-chmod +x skills/scripts/*.py
-```
-
-详见 [安装指南](INSTALLATION.md) 的故障排除部分。
-
----
-
-## 🤝 贡献
-
-欢迎提交 Issue 和 Pull Request！
-
----
-
-## 📄 许可证
+## License
 
 MIT License
 
----
+## Version
 
-## 👥 作者
-
-OpenCode Team
-
----
-
-## 🎉 致谢
-
-- Chart.js - 图表库
-- McKinsey & Company - 设计灵感
-- BCG - 设计风格参考
-
----
-
-**版本**: 1.0.0
-**最后更新**: 2026-01-21
-**状态**: ✅ 生产就绪
+1.0.0 - Production Ready

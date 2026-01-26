@@ -1,0 +1,32 @@
+# Test files
+test-document.md
+test_*.md
+*_test.md
+*.test.md
+
+# Generated presentations
+*_beautified.html
+presentation.html
+slide_plan.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.bak
+*.log

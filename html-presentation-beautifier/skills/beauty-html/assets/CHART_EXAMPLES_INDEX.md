@@ -4,14 +4,31 @@ HTML Presentation Beautifier 提供了完整的 McKinsey 风格图表示例，�
 
 ## 📁 示例文件清单
 
-| 文件名 | 大小 | 图表类型 | 描述 |
-|--------|------|---------|------|
-| `pyramid-chart-example.html` | ~20KB | 金字塔图 | 层次结构、需求层次、优先级排序 |
-| `gauge-chart-example.html` | ~18KB | 仪表盘 | KPI 指标、目标完成度、绩效评分 |
-| `venn-diagram-example.html` | ~16KB | 韦恩图 | 集合关系、市场重叠、技能组合 |
-| `timeline-example.html` | ~19KB | 时间轴 | 项目里程碑、发展历程、产品路线图 |
-| `flowchart-example.html` | ~17KB | 流程图 | 业务流程、决策流程、审批流程 |
-| `funnel-chart-example.html` | ~18KB | 漏斗图 | 销售漏斗、用户转化、营销效果 |
+| 文件名 | 大小 | 图表类型 | 描述 | 适用观点类型 |
+|--------|------|---------|------|-------------|
+| `pyramid-chart-example.html` | ~20KB | 金字塔图 | 层次结构、需求层次、优先级排序 | 层级型 |
+| `gauge-chart-example.html` | ~18KB | 仪表盘 | KPI 指标、目标完成度、绩效评分 | 因果型 |
+| `venn-diagram-example.html` | ~16KB | 韦恩图 | 集合关系、市场重叠、技能组合 | 对比型 |
+| `timeline-example.html` | ~19KB | 时间轴 | 项目里程碑、发展历程、产品路线图 | 时间序列型/递进型 |
+| `flowchart-example.html` | ~17KB | 流程图 | 业务流程、决策流程、审批流程 | 递进型 |
+| `funnel-chart-example.html` | ~18KB | 漏斗图 | 销售漏斗、用户转化、营销效果 | 转化流程型 |
+| `mindmap-example.html` | ~14KB | 思维导图 | 中心主题展开、多维度分析 | 并列型 |
+| `swot-analysis-example.html` | ~19KB | SWOT分析 | 优势劣势机会威胁四象限 | 分析框架型 |
+| `pros-cons-example.html` | ~12KB | 优缺点图 | 两面性分析、利弊对比 | 对比型 |
+| `problem-solution-example.html` | ~11KB | 问题解决方案 | 问题诊断和解决方案 | 因果型 |
+| `strategy-roadmap-example.html` | ~17KB | 战略路线图 | 多阶段规划、时间线行动项 | 时间序列型 |
+| `comparison-example.html` | ~13KB | 对比图 | 方案对比、现状vs目标 | 对比型 |
+| `pareto-chart-example.html` | ~15KB | 帕累托图 | 关键少数分析、80/20法则 | 因果型 |
+| `competitive-4box-example.html` | ~39KB | 竞争四象限 | 市场定位、BCG矩阵 | 分析框架型 |
+| `ansoff-matrix-example.html` | ~11KB | 安索夫矩阵 | 市场/产品增长策略 | 分析框架型 |
+| `5w1h-example.html` | ~13KB | 5W1H框架 | 问题全面分析 | 分析框架型 |
+| `value-stream-example.html` | ~14KB | 价值流图 | 价值创造过程 | 转化流程型 |
+| `kano-model-example.html` | ~24KB | Kano模型 | 功能满意度分析 | 分析框架型 |
+| `inverted-pyramid-example.html` | ~13KB | 倒金字塔 | 反向层级结构 | 层级型 |
+| `mckinsey-label-bar-example.html` | ~12KB | 麦肯锡标签柱状图 | 带标签的条形图 | 并列型/对比型 |
+| `polar-chart-example.html` | ~12KB | 极坐标图 | 径向数据对比 | 循环型 |
+| `slider-chart-example.html` | ~12KB | 滑块对比图 | 变量对比 | 对比型 |
+| `swimlane-example.html` | ~14KB | 泳道图 | 跨部门流程 | 递进型 |
 
 ## 🎯 快速使用
 
@@ -249,12 +266,62 @@ python3 skills/scripts/generator_v3.py parsed_data.json output.html
 
 ## 📚 相关资源
 
-- **实现指南**：`PYRAMID_CHART_GUIDE.md`
+- **观点可视化指南**：`INSIGHT_VISUALIZATION_GUIDE.md` - 详细说明如何为不同类型的观点选择合适的可视化方式
+- **金字塔实现指南**：`PYRAMID_CHART_GUIDE.md`
 - **技术文档**：`CHART_TYPES_ANALYSIS.md`
 - **主文档**：`../../SKILL.md`
 - **测试数据**：`test_new_charts.json`
 
+## 🎯 观点可视化快速参考
+
+| 观点类型 | 关键词 | 推荐图表 | 示例文件 |
+|---------|--------|---------|---------|
+| 递进型 | 首先、其次、步骤 | progression, flowchart | flowchart-example.html |
+| 时间序列型 | 2024、Q1、过去、未来 | timeline, roadmap | timeline-example.html, strategy-roadmap-example.html |
+| 并列型 | 同时、包括、另外 | emphasis-box, mindmap | mindmap-example.html |
+| 层级型 | 基础、高级、核心 | pyramid, inverted-pyramid | pyramid-chart-example.html, inverted-pyramid-example.html |
+| 对比型 | 对比、vs、优劣 | comparison, pros-cons, venn | comparison-example.html, pros-cons-example.html, venn-diagram-example.html |
+| 分析框架型 | SWOT、4P、5W1H | swot, matrix, ansoff | swot-analysis-example.html, ansoff-matrix-example.html |
+| 转化流程型 | 转化、漏斗、筛选 | funnel, value-stream | funnel-chart-example.html, value-stream-example.html |
+| 循环型 | 循环、迭代、反馈 | cycle | (使用自定义CSS实现) |
+| 因果型 | 原因、结果、问题 | problem-solution, pareto | problem-solution-example.html, pareto-chart-example.html |
+
+详细的使用指南和识别流程，请查看 **[INSIGHT_VISUALIZATION_GUIDE.md](INSIGHT_VISUALIZATION_GUIDE.md)**
+
+## 🎯 完整演示文稿模板
+
+### presentation-template.html
+
+**文件**：`presentation-template.html`
+**大小**：22KB
+**描述**：完整的 HTML 演示文稿模板，包含所有必要的 CSS、JavaScript 和示例幻灯片
+
+**特性**：
+- ✅ McKinsey/BCG 设计系统
+- ✅ 响应式布局
+- ✅ 导航控制（按钮 + 键盘）
+- ✅ 幻灯片计数器
+- ✅ 全屏模式
+- ✅ Chart.js 集成
+- ✅ 打印优化
+
+**使用方法**：
+1. 复制模板文件
+2. 替换占位符 `{{PLACEHOLDER}}`
+3. 添加实际内容
+4. 在浏览器中打开
+
+**详细指南**：参见 `TEMPLATE_USAGE_GUIDE.md`
+
+---
+
 ## 🔄 更新日志
+
+### v1.1 (2026-01-25)
+- ✅ 创建完整演示文稿模板 `presentation-template.html`
+- ✅ 添加模板使用指南 `TEMPLATE_USAGE_GUIDE.md`
+- ✅ 优化模板结构和占位符系统
+- ✅ 完善键盘快捷键支持
 
 ### v1.0 (2026-01-21)
 - ✅ 创建金字塔图示例
@@ -268,6 +335,6 @@ python3 skills/scripts/generator_v3.py parsed_data.json output.html
 
 ---
 
-**维护者**：HTML Presentation Beautifier Team  
-**最后更新**：2026 年 1 月 21 日  
-**版本**：v1.0
+**维护者**：HTML Presentation Beautifier Team
+**最后更新**：2026 年 1 月 25 日
+**版本**：v1.1
