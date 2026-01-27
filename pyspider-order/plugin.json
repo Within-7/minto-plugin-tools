@@ -1,0 +1,15 @@
+{
+  "name": "pyspider-order",
+  "displayName": "PySpider爬虫任务下单",
+  "version": "1.0.0",
+  "description": "让分析师通过自然语言下单PySpider爬虫任务。支持社交媒体抓取(Reddit/Instagram/TikTok/Twitter/Facebook)、电商平台数据(Amazon/卖家精灵)、SEO工具数据(SEMrush)等。通过飞书API创建任务、启动爬虫、更新状态、发送通知。",
+  "keywords": [
+    "pycrawler",
+    "scraping",
+    "feishu",
+    "web-scraping",
+    "data-collection",
+    "爬虫",
+    "数据抓取"
+  ]
+}
