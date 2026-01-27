@@ -9,5 +9,11 @@
     "productivity",
     "task-management",
     "search"
-  ]
+  ],
+  "agents": {
+    "memo-analyzer": {
+      "file": "agents/memo-analyzer.md",
+      "description": "Analyze work memo records to provide insights, patterns, trends, and actionable recommendations"
+    }
+  }
 }

@@ -2,11 +2,14 @@
   "name": "html-presentation-beautifier",
   "displayName": "HTML Presentation Beautifier",
   "version": "1.0.0",
-  "description": "将文档、数据、结论等信息转化为通俗连贯、明确清晰的 HTML 格式幻灯片。使用 McKinsey 风格设计系统，严格遵循配色方案和层次结构，通过丰富的图表形式可视化展示结论、概念和数据。不修改原文档中的结论、概念、名称等信息，仅进行展示性美化输出。",
+  "description": "Transform documents, reports, and data into professional McKinsey-style HTML presentations with intelligent chart selection and interactive navigation. Preserves 100% of original content while applying professional design. 将文档、数据、结论转化为通俗连贯的HTML幻灯片，使用McKinsey风格设计系统，通过图表可视化展示结论。",
   "author": {
     "name": "within7",
     "email": "wxj@within-7.com"
   },
+  "homepage": "https://github.com/within7/html-presentation-beautifier",
+  "repository": "https://github.com/within7/html-presentation-beautifier",
+  "license": "MIT",
   "keywords": [
     "presentation",
     "html",
@@ -19,14 +22,26 @@
     "演示文稿",
     "可视化",
     "图表",
-    "美化"
-  ],
-  "commands": [
-    "./commands/beauty.md"
+    "美化",
+    "mckinsey-style"
   ],
   "categories": [
     "productivity",
     "presentation",
-    "visualization"
+    "visualization",
+    "documents"
+  ],
+  "commands": [
+    "./commands/beauty.md"
+  ],
+  "agents": [
+    "./agents/presentation-merger.md",
+    "./agents/content-merger.md",
+    "./agents/visualization-optimizer.md",
+    "./agents/content-reviewer.md",
+    "./agents/html-presentation-reviewer.md"
+  ],
+  "skills": [
+    "./skills/beauty-html"
   ]
 }

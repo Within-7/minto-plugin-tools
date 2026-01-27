@@ -1,0 +1,17 @@
+{
+  "name": "skill-optimizer",
+  "version": "0.1.0",
+  "description": "Comprehensive skill optimization and validation plugin for Claude Code. Analyzes, validates, and optimizes skills according to best practices.",
+  "author": {
+    "name": "Plugin Developer",
+    "email": "developer@example.com"
+  },
+  "keywords": [
+    "skills",
+    "optimization",
+    "validation",
+    "best-practices",
+    "quality",
+    "plugin-development"
+  ]
+}

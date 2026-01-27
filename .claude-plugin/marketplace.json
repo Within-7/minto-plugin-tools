@@ -128,6 +128,18 @@
       "description": "Personal work record management with multi-dimensional tracking, natural language search, and smart prioritization",
       "source": "./work-memo",
       "category": "productivity"
+    },
+    {
+      "name": "plugin-creator",
+      "description": "create claude plugin",
+      "source": "./plugin-creator",
+      "category": "productivity"
+    },
+    {
+      "name": "skill-optimizer",
+      "description": "Skill optimization and improvement tools",
+      "source": "./skill-optimizer",
+      "category": "development"
     }
   ]
 }

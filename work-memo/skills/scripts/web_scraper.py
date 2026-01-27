@@ -28,7 +28,8 @@ except ImportError:
 SCRIPT_DIR = Path(__file__).parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
-from storage import WorkMemoStorage
+from markdown_storage import MarkdownStorage
+from ai_analyzer import AIAnalyzer
 from schema import WorkRecord, WorkType, Status
 
 
@@ -142,7 +143,7 @@ def summarize_content(content: str, max_length: int = 300) -> str:
 
 def record_webpage(url: str, tags: Optional[List[str]] = None, urgency: int = 3, importance: int = 3) -> dict:
     """
-    抓取网页内容并记录到备忘录
+    抓取网页内容并记录到备忘录（使用 Markdown 存储）
 
     Args:
         url: 网页URL
@@ -170,7 +171,7 @@ def record_webpage(url: str, tags: Optional[List[str]] = None, urgency: int = 3,
 
     # 提取内容
     extracted = extract_content(html)
-    
+
     if not extracted['title'] and not extracted['content']:
         return {
             'status': 'error',
@@ -180,9 +181,9 @@ def record_webpage(url: str, tags: Optional[List[str]] = None, urgency: int = 3,
     # 生成摘要
     summary = summarize_content(extracted['content'])
 
-    # 创建记录
-    storage = WorkMemoStorage()
-    storage.initialize()
+    # 使用 Markdown 存储
+    storage = MarkdownStorage()
+    analyzer = AIAnalyzer()
 
     # 构建标题
     title = extracted['title'] if extracted['title'] else "网页内容"
@@ -208,13 +209,21 @@ def record_webpage(url: str, tags: Optional[List[str]] = None, urgency: int = 3,
     # 添加URL到上下文
     record.contexts = [url]
 
-    # 保存到数据库
-    storage.create(record)
+    # AI 分析
+    original_input = f"网页内容: {url}"
+    ai_analysis = analyzer.analyze(original_input)
+
+    # 保存到 Markdown 存储
+    record_id = storage.create(
+        record=record,
+        original_input=original_input,
+        ai_analysis=ai_analysis
+    )
 
     # 返回记录信息
     result = {
         'status': 'success',
-        'id': record.id,
+        'id': record_id,
         'title': record.title,
         'url': url,
         'summary': summary,
@@ -227,7 +236,6 @@ def record_webpage(url: str, tags: Optional[List[str]] = None, urgency: int = 3,
         'created_at': record.created_at,
     }
 
-    storage.close()
     return result
 
 

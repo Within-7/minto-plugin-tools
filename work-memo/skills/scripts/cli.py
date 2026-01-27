@@ -6,7 +6,8 @@ from typing import Dict, Any, Optional
 
 sys.path.insert(0, __file__)
 
-from storage import WorkMemoStorage
+from markdown_storage import MarkdownStorage
+from ai_analyzer import AIAnalyzer
 from schema import WorkRecord, WorkType, Status, Person, Location
 from query_parser import QueryParser
 from reporting import Reporting
@@ -14,8 +15,8 @@ from reporting import Reporting
 
 def cmd_add(args) -> None:
     """Add new work record"""
-    storage = WorkMemoStorage()
-    storage.initialize()
+    storage = MarkdownStorage()
+    analyzer = AIAnalyzer()
 
     parser = QueryParser()
 
@@ -79,136 +80,155 @@ def cmd_add(args) -> None:
     if record.due_date:
         print(f"  Due: {record.due_date}")
 
-    storage.close()
-
 
 def cmd_memo(args) -> None:
-    """Quick add using natural language description"""
-    storage = WorkMemoStorage()
-    storage.initialize()
+    """Quick add using natural language description with AI analysis"""
+    storage = MarkdownStorage()
+    analyzer = AIAnalyzer()
     parser = QueryParser()
 
     description = args.description
+
+    # AI Analysis
+    print(f"\n🤖 Analyzing: '{description}'")
+    ai_analysis = analyzer.analyze(description)
+
+    # Parse with query parser for structured data
     parsed = parser.parse(description)
 
-    print(f"\nParsed from: '{description}'")
-    print(f"  Title: {parsed.get('title', description)}")
-    if 'type' in parsed:
-        print(f"  Type: {parsed['type']}")
-    if 'urgency_min' in parsed:
-        print(f"  Urgency: {parsed['urgency_min']}")
-    if 'importance_min' in parsed:
-        print(f"  Importance: {parsed['importance_min']}")
-    if 'due_date_end' in parsed:
-        print(f"  Due: {parsed['due_date_end']}")
-    if 'tags' in parsed:
-        print(f"  Tags: {parsed['tags']}")
-    if 'contexts' in parsed:
-        print(f"  Contexts: {parsed['contexts']}")
+    # Extract information from AI analysis
+    extracted = ai_analysis.get("extracted_info", {})
 
+    # Determine title
+    title = parsed.get('title', description)
+    # Clean up title by removing tags and contexts
+    import re
+    title = re.sub(r'#\w+', '', title)
+    title = re.sub(r'@\w+', '', title)
+    title = re.sub(r'project:\S+', '', title)
+    title = title.strip()
+
+    print(f"  Title: {title}")
+    if '工作类型' in extracted:
+        print(f"  Type: {extracted['工作类型']}")
+    if '紧急程度' in extracted:
+        print(f"  Urgency: {extracted['紧急程度']}")
+    if '重要程度' in extracted:
+        print(f"  Importance: {extracted['重要程度']}")
+    if '建议优先级' in extracted:
+        print(f"  Priority: {extracted['建议优先级']}")
+
+    # Map work type
+    type_map = {
+        '任务': WorkType.TASK,
+        '会议': WorkType.MEETING,
+        '电话': WorkType.CALL,
+        '邮件': WorkType.EMAIL,
+        '审查/评审': WorkType.REVIEW,
+        '编码': WorkType.CODING,
+        '设计': WorkType.DESIGN,
+        '写作': WorkType.WRITING,
+        '研究': WorkType.RESEARCH,
+        '规划': WorkType.PLANNING,
+        'Bug修复': WorkType.BUGFIX,
+        '新功能': WorkType.FEATURE,
+    }
+    work_type_str = extracted.get('工作类型', '任务')
+    work_type = type_map.get(work_type_str, WorkType.TASK)
+
+    # Map urgency text to number
+    urgency_map = {
+        "很低": 1, "低": 2, "中等": 3, "高": 4, "非常高": 5
+    }
+    urgency = urgency_map.get(extracted.get('紧急程度', '中等'), 3)
+
+    # Map importance text to number
+    importance_map = {
+        "很低": 1, "低": 2, "中等": 3, "高": 4, "非常高": 5
+    }
+    importance = importance_map.get(extracted.get('重要程度', '中等'), 3)
+
+    # Create record
     record = WorkRecord(
-        title=parsed.get('title', description),
-        status=Status.TODO
+        title=title,
+        type=work_type,
+        status=Status.TODO,
+        urgency=urgency,
+        importance=importance,
+        difficulty=5,
     )
 
-    if 'type' in parsed:
-        type_map = {
-            'task': WorkType.TASK,
-            'meeting': WorkType.MEETING,
-            'call': WorkType.CALL,
-            'email': WorkType.EMAIL,
-            'review': WorkType.REVIEW,
-            'coding': WorkType.CODING,
-            'design': WorkType.DESIGN,
-            'writing': WorkType.WRITING,
-            'research': WorkType.RESEARCH,
-            'planning': WorkType.PLANNING,
-            'documentation': WorkType.DOCUMENTATION,
-            'bugfix': WorkType.BUGFIX,
-            'feature': WorkType.FEATURE,
-        }
-        record.type = type_map.get(parsed['type'], WorkType.TASK)
+    # Set tags, contexts, and projects from parsed
+    if 'tags' in parsed:
+        record.tags = parsed['tags']
+    if 'contexts' in parsed:
+        record.contexts = parsed['contexts']
+    if 'projects' in parsed:
+        record.projects = parsed['projects']
 
-    record.urgency = parsed.get('urgency_min', 3)
-    if record.urgency < 1:
-        record.urgency = 1
-    elif record.urgency > 5:
-        record.urgency = 5
-
-    record.importance = parsed.get('importance_min', 3)
-    if record.importance < 1:
-        record.importance = 1
-    elif record.importance > 5:
-        record.importance = 5
-
-    record.difficulty = 5
-
+    # Set due date from AI analysis or parsed
     if 'due_date_end' in parsed:
         record.due_date = parsed['due_date_end']
 
-    if 'tags' in parsed:
-        record.tags = parsed['tags']
-
-    if 'contexts' in parsed:
-        record.contexts = parsed['contexts']
-
+    # Interactive mode for missing fields
     if args.interactive:
-        if 'urgency_min' not in parsed:
-            try:
-                record.urgency = int(input(f"Urgency (1-5) [current: {record.urgency}]: ") or record.urgency)
-            except (EOFError, KeyboardInterrupt):
-                record.urgency = 3
-        if 'importance_min' not in parsed:
-            try:
-                record.importance = int(input(f"Importance (1-5) [current: {record.importance}]: ") or record.importance)
-            except (EOFError, KeyboardInterrupt):
-                record.importance = 3
-        if parsed.get('difficulty_min') is None:
-            try:
-                record.difficulty = int(input(f"Difficulty (1-10) [current: {record.difficulty}]: ") or record.difficulty)
-            except (EOFError, KeyboardInterrupt):
-                record.difficulty = 5
+        try:
+            user_urgency = input(f"Urgency (1-5) [current: {record.urgency}]: ") or ""
+            if user_urgency:
+                record.urgency = max(1, min(5, int(user_urgency)))
+        except (EOFError, KeyboardInterrupt):
+            pass
 
-    if args.interactive:
+        try:
+            user_importance = input(f"Importance (1-5) [current: {record.importance}]: ") or ""
+            if user_importance:
+                record.importance = max(1, min(5, int(user_importance)))
+        except (EOFError, KeyboardInterrupt):
+            pass
+
         try:
             user_desc = input(f"Description [optional]: ") or ""
+            if user_desc.strip():
+                record.description = user_desc
         except (EOFError, KeyboardInterrupt):
-            user_desc = ""
-        if user_desc.strip():
-            record.description = user_desc
+            pass
 
-    if args.interactive:
         try:
             assignee_name = input(f"Assignee [optional]: ") or ""
+            if assignee_name.strip():
+                record.assignee = Person(name=assignee_name)
         except (EOFError, KeyboardInterrupt):
-            assignee_name = ""
-        if assignee_name.strip():
-            record.assignee = Person(name=assignee_name)
+            pass
 
-    storage.create(record)
-    print(f"\n✓ Created memo: {record.id}")
-    print(f"  Title: {record.title}")
-    print(f"  Type: {record.type.value}")
-    print(f"  Status: {record.status.value}")
-    print(f"  Urgency: {record.urgency}, Importance: {record.importance}, Difficulty: {record.difficulty}")
+    # Create record with AI analysis
+    record_id = storage.create(record, original_input=description, ai_analysis=ai_analysis)
+
+    print(f"\n✅ Created memo: {record_id}")
+    print(f"   Title: {record.title}")
+    print(f"   Type: {record.type.value}")
+    print(f"   Status: {record.status.value}")
+    print(f"   Urgency: {record.urgency}/5, Importance: {record.importance}/5")
+    print(f"   Eisenhower: {record.get_eisenhower_quadrant()}")
+    print(f"   Priority Score: {record.get_priority_score():.2f}")
     if record.due_date:
-        print(f"  Due: {record.due_date}")
+        print(f"   Due: {record.due_date}")
     if record.tags:
-        print(f"  Tags: {', '.join(record.tags)}")
+        print(f"   Tags: {', '.join(record.tags)}")
     if record.contexts:
-        print(f"  Contexts: {', '.join(record.contexts)}")
-    if record.assignee:
-        print(f"  Assignee: {record.assignee.name}")
-    print(f"  Eisenhower: {record.get_eisenhower_quadrant()}")
+        print(f"   Contexts: {', '.join(record.contexts)}")
+    if record.projects:
+        print(f"   Projects: {', '.join(record.projects)}")
 
-    storage.close()
+    # Show AI suggestions
+    if ai_analysis.get("suggestions"):
+        print(f"\n💡 AI Suggestions:")
+        for suggestion in ai_analysis["suggestions"][:2]:
+            print(f"   • {suggestion['title']}: {suggestion['content']}")
 
 
 def cmd_search(args) -> None:
     """Search work records"""
-    storage = WorkMemoStorage()
-    storage.initialize()
-
+    storage = MarkdownStorage()
     parser = QueryParser()
 
     query = args.query if args.query else input("Search query: ")
@@ -218,7 +238,6 @@ def cmd_search(args) -> None:
 
     if not results:
         print("No matching records found")
-        storage.close()
         return
 
     print(f"Found {len(results)} matching record(s):\n")
@@ -235,19 +254,15 @@ def cmd_search(args) -> None:
             print(f"   Tags: {', '.join(record.tags)}")
         print()
 
-    storage.close()
-
 
 def cmd_list(args) -> None:
     """List all work records"""
-    storage = WorkMemoStorage()
-    storage.initialize()
+    storage = MarkdownStorage()
 
     records = storage.get_all()
 
     if not records:
         print("No records found")
-        storage.close()
         return
 
     if args.quadrant:
@@ -270,13 +285,10 @@ def cmd_list(args) -> None:
             print(f"   Tags: {', '.join(record.tags)}")
         print()
 
-    storage.close()
-
 
 def cmd_report(args) -> None:
     """Generate reports"""
-    storage = WorkMemoStorage()
-    storage.initialize()
+    storage = MarkdownStorage()
     reporting = Reporting(storage)
 
     if args.daily:
@@ -291,13 +303,10 @@ def cmd_report(args) -> None:
     else:
         print("Please specify --daily, --weekly, or --monthly")
 
-    storage.close()
-
 
 def cmd_suggest(args) -> None:
     """Get work recommendations"""
-    storage = WorkMemoStorage()
-    storage.initialize()
+    storage = MarkdownStorage()
 
     records = storage.get_all()
 
@@ -305,7 +314,6 @@ def cmd_suggest(args) -> None:
 
     if not pending:
         print("No pending tasks to suggest")
-        storage.close()
         return
 
     for record in pending:
@@ -329,8 +337,6 @@ def cmd_suggest(args) -> None:
         if record.tags:
             print(f"   Tags: {', '.join(record.tags)}")
         print()
-
-    storage.close()
 
 
 def main():

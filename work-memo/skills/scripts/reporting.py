@@ -1,16 +1,19 @@
 """Report generation for daily, weekly, and monthly work summaries."""
 
 from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any, Optional, TYPE_CHECKING
 from collections import defaultdict
 
-from storage import WorkMemoStorage
+if TYPE_CHECKING:
+    from markdown_storage import MarkdownStorage
+
+from markdown_storage import MarkdownStorage
 
 
 class Reporting:
     """Generate work reports with aggregation and insights"""
 
-    def __init__(self, storage: WorkMemoStorage):
+    def __init__(self, storage: MarkdownStorage):
         self.storage = storage
 
     def get_daily_report(self, date_str: Optional[str] = None) -> Dict[str, Any]:
@@ -362,9 +365,9 @@ class Reporting:
 
 
 if __name__ == "__main__":
-    from storage import WorkMemoStorage
+    from markdown_storage import MarkdownStorage
 
-    storage = WorkMemoStorage()
+    storage = MarkdownStorage()
     reporting = Reporting(storage)
 
     print("=== Daily Report ===")

@@ -1,6 +1,5 @@
 {
   "name": "work-memo",
-  "displayName": "Work Memo",
   "version": "1.0.0",
   "description": "Personal work record management with multi-dimensional tracking, natural language search, and smart prioritization. Record-only system for work events with comprehensive filtering and reporting capabilities.",
   "author": {
@@ -10,6 +9,10 @@
   "commands": [
     "./commands/memo.md"
   ],
-  "agents": [
-  ]
+  "agents": {
+    "memo-analyzer": {
+      "file": "./agents/memo-analyzer.md",
+      "description": "Analyze work memo records to provide insights, patterns, trends, and actionable recommendations"
+    }
+  }
 }

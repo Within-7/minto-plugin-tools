@@ -1,0 +1,15 @@
+{
+  "name": "skill-optimizer",
+  "version": "1.0.0",
+  "description": "Skill optimization and improvement tools",
+  "author": "Skill Optimizer",
+  "homepage": "https://github.com/Within-7/minto-plugin-tools",
+  "repository": "https://github.com/Within-7/minto-plugin-tools",
+  "commands": [
+    "./commands/analyze.md",
+    "./commands/optimize.md",
+    "./commands/validate.md"
+  ],
+  "agents": ["./agent/skill-optimizer.md"],
+  "skills": ["./skills/skill-best-practices.md"]
+}

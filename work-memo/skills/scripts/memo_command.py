@@ -12,14 +12,17 @@ Usage:
 
 import sys
 import argparse
+import re
 from pathlib import Path
 from typing import Optional, List
+from datetime import datetime, timedelta
 
 # 添加 scripts 目录到路径
 SCRIPT_DIR = Path(__file__).parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
-from storage import WorkMemoStorage
+from markdown_storage import MarkdownStorage
+from ai_analyzer import AIAnalyzer
 from schema import WorkRecord, WorkType, Status, Person
 from query_parser import QueryParser
 
@@ -38,16 +41,50 @@ def record_memo(description: str, urgency: Optional[int] = None, importance: Opt
     Returns:
         dict: 创建的记录信息
     """
-    storage = WorkMemoStorage()
-    storage.initialize()
+    storage = MarkdownStorage()
+    analyzer = AIAnalyzer()
     parser = QueryParser()
+
+    # AI 分析
+    ai_analysis = analyzer.analyze(description)
 
     # 解析自然语言描述
     parsed = parser.parse(description)
 
+    # 从 AI 分析中提取信息
+    extracted = ai_analysis.get("extracted_info", {})
+
+    # 清理标题
+    title = parsed.get('title', description)
+    title = re.sub(r'#\w+', '', title)
+    title = re.sub(r'@\w+', '', title)
+    title = re.sub(r'project:\S+', '', title)
+    title = title.strip()
+
+    # 映射工作类型
+    type_map = {
+        '任务': WorkType.TASK,
+        '会议': WorkType.MEETING,
+        '电话': WorkType.CALL,
+        '邮件': WorkType.EMAIL,
+        '审查/评审': WorkType.REVIEW,
+        '编码': WorkType.CODING,
+        '设计': WorkType.DESIGN,
+        '写作': WorkType.WRITING,
+        '研究': WorkType.RESEARCH,
+        '规划': WorkType.PLANNING,
+        'Bug修复': WorkType.BUGFIX,
+        '新功能': WorkType.FEATURE,
+    }
+    work_type_str = extracted.get('工作类型', '任务')
+
+    # 映射紧急度和重要度
+    urgency_map = {"很低": 1, "低": 2, "中等": 3, "高": 4, "非常高": 5}
+    importance_map = {"很低": 1, "低": 2, "中等": 3, "高": 4, "非常高": 5}
+
     # 创建记录
     record = WorkRecord(
-        title=parsed.get('title', description),
+        title=title,
         status=Status.TODO,  # 默认为待办状态，不执行
     )
 
@@ -70,29 +107,20 @@ def record_memo(description: str, urgency: Optional[int] = None, importance: Opt
             'note': WorkType.OTHER,  # 备注类型
         }
         record.type = type_map.get(type_str.lower(), WorkType.OTHER)
-    elif 'type' in parsed:
-        type_map = {
-            'task': WorkType.TASK,
-            'meeting': WorkType.MEETING,
-            'call': WorkType.CALL,
-            'email': WorkType.EMAIL,
-            'review': WorkType.REVIEW,
-            'coding': WorkType.CODING,
-            'design': WorkType.DESIGN,
-            'writing': WorkType.WRITING,
-            'research': WorkType.RESEARCH,
-            'planning': WorkType.PLANNING,
-            'documentation': WorkType.DOCUMENTATION,
-            'bugfix': WorkType.BUGFIX,
-            'feature': WorkType.FEATURE,
-        }
-        record.type = type_map.get(parsed['type'], WorkType.OTHER)
+    else:
+        record.type = type_map.get(work_type_str, WorkType.TASK)
 
     # 设置优先级
-    urgency_val = urgency if urgency is not None else parsed.get('urgency_min', 3)
-    record.urgency = max(1, min(5, urgency_val))
-    importance_val = importance if importance is not None else parsed.get('importance_min', 3)
-    record.importance = max(1, min(5, importance_val))
+    if urgency is not None:
+        record.urgency = max(1, min(5, urgency))
+    else:
+        record.urgency = urgency_map.get(extracted.get('紧急程度', '中等'), 3)
+
+    if importance is not None:
+        record.importance = max(1, min(5, importance))
+    else:
+        record.importance = importance_map.get(extracted.get('重要程度', '中等'), 3)
+
     record.difficulty = 5  # 默认中等难度
 
     # 设置截止日期
@@ -112,8 +140,8 @@ def record_memo(description: str, urgency: Optional[int] = None, importance: Opt
     if 'contexts' in parsed:
         record.contexts = parsed['contexts']
 
-    # 保存到数据库（仅记录，不执行）
-    storage.create(record)
+    # 保存到数据库（仅记录，不执行），包含 AI 分析
+    record_id = storage.create(record, original_input=description, ai_analysis=ai_analysis)
 
     # 返回记录信息
     result = {
@@ -146,8 +174,7 @@ def search_memos(query: str, limit: int = 10) -> list:
     Returns:
         list: 匹配的记录列表
     """
-    storage = WorkMemoStorage()
-    storage.initialize()
+    storage = MarkdownStorage()
     parser = QueryParser()
 
     filters = parser.parse(query)
@@ -170,7 +197,6 @@ def search_memos(query: str, limit: int = 10) -> list:
             'created_at': record.created_at,
         })
 
-    storage.close()
     return formatted_results
 
 
@@ -186,8 +212,7 @@ def list_memos(quadrant: Optional[str] = None, status: Optional[str] = None, lim
     Returns:
         list: 记录列表
     """
-    storage = WorkMemoStorage()
-    storage.initialize()
+    storage = MarkdownStorage()
 
     if quadrant:
         records = storage.get_by_quadrant(quadrant.upper())
@@ -218,7 +243,6 @@ def list_memos(quadrant: Optional[str] = None, status: Optional[str] = None, lim
             'created_at': record.created_at,
         })
 
-    storage.close()
     return formatted_results
 
 
@@ -235,6 +259,8 @@ def print_record(record: dict):
         print(f"   标签: {', '.join(record['tags'])}")
     if record['contexts']:
         print(f"   上下文: {', '.join(record['contexts'])}")
+    if record.get('projects'):
+        print(f"   项目: {', '.join(record['projects'])}")
     print(f"   Eisenhower: {record['eisenhower']}")
     print(f"   创建时间: {record['created_at']}")
 

@@ -134,7 +134,7 @@ class QueryParser:
 
         tag_pattern = r'#(\w+)'
         context_pattern = r'@(\w+)'
-        project_pattern = r'project[：:](\w+)'
+        project_pattern = r'project[：:](\S+)'
 
         for match in re.finditer(tag_pattern, query):
             tag_list.append(match.group(1))
