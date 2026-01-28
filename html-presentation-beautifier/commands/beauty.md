@@ -1,6 +1,9 @@
 ---
-name: beauty
-description: "将文档转化为专业 McKinsey 风格 HTML 演示文稿。严格遵循5步流程：1.文档内容分析合并 2.幻灯片设计与图文选择（⚠️布局优先原则：2.0先确定页面布局（单列/双列/三列/卡片网格/图表文本），2.1再选择图表图文；必须读beauty-html/references/chart-selection-guide.md和assets/CHART_EXAMPLES_INDEX.md）⚠️智能布局选择：优先使用横向布局（双列/三列/卡片网格），避免纵向长列表，应用随机选择机制 3.转化为McKinsey风格HTML（必须读beauty-html/references/best-practices.md和mckinsey-design-system.md及assets/presentation-template.html）⚠️图表修复：强制width:100%、responsive:true、maintainAspectRatio:false，确保图表正常显示 4.代码审核检验。⚠️ 第4步必须严格检验：1.内容完整性（100%保留原文所有章节/数据/结论，零遗漏）2.代码质量（符合HTML最佳实践，可访问可运行）3.资源使用（必须读取并参考beauty-html中的所有资源）4.图表显示（宽度非0、大小合理）5.布局优化（充分利用横向空间）6.布局合理性（布局优先于图表选择）。任一标准未通过必须返回对应步骤重新执行。"
+description: "将文档转化为专业 McKinsey 风格 HTML 演示文稿。严格遵循4步流程：1.文档内容分析 2.幻灯片设计与图文选择 3.转化为McKinsey风格HTML 4.代码审核检验。详见文档正文。"
+args:
+  - name: document
+    description: "要转换的文档路径（支持 .md, .txt, .json, .html）"
+    required: true
 ---
 
 # Beauty 命令
