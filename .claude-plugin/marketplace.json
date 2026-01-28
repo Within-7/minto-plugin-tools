@@ -28,6 +28,12 @@
       "category": "productivity"
     },
     {
+      "name": "pyspider-order",
+      "description": "Manage PySpider web scraping tasks through natural language. Supports social media (Reddit/Instagram/TikTok/Twitter/Facebook), e-commerce (Amazon/SellerSprite), and SEO tools (SEMrush) data collection via Feishu API",
+      "source": "./pyspider-order",
+      "category": "productivity"
+    },
+    {
       "name": "chrome-extension-dev",
       "description": "Chrome extension development tools and templates",
       "source": "./chrome-extension-dev",
