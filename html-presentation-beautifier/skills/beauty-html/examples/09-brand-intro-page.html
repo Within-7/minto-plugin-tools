@@ -1,0 +1,475 @@
+<!--
+================================================================================
+示例 9: 品牌介绍页 (Brand Introduction Page)
+================================================================================
+
+📋 适用场景:
+- 品牌介绍展示
+- 公司简介页面
+- 产品品牌宣传
+- 企业形象展示
+
+🎯 内容特征:
+- 品牌名称/Logo
+- 品牌基本信息 (网址、成立时间、地点等)
+- 品牌核心数据 (销售额、产品等)
+- 品牌使命/愿景
+- 品牌视觉图片
+
+📊 布局类型: L7 左右分栏布局 (文字+图片)
+
+✨ 使用条件:
+- 观点数量: 5-8个信息点
+- 数据密度: 中等 (文字信息 + 大图)
+- 对比关系: 无对比,信息展示
+- 视觉重点: 左侧信息,右侧大图
+
+🎨 设计要点:
+- 左侧 (45%): 品牌信息列表,图标+文字
+- 右侧 (55%): 品牌视觉大图,深色背景
+- 品牌Logo大字体渐变色
+- 信息列表使用图标增强可读性
+- 右侧装饰元素增强视觉冲击
+- 深色背景突出产品图片
+
+🔍 匹配规则:
+- IF 内容是品牌介绍/公司简介
+- AND 包含品牌基本信息 (5-8个信息点)
+- AND 有品牌视觉图片
+- AND 需要专业的品牌展示
+- THEN 使用此示例
+
+匹配度权重: 95%
+
+⚠️ 设计规范严格遵循 McKinsey/BCG 标准
+⚠️ 左右分栏 45:55 黄金比例
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>品牌介绍页示例</title>
+    <style>
+        /* CSS 变量定义 - McKinsey/BCG 规范 */
+        :root {
+            --primary-background: #FFFFFF;
+            --primary-accent: #F85d42;
+            --deep-blue: #556EE6;
+            --text-black: #000000;
+            --text-dark: #333333;
+            --text-gray: #74788d;
+            --text-light: #FFFFFF;
+            --dark-bg: #0a0a0a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--text-black);
+            overflow-x: hidden;
+        }
+
+        /* 顶部标题区域 */
+        .header {
+            background-color: var(--text-black);
+            padding: 25px 50px;
+            border-bottom: 3px solid var(--primary-accent);
+        }
+
+        .header h1 {
+            color: var(--text-light);
+            font-size: 28px;
+            font-weight: 600;
+            letter-spa0.5px;
+        }
+
+        /* 主内容区 - 左右结构 */
+        .main-container {
+            display: flex;
+            width: 100%;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* 左侧信息区 */
+        .left-section {
+            width: 45%;
+            background-color: var(--primary-background);
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-logo {
+            font-size: 64px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f1c40f 0%, #e67e22 50%, #f39c12 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 40px;
+            letter-spacing: -1px;
+        }
+
+        .info-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 15px;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        .info-icon {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1px;
+        }
+
+        .info-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: #888;
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .info-icon.orange-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #e67e22;
+            border-radius: 50%;
+            margin-left: 4px;
+            margin-right: 4px;
+            margin-top: 6px;
+        }
+
+        .info-text {
+            flex: 1;
+        }
+
+        .info-text a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .info-text a:hover {
+            text-decoration: underline;
+        }
+
+        .highlight-orange {
+            color: #e67e22;
+            font-weight: 500;
+        }
+
+        .brand-name {
+            font-weight: 600;
+        }
+
+        /* 右侧图片区 */
+        .right-section {
+            width: 55%;
+            background-color: var(--dark-bg);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 右上角红色装饰球 */
+        .red-decoration {
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            z-index: 1;
+        }
+
+        .red-decoration::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, rgba(231, 76, 60, 0.9), rgba(183, 28, 28, 0.6));
+            border-radius: 50%;
+            filter: blur(40px);
+        }
+
+        .red-decoration::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-20deg);
+            width: 60%;
+            height: 60%;
+            border: 25px solid rgba(231, 76, 60, 0.8);
+            border-radius: 50%;
+        }
+
+        /* Reddot 标识 */
+        .reddot-label {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #aaa;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            z-index: 2;
+        }
+
+        .reddot-circle {
+            width: 22px;
+            height: 22px;
+            background: radial-gradient(circle at 30% 30%, #ff5252, #b71c1c);
+            border-radius: 50%;
+            box-shadow: 0 3px 10px rgba(231, 76, 60, 0.4);
+        }
+
+        /* 品牌图片容器 */
+        .brand-image-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-image {
+            width: 90%;
+            height: auto;
+            max-height: 80%;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+        }
+
+        /* 图片占位符 */
+        .image-placeholder {
+            color: #666;
+            font-size: 16px;
+            text-align: center;
+            padding: 40px;
+        }
+
+        /* 底部品牌水印 */
+        .brand-watermark {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 42px;
+            font-weight: 300;
+            color: #e67e22;
+            opacity: 0.9;
+            letter-spacing: 4px;
+            z-index: 2;
+           vents: none;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .left-section, .right-section {
+                width: 100%;
+            }
+
+            .right-section {
+                min-height: 500px;
+            }
+
+            .header {
+                padding: 20px 30px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .left-section {
+                padding: 40px 30px;
+            }
+
+            .brand-logo {
+                font-size: 48px;
+                margin-bottom: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .brand-logo {
+                font-size: 36px;
+            }
+
+            .info-item {
+                font-size: 14px;
+            }
+
+            .red-decoration {
+                width: 300px;
+                height: 300px;
+            }
+
+            .brand-watermark {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部标题 -->
+    <header class="header">
+        <h1>4.2 Fanttik：场景化工具的社媒新势力</h1>
+    </header>
+
+    <!-- 主体内容：左右结构 -->
+    <div class="main-container">
+        <!-- 左侧：品牌信息 -->
+        <section class="left-section">
+            <div class="brand-logo">Fanttik</div>
+
+            <ul class="info-list">
+                <li class="info-item">
+                    <div class="info-icon">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                    </div>
+                    <div class="info-text">
+                        <a href="https://fanttik.com" target="_blank">https://fanttik.com</a>
+                    </div>
+                </li>
+
+                <li class="info-item">
+                    <div class="info-icon">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                    </div>
+                    <div class="info-text">创立于2020年</div>
+                </li>
+
+                <li class="info-item">
+                    <div class="info-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                    </div>
+                    <div class="info-text">美国德州/中国深圳</div>
+                </li>
+
+                <li class="info-item">
+                    <div class="info-icon">
+                        <svg viewBox="0 0 24 24">
+                            <line x1="12" y1="1" x2="12" y2="23"/>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        </svg>
+                    </div>
+                    <div class="info-text">2024年销售额约9545万美金</div>
+                </li>
+
+                <li class="info-item">
+                    <div class="info-icon">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                    </div>
+                    <div class="info-text">核心产品是无线充气机、汽车吸尘器等实用工具</div>
+                </li>
+
+                <li class="info-item">
+                    <div class="info-icon orange-dot"></div>
+                    <div class="info-text">
+                        <span class="highlight-orange">融资情况：Fanttik并未融资，其本身为上市公司傲基（深圳）跨境商务股份有限公司（股票代码02519）旗下附属公司。</span>
+                    </div>
+                </li>
+
+                <li class="info-item">
+                    <div class="info-icon">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"/>
+                            <circle cx="12" cy="12" r="6"/>
+                            <circle cx="12" cy="12" r="2"/>
+                        </svg>
+                    </div>
+                    <div class="info-text">
+                        品牌使命：以创新、耐用和现代设计为核心，<span class="brand-name">Fanttik</span> 为客户提供各种解决方案，将平凡的工作变成美妙的体验。
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <!-- 右侧：品牌图片展示 -->
+        <section class="right-section">
+            <!-- 右上角红色装饰 -->
+            <div class="red-decoration"></div>
+
+            <!-- Reddot Winner 标识 -->
+            <div class="reddot-label">
+                <div class="reddot-circle"></div>
+                <span>reddot winner 2025</span>
+            </div>
+
+            <!-- 品牌产品图片 -->
+            <div class="brand-image-container">
+                <!-- 请替换为实际的产品图片路径 -->
+                <img src="fanttik-products.jpg" alt="Fanttik Products" class="brand-image">
+                <!-- 如果图片加载失败,显示占位文本 -->
+                <div class="image-placeholder" style="display: none;">[请在此处放置 Fanttik 产品展示图片]</div>
+  div>
+
+            <!-- 底部品牌水印 -->
+            <div class="brand-watermark">Fanttik</div>
+        </section>
+    </div>
+
+    <script>
+        // 安全的图片错误处理
+        document.querySelector('.brand-image').addEventListener('error', function() {
+            this.style.display = 'none';
+            document.querySelector('.image-placeholder').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

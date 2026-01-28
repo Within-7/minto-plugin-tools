@@ -1,0 +1,497 @@
+<!--
+================================================================================
+示例 10: 目录页 - 网格卡片样式 (Table of Contents - Grid Cards Style)
+================================================================================
+
+📋 适用场景:
+- 文档目录页 (网格卡片风格)
+- 章节导航页 (视觉化展示)
+- 内容概览页 (卡片式布局)
+- 4-6个章节的报告导航
+
+🎯 内容特征:
+- 4-6个章节标题
+- 章节编号 (01, 02, 03...)
+- 简洁的章节名称
+- 可选的图标装饰
+- 网格布局 (2列或全宽)
+
+📊 布局类型: L8 网格卡片布局
+
+✨ 使用条件:
+- 观点数量: 4-6个章节
+- 数据密度: 无数据
+- 对比关系: 无对比,导航结构
+- 视觉重点: 卡片式视觉化导航
+
+🎨 设计要点:
+- 大标题 56px 黑色 + 主强调色装饰线
+- 2列网格布局 (最后一项可全宽)
+- 卡片左侧彩色边框 (5px)
+- 章节编号 48px 加粗 (与边框同色)
+- 章节文字 18px Regular
+- 卡片悬停效果 (阴影+上移)
+- 左侧渐变背景装饰
+- 右侧图标装饰 (可选)
+
+🔍 匹配规则:
+- IF 文档有4-6个章节
+- AND 需要视觉化的卡片式导航
+- AND 希望更现代的网格布局
+- AND 无数据内容
+- THEN 使用此示例
+
+匹配度权重: 95%
+
+⚠️ 设计规范严格遵循 McKinsey/BCG 标准
+⚠️ 与 08-table-of-contents.html 为同类型的不同风格
+================================================================================
+-->
+
+<!DOCTYl>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>目录 - 网格卡片样式</title>
+    <style>
+        :root {
+            /* 颜色系统 - McKinsey/BCG 规范 */
+            --primary-background: #FFFFFF;
+            --primary-accent: #F85d42;
+            --deep-blue: #556EE6;
+            --green: #34c38f;
+     --blue: #50a5f1;
+            --yellow: #f1b44c;
+            --text-black: #000000;
+            --text-dark: #333333;
+
+            /* 间距标准 */
+            --slide-padding: 50px;
+            --element-spacing: 25px;
+            --column-gap: 35px;
+            --card-padding: 30px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-siziorder-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--primary-background);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            padding: var(--slide-padding);
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* 标题样式 - 48px Bold #000000 (缩小以节省空间) */
+        .slide-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--text-black);
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+            letter-spacing: -0.5px;
+            flex-shrink: 0;
+        }
+
+        /* 标题下方装饰线 - 使用主强调色 */
+        .slide-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary-accent);
+            border-radius: 2px;
+        }
+
+        /* 网格布局系统 - 使用 flex 1 自动填充剩余空间 */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 25px;
+            margin-top: 30px;
+            flex: 1;
+            align-content: center;
+            overflow: hidden;
+        }
+
+        /* 卡片基础样式 - 优化高度以适应屏幕 */
+        .nav-card {
+            display: flex;
+            align-items: center;
+            padding: 22px 25px;
+            background-color: var(--primary-background);
+            border-radius: 4px;
+            border: 1px solid #e8e8e8;
+            border-left: 5px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            min-height: 0;
+        }
+
+        /* 卡片左侧渐变背景 */
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 30%;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .nav-card:hover {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+            border-color: transparent;
+        }
+
+        /* 全宽卡片（第5项） */
+        .nav-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* 不同颜色的卡片样式 - BCG/McKinsey 风格 */
+        .nav-card.card-01 {
+            border-left-color: var(--deep-blue);
+        }
+        .nav-card.card-01::before { background: var(--deep-blue); }
+        .nav-card.card-01 .card-number { color: var(--deep-blue); }
+
+        .nav-card.card-02 {
+            border-left-color: var(--green);
+        }
+        .nav-card.card-02::before { background: var(--green); }
+        .nav-card.card-02 .card-number { color: var(--green); }
+
+        .nav-card.card-03 {
+            border-left-color: var(--blue);
+        }
+        .nav-card.card-03::before { background: var(--blue); }
+        .nav-card.card-03 .card-number { color: var(--blue); }
+
+        .nav-card.card-04 {
+            border-left-color: var(--yellow);
+        }
+        .nav-card.card-04::before { background: var(--yellow); }
+        .nav-card.card-04 .card-number { color: var(--yellow); }
+
+        .nav-card.card-05 {
+            border-left-color: var(--primary-accent);
+        }
+        .nav-card.card-05::before { background: var(--primary-accent); }
+        .nav-card.card-05 .card-number { color: var(--primary-accent); }
+
+        .nav-card.card-06 {
+            border-left-color: var(--deep-blue);
+        }
+        .nav-card.card-06::before { background: var(--deep-blue); }
+        .nav-card.card-06 .card-number { color: var(--deep-blue); }
+
+        /* 数字样式 - 优化尺寸 */
+        .card-number {
+            font-size: 40px;
+            font-weight: 700;
+            margin-right: 20px;
+            line-height: 1;
+            min-width: 60px;
+            z-index: 1;
+            font-variant-numeric: tabular-nums;
+            flex-shrink: 0;
+        }
+
+        /* 卡片文字 - 优化尺寸和行高 */
+        .card-text {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-dark);
+            line-height: 1.4;
+            z-index: 1;
+            letter-spacing: 0.3px;
+        }
+
+        /* 图标样式 */
+        .card-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.25;
+            margin-left: 15px;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+
+        .card-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: var(--text-dark);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* 响应式设计 - 确保始终适应屏幕 */
+        @media (max-width: 1400px) {
+            .slide-title {
+                font-size: 42px;
+            }
+
+            .card-number {
+                font-size: 36px;
+                min-width: 55px;
+            }
+
+            .card-text {
+                font-size: 15px;
+            }
+
+            .content-grid {
+                gap: 18px 22px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .nav-card.full-width {
+                grid-column: 1;
+            }
+
+            .slide-container {
+                padding: 30px;
+            }
+
+            .slide-title {
+                font-size: 36px;
+                margin-bottom: 15px;
+            }
+
+            .content-grid {
+                margin-top: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide-container {
+                padding: 20px;
+            }
+
+            .slide-title {
+                font-size: 32px;
+            }
+
+            .card-number {
+                font-size: 32px;
+                min-width: 50px;
+                margin-right: 15px;
+            }
+
+            .card-text {
+                font-size: 14px;
+            }
+
+            .nav-card {
+                padding: 18px 20px;
+            }
+
+            .content-grid {
+                gap: 12px;
+            }
+        }
+
+        /* 高度受限时的优化 */
+        @media (max-height: 800px) {
+            .slide-container {
+                padding: 30px 50px;
+            }
+
+            .slide-title {
+                font-size: 40px;
+                margin-bottom: 15px;
+            }
+
+            .content-grid {
+                margin-top: 20px;
+                gap: 16px 20px;
+            }
+
+            .nav-card {
+                padding: 18px 22px;
+            }
+
+            .card-number {
+                font-size: 36px;
+            }
+
+            .card-text {
+                font-size: 15px;
+                line-height: 1.3;
+            }
+        }
+
+        @media (max-height: 700px) {
+            .slide-container {
+                padding: 25px 40px;
+            }
+
+            .slide-title {
+                font-size: 36px;
+                margin-bottom: 12px;
+            }
+
+            .content-grid {
+                margin-top: 15px;
+                gap: 14px 18px;
+            }
+
+            .nav-card {
+                padding: 16px 20px;
+            }
+
+            .card-number {
+                font-size: 32px;
+                min-width: 50px;
+            }
+
+            .card-text {
+                font-size: 14px;
+                line-height: 1.2;
+            }
+
+            .card-icon {
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        @media (max-height: 650px) {
+            .slide-container {
+                padding: 20px 35px;
+            }
+
+            .slide-title {
+                font-size: 32px;
+                margin-bottom: 10px;
+            }
+
+            .content-grid {
+                margin-top: 12px;
+                gap: 12px 16px;
+            }
+
+            .nav-card {
+                padding: 14px 18px;
+            }
+
+            .card-number {
+                font-size: 28px;
+                min-width: 45px;
+            }
+
+            .card-text {
+                font-size: 13px;
+                line-height: 1.2;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- 主标题 -->
+        <h1 class="slide-title">目录</h1>
+
+        <!-- 内容网格 -->
+        <div class="content-grid">
+            <!-- 01 市场规模与机会 - Deep Blue -->
+            <div class="nav-card card-01">
+                <div class="card-number">01</div>
+                <div class="card-text">市场规模与机会</div>
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                        <polyline points="17 6 23 6 23 12"></polyline>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- 02 相对优势评估 - Green -->
+            <div class="nav-card card-02">
+                <div class="card-number">02</div>
+                <div class="card-text">相对优势评估</div>
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- 03 企业现状和目标 - Blue -->
+            <div class="nav-card card-03">
+                <div class="card-number">03</div>
+                <div class="card-text">企业现状和目标</div>
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                        <line x1="12" y1="18" x2="12.01" y2="18\n                        <line x1="12" y1="14" x2="12.01" y2="14"></line>
+                        <line x1="12" y1="10" x2="12.01" y2="10"></line>
+                        <line x1="12" y1="6" x2="12.01" y2="6"></line>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- 04 终局形态 - Yellow -->
+            <div class="nav-card card-04">
+                <div class="card-number">04</div>
+                <div class="card-text">终局形态</div>
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                        <line x1="4" y1="22" x2="4" y2="15"></line>
+              </svg>
+                </div>
+            </div>
+
+            <!-- 05 梵想的终局形态推导 - Primary Accent (F85d42) -->
+            <div class="nav-card card-05 full-width">
+                <div class="card-number">05</div>
+                <div class="card-text">梵想的终局形态推导：矩阵模式和大单品模式</div>
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" 4" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

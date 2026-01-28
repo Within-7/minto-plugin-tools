@@ -1,0 +1,183 @@
+<!--
+================================================================================
+示例 1: 封面页 (Cover Page)
+================================================================================
+
+📋 适用场景:
+- 文档封面
+- 章节封面
+- 报告标题页
+
+🎯 内容特征:
+- 1个主标题
+- 1个副标题（可选）
+- 作者/日期信息（可选）
+- 无数据图表
+
+📊 布局类型: L1 单列布局
+
+✨ 使用条件:
+- 观点数量: 1个（标题）
+- 数据密度: 无数据
+- 对比关系: 无对比
+- 视觉重点: 居中、醒目
+
+🎨 设计要点:
+- 大标题居中，使用黑色 (#000000)
+- 副标题使用主强调色 (#F85d42)
+- 使用渐变背景
+- 简洁、专业
+- 充足的留白
+
+🔍 匹配规则:
+- IF 页面是封面/章节封面
+- AND 只有1个主标题
+- AND 无数据内容
+- THEN 使用此示例
+
+匹配度权重: 100%
+
+⚠️ 设计规范严格遵循 McKinsey/BCG 标准
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>封面页示例</title>
+    <style>
+        /* CSS 变量定义 - McKinsey/BCG 规范 */
+        :root {
+            --primary-background: #FFFFFF;
+            --primary-accent: #F85d42;
+            --deep-blue: #556EE6;
+            --text-black: #000000;
+            --text-dark: #333333;
+            --text-gray: #74788d;
+            --text-light: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #556EE6 0%, #F85d42 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .slide {
+            background: var(--primary-background);
+            border-radius: 20px;
+            padding: 80px 60px;
+            max-width: 1200px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .cover-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+        }
+
+        /* 主标题 - 56px, Bold, Black */
+        h1 {
+            font-size: 56px;
+            font-weight: bold;
+            color: var(--text-black);
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        /* 副标题 - 32px, Bold, Accent Color */
+        .subtitle {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary-accent);
+            margin-bottom: 50px;
+        }
+
+        /* 分隔线 */
+        .divider {
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-accent), var(--deep-blue));
+            margin: 30px auto;
+            border-radius: 2px;
+        }
+
+        /* 元信息 */
+        .meta-info {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .meta-info p {
+            font-size: 18px;
+            color: var(--text-gray);
+            margin: 10px 0;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px 30px;
+            }
+
+            h1 {
+                font-size: 48px;
+            }
+
+            .subtitle {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            .subtitle {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="cover-content">
+            <!-- 主标题 -->
+            <h1>跨境垂直平台战略报告</h1>
+
+            <!-- 分隔线 -->
+            <div class="divider"></div>
+
+            <!-- 副标题 -->
+            <p class="subtitle">平台模式 vs 个人IP模式深度分析</p>
+
+            <!-- 元信息 -->
+            <div class="meta-info">
+                <p>报告日期：2026年1月</p>
+                <p>作者：战略分析团队</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

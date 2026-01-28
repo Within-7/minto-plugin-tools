@@ -1,0 +1,249 @@
+<!--
+================================================================================
+示例 2: 双列对比页 (Two Column Comparison)
+================================================================================
+
+📋 适用场景:
+- A vs B 对比
+- 优点 vs 缺点
+- 2个并列观点
+- 2个选项对比
+
+🎯 内容特征:
+- 2个对比对象
+- 每个对象包含多个要点
+- 可能包含小图标或标记
+- 无数据或少量数据
+
+📊 布局类型: L2 双列布局
+
+✨ 使用条件:
+- 观点数量: 2个对比对象
+- 数据密度: 无或少量数据
+- 对比关系: 对比关系
+- 空间需求: 横向对比
+
+🎨 设计要点:
+- 左右50:50分割
+- 使用主强调色 (#F85d42) 和深蓝色 (#556EE6) 对比
+- 清晰的分隔线
+- 对称的视觉布局
+- 间距：35px
+
+🔍 匹配规则:
+- IF 观点数量 = 2
+- AND 存在对比关系（A vs B, 优点 vs 缺点等）
+- AND 无复杂数据
+- THEN 使用此示例
+
+匹配度权重: 90%
+
+⚠️ 设计规范严格遵循 McKinsey/BCG 标准
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双列对比示例</title>
+    <style>
+        /* CSS 变量定义 - McKinsey/BCG 规范 */
+        :root {
+            --primary-background: #FFFFFF;
+            --primary-accent: #F85d42;
+            --deep-blue: #556EE6;
+            --text-black: #000000;
+            --text-dark: #333333;
+            --text-light: #FFFFFF;
+            --element-spacing: 25px;
+            --column-gap: 35px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f5f7fa;
+            padding: 40px 20px;
+        }
+
+        .slide {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--primary-background);
+            border-radius: 12px;
+            padding: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        /* 页眉 */
+        .slide-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .slide-header h2 {
+            font-size: 56px;
+            font-weight: bold;
+            color: var(--text-black);
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        /* 双列布局容器 */
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--column-gap);
+            position: relative;
+        }
+
+        /* 中间分隔线 */
+        .comparison-container::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent);
+            transform: translateX(-50%);
+        }
+
+        .column {
+            padding: 30px;
+            border-radius: 12px;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .column:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        /* 左列 - 主强调色 */
+        .column.left {
+            background: var(--primary-accent);
+            color: var(--text-light);
+        }
+
+        /* 右列 - 深蓝色 */
+        .column.right {
+            background: var(--deep-blue);
+            color: var(--text-light);
+        }
+
+        /* 列标题 */
+        .column-header {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+        }
+
+        /* 列表内容 */
+        .column-content {
+            list-style: none;
+        }
+
+        .column-content li {
+            padding: 12px 0;
+            font-size: 18px;
+            line-height: 1.6;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .column-content li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /* 强调框 */
+        .highlight-box {
+            background: rgba(255,255,255,0.15);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .comparison-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .comparison-container::before {
+                display: none;
+            }
+
+            .slide {
+                padding: 30px 20px;
+            }
+
+            .column {
+                padding: 20px;
+            }
+
+            .slide-header h2 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="slide-header">
+            <h2>平台模式 vs 个人IP模式</h2>
+        </div>
+
+        <div class="comparison-container">
+            <!-- 左列：平台模式 -->
+            <div class="column left">
+                <div class="column-header">平台模式</div>
+                <ul class="column-content">
+                    <li>可复制性强，易于规模化</li>
+                    <li>网络效应明显，壁垒高</li>
+                    <li>生态闭环，数据价值高</li>
+                    <li>资本吸引力强，估值高</li>
+                    <li>运营复杂度高，投入大</li>
+                    <li>冷启动困难，需要临界规模</li>
+                </ul>
+                <div class="highlight-box">
+                    💡 适合：有资本、有资源、追求规模
+                </div>
+            </div>
+
+            <!-- 右列：个人IP模式 -->
+            <div class="column right">
+                <div class="column-header">个人IP模式</div>
+                <ul class="column-content">
+                    <li>启动快，成本低</li>
+                    <li>个人影响力强，粘性高</li>
+                    <li>灵活性强，转型容易</li>
+                    <li>现金流稳定，风险低</li>
+                    <li>规模化困难，天花板低</li>
+                    <li>个人依赖强，不易复制</li>
+                </ul>
+                <div class="highlight-box">
+                    💡 适合：个人创业者、内容创作者
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

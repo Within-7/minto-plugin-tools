@@ -1,0 +1,274 @@
+<!--
+================================================================================
+示例 3: 三列并列页 (Three Column Layout)
+================================================================================
+
+📋 适用场景:
+- 3个并列观点
+- 3个选项对比
+- 3个关键要素
+- 3个步骤/阶段
+
+🎯 内容特征:
+- 3个并列对象
+- 每个对象包含多个要点
+- 对称的视觉布局
+- 无数据或少量数据
+
+📊 布局类型: L3 三列布局
+
+✨ 使用条件:
+- 观点数量: 3个并列对象
+- 数据密度: 无或少量数据
+- 对比关系: 并列关系
+- 空间需求: 横向并列展示
+
+🎨 设计要点:
+- 三列33:33:33分割
+- 使用主强调色、深蓝色、蓝色渐变
+- 清晰的分隔
+- 对称的视觉平衡
+- 列间距：35px
+
+🔍 匹配规则:
+- IF 观点数量 = 3
+- AND 存在并列关系（三个要素、三个选项等）
+- AND 无复杂数据
+- THEN 使用此示例
+
+匹配度权重: 95%
+
+⚠️ 设计规范严格遵循 McKinsey/BCG 标准
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三列并列示例</title>
+    <style>
+        /* CSS 变量定义 - McKinsey/BCG 规范 */
+        :root {
+            --primary-background: #FFFFFF;
+            --primary-accent: #F85d42;
+            --deep-blue: #556EE6;
+            --blue: #50a5f1;
+            --text-black: #000000;
+            --text-dark: #333333;
+            --text-light: #FFFFFF;
+            --element-spacing: 25px;
+            --column-gap: 35px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f5f7fa;
+            padding: 40px 20px;
+        }
+
+        .slide {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--primary-background);
+            border-radius: 12px;
+            padding: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        /* 页眉 */
+        .slide-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .slide-header h2 {
+            font-size: 56px;
+            font-weight: bold;
+            color: var(--text-black);
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        /* 三列布局容器 */
+        .three-column-layout {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--column-gap);
+        }
+
+        .column {
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .column::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .column:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+
+        /* 第一列 - 主强调色 */
+        .column-1 {
+            background: var(--primary-accent);
+            color: var(--text-light);
+        }
+
+        .column-1::before {
+            background: var(--primary-accent);
+        }
+
+        /* 第二列 - 深蓝色 */
+        .column-2 {
+            background: var(--deep-blue);
+            color: var(--text-light);
+        }
+
+        .column-2::before {
+            background: var(--deep-blue);
+        }
+
+        /* 第三列 - 蓝色 */
+        .column-3 {
+            background: var(--blue);
+            color: var(--text-light);
+        }
+
+        .column-3::before {
+            background: var(--blue);
+        }
+
+        /* 数字标记 */
+        .highlight-number {
+            font-size: 56px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        /* 图标 */
+        .column-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        /* 列标题 */
+        .column-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* 列表内容 */
+        .column-content {
+            list-style: none;
+            text-align: left;
+        }
+
+        .column-content li {
+            padding: 10px 0;
+            font-size: 16px;
+            line-height: 1.6;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .column-content li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .three-column-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .slide {
+                padding: 30px 20px;
+            }
+
+            .column {
+                padding: 25px;
+            }
+
+            .slide-header h2 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="slide-header">
+            <h2>三种定价策略对比</h2>
+        </div>
+
+        <div class="three-column-layout">
+            <!-- 第一列：免费增值 -->
+            <div class="column column-1">
+                <div class="highlight-number">01</div>
+                <div class="column-icon">🎁</div>
+                <div class="column-title">免费增值</div>
+                <ul class="column-content">
+                    <li>基础功能免费</li>
+                    <li>高级功能付费</li>
+                    <li>快速获取用户</li>
+                    <li>转化率5-10%</li>
+                    <li>适合SaaS产品</li>
+                </ul>
+            </div>
+
+            <!-- 第二列：订阅制 -->
+            <div class="column column-2">
+                <div class="highlight-number">02</div>
+                <div class="column-icon">🔄</div>
+                <div class="column-title">订阅制</div>
+                <ul class="column-content">
+                    <li>月度/年度订阅</li>
+                    <li>稳定现金流</li>
+                    <li>用户粘性高</li>
+                    <li>LTV/CAC > 3</li>
+                    <li>适合内容平台</li>
+                </ul>
+            </div>
+
+            <!-- 第三列：交易佣金 -->
+            <div class="column column-3">
+                <div class="highlight-number">03</div>
+                <div class="column-icon">💰</div>
+                <div class="column-title">交易佣金</div>
+                <ul class="column-content">
+                    <li>按交易额收费</li>
+                    <li>用户无门槛</li>
+                    <li>收入与规模正相关</li>
+                    <li>佣金率5-15%</li>
+                    <li>适合交易平台</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

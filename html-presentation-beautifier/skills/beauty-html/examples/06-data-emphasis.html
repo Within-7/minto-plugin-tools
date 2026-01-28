@@ -1,0 +1,341 @@
+<!--
+================================================================================
+示例 6: 数字强调展示页 (Data Emphasis Layout)
+================================================================================
+
+📋 适用场景:
+- 单一数据重点展示
+- 关键指标强调
+- 宏观数据展示（利润、销售额、增量、GDP等）
+- 年度/季度数据总览
+
+🎯 内容特征:
+- 1-3个核心数据
+- 数据是页面主角
+- 简短的解释说明
+- 无复杂图表
+- 支持大数字自动格式化（超过4位时使用缩写）
+
+📊 布局类型: L1 单列布局（数据强调变体）
+
+✨ 使用条件:
+- 观点数量: 1-3个核心数据
+- 数据密度: 高（数据是主角）
+- 对比关系: 数据展示为主
+- 空间需求: 数据占80%以上视觉重心
+
+🎨 设计要点:
+- 超大数字（80-120px）
+- 使用主强调色 (#F85d42) 或深蓝色 (#556EE6)
+- 数字采用粗体（bold）
+- 简洁的标签说明
+- 充足的留白
+- 黑色页眉 (#000000)
+- 大数字自动格式化（>4位使用缩写）
+
+📝 数字格式化规则:
+- ≤4位：直接显示（如：5439）
+- 5-6位：使用"万"单位（如：10万+）
+- 7-9位：使用"百万/M"单位（如：1.8M+、180万+）
+- ≥10位：使用"亿/B"单位（如：10亿+、1.2B+）
+
+🔍 匹配规则:
+- IF 页面核心是展示1-3个关键数字
+- AND 数字是主角（占比80%+）
+- AND 文字说明很少
+- THEN 使用此示例
+
+匹配度权重: 95%
+
+⚠️ 设计规范严格遵循 McKinsey/BCG 标准
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数字强调展示示例</title>
+    <style>
+        /* CSS 变量定义 - McKinsey/BCG 规范 */
+        :root {
+            --primary-background: #FFFFFF;
+            --header-background: #000000;
+            --primary-accent: #F85d42;
+            --deep-blue: #556EE6;
+            --text-black: #000000;
+            --text-dark: #333333;
+            --text-gray: #74788d;
+            --text-light: #FFFFFF;
+            --slide-padding: 50px;
+            --element-spacing: 25px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            padding: 40px 20px;
+        }
+
+        .slide {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--primary-background);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        /* 页眉 - 黑色背景 */
+        .header {
+            background-color: var(--header-background);
+            color: var(--text-light);
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--text-light);
+        }
+
+        .header-subtitle {
+            color: var(--primary-accent);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* 内容区域 */
+        .content {
+            padding: 80px 50px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            align-items: center;
+        }
+
+        /* 数据卡片 */
+        .data-card {
+            text-align: center;
+            padding: 40px 30px;
+            border-radius: 12px;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .data-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--primary-accent);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .data-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(248, 93, 66, 0.2);
+        }
+
+        /* 第一个卡片 - 主强调色 */
+        .data-card:nth-child(1) .data-value {
+            color: var(--primary-accent);
+        }
+
+        .data-card:nth-child(1)::before {
+            background: var(--primary-accent);
+        }
+
+        /* 第二个卡片 - 深蓝色 */
+        .data-card:nth-child(2) .data-value {
+            color: var(--deep-blue);
+        }
+
+        .data-card:nth-child(2)::before {
+            background: var(--deep-blue);
+        }
+
+        /* 第三个卡片 - 主强调色 */
+        .data-card:nth-child(3) .data-value {
+            color: var(--primary-accent);
+        }
+
+        .data-card:nth-child(3)::before {
+            background: var(--primary-accent);
+        }
+
+        /* 数据数值 - 超大字体 */
+        .data-value {
+            font-size: 72px;
+            font-weight: bold;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            word-break: keep-all;  /* 防止换行 */
+            white-space: nowrap;  /* 防止换行 */
+        }
+
+        /* 数据标签 */
+        .data-label {
+            font-size: 20px;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* 数据说明 */
+        .data-description {
+            font-size: 16px;
+            color: var(--text-gray);
+            line-height: 1.5;
+            margin-top: 15px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 60px 30px;
+            }
+
+            .header {
+                padding: 25px 30px;
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .header-title {
+                font-size: 28px;
+            }
+
+            .data-value {
+                font-size: 56px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .data-value {
+                font-size: 48px;
+            }
+
+            .data-label {
+                font-size: 18px;
+            }
+
+            .content {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <!-- 黑色页眉 -->
+        <div class="header">
+            <div class="header-title">媒体数据概览</div>
+            <div class="header-subtitle">技术部 2024</div>
+        </div>
+
+        <!-- 数据内容区域 -->
+        <div class="content">
+            <!-- 数据卡片 1 - 使用"10亿+"格式 -->
+            <div class="data-card">
+                <div class="data-value">10亿+</div>
+                <div class="data-label">数据处理总量</div>
+                <div class="data-description">年度累计处理数据</div>
+            </div>
+
+            <!-- 数据卡片 2 - 小数字直接显示 -->
+            <div class="data-card">
+                <div class="data-value">30</div>
+                <div class="data-label">媒体数据源</div>
+                <div class="data-description">覆盖主流媒体平台</div>
+            </div>
+
+            <!-- 数据卡片 3 - 使用"5.4万+"格式 -->
+            <div class="data-card">
+                <div class="data-value">5.4万+</div>
+                <div class="data-label">抓取媒体条目</div>
+                <div class="data-description">实时抓取新闻资讯</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 数字格式化工具函数
+        // 用法：在HTML中使用 data-original 属性存储原始数字，然后自动格式化显示
+        function formatNumber(num, options = {}) {
+            const {
+                style = 'chinese', // 'chinese' | 'english'
+                maxLength = 4,
+                addPlus = true
+            } = options;
+
+            const numValue = typeof num === 'string' ? parseFloat(num.replace(/[^0-9.]/g, '')) : num;
+
+            // 小于等于4位，直接显示
+            if (String(Math.floor(numValue)).length <= maxLength) {
+                return addPlus ? (num + '+') : num;
+            }
+
+            // 大于4位，使用缩写
+            if (style === 'chinese') {
+                // 中文格式：万、亿
+                if (numValue >= 100000000) { // 1亿+
+                    const yi = (numValue / 100000000).toFixed(1);
+                    return yi.endsWith('.0') ? yi.slice(0, -2) + '亿+' : yi + '亿+';
+                } else if (numValue >= 10000) { // 1万+
+                    const wan = (numValue / 10000).toFixed(1);
+                    return wan.endsWith('.0') ? wan.slice(0, -2) + '万+' : wan + '万+';
+                }
+            } else {
+                // 英文格式：K、M、B
+                if (numValue >= 1000000000) { // 1B+
+                    return (numValue / 1000000000).toFixed(1) + 'B+';
+                } else if (numValue >= 1000000) { // 1M+
+                    return (numValue / 1000000).toFixed(1) + 'M+';
+                } else if (numValue >= 1000) { // 1K+
+                    return (numValue / 1000).toFixed(1) + 'K+';
+                }
+            }
+
+            return numValue.toString();
+        }
+
+        // 示例：自动格式化页面中的数字
+        document.addEventListener('DOMContentLoaded', function() {
+            // 可以通过以下方式使用：
+            // 1. 在HTML中直接写入格式化后的数字（推荐）
+            // 2. 或者使用JavaScript动态格式化（需要额外的data属性）
+
+            console.log('数字格式化示例：');
+            console.log('100000000 ->', formatNumber(100000000)); // 10亿+
+            console.log('54394 ->', formatNumber(54394));     // 54394+
+            console.log('1800000 ->', formatNumber(1800000));  // 180万+
+            console.log('50000 ->', formatNumber(50000));      // 5万+
+            console.log('1830000 ->', formatNumber(1830000));   // 183万+
+
+            // 英文格式示例
+            console.log('English format:');
+            console.log('1000000 ->', formatNumber(1000000, {style: 'english'})); // 1M+
+            console.log('50000 ->', formatNumber(50000, {style: 'english'}));     // 50K+
+        });
+    </script>
+</body>
+</html>

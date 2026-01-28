@@ -1,0 +1,325 @@
+<!--
+================================================================================
+示例 4: 卡片网格页 (Card Grid Layout)
+================================================================================
+
+📋 适用场景:
+- 4-6个并列观点
+- 多个特性/功能
+- 多个建议/要点
+- 多个成功案例
+
+🎯 内容特征:
+- 4-6个并列对象
+- 每个对象包含标题和描述
+- 网格布局（2x2, 2x3, 3x2）
+- 可包含图标或编号
+
+📊 布局类型: L4 卡片网格布局
+
+✨ 使用条件:
+- 观点数量: 4-6个
+- 数据密度: 无或少量数据
+- 对比关系: 并列关系
+- 空间需求: 充分利用横向空间
+
+🎨 设计要点:
+- 自适应列数（minmax(280px, 1fr)）
+- 每个卡片独立
+- 使用卡片阴影和hover效果
+- 清晰的视觉层次
+- 卡片间距：25px
+
+🔍 匹配规则:
+- IF 观点数量 >= 4 AND 观点数量 <= 6
+- AND 存在并列关系
+- AND 无复杂数据
+- THEN 使用此示例
+
+匹配度权重: 95%
+
+⚠️ 设计规范严格遵循 McKinsey/BCG 标准
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卡片网格示例</title>
+    <style>
+        /* CSS 变量定义 - McKinsey/BCG 规范 */
+        :root {
+            --primary-background: #FFFFFF;
+            --primary-accent: #F85d42;
+            --deep-blue: #556EE6;
+            --green: #34c38f;
+            --blue: #50a5f1;
+            --yellow: #f1b44c;
+            --text-black: #000000;
+            --text-dark: #333333;
+            --text-gray: #74788d;
+            --element-spacing: 25px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f5f7fa;
+            padding: 40px 20px;
+        }
+
+        .slide {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--primary-background);
+            border-radius: 12px;
+            padding: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        /* 页眉 */
+        .slide-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .slide-header h2 {
+            font-size: 56px;
+            font-weight: bold;
+            color: var(--text-black);
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        /* 卡片网格布局 */
+        .highlight-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .highlight-card {
+            background: var(--primary-background);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .highlight-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .highlight-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+            border-color: var(--deep-blue);
+        }
+
+        /* 为不同卡片使用不同颜色 */
+        .highlight-card:nth-child(1)::before {
+            background: var(--primary-accent);
+        }
+
+        .highlight-card:nth-child(2)::before {
+            background: var(--deep-blue);
+        }
+
+        .highlight-card:nth-child(3)::before {
+            background: var(--blue);
+        }
+
+        .highlight-card:nth-child(4)::before {
+            background: var(--green);
+        }
+
+        .highlight-card:nth-child(5)::before {
+            background: var(--yellow);
+        }
+
+        .highlight-card:nth-child(6)::before {
+            background: var(--primary-accent);
+        }
+
+        /* 卡片编号 */
+        .card-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--deep-blue);
+            opacity: 0.15;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .highlight-card:nth-child(1) .card-number { color: var(--primary-accent); }
+        .highlight-card:nth-child(2) .card-number { color: var(--deep-blue); }
+        .highlight-card:nth-child(3) .card-number { color: var(--blue); }
+        .highlight-card:nth-child(4) .card-number { color: var(--green); }
+        .highlight-card:nth-child(5) .card-number { color: var(--yellow); }
+        .highlight-card:nth-child(6) .card-number { color: var(--primary-accent); }
+
+        /* 卡片图标 */
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        /* 卡片标题 */
+        .card-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--text-black);
+            margin-bottom: 15px;
+            padding-right: 40px;
+        }
+
+        /* 卡片内容 */
+        .card-content {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-dark);
+        }
+
+        /* 标签 */
+        .card-tag {
+            display: inline-block;
+            background: var(--deep-blue);
+            color: #FFFFFF;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+        .highlight-card:nth-child(1) .card-tag { background: var(--primary-accent); }
+        .highlight-card:nth-child(2) .card-tag { background: var(--deep-blue); }
+        .highlight-card:nth-child(3) .card-tag { background: var(--blue); }
+        .highlight-card:nth-child(4) .card-tag { background: var(--green); }
+        .highlight-card:nth-child(5) .card-tag { background: var(--yellow); }
+        .highlight-card:nth-child(6) .card-tag { background: var(--deep-blue); }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .highlight-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .slide {
+                padding: 30px 20px;
+            }
+
+            .highlight-card {
+                padding: 25px;
+            }
+
+            .slide-header h2 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="slide-header">
+            <h2>六大平台战略启示</h2>
+        </div>
+
+        <div class="highlight-cards">
+            <!-- 卡片 1 -->
+            <div class="highlight-card">
+                <div class="card-number">01</div>
+                <div class="card-icon">💎</div>
+                <div class="card-title">会员订阅模式</div>
+                <div class="card-content">
+                    会员订阅（稳定现金流）+ 高客单价服务（利润来源）。
+                    <br><br>
+                    不要只有会员，不要业务过于复杂。
+                </div>
+                <div class="card-tag">商业模式</div>
+            </div>
+
+            <!-- 卡片 2 -->
+            <div class="highlight-card">
+                <div class="card-number">02</div>
+                <div class="card-icon">🎯</div>
+                <div class="card-title">聚焦高价值用户</div>
+                <div class="card-content">
+                    聚焦高价值用户（企业家/决策者）。
+                    <br><br>
+                    不要追求大众市场，宁缺毋滥。
+                </div>
+                <div class="card-tag">用户定位</div>
+            </div>
+
+            <!-- 卡片 3 -->
+            <div class="highlight-card">
+                <div class="card-number">03</div>
+                <div class="card-icon">🤝</div>
+                <div class="card-title">私域社群运营</div>
+                <div class="card-content">
+                    私域社群（高粘性）+ 线下活动（高转化）。
+                    <br><br>
+                    社群是核心，活动是催化剂。
+                </div>
+                <div class="card-tag">运营策略</div>
+            </div>
+
+            <!-- 卡片 4 -->
+            <div class="highlight-card">
+                <div class="card-number">04</div>
+                <div class="card-icon">📚</div>
+                <div class="card-title">内容驱动增长</div>
+                <div class="card-content">
+                    高质量内容（专业深度）+ 知识IP（信任背书）。
+                    <br><br>
+                    内容是获客，IP是护城河。
+                </div>
+                <div class="card-tag">增长策略</div>
+            </div>
+
+            <!-- 卡片 5 -->
+            <div class="highlight-card">
+                <div class="card-number">05</div>
+                <div class="card-icon">💰</div>
+                <div class="card-title">多元收入结构</div>
+                <div class="card-content">
+                    会员费（30%）+ 活动收入（40%）+ 咨询服务（30%）。
+                    <br><br>
+                    避免单一收入来源，降低风险。
+                </div>
+                <div class="card-tag">收入模型</div>
+            </div>
+
+            <!-- 卡片 6 -->
+            <div class="highlight-card">
+                <div class="card-number">06</div>
+                <div class="card-icon">🌟</div>
+                <div class="card-title">定位差异化</div>
+                <div class="card-content">
+                    垂直领域深耕 + 高端定位。
+                    <br><br>
+                    不要做大而全，要做小而美。
+                </div>
+                <div class="card-tag">竞争策略</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!--
+================================================================================
+示例 7: 雷达图+卡片布局 (Radar Chart + Info Cards Layout)
+================================================================================
+
+📋 适用场景:
+- 能力评估分析
+- 多维度评估展示
+- SWOT分析延伸
+- 竞争力分析
+- 项目健康度评估
+
+🎯 内容特征:
+- 1个雷达图 (5-8个维度)
+- 1个总体评价文本框
+- 3个信息卡片 (优势/劣势/洞察)
+- 量化评分 (0-100分)
+
+📊 布局类型: L6 复合布局 (左右分栏)
+
+✨ 使用条件:
+- 观点数量: 5-8个维度 + 3个结构化卡片
+- 数据密度: 中等 (雷达图数据 + 文字说明)
+- 对比关系: 多维度并列评估
+- 视觉重点: 雷达图为主,卡片为辅
+
+🎨 设计要点:
+- 左侧: 雷达图 (400px高) + 总体评价
+- 右侧: 3个信息卡片垂直排列
+- 使用 ECharts 5.4.3 雷达图
+- 渐变背景 (#667eea → #764ba2)
+- 主强调色雷达图 (#e74c3c)
+- 图标颜色: 绿色(优势) / 红色(劣势) / 橙色(洞察)
+- 现代卡片风格,圆角 8px,阴影效果
+
+🔍 匹配规则:
+- IF 内容包估维度
+- AND 每个维度有量化评分 (0-100)
+- AND 需要配套文字说明 (优势/劣势/洞察)
+- AND 需要专业的能力评估展示
+- THEN 使用此示例
+
+匹配度权重: 90%
+
+⚠️ 设计规范严格遵循 McKinsey/BCG 标准
+⚠️ 需要引入 ECharts CDN: https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viort" content="width=device-width, initial-scale=1.0">
+    <title>雷达图+卡片布局示例</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #f5f7fa;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #e74c3c;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 30px;
+        }
+
+        .left-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .right-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .radar-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            height: 400px;
+            position: relative;
+        }
+
+        #radarChart {
+            width: 100%;
+            height: 100%;
+        }
+
+        .evaluation-box {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .evaluation-box::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #e74c3c;
+        }
+
+        .evaluation-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e74c3c;
+            margin-bottom: 15px;
+            padding-left: 15px;
+        }
+
+        .evaluation-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #666;
+            padding-left: 15px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+        }
+
+        .icon.green {
+            background: #52c41a;
+        }
+
+        .icon.red {
+            background: #ff4d4f;
+        }
+
+        .icon.orange {
+            background: #fa8c16;
+        }
+
+        .card-title {
+            color: #1a1a1a;
+        }
+
+        .card-content {
+            font-size: 13px;
+            line-height: 1.8;
+            color: #666;
+            padding-left: 28px;
+        }
+
+        .card-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 12px;
+        }
+
+        .card-content li::before {
+            content: '•';
+            color: #999;
+            position: absolute;
+            left: 0;
+        }
+
+        .highlight {
+            color: #1890ff;
+            font-weight: 500;
+        }
+
+        .insight-box {
+            background: #f6ffed;
+            border: 1px solid #b7eb8f;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 10px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #389e0d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">1.1 人维度：消费者导向的市场能力</div>
+
+        <div class="main-content">
+            <div class="left-section">
+                <div class="radar-container">
+                    <div id="radarChart"></div>
+                </div>
+
+                <div class="evaluation-box">
+                    <div class="evaluation-title">总体评价</div>
+                    <div class="evaluation-content">
+                        公司在终端C侧市场拓展时，公司在消费者洞察、用户关系管理等方面的建设有待提升。公司需要加强对消费者需求的管理，建立起C端市场的消费者管理和用户关系管理体系，并提升针对市场变化的响应速度。
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-section">
+                <div class="info-card">
+                    <div class="card-header">
+                        <div class="icon green">✓</div>
+                        <div class="card-title">核心优势</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>市场基础：具备本土研发生产能力及专业工程团队，能快速对需求进行响应</li>
+                            <li>消费者洞察：对行业数据敏感度高，产品洞察能力在实体算C端</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-header">
+                        <div class="icon red">!</div>
+                        <div class="card-title">待提升能力</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>品牌管理：对C端消费者品牌管理的研究提升</li>
+                            <li>渠道管理：应对渠道各平台运营的协同机制</li>
+                            <li>消费者洞察：对C端消费者行为和海外市场的研究有待提升</li>
+                            <li>用户关系管理：对用户关系管理的思考有待更建立</li>
+                            <li>市场响应：对跨域市场信息收集和决策流线条理</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-header">
+                        <div class="icon orange">i</div>
+                        <div class="card-title">关键洞察</div>
+                    </div>
+                    <div class="card-content">
+                        公司在已有的产品力组织关键能力，这是拓展C端市场的坚实基础，如能有效融合在"人"基础的规则，公司的终端和模型有较强的提升。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 初始化雷达图
+        var chartDom = document.getElementById('radarChart');
+        var myChart = echarts.init(chartDom);
+
+        var option = {
+            radar: {
+                indicator: [
+                    { name: '品牌管理能力', max: 100 },
+                    { name: '渠道建设能力', max: 100 },
+                    { name: '消费者洞察能力', max: 100 },
+                    { name: '用户关系管理', max: 100 },
+                    { name: '市场响应速度', max: 100 }
+                ],
+                shape: 'polygon',
+                splitNumber: 4,
+                axisName: {
+                    color: '#666',
+                    fontSize: 12
+                },
+                splitLine: {
+                    lineStyle: {
+                        color: '#e0e0e0'
+                    }
+                },
+                splitArea: {
+                    show: true,
+                    areaStyle: {
+                        color: ['#fff', '#f5f5f5', '#fff', '#f5f5f5']
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#e0e0e0'
+                    }
+                }
+            },
+            series: [{
+                type: 'radar',
+                data: [
+                    {
+                        value: [60, 70, 50, 45, 55],
+                        name: '能力评估',
+                        areaStyle: {
+                            color: 'rgba(231, 76, 60, 0.2)'
+                        },
+                        lineStyle: {
+                            color: '#e74c3c',
+                            width: 2
+                        },
+                        itemStyle: {
+                            color: '#e74c3c',
+                            borderWidth: 2
+                        }
+                    }
+                ]
+            }]
+        };
+
+        myChart.setOption(option);
+
+        // 响应式
+        window.addEventListener('resize', function() {
+            myChart.resize();
+        });
+    </script>
+</body>
+</html>

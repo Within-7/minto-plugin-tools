@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户定位 - Patagonia</title>
+    <style>
+        :root {
+            --primary-background: #FFFFFF;
+            --primary-accent: #F85d42;
+            --deep-blue: #556EE6;
+            --green: #34c38f;
+            --blue: #50a5f1;
+            --yellow: #f1b44c;
+            --text-black: #000000;
+            --text-dark: #333333;
+            --text-secondary: #666666;
+            --gray-bg: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--primary-background);
+            color: var(--text-dark);
+        }
+
+        /* 顶部导航 */
+        .top-nav {
+            background-color: var(--text-black);
+            height: 56px;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo {
+            width: 28px;
+            height: 28px;
+            background-color: var(--primary-background);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-logo svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--text-black);
+            fill: none;
+            stroke-width: 2.5;
+        }
+
+        .brand-text {
+            color: var(--primary-background);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            display: flex;
+            width: 100%;
+            height: calc(100vh - 56px);
+        }
+
+        /* 左侧图表区 - 纯白背景 */
+        .chart-section {
+            flex: 1.4;
+            background-color: #FFFFFF;
+            position: relative;
+            overflow: hidden;
+            padding: 40px;
+            border-right: 1px solid #e8e8e8;
+        }
+
+        /* 右侧文字区 - 灰色背景 */
+        .text-section {
+            flex: 1;
+            padding: 50px 60px;
+            background-color: #f5f5f5;
+            overflow-y: auto;
+        }
+
+        /* 韦恩图容器 */
+        .venn-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            min-height: 600px;
+            background-color: #FFFFFF; /* 确保纯白 */
+        }
+
+        /* 圆圈基础样式 - 彩色背景白色文字 */
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            padding: 15px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .circle:hover {
+            transform: scale(1.08);
+            z-index: 100 !important;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        /* 主要圆圈 - Primary Accent 色 */
+        .circle-main {
+            background: linear-gradient(135deg, #F85d42 0%, #e74c3c 100%);
+            z-index: 10;
+        }
+
+        .circle-main .title-en {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .circle-main .title-cn {
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.95;
+        }
+
+        /* 绿色圆圈 */
+        .circle-green {
+            background: linear-gradient(135deg, #34c38f 0%, #27ae60 100%);
+            z-index: 8;
+        }
+
+        /* 黄色圆圈 */
+        .circle-yellow {
+            background: linear-gradient(135deg, #f1b44c 0%, #e67e22 100%);
+            z-index: 5;
+        }
+
+        /* 蓝色圆圈 */
+        .circle-blue {
+            background: linear-gradient(135deg, #50a5f1 0%, #3498db 100%);
+            z-index: 5;
+        }
+
+        /* 圆圈标签样式 */
+        .circle-label {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .circle-sublabel {
+            font-size: 11px;
+            opacity: 0.95;
+            font-weight: 400;
+            line-height: 1.3;
+        }
+
+        /* 位置定义 - 避免重叠 */
+        .circle-outdoor {
+            width: 240px;
+            height: 240px;
+            top: 50%;
+            right: 18%;
+            transform: translateY(-50%);
+        }
+
+        .circle-sustainability {
+            width: 220px;
+            height: 220px;
+            top: 35%;
+            left: 12%;
+        }
+
+        .circle-climber {
+            width: 110px;
+            height: 110px;
+            top: 8%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .circle-hiking {
+            width: 100px;
+            height: 100px;
+            top: 18%;
+            right: 5%;
+        }
+
+        .circle-nature {
+            width: 120px;
+            height: 120px;
+            bottom: 22%;
+            right: 3%;
+        }
+
+        .circle-travel {
+            width: 110px;
+            height: 110px;
+            top: 12%;
+            left: 3%;
+        }
+
+        .circle-cycling {
+            width: 100px;
+            height: 100px;
+            bottom: 28%;
+            left: 6%;
+        }
+
+        .circle-vintage {
+            width: 130px;
+            height: 130px;
+            bottom: 8%;
+            left: 28%;
+        }
+
+        .circle-photographer {
+            width: 140px;
+            height: 140px;
+            bottom: 5%;
+            right: 22%;
+        }
+
+        /* 核心用户标注 */
+        .core-user-label {
+            position: absolute;
+            top: 50%;
+            right: 0%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            z-index: 50;
+            background: rgba(255,255,255,0.95);
+            padding: 10px 16px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+        }
+
+        .label-line {
+            width: 40px;
+            height: 2px;
+            background-color: var(--text-dark);
+        }
+
+        /* 右侧文字区样式 */
+        .section-header {
+            margin-bottom: 30px;
+        }
+
+        .accent-line {
+            width: 32px;
+            height: 3px;
+            background-color: var(--primary-accent);
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .intro-text {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .user-list {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .user-list li {
+            font-size: 15px;
+            line-height: 2;
+            color: var(--text-dark);
+            position: relative;
+            padding-left: 16px;
+        }
+
+        .user-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--text-secondary);
+        }
+
+        .user-list li.highlight {
+            color: var(--primary-accent);
+            font-weight: 500;
+        }
+
+        .user-list li.highlight::before {
+            color: var(--primary-accent);
+        }
+
+        .core-highlight {
+            margin: 25px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-accent);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .core-label {
+            font-size: 15px;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .core-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary-accent);
+            line-height: 1.6;
+        }
+
+        .legend-box {
+            margin-top: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .legend-title {
+            display: inline-block;
+            background-color: #888;
+            color: white;
+            padding: 4px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            border-radius: 2px;
+        }
+
+        .legend-text {
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <nav class="top-nav">
+        <div class="nav-brand">
+            <div class="brand-logo">
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M8 12l3 3 5-5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </div>
+            <span class="brand-text">任小姐出海战略咨询</span>
+        </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <div class="main-content">
+        <!-- 左侧:韦恩图(纯白背景 #FFFFFF) -->
+        <div class="chart-section">
+            <div class="venn-container">
+                <!-- Outdoor - 主圆圈 -->
+                <div class="circle circle-main circle-outdoor">
+                    <div class="title-en">Outdoor</div>
+                    <div class="title-cn">户外取向用户</div>
+                </div>
+
+                <!-- Sustainability - 主圆圈 -->
+                <div class="circle circle-main circle-sustainability">
+                    <div class="title-en" style="font-size: 14px;">sustainability</div>
+                    <div class="title-cn" style="font-size: 13px;">可持续价值观</div>
+                </div>
+
+                <!-- Climber -->
+                <div class="circle circle-green circle-climber">
+                    <div class="circle-label">Climber</div>
+                    <div class="circle-sublabel">攀岩运动<br>爱好者</div>
+                </div>
+
+                <!-- Hiking -->
+                <div class="circle circle-yellow circle-hiking">
+                    <div class="circle-label">Hiking</div>
+                    <div class="circle-sublabel">徒步爱好者</div>
+                </div>
+
+                <!-- Nature -->
+                <div class="circle circle-green circle-nature">
+                    <div class="circle-label">Nature</div>
+                    <div class="circle-sublabel">自然导向<br>生活方式</div>
+                </div>
+
+                <!-- Travel -->
+                <div class="circle circle-yellow circle-travel">
+                    <div class="circle-label">Travel</div>
+                    <div class="circle-sublabel">旅行爱好者</div>
+                </div>
+
+                <!-- Cycling -->
+                <div class="circle circle-yellow circle-cycling">
+                    <div class="circle-label">Cycling</div>
+                    <div class="circle-sublabel">骑行爱好者</div>
+                </div>
+
+                <!-- Vintage -->
+                <div class="circle circle-yellow circle-vintage">
+                    <div class="circle-label">Vintage</div>
+                    <div class="circle-sublabel">长期主义<br>古着用户</div>
+                </div>
+
+                <!-- Photographer -->
+                <div class="circle circle-blue circle-photographer">
+                    <div class="circle-label">Photographer</div>
+                    <div class="circle-sublabel">摄影内容创作者</div>
+                </div>
+
+                <!-- 核心用户标注 -->
+                <div class="core-user-label">
+                    <div class="label-line"></div>
+                    <span>核心用户</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧:文字说明(灰色背景 #f5f5f5) -->
+        <div class="text-section">
+            <div class="section-header">
+                <div class="accent-line"></div>
+                <h2 class="section-title">用户定位</h2>
+            </div>
+
+            <p class="intro-text">
+                我们对<strong>Patagonia</strong>进行统计和分析,其用户定位如左图:
+            </p>
+
+            <ul class="user-list">
+                <li class="highlight">Outdoor (户外取向用户)</li>
+                <li class="highlight">Sustainability (可持续价值观用户): ethical、conscious、eco</li>
+                <li>Climber (垂直户外运动爱好者)</li>
+                <li>Nature (自然导向生活方式): Lifestyle</li>
+                <li>Travel (旅行爱好者)</li>
+                <li>Hiking (徒步导向用户)</li>
+                <li>Cycling (骑行爱好者)</li>
+                <li>Vintage (长期主义二手衣物消费者): Aesthetic</li>
+            </ul>
+
+            <div class="core-highlight">
+                <div class="core-label">核心用户:</div>
+                <div class="core-value">
+                    Sustainability-driven outdoor enthusiasts 践行可持续的户外爱好者
+                </div>
+            </div>
+
+            <div class="legend-box">
+                <div class="legend-title">图例解释</div>
+                <div class="legend-text">
+                    <p>1. 每个圆圈代表一类niche用户,圆圈大小和该类用户在品牌里占比大小成正比;</p>
+                    <p>2. 圆圈的交集代表两类用户的交集,核心用户指该品牌营销发力最多的用户。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

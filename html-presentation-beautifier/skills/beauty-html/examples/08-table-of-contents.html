@@ -1,0 +1,410 @@
+<!--
+================================================================================
+示例 8: 目录页 (Table of Contents)
+================================================================================
+
+📋 适用场景:
+- 文档目录页
+- 章节导航页
+- 内容概览页
+- 多章节报告的导航
+
+🎯 内容特征:
+- 3个或以上的章节标题
+- 每个章节可包含副标题或简短描述
+- 章节编号(可选)
+- 无数据图表
+
+📊 布局类型: L1 单列布局 (目录列表)
+
+✨ 使用条件:
+- 观点数量: 3个或以上章节
+- 数据密度: 无数据
+- 对比关系: 无对比,层级结构
+- 视觉重点: 清晰的层级和导航
+
+🎨 设计要点:
+- 页面标题"目录"居中,使用黑色 (#000000)
+- 章节标题左对齐,使用深色 (#333333)
+- 章节编号使用主强调色 (#F85d42)
+- 清晰的分隔线
+- 充足的行间距 (30-40px)
+- 悬停效果增强交互感
+
+🔍 匹配规则:
+- IF 文档有3个或以上章节
+- AND 需要在封面页后展示目录
+- AND 无数据内容
+- THEN 使用此示例
+
+匹配度权重: 100%
+
+⚠️ 设计规范严格遵循 McKinsey/BCG 标准
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>目录页示例</title>
+    <style>
+        /* CSS 变量定义 - McKinsey/BCG 规范 */
+        :root {
+            --primary-background: #FFFFFF;
+            --primary-accent: #F85d42;
+            --deep-blue: #556EE6;
+            --text-black: #000000;
+            --text-dark: #333333;
+            --text-gray: #74788d;
+            --text-light: #FFFFFF;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #556EE6 0%, #F85d42 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            margin: 0;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .slide {
+            background: var(--primary-background);
+            border-radius: 20px;
+            padding: 50px 70px;
+            max-width: 1200px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            height: calc(100vh - 80px);
+            max-height: 900px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        /* 页面标题 "目录" */
+        .page-title {
+            font-size: 42px;
+            font-weight: bold;
+            color: var(--text-black);
+            text-align: center;
+            margin-bottom: 35px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary-accent);
+            flex-shrink: 0;
+        }
+
+        /* 目录容器 */
+        .toc-container {
+            max-width: 900px;
+            margin: 0 auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* 目录项 - 优化间距 */
+        .toc-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 18px 25px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            background: #fafafa;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+        }
+
+        .toc-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .toc-item:hover {
+            background: #f0f0f0;
+            border-left-color: var(--primary-accent);
+            transform: translateX(5px);
+        }
+
+        /* 章节编号 - 优化尺寸 */
+        .toc-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary-accent);
+            min-width: 55px;
+            margin-right: 20px;
+            line-height: 1.2;
+            flex-shrink: 0;
+        }
+
+        /* 章节内容 */
+        .toc-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* 章节标题 - 优化尺寸 */
+        .toc-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        /* 章节描述 - 优化尺寸 */
+        .toc-description {
+            font-size: 14px;
+            color: var(--text-gray);
+            line-height: 1.5;
+        }
+
+        /* 页码(可选) - 优化尺寸 */
+        .toc-page {
+            font-size: 16px;
+            color: var(--text-gray);
+            margin-left: 20px;
+            align-self: center;
+            flex-shrink: 0;
+        }
+
+        /* 响应式设计 - 宽度适配 */
+        @media (max-width: 1200px) {
+            .slide {
+                padding: 45px 60px;
+            }
+
+            .page-title {
+                font-size: 38px;
+                margin-bottom: 30px;
+            }
+
+            .toc-number {
+                font-size: 26px;
+                min-width: 50px;
+            }
+
+            .toc-title {
+                font-size: 19px;
+            }
+
+            .toc-description {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+
+            .slide {
+                padding: 30px 25px;
+                height: calc(100vh - 40px);
+            }
+
+            .page-title {
+                font-size: 32px;
+                margin-bottom: 25px;
+                padding-bottom: 12px;
+            }
+
+            .toc-item {
+                padding: 15px 20px;
+                margin-bottom: 10px;
+                flex-direction: column;
+            }
+
+            .toc-number {
+                font-size: 24px;
+                min-width: auto;
+                margin-right: 15px;
+                margin-bottom: 8px;
+            }
+
+            .toc-title {
+                font-size: 18px;
+                margin-bottom: 5px;
+            }
+
+            .toc-description {
+                font-size: 13px;
+            }
+
+            .toc-page {
+                margin-left: 0;
+                margin-top: 8px;
+                align-self: flex-start;
+                font-size: 14px;
+            }
+        }
+
+        /* 高度适配 - 确保内容适应屏幕高度 */
+        @media (max-height: 800px) {
+            .slide {
+                padding: 40px 60px;
+            }
+
+            .page-title {
+                font-size: 36px;
+                margin-bottom: 25px;
+                padding-bottom: 12px;
+            }
+
+            .toc-item {
+                padding: 15px 22px;
+                margin-bottom: 10px;
+            }
+
+            .toc-number {
+                font-size: 24px;
+                min-width: 50px;
+            }
+
+            .toc-title {
+                font-size: 18px;
+                margin-bottom: 5px;
+            }
+
+            .toc-description {
+                font-size: 13px;
+                line-height: 1.4;
+            }
+
+            .toc-page {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-height: 700px) {
+            .slide {
+                padding: 30px 50px;
+            }
+
+            .page-title {
+                font-size: 32px;
+                margin-bottom: 20px;
+                padding-bottom: 10px;
+            }
+
+            .toc-item {
+                padding: 12px 20px;
+                margin-bottom: 8px;
+            }
+
+            .toc-number {
+                font-size: 22px;
+                min-width: 45px;
+                margin-right: 18px;
+            }
+
+            .toc-title {
+                font-size: 17px;
+                margin-bottom: 4px;
+            }
+
+            .toc-description {
+                font-size: 12px;
+                line-height: 1.3;
+            }
+
+            .toc-page {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <h1 class="page-title">目录</h1>
+
+        <div class="toc-container">
+            <!-- 目录项 1 -->
+            <div class="toc-item">
+                <div class="toc-number">01</div>
+                <div class="toc-content">
+                    <div class="toc-title">执行摘要</div>
+                    <div class="toc-description">核心发现与关键建议概览</div>
+                </div>
+                <div class="toc-page">P.3</div>
+            </div>
+
+            <!-- 目录项 2 -->
+            <div class="toc-item">
+                <div class="toc-number">02</div>
+                <div class="toc-content">
+                    <div class="toc-title">市场分析</div>
+                    <div class="toc-description">行业趋势、竞争格局与市场机会</div>
+                </div>
+                <div class="toc-page">P.8</div>
+            </div>
+
+            <!-- 目录项 3 -->
+            <div class="toc-item">
+                <div class="toc-number">03</div>
+                <div class="toc-content">
+                    <div class="toc-title">能力评估</div>
+                    <div class="toc-description">组织能力、资源配置与核心竞争力分析</div>
+                </div>
+                <div class="toc-page">P.15</div>
+            </div>
+
+            <!-- 目录项 4 -->
+            <div class="toc-item">
+                <div class="toc-number">04</div>
+                <div class="toc-content">
+                    <div class="toc-title">战略建议</div>
+                    <div class="toc-description">增长路径、优先事项与实施计划</div>
+                </div>
+                <div class="toc-page">P.22</div>
+            </div>
+
+            <!-- 目录项 5 -->
+            <div class="toc-item">
+                <div class="toc-number">05</div>
+                <div class="toc-content">
+                    <div class="toc-title">财务预测</div>
+                    <div class="toc-description">收入模型、成本分析与投资回报</div>
+                </div>
+                <div class="toc-page">P.28</div>
+            </div>
+
+            <!-- 目录项 6 -->
+            <div class="toc-item">
+                <div class="toc-number">06</div>
+                <div class="toc-content">
+                    <div class="toc-title">实施路线图</div>
+                    <div class="toc-description">关键里程碑、资源需求与风险管理</div>
+                </div>
+                <div class="toc-page">P.35</div>
+            </div>
+
+            <!-- 目录项 7 -->
+            <div class="toc-item">
+                <div class="toc-number">07</div>
+                <div class="toc-content">
+                    <div class="toc-title">附录</div>
+                    <div class="toc-description">详细数据、方法论与参考资料</div>
+                </div>
+                <div class="toc-page">P.42</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

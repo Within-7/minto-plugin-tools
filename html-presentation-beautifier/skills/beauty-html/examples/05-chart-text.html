@@ -1,0 +1,342 @@
+<!--
+================================================================================
+示例 5: 图表+文本页 (Chart + Text Layout)
+================================================================================
+
+📋 适用场景:
+- 包含数据可视化
+- 图表 + 关键洞察
+- 图表 + 详细说明
+- 图表 + 数据表
+
+🎯 内容特征:
+- 包含图表（柱状图、折线图、饼图等）
+- 包含文本说明或洞察
+- 图表和文本并排或上下排列
+- 中等数据密度
+
+📊 布局类型: L5 图表+文本布局
+
+✨ 使用条件:
+- 观点数量: 1-3个
+- 数据密度: 中等到高
+- 对比关系: 数据展示 + 洞察说明
+- 空间需求: 图表占50-70%，文本占30-50%
+
+🎨 设计要点:
+- 图表宽度：100%
+- 高度：500px
+- 强制 width: 100%, responsive: true, maintainAspectRatio: false
+- 文本说明清晰易读
+- 使用主强调色和深蓝色
+
+🔍 匹配规则:
+- IF 包含数据图表
+- AND 包含关键洞察或说明
+- AND 数据密度中等
+- THEN 使用此示例
+
+匹配度权重: 90%
+
+⚠️ 设计规范严格遵循 McKinsey/BCG 标准
+⚠️ 图表修复：强制 width: 100% !important, responsive: true
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图表+文本示例</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        /* CSS 变量定义 - McKinsey/BCG 规范 */
+        :root {
+            --primary-background: #FFFFFF;
+            --primary-accent: #F85d42;
+            --deep-blue: #556EE6;
+            --text-black: #000000;
+            --text-dark: #333333;
+            --text-light: #FFFFFF;
+            --element-spacing: 25px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f5f7fa;
+            padding: 40px 20px;
+        }
+
+        .slide {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--primary-background);
+            border-radius: 12px;
+            padding: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        /* 页眉 */
+        .slide-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .slide-header h2 {
+            font-size: 56px;
+            font-weight: bold;
+            color: var(--text-black);
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        /* 图表+文本布局容器 */
+        .chart-text-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        /* 图表部分 */
+        .chart-section {
+            min-height: 500px;
+        }
+
+        /* ⚠️ 关键CSS：修复图表宽度为0的问题 */
+        .chart-container {
+            position: relative;
+            width: 100% !important;
+            min-width: 300px !important;
+            max-width: 100% !important;
+            height: 500px;
+            margin: 0 auto;
+            background: var(--primary-background);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-sizing: border-box;
+        }
+
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block !important;
+        }
+
+        /* 文本部分 */
+        .text-section {
+            padding: 20px;
+        }
+
+        /* 洞察标题 */
+        .insight-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary-accent);
+            margin-bottom: 25px;
+        }
+
+        /* 洞察列表 */
+        .insight-list {
+            list-style: none;
+        }
+
+        .insight-list li {
+            padding: 15px 0;
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--text-dark);
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .insight-list li::before {
+            content: '💡';
+            position: absolute;
+            left: 0;
+            font-size: 20px;
+        }
+
+        .insight-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* 强调框 */
+        .highlight-box {
+            background: rgba(248, 249, 250, 1);
+            border-left: 4px solid var(--deep-blue);
+            padding: 20px;
+            border-radius: 4px;
+            margin-top: 25px;
+        }
+
+        .highlight-box p {
+            font-size: 16px;
+            color: var(--deep-blue);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .chart-text-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .slide {
+                padding: 30px 20px;
+            }
+
+            .chart-container {
+                height: 400px;
+                min-height: 400px;
+            }
+
+            .slide-header h2 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="slide-header">
+            <h2>六大平台收入增长对比</h2>
+        </div>
+
+        <div class="chart-text-container">
+            <!-- 图表部分 -->
+            <div class="chart-section">
+                <div class="chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
+            <!-- 洞察部分 -->
+            <div class="text-section">
+                <div class="insight-title">关键洞察</div>
+                <ul class="insight-list">
+                    <li>GrowthBi引领增长，年增长率达120%</li>
+                    <li>Finder和Foundy保持稳健增长（80-90%）</li>
+                    <li>传统平台增长乏力，增速低于50%</li>
+                    <li>会员订阅模式是增长核心驱动力</li>
+                    <li>高客单价服务贡献主要利润</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>💡 启示：会员订阅（稳定现金流）+ 高客单价服务（利润来源）是最佳商业模式</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('revenueChart');
+
+            // ⚠️ 关键配置：修复图表显示问题
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['GrowthBi', 'Finder', 'Foundy', 'Clarity', 'Panda', 'Omega'],
+                    datasets: [{
+                        label: '年收入（百万美元）',
+                        data: [120, 95, 88, 45, 35, 28],
+                        backgroundColor: [
+                            'rgba(248, 93, 66, 0.8)',   // #F85d42
+                            'rgba(85, 110, 230, 0.8)',  // #556EE6
+                            'rgba(80, 165, 241, 0.8)',  // #50a5f1
+                            'rgba(52, 195, 143, 0.8)',  // #34c38f
+                            'rgba(241, 180, 76, 0.8)',  // #f1b44c
+                            'rgba(116, 120, 141, 0.8)'  // #74788d
+                        ],
+                        borderColor: [
+                            'rgb(248, 93, 66)',
+                            'rgb(85, 110, 230)',
+                            'rgb(80, 165, 241)',
+                            'rgb(52, 195, 143)',
+                            'rgb(241, 180, 76)',
+                            'rgb(116, 120, 141)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,  // ⚠️ 必须：true
+                    maintainAspectRatio: false,  // ⚠️ 必须：false
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: '2024年收入对比',
+                            font: {
+                                size: 18,
+                                weight: 'bold'
+                            },
+                            padding: 20,
+                            color: '#000000'
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '收入（百万美元）',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                color: '#333333'
+                            },
+                            ticks: {
+                                font: {
+                                    size: 13
+                                },
+                                color: '#333333'
+                            },
+                            grid: {
+                                color: '#f0f0f0'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: 13
+                                },
+                                color: '#333333'
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
