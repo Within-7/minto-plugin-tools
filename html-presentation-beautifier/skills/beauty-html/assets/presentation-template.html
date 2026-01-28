@@ -626,7 +626,8 @@
             if (newSlide >= 1 && newSlide <= totalSlides) {
                 document.querySelector(`.slide[data-slide="${currentSlide}"]`).classList.remove('active');
                 currentSlide = newSlide;
-                document.querySelector(`.slide[data-slide="${currentSlide}"]`).classList.add('act            document.getElementById('currentSlide').textContent = currentSlide;
+                document.querySelector(`.slide[data-slide="${currentSlide}"]`).classList.add('active');
+                document.getElementById('currentSlide').textContent = currentSlide;
                 updateNavButtons();
             }
         }

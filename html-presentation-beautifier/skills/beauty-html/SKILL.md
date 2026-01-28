@@ -1,6 +1,6 @@
 ---
 name: html-presentation-beautifier
-description: Transform documents, reports, and data into professional McKinsey-style HTML presentations with intelligent chart selection and interactive navigation. Use when: (1) Creating presentations from documents/reports, (2) Converting markdown/text to slides, (3) Generating HTML slides, (4) Applying McKinsey/BCG design, (5) Data visualization in presentations. Keywords: presentation, slides, HTML, McKinsey style, charts, visualization, 幻灯片, 演示文稿
+description: "Transform documents, reports, and data into professional McKinsey-style HTML presentations with intelligent chart selection and interactive navigation. Use when: (1) Creating presentations from documents/reports, (2) Converting markdown/text to slides, (3) Generating HTML slides, (4) Applying McKinsey/BCG design, (5) Data visualization in presentations. Keywords: presentation, slides, HTML, McKinsey style, charts, visualization, 幻灯片, 演示文稿"
 ---
 
 # HTML Presentation Beautifier
