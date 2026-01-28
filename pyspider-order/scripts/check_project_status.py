@@ -1,10 +1,16 @@
 """检查PySpider项目运行状态（内部使用，不暴露给用户）"""
+import os
 from pymongo import MongoClient
 
 
 def get_mongo_client():
     """获取MongoDB客户端"""
-    return MongoClient("mongodb://root:8a2p9j3x9g@13.58.80.11:30002")
+    # 支持环境变量配置
+    mongo_url = os.getenv(
+        "MONGODB_URL",
+        "mongodb://root:8a2p9j3x9g@13.58.80.11:30002"
+    )
+    return MongoClient(mongo_url)
 
 
 def check_project_status(project_name):

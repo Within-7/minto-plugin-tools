@@ -14,12 +14,29 @@ def list_all_crawlers(csv_path=None):
         }
     """
     if csv_path is None:
-        # CSV在项目根目录（用户安装skill后的工作目录）
+        # 优先级：用户项目根目录 > 插件内置配置
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        # skill目录: project_root/.minto/skills/pyspider-order/skills/
-        # 项目根目录: 向上4级
+        
+        # 1. 用户项目根目录（支持自定义覆盖）
         project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(script_dir))))
-        csv_path = os.path.join(project_root, 'feishudb.ScrapingMongoQuery.csv')
+        user_csv = os.path.join(project_root, 'feishudb.ScrapingMongoQuery.csv')
+        
+        # 2. 插件内置配置
+        builtin_csv = os.path.join(os.path.dirname(script_dir), 'config', 'feishudb.ScrapingMongoQuery.csv')
+        
+        if os.path.exists(user_csv):
+            csv_path = user_csv
+        elif os.path.exists(builtin_csv):
+            csv_path = builtin_csv
+        else:
+            raise FileNotFoundError(
+                f"❌ 配置文件未找到\n"
+                f"请确保以下位置之一存在配置文件：\n"
+                f"1. {builtin_csv} (插件内置)\n"
+                f"2. {user_csv} (用户自定义)\n"
+                f"\n"
+                f"如需安装配置文件，请从 crawlab 项目复制 CSV 到插件 config 目录。"
+            )
     
     categories = {
         "社交媒体": [],

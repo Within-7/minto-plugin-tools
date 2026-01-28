@@ -1,4 +1,5 @@
 """Feishu API client for PySpider order management."""
+import os
 import requests
 import json
 from typing import List, Dict, Optional
@@ -7,11 +8,12 @@ from typing import List, Dict, Optional
 class FeishuClient:
     """Client for interacting with Feishu API."""
 
-    def __init__(self, base_url: str = "http://3.144.97.122"):
-        self.base_url = base_url
-        self.table_token = "bascn92h2DxjIZom4hsB1U9irLc"
-        self.table_id = "tblBBtyYcEtpS7h2"
-        self.hook_url = "https://open.feishu.cn/open-apis/bot/v2/hook/9117978b-7907-42de-9ab2-cf6995175573"
+    def __init__(self, base_url: str = None, table_token: str = None, table_id: str = None, hook_url: str = None):
+        # Support environment variables for configuration
+        self.base_url = base_url or os.getenv("FEISHU_API_URL", "http://3.144.97.122")
+        self.table_token = table_token or os.getenv("FEISHU_TABLE_TOKEN", "bascn92h2DxjIZom4hsB1U9irLc")
+        self.table_id = table_id or os.getenv("FEISHU_TABLE_ID", "tblBBtyYcEtpS7h2")
+        self.hook_url = hook_url or os.getenv("FEISHU_WEBHOOK", "https://open.feishu.cn/open-apis/bot/v2/hook/9117978b-7907-42de-9ab2-cf6995175573")
     
     def create_record(self, task: str, data: List[str], task_user: str, task_id: str, charge_user: Optional[str] = None, user_token: Optional[str] = None) -> Optional[str]:
         """Create a new scraping task record in Feishu.
@@ -41,7 +43,7 @@ class FeishuClient:
         # 构建基础字段
         fields_data = {
             "任务类型": task,
-            "数据抓取状态": "等待处理",
+            "数据抓取状态": "等待分发",
             "紧急程度": "一般（今天）"
         }
 
@@ -66,7 +68,7 @@ class FeishuClient:
         }
 
         try:
-            response = requests.post(url, json=payload)
+            response = requests.post(url, json=payload, timeout=30)
             result = response.json()
 
             print(f"Feishu API Response: {result}")
@@ -82,21 +84,27 @@ class FeishuClient:
             else:
                 print(f"Feishu API Error: {result.get('msg', 'Unknown error')}")
             return None
+        except requests.ConnectionError:
+            print("❌ 无法连接飞书服务器，请检查网络和 FEISHU_API_URL 配置")
+            return None
+        except requests.Timeout:
+            print("❌ 飞书 API 请求超时")
+            return None
         except Exception as e:
-            print(f"Error creating record: {e}")
+            print(f"❌ 创建飞书记录失败: {e}")
             return None
     
     def update_status(self, record_id: str, status: str) -> bool:
         """Update task status.
-        
+
         Args:
             record_id: Feishu record ID
-            status: New status (等待处理/抓取中/完成/等待手动处理)
-            
+            status: New status (等待分发/抓取中/已完成/等待手动处理/已取消)
+
         Returns:
             True if successful, False otherwise
         """
-        url = f"{self.base_url}/set_feishu_wiki_record"
+        url = f"{self.base_url}/api/set_feishu_wiki_record"
         payload = {
             "record_id": record_id,
             "table_token": self.table_token,
@@ -116,11 +124,11 @@ class FeishuClient:
     
     def query_tasks(self) -> Optional[Dict]:
         """Query all scraping tasks.
-        
+
         Returns:
             Dict with task data, or None if failed
         """
-        url = f"{self.base_url}/query_scraping_form_data"
+        url = f"{self.base_url}/api/query_scraping_form_data"
         
         try:
             response = requests.get(url)
@@ -137,16 +145,16 @@ class FeishuClient:
     
     def send_notification(self, title: str, text: str, at_user: Optional[List[str]] = None) -> bool:
         """Send notification to Feishu group.
-        
+
         Args:
             title: Message title
             text: Message content
             at_user: List of user IDs to @mention
-            
+
         Returns:
             True if successful, False otherwise
         """
-        url = f"{self.base_url}/send_msg_to_feishu"
+        url = f"{self.base_url}/api/send_msg_to_feishu"
         payload = {
             "hook_url": self.hook_url,
             "title": title,

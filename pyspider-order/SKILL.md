@@ -83,13 +83,10 @@ Enable analysts to order web scraping tasks through natural language conversatio
 
 When user request is unclear or wants to see options:
 
-**Use:** `scripts/list_all_crawlers.py`
+**Use:** `run.py list`
 
-```python
-from scripts.list_all_crawlers import list_all_crawlers, format_crawlers_for_display
-
-categories = list_all_crawlers()
-print(format_crawlers_for_display(categories))
+```bash
+python pyspider-order/run.py list
 ```
 
 This displays all 20+ crawlers organized by category with examples.
@@ -100,22 +97,15 @@ Parse natural language requests and create scraping tasks:
 
 **MANDATORY Workflow:**
 1. Parse user's natural language request → Extract media type + keywords
-2. If unclear, use `list_all_crawlers.py` to show options
+2. If unclear, use `run.py list` to show options
 3. Ask for user's Feishu open_id (optional but recommended for proper attribution)
-4. Validate parameters using `scripts/validate_params.py`
+4. Validate parameters using `run.py validate`
 5. Show confirmation dialog using AskUserQuestion
-6. Only after user confirms, use `scripts/create_crawl_order.py` to execute
+6. Only after user confirms, use `run.py order` to execute
 
 **Execute order:**
-```python
-from scripts.create_crawl_order import create_crawl_order, format_order_result
-
-result = create_crawl_order(
-    media_type="Reddit 关键词下的帖子",
-    keywords="AI",
-    task_user="ou_xxxxxxxxxxxxx"  # Optional: User's Feishu open_id
-)
-print(format_order_result(result))
+```bash
+python pyspider-order/run.py order "Reddit 关键词下的帖子" "AI" "ou_xxxxxxxxxxxxx"
 ```
 
 **⚠️ IMPORTANT: Feishu Field Mapping**
@@ -136,13 +126,10 @@ The plugin uses Chinese field names (not English) for Feishu Bitable:
 
 Query Feishu API for task status:
 
-**Use:** `scripts/query_task_progress.py`
+**Use:** `run.py progress`
 
-```python
-from scripts.query_task_progress import query_all_tasks, format_tasks_for_display
-
-tasks = query_all_tasks()
-print(format_tasks_for_display(tasks, show_all=False))
+```bash
+python pyspider-order/run.py progress
 ```
 
 ## Pre-built Scripts (NEVER rewrite these)
@@ -162,18 +149,10 @@ print(format_tasks_for_display(tasks, show_all=False))
 
 ## Parameter Validation
 
-**Always use `scripts/validate_params.py`:**
+**Always use `run.py validate`:**
 
-```python
-from scripts.validate_params import validate_crawl_params, ValidationError
-
-try:
-    validated = validate_crawl_params(media_type, keywords)
-    # validated contains:
-    # - media_type, project, field, keywords, validated
-except ValidationError as e:
-    # Show error to user, guide them to fix
-    print(str(e))
+```bash
+python pyspider-order/run.py validate "Reddit 关键词下的帖子" "AI"
 ```
 
 **Validation rules:**
@@ -249,7 +228,7 @@ See [references/media_mapping.md](references/media_mapping.md) for complete list
 **Example 1: User request unclear**
 ```
 User: "帮我抓数据"
-Agent: [Use list_all_crawlers.py] 
+Agent: [Use run.py list]
        "我可以帮你抓取以下平台的数据...
        请告诉我你想抓哪个平台？"
 ```
@@ -276,7 +255,7 @@ Agent: [Confirm and execute]
 **Example 4: Check progress**
 ```
 User: "查一下任务进度"
-Agent: [Use query_task_progress.py]
+Agent: [Use run.py progress]
        Shows tasks grouped by status
 ```
 
@@ -289,11 +268,11 @@ Agent: [Use query_task_progress.py]
 ## Workflow Summary
 
 1. **Understand** - Parse user request (extract media type + keywords if provided)
-2. **Guide** - If unclear, show crawler options using list_all_crawlers.py
+2. **Guide** - If unclear, show crawler options using `run.py list`
 3. **Ask** - If keyword missing, ask user directly (no dropdowns for "other")
-4. **Validate** - Use validate_params.py strictly
+4. **Validate** - Use `run.py validate` strictly
 5. **Confirm** - Always show confirmation dialog with AskUserQuestion
-6. **Execute** - Use create_crawl_order.py (handles all steps)
+6. **Execute** - Use `run.py order` (handles all steps)
 7. **Notify** - Success/failure notifications via Feishu
 
-**NEVER skip steps or write custom scripts. Always use pre-built scripts from scripts/ directory.**
+**NEVER skip steps or write custom scripts. Always use run.py for all operations.**

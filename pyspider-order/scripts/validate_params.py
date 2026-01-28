@@ -2,6 +2,7 @@
 import re
 import csv
 import os
+from pathlib import Path
 
 
 class ValidationError(Exception):
@@ -12,12 +13,37 @@ class ValidationError(Exception):
 def load_crawler_config(csv_path=None):
     """加载爬虫配置"""
     if csv_path is None:
-        # CSV在项目根目录（用户安装skill后的工作目录）
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        # skill目录: project_root/.minto/skills/pyspider-order/skills/
-        # 项目根目录: 向上4级
-        project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(script_dir))))
-        csv_path = os.path.join(project_root, 'feishudb.ScrapingMongoQuery.csv')
+        # 自动定位插件根目录
+        script_dir = Path(__file__).parent
+        plugin_root = script_dir.parent
+
+        # 优先级：用户项目根目录 > 插件内置配置
+        # 1. 插件内置配置
+        builtin_csv = plugin_root / 'config' / 'feishudb.ScrapingMongoQuery.csv'
+
+        # 2. 用户项目根目录（支持自定义覆盖）
+        # 从插件根目录向上查找项目根目录（包含 .git 或 package.json）
+        current = plugin_root
+        while current != current.parent:
+            if (current / '.git').exists() or (current / 'package.json').exists():
+                user_csv = current / 'feishudb.ScrapingMongoQuery.csv'
+                if user_csv.exists():
+                    csv_path = str(user_csv)
+                    break
+            current = current.parent
+
+        if csv_path is None:
+            if builtin_csv.exists():
+                csv_path = str(builtin_csv)
+            else:
+                raise FileNotFoundError(
+                    f"❌ 配置文件未找到\n"
+                    f"请确保以下位置之一存在配置文件：\n"
+                    f"1. {builtin_csv} (插件内置)\n"
+                    f"2. 项目根目录/feishudb.ScrapingMongoQuery.csv (用户自定义)\n"
+                    f"\n"
+                    f"如需安装配置文件，请从 crawlab 项目复制 CSV 到插件 config 目录。"
+                )
     
     config = {}
     with open(csv_path, 'r', encoding='utf-8') as f:

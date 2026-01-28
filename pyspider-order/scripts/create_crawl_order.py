@@ -2,15 +2,16 @@
 import sys
 import os
 import uuid
+from pathlib import Path
 
-# 添加脚本目录到路径
-script_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, script_dir)
+# 自动定位插件根目录（向上两级）
+PLUGIN_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(PLUGIN_ROOT))
 
-from feishu_client import FeishuClient
-from pyspider_dispatcher import PySpiderDispatcher
-from validate_params import validate_crawl_params, ValidationError
-from check_project_status import check_project_status
+from scripts.feishu_client import FeishuClient
+from scripts.pyspider_dispatcher import PySpiderDispatcher
+from scripts.validate_params import validate_crawl_params, ValidationError
+from scripts.check_project_status import check_project_status
 
 
 class OrderError(Exception):
@@ -119,47 +120,68 @@ def create_crawl_order(media_type, keywords, task_user=None, charge_user=None, d
         print(f"发送PySpider爬虫任务...")
         field_type = validated['field']
         
-        # 每个关键词发送一次
-        for keyword in validated['keywords']:
-            success = dispatcher.send_task(
-                project=validated['project'],
-                key=field_type,
-                keyword=keyword
-            )
-            
-            if not success:
-                raise OrderError(
-                    f"❌ PySpider任务发送失败\n"
-                    f"项目: {validated['project']}\n"
-                    f"字段: {field_type}\n"
-                    f"关键词: {keyword}\n"
-                    f"请联系爬虫工程师检查dispatcher服务"
+        try:
+            # 每个关键词发送一次
+            for keyword in validated['keywords']:
+                success = dispatcher.send_task(
+                    project=validated['project'],
+                    key=field_type,
+                    keyword=keyword
                 )
+                
+                if not success:
+                    raise OrderError(
+                        f"PySpider任务发送失败\n"
+                        f"项目: {validated['project']}\n"
+                        f"字段: {field_type}\n"
+                        f"关键词: {keyword}"
+                    )
+                
+                print(f"✓ 任务已发送: {keyword}")
             
-            print(f"✓ 任务已发送: {keyword}")
-        
-        # 步骤6: 更新飞书状态为"抓取中"
-        print(f"更新飞书状态为'抓取中'...")
-        feishu.update_status(record_id, "抓取中")
-        print(f"✓ 状态已更新")
-        
-        # 步骤7: 发送飞书通知
-        print(f"发送飞书群通知...")
-        feishu.send_notification(
-            title="💣💣💣开始抓取💣💣💣",
-            text=f"准备抓取媒体:【{validated['media_type']}】 关键词:{validated['keywords']}",
-            at_user=[task_user]
-        )
-        print(f"✓ 通知已发送")
-        
-        result['success'] = True
-        return result
+            # 步骤6: 更新飞书状态为"抓取中"
+            print(f"更新飞书状态为'抓取中'...")
+            feishu.update_status(record_id, "抓取中")
+            print(f"✓ 状态已更新")
+            
+            # 步骤7: 发送飞书通知
+            print(f"发送飞书群通知...")
+            feishu.send_notification(
+                title="💣💣💣开始抓取💣💣💣",
+                text=f"准备抓取媒体:【{validated['media_type']}】 关键词:{validated['keywords']}",
+                at_user=[task_user] if task_user else []
+            )
+            print(f"✓ 通知已发送")
+            
+            result['success'] = True
+            return result
+            
+        except OrderError as task_error:
+            # 任务发送失败，更新状态为"等待手动处理"
+            print(f"⚠️ {task_error}")
+            print(f"更新飞书状态为'等待手动处理'...")
+            feishu.update_status(record_id, "等待手动处理")
+            print(f"✓ 状态已更新")
+            
+            # 发送失败通知给爬虫工程师
+            print(f"发送失败通知给爬虫工程师...")
+            feishu.send_notification(
+                title="🆘🆘🆘爬虫任务发送失败🆘🆘🆘",
+                text=f"任务发送失败，需要手动处理\n\n"
+                     f"项目: {validated['project']}\n"
+                     f"媒体类型: {validated['media_type']}\n"
+                     f"关键词: {validated['keywords']}\n"
+                     f"飞书记录ID: {record_id}\n"
+                     f"错误: {str(task_error)}",
+                at_user=["ou_a45583a7f2843869b71ff4cc9692cf3d"]  # 爬虫工程师
+            )
+            print(f"✓ 失败通知已发送")
+            
+            result['error'] = str(task_error)
+            result['success'] = False
+            return result
 
     except ValidationError as e:
-        result['error'] = str(e)
-        return result
-    
-    except OrderError as e:
         result['error'] = str(e)
         return result
     
