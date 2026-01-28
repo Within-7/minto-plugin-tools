@@ -352,11 +352,11 @@ JavaScript规划：
 
 按照章节顺序逐个生成幻灯片，每个章节包含以下内容：
 1. 阶段1：生成HTML框架和完整CSS样式
-2. 阶段2：按章节逐个生成幻灯片（封面页、目录页、章节首页、内容页、结束页）
-3. 阶段3：生成JavaScript代码和结束标签
+2. 阶段2：按章节逐个生成幻灯片（封面页、目录页、章节首页、内容页、结束页），每个幻灯片包含HTML和对应的JavaScript图表代码
 
 **⚠️ 重要说明**：
 - 每个章节的所有幻灯片必须一次性完整生成
+- 每个幻灯片必须包含完整的HTML结构和对应的JavaScript图表代码
 - 100%保留步骤2中的所有内容，禁止简化、禁止压缩、禁止删减
 - 如果token不足，使用"继续"机制分批处理，但必须保证每个章节的完整性
 - 每个章节生成完成后，提示用户输入"继续"以生成下一个章节
@@ -366,6 +366,7 @@ JavaScript规划：
 - ✅ 每个阶段的代码必须是完整的语法单元
 - ✅ CSS必须在阶段1一次性完整生成
 - ✅ 每个幻灯片的HTML必须完整
+- ✅ 每个幻灯片的JavaScript图表代码必须紧跟在HTML之后
 - ✅ 每个章节的所有内容必须100%保留
 - ✅ 每个章节生成完成后提示用户输入"继续"
 - ✅ 遇到token限制时使用"继续"机制，但必须保证章节完整性
@@ -374,6 +375,7 @@ JavaScript规划：
 - ❌ 禁止简化图表代码
 - ❌ 禁止压缩或删减任何内容
 - ❌ 禁止为了省token而跳过任何幻灯片或内容
+- ❌ 禁止将JavaScript图表代码与HTML分离
 
 ---
 
@@ -1033,16 +1035,17 @@ JavaScript规划：
 
 ---
 
-#### 阶段2：按章节逐个生成幻灯片
+#### 阶段2：按章节逐个生成幻灯片（包含HTML和JavaScript图表代码）
 
 **执行流程：**
 
 ```markdown
-✅ 阶段2/3：按章节逐个生成幻灯片
+✅ 阶段2/3：按章节逐个生成幻灯片（包含HTML和JavaScript图表代码）
 
 生成方式：
 - 按照步骤2生成的幻灯片页面清单，逐个章节生成所有幻灯片
 - 每个章节包含：封面页、目录页、章节首页、该章节的所有内容页
+- 每个幻灯片必须包含：完整的HTML结构 + 对应的JavaScript图表代码
 - 100%保留步骤2中的所有内容，禁止简化、禁止压缩、禁止删减
 - 如果token不足，使用"继续"机制分批处理，但必须保证每个章节的完整性
 ```
@@ -1057,10 +1060,15 @@ JavaScript规划：
    - 所有表格（完整的行列数据）
    - 所有图表（完整的配置和数据）
    - 所有结论（完整文字）
-3. 每个幻灯片的HTML必须完整，不能跨章节截断
-4. 遇到token限制时，必须使用"继续"机制，但必须保证当前章节的所有幻灯片都生成完成
-5. 禁止为了省token而跳过任何幻灯片或内容
-6. 禁止使用"..."或"更多内容"等省略方式
+3. 每个幻灯片必须包含：
+   - 完整的HTML结构（<div class="slide">...</div>）
+   - 对应的JavaScript图表初始化代码（如果有图表）
+4. JavaScript图表代码必须紧跟在对应幻灯片的HTML之后
+5. 每个幻灯片的HTML必须完整，不能跨章节截断
+6. 遇到token限制时，必须使用"继续"机制，但必须保证当前章节的所有幻灯片都生成完成
+7. 禁止为了省token而跳过任何幻灯片或内容
+8. 禁止使用"..."或"更多内容"等省略方式
+9. 禁止将JavaScript图表代码与HTML分离
 ```
 
 **生成代码示例：**
@@ -1168,7 +1176,182 @@ JavaScript规划：
       </div>
     </div>
 
-    <!-- ... 第一章的所有内容页，100%保留所有内容 ... -->
+    <!-- 第一章内容页3对应的JavaScript图表代码 -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const ctx1 = document.getElementById('chart-1');
+        if (ctx1) {
+          new Chart(ctx1, {
+            type: 'bar',
+            data: {
+              labels: ['标签1', '标签2', '标签3', '标签4', '标签5'],
+              datasets: [{
+                label: '数据系列1',
+                data: [数值1, 数值2, 数值3, 数值4, 数值5],
+                backgroundColor: '#F85d42',
+                borderColor: '#d94a2f',
+                borderWidth: 2
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: true,
+                  position: 'top',
+                  labels: {
+                    font: {
+                      size: 14
+                    },
+                    color: '#333333'
+                  }
+                },
+                title: {
+                  display: true,
+                  text: '[图表标题]',
+                  font: {
+                    size: 18,
+                    weight: 'bold'
+                  },
+                  color: '#000000',
+                  padding: {
+                    bottom: 20
+                  }
+                }
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    font: {
+                      size: 12
+                    },
+                    color: '#333333'
+                  },
+                  grid: {
+                    display: true,
+                    color: '#e0e0e0'
+                  }
+                },
+                x: {
+                  ticks: {
+                    font: {
+                      size: 12
+                    },
+                    color: '#333333'
+                  },
+                  grid: {
+                    display: false
+                  }
+                }
+              }
+            }
+          });
+        }
+      });
+    </script>
+
+    <!-- 第一章内容页4：另一个图表 -->
+    <div class="slide" id="slide-7">
+      <h2 class="slide-title">[页面标题]</h2>
+      <div class="slide-content">
+        <div class="chart-text-layout">
+          <div class="chart-container">
+            <canvas id="chart-2"></canvas>
+          </div>
+          <div class="text-content">
+            <h3>[标题]</h3>
+            <ul class="key-insights">
+              <li>[要点1完整文字]</li>
+              <li>[要点2完整文字]</li>
+              <li>[要点3完整文字]</li>
+              <!-- ... 所有要点，100%保留 ... -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第一章内容页4对应的JavaScript图表代码 -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const ctx2 = document.getElementById('chart-2');
+        if (ctx2) {
+          new Chart(ctx2, {
+            type: 'line',
+            data: {
+              labels: ['标签1', '标签2', '标签3', '标签4', '标签5'],
+              datasets: [{
+                label: '数据系列1',
+                data: [数值1, 数值2, 数值3, 数值4, 数值5],
+                borderColor: '#556EE6',
+                backgroundColor: 'rgba(85, 110, 230, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: true,
+                  position: 'top',
+                  labels: {
+                    font: {
+                      size: 14
+                    },
+                    color: '#333333'
+                  }
+                },
+                title: {
+                  display: true,
+                  text: '[图表标题]',
+                  font: {
+                    size: 18,
+                    weight: 'bold'
+                  },
+                  color: '#000000',
+                  padding: {
+                    bottom: 20
+                  }
+                }
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    font: {
+                      size: 12
+                    },
+                    color: '#333333'
+                  },
+                  grid: {
+                    display: true,
+                    color: '#e0e0e0'
+                  }
+                },
+                x: {
+                  ticks: {
+                    font: {
+                      size: 12
+                    },
+                    color: '#333333'
+                  },
+                  grid: {
+                    display: false
+                  }
+                }
+              }
+            }
+          });
+        }
+      });
+    </script>
+
+    <!-- ... 第一章的所有内容页，每个包含HTML和对应的JavaScript图表代码，100%保留所有内容 ... -->
 
     <!-- 第二章章节首页 -->
     <div class="slide section-slide" id="slide-X">
@@ -1182,9 +1365,9 @@ JavaScript规划：
       </ul>
     </div>
 
-    <!-- 第二章的所有内容页，100%保留所有内容 ... -->
+    <!-- 第二章的所有内容页，每个包含HTML和对应的JavaScript图表代码，100%保留所有内容 ... -->
 
-    <!-- ... 所有章节的所有幻灯片，100%保留所有内容 ... -->
+    <!-- ... 所有章节的所有幻灯片，每个包含HTML和对应的JavaScript图表代码，100%保留所有内容 ... -->
 
     <!-- 结束页 -->
     <div class="slide" id="slide-N">
@@ -1206,33 +1389,44 @@ JavaScript规划：
 **输出提示：**
 
 ```
-✅ 阶段2/3完成：已按章节逐个生成所有幻灯片（100%）
+✅ 阶段2/3完成：已按章节逐个生成所有幻灯片（包含HTML和JavaScript图表代码）（100%）
 
 已完成：
 - 封面页（P1）：1页
 - 目录页（P2）：X页
 - 章节首页（P3）：N页
-- 内容页（P4）：M页
+- 内容页（P4）：M页（每个包含HTML和对应的JavaScript图表代码）
 - 结束页（P5）：1页
 
 当前进度：页面1 - N 全部生成完成
 内容完整性：100%（无遗漏、无删减、无简化）
+图表代码完整性：100%（每个图表都有对应的JavaScript初始化代码）
 
-请输入'继续'以生成JavaScript代码和结束标签（阶段3/3）
+请输入'继续'以生成导航逻辑和结束标签（阶段3/3）
 ```
 
 ---
 
-#### 阶段3：生成JavaScript代码和结束标签
+#### 阶段3：生成导航逻辑和结束标签
 
 **执行流程：**
 
 ```markdown
-✅ 阶段3/3：生成JavaScript代码和结束标签
+✅ 阶段3/3：生成导航逻辑和结束标签
 
 生成内容：
-- 完整的JavaScript代码
+- 导航逻辑（上一页/下一页、键盘导航）
+- 全屏切换功能
 - HTML结束标签
+```
+
+**⚠️ 重要说明：**
+
+```
+1. 阶段3只生成导航逻辑和结束标签
+2. 不再生成图表初始化代码（图表代码已在阶段2中跟随每个幻灯片的HTML一起生成）
+3. 导航逻辑包括：按钮导航、键盘导航、全屏切换
+4. 确保HTML标签正确闭合
 ```
 
 **生成代码示例：**
@@ -1287,159 +1481,6 @@ JavaScript规划：
         document.exitFullscreen();
       }
     });
-
-    // ========================================
-    // Chart.js Initialization
-    // ========================================
-    document.addEventListener('DOMContentLoaded', function() {
-      // Chart 1: [图表标题]
-      const ctx1 = document.getElementById('chart-1');
-      if (ctx1) {
-        new Chart(ctx1, {
-          type: 'bar',
-          data: {
-            labels: ['标签1', '标签2', '标签3', '标签4', '标签5'],
-            datasets: [{
-              label: '数据系列1',
-              data: [数值1, 数值2, 数值3, 数值4, 数值5],
-              backgroundColor: '#F85d42',
-              borderColor: '#d94a2f',
-              borderWidth: 2
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: true,
-                position: 'top',
-                labels: {
-                  font: {
-                    size: 14
-                  },
-                  color: '#333333'
-                }
-              },
-              title: {
-                display: true,
-                text: '[图表标题]',
-                font: {
-                  size: 18,
-                  weight: 'bold'
-                },
-                color: '#000000',
-                padding: {
-                  bottom: 20
-                }
-              }
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                ticks: {
-                  font: {
-                    size: 12
-                  },
-                  color: '#333333'
-                },
-                grid: {
-                  display: true,
-                  color: '#e0e0e0'
-                }
-              },
-              x: {
-                ticks: {
-                  font: {
-                    size: 12
-                  },
-                  color: '#333333'
-                },
-                grid: {
-                  display: false
-                }
-              }
-            }
-          }
-        });
-      }
-
-      // Chart 2: [图表标题]
-      const ctx2 = document.getElementById('chart-2');
-      if (ctx2) {
-        new Chart(ctx2, {
-          type: 'line',
-          data: {
-            labels: ['标签1', '标签2', '标签3', '标签4', '标签5'],
-            datasets: [{
-              label: '数据系列1',
-              data: [数值1, 数值2, 数值3, 数值4, 数值5],
-              borderColor: '#556EE6',
-              backgroundColor: 'rgba(85, 110, 230, 0.1)',
-              borderWidth: 3,
-              fill: true,
-              tension: 0.4
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: true,
-                position: 'top',
-                labels: {
-                  font: {
-                    size: 14
-                  },
-                  color: '#333333'
-                }
-              },
-              title: {
-                display: true,
-                text: '[图表标题]',
-                font: {
-                  size: 18,
-                  weight: 'bold'
-                },
-                color: '#000000',
-                padding: {
-                  bottom: 20
-                }
-              }
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                ticks: {
-                  font: {
-                    size: 12
-                  },
-                  color: '#333333'
-                },
-                grid: {
-                  display: true,
-                  color: '#e0e0e0'
-                }
-              },
-              x: {
-                ticks: {
-                  font: {
-                    size: 12
-                  },
-                  color: '#333333'
-                },
-                grid: {
-                  display: false
-                }
-              }
-            }
-          }
-        });
-      }
-
-      // ... 更多图表初始化 ...
-    });
   </script>
 </body>
 </html>
@@ -1448,13 +1489,12 @@ JavaScript规划：
 **输出提示：**
 
 ```
-✅ 阶段4/4完成：已生成JavaScript代码和结束标签（100%）
+✅ 阶段3/3完成：已生成导航逻辑和结束标签（100%）
 
 已完成：
 - 导航逻辑（上一页/下一页）
 - 键盘导航（方向键、空格键）
 - 全屏切换功能
-- 所有图表初始化代码
 - HTML结束标签
 
 HTML文件生成完成！
