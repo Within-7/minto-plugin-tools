@@ -1185,10 +1185,10 @@ FATAL：致命错误（执行失败）
 ## 📚 相关资源
 
 ### Skill文档
-- `.trae/skills/beauty-step1/SKILL.md` - 步骤1：文档内容分析合并
-- `.trae/skills/beauty-step2/SKILL.md` - 步骤2：幻灯片内容转换与拆分
-- `.trae/skills/beauty-step3/SKILL.md` - 步骤3：HTML样式布局代码规划与生成
-- `.trae/skills/beauty-step4/SKILL.md` - 步骤4：代码内容审核检验
+- `../skills/beauty-step1/SKILL.md` - 步骤1：文档内容分析合并
+- `../skills/beauty-step2/SKILL.md` - 步骤2：幻灯片内容转换与拆分
+- `../skills/beauty-step3/SKILL.md` - 步骤3：HTML样式布局代码规划与生成
+- `../skills/beauty-step4/SKILL.md` - 步骤4：代码内容审核检验
 
 ### 参考资源
 - `beauty-html/references/chart-selection-guide.md` - 图表选择指南
