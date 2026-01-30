@@ -1,19 +1,27 @@
 """检查PySpider项目运行状态（内部使用，不暴露给用户）"""
 import os
 from pymongo import MongoClient
+from typing import Dict, List, Optional
 
 
 def get_mongo_client():
     """获取MongoDB客户端"""
-    # 支持环境变量配置
-    mongo_url = os.getenv(
-        "MONGODB_URL",
-        "mongodb://root:8a2p9j3x9g@13.58.80.11:30002"
-    )
+    # 从环境变量获取MongoDB连接字符串
+    # 生产环境必须设置 MONGODB_URL 环境变量
+    # 参考 .env.example 文件配置
+    mongo_url = os.getenv("MONGODB_URL")
+    
+    if not mongo_url:
+        raise ValueError(
+            "❌ MongoDB连接字符串未配置\n"
+            "请设置环境变量 MONGODB_URL\n"
+            "参考 .env.example 文件进行配置"
+        )
+    
     return MongoClient(mongo_url)
 
 
-def check_project_status(project_name):
+def check_project_status(project_name: str) -> Dict[str, Optional[str]]:
     """
     检查PySpider项目状态
     
@@ -21,9 +29,9 @@ def check_project_status(project_name):
         project_name: 项目名称
         
     Returns:
-        dict: {
+        Dict[str, Optional[str]]: {
             'exists': bool,
-            'status': str,  # RUNNING/DEBUG/STOP/CHECKING
+            'status': Optional[str],  # RUNNING/DEBUG/STOP/CHECKING
             'name': str,
             'can_run': bool
         }
@@ -54,7 +62,7 @@ def check_project_status(project_name):
         client.close()
 
 
-def check_multiple_projects(project_names):
+def check_multiple_projects(project_names: List[str]) -> Dict[str, Dict]:
     """
     批量检查多个项目状态
     
@@ -62,7 +70,7 @@ def check_multiple_projects(project_names):
         project_names: 项目名称列表
         
     Returns:
-        dict: {project_name: status_info}
+        Dict[str, Dict]: {project_name: status_info}
     """
     client = get_mongo_client()
     
@@ -96,12 +104,12 @@ def check_multiple_projects(project_names):
         client.close()
 
 
-def get_running_projects():
+def get_running_projects() -> List[str]:
     """
     获取所有运行中的项目
     
     Returns:
-        list: 项目名称列表
+        List[str]: 项目名称列表
     """
     client = get_mongo_client()
     

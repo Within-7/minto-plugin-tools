@@ -77,7 +77,7 @@ Goal: Transform natural language → structured API calls with 100% reliability.
 
 When user request is unclear or wants to see options:
 
-**Use:** `run.py list`
+**Use:** `python run.py list`
 
 ```bash
 python run.py list
@@ -102,6 +102,24 @@ Parse natural language requests and create scraping tasks:
 python run.py order "Reddit 关键词下的帖子" "AI, machine learning" "ou_xxx"
 ```
 
+## Environment Variables (CRITICAL)
+
+**All sensitive configuration MUST be set via environment variables:**
+
+```bash
+# Required for production use:
+export MONGODB_URL="mongodb://user:password@host:port"
+export FEISHU_API_URL="http://your-feishu-api.com"
+export FEISHU_TABLE_TOKEN="your_token"
+export FEISHU_TABLE_ID="your_table_id"
+export FEISHU_WEBHOOK="https://open.feishu.cn/..."
+export PYSPIDER_BASE_URL="https://pyspider.your-domain.com"
+export PYSPIDER_SESSION_COOKIE="your_session_cookie"
+export CRAWLER_ENGINEER_USER_ID="ou_xxx"
+```
+
+**See `.env.example` for complete configuration template.**
+
 ## Pre-built Scripts (NEVER rewrite these)
 
 **Query & Display:**
@@ -110,11 +128,16 @@ python run.py order "Reddit 关键词下的帖子" "AI, machine learning" "ou_xx
 **Validation:**
 - `scripts/validate_params.py` - Strict parameter validation (URL, keywords, multi-keyword parsing)
 
+**Configuration:**
+- `scripts/config_loader.py` - Unified configuration file loader with priority-based resolution
+
 **Execution:**
 - `scripts/create_crawl_order.py` - Complete order workflow (validation → status check → create → dispatch)
 - `scripts/check_project_status.py` - Check PySpider project status (internal use)
 - `scripts/feishu_client.py` - Feishu API client
 - `scripts/pyspider_dispatcher.py` - PySpider dispatcher client
+
+**Note:** All scripts now use environment variables for sensitive configuration. See `.env.example` for required environment variables.
 
 ## Parameter Validation
 

@@ -9,11 +9,42 @@ class FeishuClient:
     """Client for interacting with Feishu API."""
 
     def __init__(self, base_url: str = None, table_token: str = None, table_id: str = None, hook_url: str = None):
-        # Support environment variables for configuration
-        self.base_url = base_url or os.getenv("FEISHU_API_URL", "http://3.144.97.122")
-        self.table_token = table_token or os.getenv("FEISHU_TABLE_TOKEN", "bascn92h2DxjIZom4hsB1U9irLc")
-        self.table_id = table_id or os.getenv("FEISHU_TABLE_ID", "tblBBtyYcEtpS7h2")
-        self.hook_url = hook_url or os.getenv("FEISHU_WEBHOOK", "https://open.feishu.cn/open-apis/bot/v2/hook/9117978b-7907-42de-9ab2-cf6995175573")
+        # 从环境变量获取配置
+        # 生产环境必须设置这些环境变量
+        # 参考 .env.example 文件配置
+        self.base_url = base_url or os.getenv("FEISHU_API_URL")
+        self.table_token = table_token or os.getenv("FEISHU_TABLE_TOKEN")
+        self.table_id = table_id or os.getenv("FEISHU_TABLE_ID")
+        self.hook_url = hook_url or os.getenv("FEISHU_WEBHOOK")
+        
+        # 验证必需的配置
+        if not self.base_url:
+            raise ValueError(
+                "❌ 飞书API地址未配置\n"
+                "请设置环境变量 FEISHU_API_URL\n"
+                "参考 .env.example 文件进行配置"
+            )
+        
+        if not self.table_token:
+            raise ValueError(
+                "❌ 飞书表格Token未配置\n"
+                "请设置环境变量 FEISHU_TABLE_TOKEN\n"
+                "参考 .env.example 文件进行配置"
+            )
+        
+        if not self.table_id:
+            raise ValueError(
+                "❌ 飞书表格ID未配置\n"
+                "请设置环境变量 FEISHU_TABLE_ID\n"
+                "参考 .env.example 文件进行配置"
+            )
+        
+        if not self.hook_url:
+            raise ValueError(
+                "❌ 飞书Webhook URL未配置\n"
+                "请设置环境变量 FEISHU_WEBHOOK\n"
+                "参考 .env.example 文件进行配置"
+            )
     
     def create_record(self, task: str, data: List[str], task_user: str, task_id: str, charge_user: Optional[str] = None, user_token: Optional[str] = None) -> Optional[str]:
         """Create a new scraping task record in Feishu.

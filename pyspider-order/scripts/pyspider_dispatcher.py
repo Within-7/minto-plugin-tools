@@ -7,20 +7,31 @@ class PySpiderDispatcher:
     """Client for sending tasks to PySpider dispatcher."""
 
     def __init__(self, base_url: str = None, session_cookie: str = None):
-        # 支持环境变量配置
-        self.base_url = base_url or os.getenv(
-            "PYSPIDER_BASE_URL",
-            "https://pyspider-dev.within-7.com"
-        )
-        default_session = os.getenv(
-            "PYSPIDER_SESSION_COOKIE",
-            "eyJfaWQiOiIyNGZmYTllMGI0MTI3OTI1MmY3NTk3MTc1ZGZlODMxYSJ9.ZK_V8A.1zmA_Fxinqi0VHcQRYH_FAKdzIY"
-        )
+        # 从环境变量获取配置
+        # 生产环境必须设置这些环境变量
+        # 参考 .env.example 文件配置
+        self.base_url = base_url or os.getenv("PYSPIDER_BASE_URL")
+        session_cookie = session_cookie or os.getenv("PYSPIDER_SESSION_COOKIE")
+        
+        if not self.base_url:
+            raise ValueError(
+                "❌ PySpider服务器地址未配置\n"
+                "请设置环境变量 PYSPIDER_BASE_URL\n"
+                "参考 .env.example 文件进行配置"
+            )
+        
+        if not session_cookie:
+            raise ValueError(
+                "❌ PySpider会话Cookie未配置\n"
+                "请设置环境变量 PYSPIDER_SESSION_COOKIE\n"
+                "参考 .env.example 文件进行配置"
+            )
+        
         self.headers = {
             'accept': '*/*',
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            'cookie': f'session={session_cookie or default_session}',
+            'cookie': f'session={session_cookie}',
             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
         }
     
