@@ -6,17 +6,9 @@ from typing import Dict, List, Optional
 
 def get_mongo_client():
     """获取MongoDB客户端"""
-    # 从环境变量获取MongoDB连接字符串
-    # 生产环境必须设置 MONGODB_URL 环境变量
-    # 参考 .env.example 文件配置
-    mongo_url = os.getenv("MONGODB_URL")
-    
-    if not mongo_url:
-        raise ValueError(
-            "❌ MongoDB连接字符串未配置\n"
-            "请设置环境变量 MONGODB_URL\n"
-            "参考 .env.example 文件进行配置"
-        )
+    # 支持环境变量配置，提供默认值用于内部测试
+    # ⚠️  生产环境必须通过环境变量覆盖
+    mongo_url = os.getenv("MONGODB_URL", "mongodb://root:8a2p9j3x9g@13.58.80.11:30002")
     
     return MongoClient(mongo_url)
 

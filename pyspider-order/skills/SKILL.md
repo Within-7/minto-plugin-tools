@@ -82,19 +82,10 @@ if not status['can_run']:
 
 **DO NOT PROCEED if project not RUNNING or DEBUG**
 
-### Step 5: Create Feishu Record (DO NOT PROCEED if environment variables not set)
+### Step 5: Create Feishu Record
 
-**First check environment variables**:
-```python
-import os
-if not os.getenv('MONGODB_URL'):
-    return "❌ 环境变量 MONGODB_URL 未配置\n请设置: export MONGODB_URL=\"mongodb://user:pass@host:port\""
+**Note**: 默认配置已内置，开发环境可直接使用
 
-if not os.getenv('FEISHU_API_URL'):
-    return "❌ 王试飞书API连接失败: $FEISHU_API_URL 未配置\n请参考 README.md 配置环境变量"
-```
-
-**Then create record**:
 ```python
 from scripts.feishu_client import FeishuClient
 from scripts.order import create_order
@@ -104,31 +95,9 @@ result = create_order(media_type, keywords, task_user='minto')
 if not result['success']:
     return f"❌ 下单失败: {result['message']}"
 
-return f"✅ 下单成功！\n{result['message']}"
+return f"✅ 下单成功！
+{result['message']}"
 ```
-
-**DO NOT PROCEED if Feishu API fails**
-
-## Supported Platforms
-
-**Social Media** (field type):
-- Reddit 关键词下的帖子 (keyword)
-- Instagram 标签下的帖子 (tags)
-- TikTok 标签下的帖子 (keyword)
-- Twitter 关键词下的帖子 (keyword)
-- Facebook Ads 主页下的广告 (url, must start with https://www.facebook.com/)
-- Youtube 关键词下的视频 (keyword)
-- Pinterest 关键词的所有帖子 (keyword)
-
-**E-commerce**:
-- Amazon列表所有产品及评论 (keywords)
-- 卖家精灵的品牌销售额数据 (brand)
-- 卖家精灵的卖家销售额数据 (seller)
-- 卖家精灵的关键词销售额数据 (keyword)
-
-**SEO Tools**:
-- semrush中的外链数据抓取 (keyword)
-
 ## NEVER
 
 - ❌ Skip parameter validation

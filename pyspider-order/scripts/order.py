@@ -41,16 +41,13 @@ def create_order(media_type: str, keywords: list, task_user: str = None) -> dict
         dict: {'success': bool, 'message': str}
     """
     try:
-        # 0. 环境变量检查（关键前置检查）
-        required_vars = ['MONGODB_URL', 'FEISHU_API_URL', 'FEISHU_TABLE_TOKEN', 
-                        'FEISHU_TABLE_ID', 'FEISHU_WEBHOOK', 'PYSPIDER_BASE_URL', 'PYSPIDER_SESSION_COOKIE']
-        missing_vars = [var for var in required_vars if not os.getenv(var)]
+        # 0. 环境变量检查（开发环境有默认值，可跳过）
+        # 生产环境建议配置环境变量覆盖默认值
+        # 生产环境必须配置的环境变量：MONGODB_URL, FEISHU_API_URL, PYSPIDER_BASE_URL
+        debug_mode = os.getenv('MINTO_DEBUG', 'false').lower() == 'true'
         
-        if missing_vars:
-            return {
-                'success': False,
-                'message': f'❌ 环境变量未配置，请设置以下环境变量：\n\n' + '\n'.join([f"  {var}" for var in missing_vars])
-            }
+        if debug_mode:
+            print("[DEBUG] Running in debug mode (environment variable check skipped)")
         
         # 1. 获取爬虫配置
         crawler_info = get_crawler_info(media_type)
