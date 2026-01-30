@@ -21,15 +21,93 @@ Use when user requests:
 
 ## Workflow
 
-**MANDATORY**: Always follow this exact sequence:
+**CRITICAL**: Execute step-by-step. NEVER skip steps or combine them. Each step MUST complete successfully before proceeding.
 
-1. **Parse Request** → Extract platform + keywords from natural language
-2. **Get Config** → `from scripts.crawlers import get_crawler_info`
-3. **Validate** → Check Facebook URL format if applicable
-4. **Check Status** → `from scripts.check_project_status import check_project_status`
-5. **Create Record** → `from scripts.feishu_client import FeishuClient`
-6. **Send Task** → `from scripts.pyspider_dispatcher import PySpiderDispatcher`
-7. **Update & Notify** → Update status to "抓取中", send Feishu notification
+### Step 1: Parse Request (DO NOT SKIP)
+
+Extract from user's natural language:
+- Platform (媒体类型) - e.g., "Reddit 关键词下的帖子"
+- Keywords (关键词) - e.g., ["AI", "machine learning"]
+
+**If unclear**: Show available platforms:
+```python
+from scripts.crawlers import format_crawlers_for_display
+available = format_crawlers_for_display()
+print(available)
+```
+
+**Ask user**: "请选择平台：\n1. Reddit (关键词)\n2. Instagram (标签)\n3. TikTok (关键词)\n4. ..."
+
+**STOP HERE until user provides platform + keywords**
+
+### Step 2: Get Crawler Config (CRITICAL - DO NOT SKIP)
+
+```python
+from scripts.crawlers import get_crawler_info
+
+info = get_crawler_info(media_type)
+if not info:
+    available = format_crawlers_for_display()
+    return f"❌ 不支持的平台: {media_type}\n\n{available}"
+
+project = info["project"]
+field = info["field"]
+validation = info.get("validation")  # e.g., "must start with https://www.facebook.com/"
+```
+
+**DO NOT PROCEED if config not found**
+
+### Step 3: Validate Parameters (CRITICAL - DO NOT SKIP)
+
+**Facebook Ads**: URL must start with `https://www.facebook.com/`
+- Check: `keyword.startswith('https://www.facebook.com/')`
+- If invalid: Return error with format requirement
+
+**Other platforms**: Basic validation (not empty, length < 500)
+
+**DO NOT PROCEED if validation fails**
+
+### Step 4: Check PySpider Project Status (CRITICAL - DO NOT SKIP)
+
+```python
+from scripts.check_project_status import check_project_status
+
+status = check_project_status(project)
+if not status['exists']:
+    return f"❌ PySpider项目不存在: {project}\n请联系爬虫工程师确认项目配置"
+
+if not status['can_run']:
+    return f"❌ PySpider项目状态异常: {status['status']}\n项目必须处于 RUNNING 或 DEBUG 状态才能执行\n请联系爬虫工程师处理"
+```
+
+**DO NOT PROCEED if project not RUNNING or DEBUG**
+
+### Step 5: Create Feishu Record (DO NOT PROCEED if environment variables not set)
+
+**First check environment variables**:
+```python
+import os
+if not os.getenv('MONGODB_URL'):
+    return "❌ 环境变量 MONGODB_URL 未配置\n请设置: export MONGODB_URL=\"mongodb://user:pass@host:port\""
+
+if not os.getenv('FEISHU_API_URL'):
+    return "❌ 王试飞书API连接失败: $FEISHU_API_URL 未配置\n请参考 README.md 配置环境变量"
+```
+
+**Then create record**:
+```python
+from scripts.feishu_client import FeishuClient
+from scripts.order import create_order
+
+result = create_order(media_type, keywords, task_user='minto')
+
+if not result['success']:
+    return f"❌ 下单失败: {result['message']}"
+
+return f"✅ 下单成功！\n{result['message']}"
+```
+
+**DO NOT PROCEED if Feishu API fails**
 
 ## Supported Platforms
 
@@ -67,20 +145,67 @@ Use when user requests:
 
 ## Example Interactions
 
+### Example 1: Successful Request
+
 **User**: "帮我抓取Reddit上关于AI的帖子"
-**AI**: 
-1. Parse: platform="Reddit 关键词下的帖子", keywords=["AI"]
-2. Get config: project="ScrapingRedditByKeyword_api", field="keyword"
-3. Validate: ✓ (no special validation for Reddit)
-4. Check status: ✓ RUNNING
-5. Execute: `create_order("Reddit 关键词下的帖子", ["AI"], task_user="ou_xxx")`
+
+**AI Execution**:
+```
+Step 1: Parse → platform="Reddit 关键词下的帖子", keywords=["AI"]
+Step 2: Get config → project="ScrapingRedditByKeyword_api", field="keyword"
+Step 3: Validate → ✓ (no special validation needed)
+Step 4: Check status → ✓ RUNNING
+Step 5: Create record → record_id="rec123"
+Step 6: Send task → ✓ 1/1 keywords sent
+Step 7: Update & notify → ✓
+```
+
+**Response**: "✅ 下单成功！\n任务ID: xxx-xxx-xxx\n飞书记录ID: rec123\n项目: ScrapingRedditByKeyword_api\n成功发送 1/1 个关键词"
+
+---
+
+### Example 2: Validation Failure
 
 **User**: "抓取Facebook广告，https://example.com/ads"
-**AI**: 
-1. Parse: platform="Facebook Ads 主页下的广告", keywords=["https://example.com/ads"]
-2. Get config: field="url", validation="must start with https://www.facebook.com/"
-3. Validate: ✗ URL format error
-4. Response: "❌ Facebook URL格式错误: https://example.com/ads\n必须以 https://www.facebook.com/ 开头"
+
+**AI Execution**:
+```
+Step 1: Parse → platform="Facebook Ads 主页下的广告", keywords=["https://example.com/ads"]
+Step 2: Get config → field="url", validation="must start with https://www.facebook.com/"
+Step 3: Validate → ✗ URL format error (doesn't start with https://www.facebook.com/)
+```
+
+**Response**: "❌ Facebook URL格式错误: https://example.com/ads\n\n格式要求：必须以 https://www.facebook.com/ 开头\n\n请提供正确的Facebook Ads URL"
+
+---
+
+### Example 3: Platform Not Supported
+
+**User**: "帮我抓取LinkedIn数据"
+
+**AI Execution**:
+```
+Step 1: Parse → platform="LinkedIn", keywords=unknown
+Step 2: Get config → get_crawler_info("LinkedIn") = None
+```
+
+**Response**: "❌ 不支持的平台: LinkedIn\n\n支持的平台：\n📱 社交媒体：\n- Reddit 关键词下的帖子 (keyword)\n- Instagram 标签下的帖子 (tags)\n- TikTok 标签下的帖子 (keyword)\n- ..."
+
+---
+
+### Example 4: Project Status Error
+
+**User**: "抓取SEMrush外链数据，baidu.com"
+
+**AI Execution**:
+```
+Step 1: Parse → platform="semrush中的外链数据抓取", keywords=["baidu.com"]
+Step 2: Get config → project="BackLink", field="keyword"
+Step 3: Validate → ✓
+Step 4: Check status → ✗ status="STOP" (not RUNNING/DEBUG)
+```
+
+**Response**: "❌ PySpider项目状态异常: STOP\n\n项目: BackLink\n当前状态: STOP\n要求状态: RUNNING 或 DEBUG\n\n请联系爬虫工程师处理"
 
 ## Environment Variables Required
 
@@ -100,3 +225,54 @@ PYSPIDER_SESSION_COOKIE   # PySpider session cookie
 - Main function: `scripts.order.create_order(media_type, keywords, task_user)`
 - Crawler config: `scripts.crawlers.get_crawler_info(name)`
 - No CLI commands needed - Minto calls Python functions directly
+
+## Troubleshooting
+
+### If execution fails, check in order:
+
+**1. Environment Variables (CRITICAL)**
+```bash
+# Check all required variables are set
+echo $MONGODB_URL
+echo $FEISHU_API_URL
+echo $FEISHU_TABLE_TOKEN
+echo $FEISHU_TABLE_ID
+echo $FEISHU_WEBHOOK
+echo $PYSPIDER_BASE_URL
+echo $PYSPIDER_SESSION_COOKIE
+```
+
+If any are empty → "❌ 环境变量未配置，请设置后重试"
+
+**2. Feishu API Connection**
+```bash
+# Test Feishu API
+curl -s "$FEISHU_API_URL/api/query_scraping_form_data" | jq .
+```
+
+If connection fails → "❌ 无法连接飞书API: $FEISHU_API_URL\n请检查网络和API地址"
+
+**3. PySpider Project Status**
+```python
+from scripts.check_project_status import check_project_status
+status = check_project_status('BackLink')
+print(f"Exists: {status['exists']}, Status: {status['status']}, Can Run: {status['can_run']}")
+```
+
+**4. MongoDB Connection**
+```python
+from pymongo import MongoClient
+import os
+client = MongoClient(os.getenv('MONGODB_URL'))
+print('✓ MongoDB connected' if client else '❌ MongoDB connection failed')
+```
+
+### Common Issues
+
+| Error | Cause | Solution |
+|------|-------|----------|
+| ModuleNotFoundError: No module named 'scripts' | Wrong working directory | cd to project root containing scripts/ directory |
+| ❌ 环境变量未配置 | .env not loaded | Set environment variables from README.md |
+| ❌ 无法连接飞书API | Wrong API URL or network | Check $FEISHU_API_URL and network connection |
+| ❌ PySpider项目不存在 | Project not in MongoDB | Contact 爬虫工程师 to add project |
+| ❌ PySpider项目状态异常 | Project stopped/error | Contact 爬虫工程师 to start project |

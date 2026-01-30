@@ -41,6 +41,17 @@ def create_order(media_type: str, keywords: list, task_user: str = None) -> dict
         dict: {'success': bool, 'message': str}
     """
     try:
+        # 0. 环境变量检查（关键前置检查）
+        required_vars = ['MONGODB_URL', 'FEISHU_API_URL', 'FEISHU_TABLE_TOKEN', 
+                        'FEISHU_TABLE_ID', 'FEISHU_WEBHOOK', 'PYSPIDER_BASE_URL', 'PYSPIDER_SESSION_COOKIE']
+        missing_vars = [var for var in required_vars if not os.getenv(var)]
+        
+        if missing_vars:
+            return {
+                'success': False,
+                'message': f'❌ 环境变量未配置，请设置以下环境变量：\n\n' + '\n'.join([f"  {var}" for var in missing_vars])
+            }
+        
         # 1. 获取爬虫配置
         crawler_info = get_crawler_info(media_type)
         if not crawler_info:
@@ -78,12 +89,13 @@ def create_order(media_type: str, keywords: list, task_user: str = None) -> dict
                 'message': f'❌ PySpider项目状态异常: {status_info["status"]}\\n项目必须处于 RUNNING 或 DEBUG 状态'
             }
         
-        # 4. 初始化客户端
+        # 4. 初始化客户端（环境变量已在客户端构造函数中验证）
         feishu = FeishuClient()
         dispatcher = PySpiderDispatcher()
         task_id = str(uuid.uuid4())
         
         # 5. 创建飞书记录
+        print(f"[DEBUG] Creating Feishu record for {media_type}...")
         record_id = feishu.create_record(
             task=media_type,
             data=keywords,
@@ -92,29 +104,42 @@ def create_order(media_type: str, keywords: list, task_user: str = None) -> dict
         )
         
         if not record_id:
+            print(f"[DEBUG] Feishu record creation failed")
             return {
                 'success': False,
-                'message': '❌ 飞书记录创建失败'
+                'message': '❌ 飞书记录创建失败，请联系爬虫工程师\n可能原因：飞书API异常、表格权限问题、字段配置错误'
             }
         
         # 6. 发送PySpider任务
+        print(f"[DEBUG] Sending PySpider tasks for {len(keywords)} keywords...")
         success_count = 0
         
         for keyword in keywords:
-            if dispatcher.send_task(project_name, field_type, keyword):
-                success_count += 1
+            print(f"[DEBUG] Sending task for keyword: {keyword}...")
+            try:
+                if dispatcher.send_task(project_name, field_type, keyword):
+                    success_count += 1
+                    print(f"[DEBUG] ✓ Task sent successfully for: {keyword}")
+                else:
+                    print(f"[DEBUG] ✗ Task send failed for: {keyword}")
+            except Exception as e:
+                print(f"[DEBUG] Exception during task send: {e}")
         
         if success_count == 0:
+            print(f"[DEBUG] All {len(keywords)} tasks failed, marking as manual processing")
             feishu.update_status(record_id, "等待手动处理")
             return {
                 'success': False,
-                'message': '❌ PySpider任务发送失败'
+                'message': f'❌ PySpider任务发送失败（{success_count}/{len(keywords)} 成功）\n请联系爬虫工程师检查PySpider服务和网络连接'
             }
         
         # 7. 更新飞书状态为"抓取中"
+        print(f"[DEBUG] Updating status to '抓取中'...")
         feishu.update_status(record_id, "抓取中")
+        print(f"[DEBUG] Status updated successfully")
         
         # 8. 发送飞书通知
+        print(f"[DEBUG] Sending Feishu notification...")
         feishu.send_notification(
             title="[Minto] 💣💣💣开始抓取💣💣💣",
             text=f"媒体:【{media_type}】\\n关键词: {keywords}\\n\\n通过 Minto 自动化插件下单",
