@@ -6,7 +6,6 @@ Usage:
     python run.py list                    # 列出所有爬虫
     python run.py validate <媒体类型> <关键词>    # 校验参数
     python run.py order <媒体类型> <关键词> [用户ID]  # 创建订单
-    python run.py progress               # 查询任务进度
 """
 import sys
 from pathlib import Path
@@ -50,14 +49,6 @@ def cmd_order(media_type, keywords, task_user=None):
     return result['success']
 
 
-def cmd_progress():
-    """查询任务进度"""
-    from scripts.query_task_progress import query_all_tasks, format_tasks_for_display
-
-    tasks = query_all_tasks()
-    print(format_tasks_for_display(tasks, show_all=False))
-
-
 def main():
     """主函数"""
     if len(sys.argv) < 2:
@@ -66,7 +57,6 @@ def main():
         print("  python run.py list                              列出所有爬虫")
         print("  python run.py validate <媒体类型> <关键词>       校验参数")
         print("  python run.py order <媒体类型> <关键词> [用户ID]  创建订单")
-        print("  python run.py progress                         查询任务进度")
         print("\nExamples:")
         print("  python run.py list")
         print("  python run.py validate 'Reddit 关键词下的帖子' 'AI'")
@@ -89,11 +79,9 @@ def main():
         task_user = sys.argv[4] if len(sys.argv) > 4 else None
         success = cmd_order(sys.argv[2], sys.argv[3], task_user)
         return 0 if success else 1
-    elif command == "progress":
-        cmd_progress()
     else:
         print(f"❌ 未知命令: {command}")
-        print("可用命令: list, validate, order, progress")
+        print("可用命令: list, validate, order")
         return 1
 
     return 0

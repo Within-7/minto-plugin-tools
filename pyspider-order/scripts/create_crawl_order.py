@@ -278,18 +278,20 @@ def format_order_result(result):
         lines = [
             "✅ 下单成功！",
             f"",
-            f"任务ID: {result['task_id']}",
-            f"飞书记录ID: {result['record_id']}",
-            f"项目: {result['project']}",
+            f"任务ID: {result.get('task_id', 'N/A')}",
+            f"飞书记录ID: {result.get('record_id', 'N/A')}",
+            f"项目: {result.get('project', 'N/A')}",
             f"",
-            f"爬虫正在运行中，请稍后查询进度"
+            f"📤 已通知飞书群：@你 @爬虫工程师",
+            f"",
+            f"正在抓取中，请耐心等待，完成后会通过飞书通知你结果📬"
         ]
         return "\n".join(lines)
     else:
         lines = [
             "❌ 下单失败",
             f"",
-            f"错误: {result['error']}",
+            f"错误: {result.get('error', '未知错误')}",
             f"",
             f"请联系爬虫工程师处理"
         ]
