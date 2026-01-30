@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跨境垂直平台战略规划</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --color-bg: #FFFFFF;
+            --color-text-primary: #000000;
+            --color-text-secondary: #333333;
+            --color-text-tertiary: #74788d;
+            --color-accent-primary: #F85d42;
+            --color-accent-secondary: #74788d;
+            --color-blue: #556EE6;
+            --color-green: #34c38f;
+            --color-light-blue: #50a5f1;
+            --color-yellow: #f1b44c;
+            --font-size-title-main: 56px;
+            --font-size-title-section: 44px;
+            --font-size-title-slide: 36px;
+            --font-size-subtitle: 28px;
+            --font-size-body-primary: 18px;
+            --font-size-body-secondary: 16px;
+            --font-size-caption: 14px;
+            --spacing-xs: 10px;
+            --spacing-sm: 18px;
+            --spacing-md: 28px;
+            --spacing-lg: 40px;
+            --spacing-xl: 55px;
+            --slide-padding: 50px;
+            --element-spacing: 22px;
+            --column-gap: 35px;
+            --chart-min-height: 400px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", 
+                         "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+            background: #f5f7fa;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+            font-size: var(--font-size-body-secondary);
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--color-bg);
+            padding: var(--slide-padding);
+            padding-top: 80px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 1;
+        }
+
+        .slide-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: linear-gradient(to right, rgba(255,255,255,0.98), rgba(255,255,255,0.95));
+            border-bottom: 2px solid var(--color-accent-primary);
+            display: flex;
+            align-items: center;
+            padding: 0 100px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .slide-header-title {
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .slide-title {
+            font-size: var(--font-size-title-section);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .slide-subtitle {
+            font-size: var(--font-size-subtitle);
+            font-weight: 600;
+            color: var(--color-accent-primary);
+            margin-bottom: var(--spacing-md);
+            text-align: center;
+        }
+
+        .chapter-number {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--color-accent-primary);
+            margin-bottom: var(--spacing-sm);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-heading {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .text-content {
+            font-size: var(--font-size-body-primary);
+            line-height: 1.75;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .chart-caption {
+            font-size: var(--font-size-caption);
+            color: var(--color-text-tertiary);
+            text-align: center;
+            margin-top: var(--spacing-sm);
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--column-gap);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .three-column {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--column-gap);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-container {
+            width: 100%;
+            min-height: var(--chart-min-height);
+            padding: var(--spacing-sm);
+            background: var(--color-bg);
+            border-radius: 0;
+        }
+
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .bullet-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .bullet-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-size-body-primary);
+            line-height: 1.7;
+        }
+
+        .bullet-list li::before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: var(--color-accent-primary);
+            font-weight: bold;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: var(--spacing-md) 0;
+            font-size: var(--font-size-body-primary);
+        }
+
+        .comparison-table th {
+            background: #f5f5f5;
+            padding: 14px 16px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid var(--color-accent-primary);
+        }
+
+        .comparison-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tr:hover {
+            background: #fafafa;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .toc-list li {
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+        }
+
+        .toc-number {
+            width: 50px;
+            height: 50px;
+            background: var(--color-accent-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+            margin-right: var(--spacing-md);
+            border-radius: 0;
+        }
+
+        .toc-title {
+            font-size: var(--font-size-body-primary);
+            font-weight: 500;
+        }
+
+        .cover-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: calc(100vh - 130px);
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        .cover-content .slide-title {
+            font-size: var(--font-size-title-main);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .cover-content .slide-subtitle {
+            font-size: var(--font-size-subtitle);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .meta-info {
+            font-size: var(--font-size-body-secondary);
+            color: var(--color-text-tertiary);
+        }
+
+        .meta-info p {
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .number-highlight {
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--color-accent-primary);
+            line-height: 1.2;
+        }
+
+        .number-highlight.blue {
+            color: var(--color-blue);
+        }
+
+        .number-highlight.green {
+            color: var(--color-green);
+        }
+
+        .highlight-box {
+            background: #fafafa;
+            border-left: 4px solid var(--color-accent-primary);
+            padding: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+        }
+
+        .slide-content {
+            padding-top: var(--spacing-md);
+        }
+
+        .nav-button {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--color-text-secondary);
+            transition: all 0.2s ease;
+        }
+
+        .nav-button:hover {
+            background: var(--color-accent-primary);
+            color: white;
+            border-color: var(--color-accent-primary);
+        }
+
+        .nav-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-button:disabled:hover {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--color-text-secondary);
+            border-color: #e0e0e0;
+        }
+
+        .nav-prev {
+            left: 20px;
+        }
+
+        .nav-next {
+            right: 20px;
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 20px;
+            border-radius: 0;
+            font-size: var(--font-size-body-secondary);
+            color: var(--color-text-secondary);
+            z-index: 200;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .fullscreen-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--color-text-secondary);
+            transition: all 0.2s ease;
+        }
+
+        .fullscreen-button:hover {
+            background: var(--color-accent-primary);
+            color: white;
+            border-color: var(--color-accent-primary);
+        }
+
+        @media (max-width: 1200px) {
+            :root {
+                --slide-padding: 40px;
+                --font-size-title-section: 38px;
+                --font-size-subtitle: 24px;
+            }
+
+            .slide-header {
+                height: 60px;
+                padding: 0 50px;
+            }
+
+            .slide-header-title {
+                font-size: 22px;
+            }
+
+            .nav-button {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .nav-prev {
+                left: 10px;
+            }
+
+            .nav-next {
+                right: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --slide-padding: 25px;
+                --font-size-title-section: 30px;
+                --font-size-subtitle: 22px;
+                --font-size-body-primary: 17px;
+            }
+
+            .two-column,
+            .three-column {
+                grid-template-columns: 1fr;
+            }
+
+            .slide-header {
+                height: 50px;
+                padding: 0 25px;
+            }
+
+            .slide-header-title {
+                font-size: 18px;
+            }
+
+            .nav-button {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+            }
+
+            .nav-prev {
+                left: 5px;
+            }
+
+            .nav-next {
+                right: 5px;
+            }
+
+            .slide-counter {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        
+        <button class="nav-button nav-prev" id="prevBtn" aria-label="上一页">‹</button>
+        <button class="nav-button nav-next" id="nextBtn" aria-label="下一页">›</button>
+        
+        <div class="slide-counter" id="slideCounter">1 / 30</div>
+        
+        <button class="fullscreen-button" id="fullscreenBtn" aria-label="全屏">⛶</button>
+
+        <!-- Slide 1: 封面页 -->
+        <div class="slide active" id="slide-1">
+            <div class="cover-content">
+                <h1 class="slide-title">跨境垂直平台战略规划</h1>
+                <p class="slide-subtitle">平台 vs 个人IP 深度对比分析</p>
+                <div class="meta-info">
+                    <p>2025年1月</p>
+                    <p>战略规划报告</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: 目录页 -->
+        <div class="slide" id="slide-2">
+            <div class="slide-header">
+                <h2 class="slide-header-title">目录</h2>
+            </div>
+            <div class="slide-content">
+                <ul class="toc-list">
+                    <li>
+                        <span class="toc-number">01</span>
+                        <span class="toc-title">平台与个人IP对比分析</span>
+                    </li>
+                    <li>
+                        <span class="toc-number">02</span>
+                        <span class="toc-title">六大平台横向对比</span>
+                    </li>
+                    <li>
+                        <span class="toc-number">03</span>
+                        <span class="toc-title">商业模式设计</span>
+                    </li>
+                    <li>
+                        <span class="toc-number">04</span>
+                        <span class="toc-title">战略定位与增长策略</span>
+                    </li>
+                    <li>
+                        <span class="toc-number">05</span>
+                        <span class="toc-title">实操建议与最终目标</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 3: 章节封面 - 平台与个人IP对比 -->
+        <div class="slide" id="slide-3">
+            <div class="cover-content">
+                <p class="chapter-number">CHAPTER 01</p>
+                <h1 class="slide-title">平台与个人IP对比分析</h1>
+                <p class="slide-subtitle">战略定位对比表（10维度）</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: 商业价值对比 - 估值模型 -->
+        <div class="slide" id="slide-4">
+            <div class="slide-header">
+                <h2 class="slide-header-title">1.1 商业价值对比 - 估值模型</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">产品矩阵（平台）</h3>
+                        <p class="text-content"><strong>估值模型</strong>：用户数 × 用户价值 × 增长率 × 行业系数</p>
+                        <p class="text-content"><strong>3年后</strong>：</p>
+                        <ul class="bullet-list">
+                            <li>注册用户：50万</li>
+                            <li>月活用户：20万（40%）</li>
+                            <li>ARPU：200元/年</li>
+                            <li>年收入：1.4亿</li>
+                            <li>市盈率：10-15倍</li>
+                            <li>估值：<span class="number-highlight">14-21亿</span></li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">个人IP（KOL）</h3>
+                        <p class="text-content"><strong>估值模型</strong>：年收入 × 3-5倍</p>
+                        <p class="text-content"><strong>3年后</strong>：</p>
+                        <ul class="bullet-list">
+                            <li>粉丝：100万（全平台）</li>
+                            <li>年收入：2800万</li>
+                            <li>估值：<span class="number-highlight blue">0.8-1.4亿</span></li>
+                        </ul>
+                        <div class="highlight-box">
+                            <p class="text-content"><strong>差距：10-20倍！</strong></p>
+                            <p class="text-content">平台估值是个人IP的10-20倍</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: 商业价值对比 - 融资能力 -->
+        <div class="slide" id="slide-5">
+            <div class="slide-header">
+                <h2 class="slide-header-title">1.2 商业价值对比 - 融资能力</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">产品矩阵（平台）</h3>
+                        <p class="text-content"><strong>投资人看重</strong>：</p>
+                        <ul class="bullet-list">
+                            <li>用户规模（可验证）</li>
+                            <li>增长速度（可预测）</li>
+                            <li>商业模式（可复制）</li>
+                            <li>市场空间（够大）</li>
+                            <li>竞争壁垒（够深）</li>
+                        </ul>
+                        <p class="text-content"><strong>融资路径</strong>：</p>
+                        <ul class="bullet-list">
+                            <li>天使轮：500-1000万</li>
+                            <li>A轮：3000-5000万</li>
+                            <li>B轮：1-2亿</li>
+                            <li>C轮：战略投资或上市</li>
+                        </ul>
+                        <p class="text-content"><strong>结论</strong>：平台型公司容易融资</p>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">个人IP（KOL）</h3>
+                        <p class="text-content"><strong>投资人顾虑</strong>：</p>
+                        <ul class="bullet-list">
+                            <li>人即公司，风险太集中</li>
+                            <li>难以规模化</li>
+                            <li>不可传承</li>
+                            <li>投资人无法退出</li>
+                        </ul>
+                        <p class="text-content"><strong>现实</strong>：</p>
+                        <ul class="bullet-list">
+                            <li>纯个人IP很难拿到机构投资</li>
+                            <li>除非已有巨大影响力</li>
+                            <li>或者转型平台化</li>
+                        </ul>
+                        <p class="text-content"><strong>案例</strong>：罗辑思维→得到APP后才融资</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: 商业价值对比 - 退出机制 -->
+        <div class="slide" id="slide-6">
+            <div class="slide-header">
+                <h2 class="slide-header-title">1.3 商业价值对比 - 退出机制</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">产品矩阵（平台）</h3>
+                        <p class="text-content"><strong>退出方式</strong>：</p>
+                        <ul class="bullet-list">
+                            <li><strong>并购</strong>：被阿里、腾讯、字节收购，估值10-50亿</li>
+                            <li><strong>上市</strong>：A股/港股/美股，市值50-100亿+</li>
+                            <li><strong>持续经营</strong>：长期分红，家族企业</li>
+                        </ul>
+                        <p class="text-content"><strong>成功案例</strong>：</p>
+                        <ul class="bullet-list">
+                            <li>BOSS直聘上市（市值300亿）</li>
+                            <li>知乎上市（市值30亿）</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">个人IP（KOL）</h3>
+                        <p class="text-content"><strong>退出困难</strong>：</p>
+                        <ul class="bullet-list">
+                            <li>无法并购：买方买的是什么？</li>
+                            <li>无法上市：不符合上市条件</li>
+                            <li>无法传承：影响力随个人消失</li>
+                        </ul>
+                        <p class="text-content"><strong>唯一出路</strong>：转型平台化</p>
+                        <ul class="bullet-list">
+                            <li>罗振宇 → 得到APP</li>
+                            <li>樊登 → 樊登读书APP</li>
+                            <li>吴晓波 → 890新商学</li>
+                        </ul>
+                        <p class="text-content"><strong>结论</strong>：个人IP最终还是要转平台</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: 变现模式对比 - 多元化 vs 单一化 -->
+        <div class="slide" id="slide-7">
+            <div class="slide-header">
+                <h2 class="slide-header-title">1.4 变现模式对比 - 多元化 vs 单一化</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">产品矩阵（平台）- 多元化</h3>
+                        <div class="chart-container">
+                            <canvas id="chart-platform-revenue"></canvas>
+                        </div>
+                        <p class="chart-caption">收入结构（成熟期）：1.5亿，利润率65%</p>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">个人IP（KOL）- 单一化</h3>
+                        <div class="chart-container">
+                            <canvas id="chart-ip-revenue"></canvas>
+                        </div>
+                        <p class="chart-caption">收入结构（成熟期）：3000万，利润率50%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: 变现模式对比 - 收入结构 -->
+        <div class="slide" id="slide-8">
+            <div class="slide-header">
+                <h2 class="slide-header-title">1.5 变现模式对比 - 收入结构</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">产品矩阵（平台）</h3>
+                        <p class="text-content"><strong>收入结构（成熟期）</strong>：</p>
+                        <ul class="bullet-list">
+                            <li>会员订阅（30%）：2999-29999元/年</li>
+                            <li>咨询服务（50%）：10-50万/单</li>
+                            <li>课程销售（10%）：1999-19999元</li>
+                            <li>广告赞助（5%）：服务商/品牌赞助</li>
+                            <li>数据服务（3%）：行业报告/定制研究</li>
+                        </ul>
+                        <p class="text-content"><strong>总收入</strong>：<span class="number-highlight">1.5亿</span></p>
+                        <p class="text-content"><strong>净利润</strong>：<span class="number-highlight green">1亿</span>（65%）</p>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">个人IP（KOL）</h3>
+                        <p class="text-content"><strong>收入结构（成熟期）</strong>：</p>
+                        <ul class="bullet-list">
+                            <li>课程销售（60%）：99-19999元</li>
+                            <li>咨询服务（30%）：5000-10万/次</li>
+                            <li>广告代言（8%）：品牌/产品推广</li>
+                            <li>其他（2%）：活动/图书</li>
+                        </ul>
+                        <p class="text-content"><strong>总收入</strong>：<span class="number-highlight blue">3000万</span></p>
+                        <p class="text-content"><strong>净利润</strong>：1500万（50%）</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: 变现模式对比 - 优势分析 -->
+        <div class="slide" id="slide-9">
+            <div class="slide-header">
+                <h2 class="slide-header-title">1.6 变现模式对比 - 优势分析</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">产品矩阵（平台）- 优势</h3>
+                        <ul class="bullet-list">
+                            <li><strong>收入稳定</strong>：会员续费率>60%，可预测性强</li>
+                            <li><strong>客单价高</strong>：企业会员3万/年起</li>
+                            <li><strong>边际成本低</strong>：规模越大，利润率越高</li>
+                            <li><strong>抗风险强</strong>：收入来源多元，不会一夜归零</li>
+                            <li><strong>可持续性强</strong>：系统自动运转，长期稳定</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">个人IP（KOL）- 劣势</h3>
+                        <ul class="bullet-list">
+                            <li><strong>收入不稳定</strong>：依赖爆款内容，波动大</li>
+                            <li><strong>客单价低</strong>：大部分是小额交易</li>
+                            <li><strong>边际成本高</strong>：个人精力有限，难以规模化</li>
+                            <li><strong>抗风险弱</strong>：个人出问题，收入归零</li>
+                            <li><strong>可持续性差</strong>：容易枯竭，影响力下降</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: 时间投入对比 -->
+        <div class="slide" id="slide-10">
+            <div class="slide-header">
+                <h2 class="slide-header-title">1.7 时间投入对比</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">产品矩阵（平台）</h3>
+                        <ul class="bullet-list">
+                            <li><strong>前期</strong>（1-2年）：80-100小时/周，亲力亲为</li>
+                            <li><strong>中期</strong>（3-5年）：50-60小时/周，管理为主</li>
+                            <li><strong>后期</strong>（5年+）：30-40小时/周，宏观把控</li>
+                        </ul>
+                        <p class="text-content"><strong>关键</strong>：越往后越轻松，可以授权</p>
+                        <p class="text-content"><strong>案例</strong>：马云退休，阿里继续运转</p>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">个人IP（KOL）</h3>
+                        <ul class="bullet-list">
+                            <li><strong>前期</strong>（1-2年）：80-100小时/周，持续创作</li>
+                            <li><strong>中期</strong>（3-5年）：80-100小时/周，不变！</li>
+                            <li><strong>后期</strong>（5年+）：80-100小时/周，还是不变！</li>
+                        </ul>
+                        <p class="text-content"><strong>关键</strong>：持续高强度，一直要干到干不动</p>
+                        <p class="text-content"><strong>案例</strong>：罗振宇不能让别人替他讲</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: 终极对比 -->
+        <div class="slide" id="slide-11">
+            <div class="slide-header">
+                <h2 class="slide-header-title">1.8 终极对比 - 10维度</h2>
+            </div>
+            <div class="slide-content">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>维度</th>
+                            <th>产品矩阵（平台）</th>
+                            <th>个人IP（KOL）</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>战略定位</td>
+                            <td>基础设施</td>
+                            <td>意见领袖</td>
+                        </tr>
+                        <tr>
+                            <td>商业价值</td>
+                            <td>14-21亿</td>
+                            <td>0.8-1.4亿</td>
+                        </tr>
+                        <tr>
+                            <td>增长模式</td>
+                            <td>网络效应，指数增长</td>
+                            <td>内容驱动，线性增长</td>
+                        </tr>
+                        <tr>
+                            <td>变现模式</td>
+                            <td>多元化，可规模化</td>
+                            <td>单一化，难规模化</td>
+                        </tr>
+                        <tr>
+                            <td>时间投入</td>
+                            <td>前期大，后期小</td>
+                            <td>持续高强度</td>
+                        </tr>
+                        <tr>
+                            <td>团队规模</td>
+                            <td>100人</td>
+                            <td>10人</td>
+                        </tr>
+                        <tr>
+                            <td>抗风险能力</td>
+                            <td>强，风险分散</td>
+                            <td>弱，风险集中</td>
+                        </tr>
+                        <tr>
+                            <td>可传承性</td>
+                            <td>可传承，可退出</td>
+                            <td>不可传承，无退出</td>
+                        </tr>
+                        <tr>
+                            <td>融资能力</td>
+                            <td>强，容易融资</td>
+                            <td>弱，难融资</td>
+                        </tr>
+                        <tr>
+                            <td>长期价值</td>
+                            <td>持续增值</td>
+                            <td>逐渐贬值</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 12: 最终建议 -->
+        <div class="slide" id="slide-12">
+            <div class="slide-header">
+                <h2 class="slide-header-title">1.9 最终建议 - 战略选择</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">如果你的目标是</h3>
+                        <ul class="bullet-list">
+                            <li>打造长期事业</li>
+                            <li>创造巨大价值</li>
+                            <li>实现财富自由</li>
+                            <li>可以退出享受</li>
+                            <li>可以传承子女</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <p class="text-content"><strong>→ 选择：产品矩阵（平台）</strong></p>
+                            <p class="text-content">辅助：个人IP（引流）</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">如果你的目标是</h3>
+                        <ul class="bullet-list">
+                            <li>快速赚钱</li>
+                            <li>短期变现</li>
+                            <li>不想管团队</li>
+                            <li>不想融资</li>
+                            <li>干到退休</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <p class="text-content"><strong>→ 选择：个人IP</strong></p>
+                            <p class="text-content">但要接受天花板</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: 章节封面 - 六大平台横向对比 -->
+        <div class="slide" id="slide-13">
+            <div class="cover-content">
+                <p class="chapter-number">CHAPTER 02</p>
+                <h1 class="slide-title">六大平台横向对比</h1>
+                <p class="slide-subtitle">得到、樊登读书、吴晓波频道、虎嗅、36氪、混沌大学</p>
+            </div>
+        </div>
+
+        <!-- Slide 14: 六大平台核心数据 -->
+        <div class="slide" id="slide-14">
+            <div class="slide-header">
+                <h2 class="slide-header-title">2.1 六大平台核心数据（2023年）</h2>
+            </div>
+            <div class="slide-content">
+                <div class="chart-container" style="min-height: 450px;">
+                    <canvas id="chart-platform-comparison"></canvas>
+                </div>
+                <p class="chart-caption">数据来源：各平台公开数据及行业分析报告</p>
+            </div>
+        </div>
+
+        <!-- Slide 15: 六大平台详细对比 -->
+        <div class="slide" id="slide-15">
+            <div class="slide-header">
+                <h2 class="slide-header-title">2.2 六大平台详细对比</h2>
+            </div>
+            <div class="slide-content">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>平台</th>
+                            <th>收入</th>
+                            <th>估值</th>
+                            <th>利润率</th>
+                            <th>PS倍数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>得到</td>
+                            <td>10亿</td>
+                            <td>100-120亿</td>
+                            <td>15%</td>
+                            <td>11-13</td>
+                        </tr>
+                        <tr>
+                            <td>樊登读书</td>
+                            <td>18亿</td>
+                            <td>50-80亿</td>
+                            <td>10%</td>
+                            <td>3-4.5</td>
+                        </tr>
+                        <tr>
+                            <td>吴晓波频道</td>
+                            <td>7亿</td>
+                            <td>20-30亿</td>
+                            <td>15%</td>
+                            <td>3-4.5</td>
+                        </tr>
+                        <tr>
+                            <td>虎嗅</td>
+                            <td>3.6亿</td>
+                            <td>10-15亿</td>
+                            <td>10%</td>
+                            <td>3-4</td>
+                        </tr>
+                        <tr>
+                            <td>36氪</td>
+                            <td>6亿</td>
+                            <td>7-10亿</td>
+                            <td>0%</td>
+                            <td>1.2-1.7</td>
+                        </tr>
+                        <tr>
+                            <td>混沌大学</td>
+                            <td>11亿</td>
+                            <td>30-50亿</td>
+                            <td>5%</td>
+                            <td>3-4.5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 16: 章节封面 - 商业模式 -->
+        <div class="slide" id="slide-16">
+            <div class="cover-content">
+                <p class="chapter-number">CHAPTER 03</p>
+                <h1 class="slide-title">商业模式设计</h1>
+                <p class="slide-subtitle">初期投入、三层收入结构、定价策略</p>
+            </div>
+        </div>
+
+        <!-- Slide 17: 初期投入成本 -->
+        <div class="slide" id="slide-17">
+            <div class="slide-header">
+                <h2 class="slide-header-title">3.1 初期投入成本（第1年）</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">总投入预算：150-200万</h3>
+                        <div class="chart-container" style="min-height: 300px;">
+                            <canvas id="chart-cost-breakdown"></canvas>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">成本分解</h3>
+                        <ul class="bullet-list">
+                            <li><strong>技术开发</strong>：40-60万（25-30%）</li>
+                            <li><strong>内容制作</strong>：50-70万（30-35%）</li>
+                            <li><strong>人力成本</strong>：40-60万（25-30%）</li>
+                            <li><strong>营销推广</strong>：15-25万（10-15%）</li>
+                            <li><strong>运营成本</strong>：5-10万（3-5%）</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: 三层收入结构 -->
+        <div class="slide" id="slide-18">
+            <div class="slide-header">
+                <h2 class="slide-header-title">3.2 三层收入结构（第3年）</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">第一层：会员订阅（30%）</h3>
+                        <ul class="bullet-list">
+                            <li>个人会员：2999元/年 × 5000人 = <strong>1500万</strong></li>
+                            <li>企业会员：29999元/年 × 500家 = <strong>1500万</strong></li>
+                        </ul>
+                        <p class="text-content"><strong>小计</strong>：3000万</p>
+                        
+                        <h3 class="section-heading" style="margin-top: var(--spacing-md);">第二层：战略咨询（60%）</h3>
+                        <ul class="bullet-list">
+                            <li>年度战略咨询：30-50万/单 × 80-100家 = 3000-4000万</li>
+                            <li>专项咨询：10-20万/单 × 50家 = 500-1000万</li>
+                        </ul>
+                        <p class="text-content"><strong>小计</strong>：3500-5000万</p>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">第三层：其他（10%）</h3>
+                        <ul class="bullet-list">
+                            <li>企业内训：10万/场 × 30场 = 300万</li>
+                            <li>活动/峰会：200万</li>
+                        </ul>
+                        <p class="text-content"><strong>小计</strong>：500万</p>
+                        
+                        <div class="highlight-box">
+                            <h3 class="section-heading">总收入：7000-8500万</h3>
+                            <p class="text-content">净利润：3500-4500万（50%+）</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: 定价策略与战略定位 -->
+        <div class="slide" id="slide-19">
+            <div class="slide-header">
+                <h2 class="slide-header-title">3.3 定价策略与战略定位</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">定价建议</h3>
+                        <ul class="bullet-list">
+                            <li><strong>个人会员</strong>：2999元/年（筛选用户）</li>
+                            <li><strong>企业会员</strong>：29999元/年（B端重点）</li>
+                            <li><strong>战略咨询</strong>：30-50万/单（核心变现）</li>
+                        </ul>
+                        <p class="text-content"><strong>对标学习</strong>：混沌大学（70%）+ 吴晓波频道（30%）</p>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">战略定位</h3>
+                        <p class="text-content"><strong>目标</strong>：打造"跨境行业的混沌大学+麦肯锡"</p>
+                        <ul class="bullet-list">
+                            <li>前端：知识平台（引流+筛选）</li>
+                            <li>后端：战略咨询（核心变现）</li>
+                            <li>定位：跨境企业的战略合伙人</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: 增长策略 -->
+        <div class="slide" id="slide-20">
+            <div class="slide-header">
+                <h2 class="slide-header-title">3.4 增长策略</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">增长原则</h3>
+                        <ul class="bullet-list">
+                            <li>不追求用户数量</li>
+                            <li>追求用户质量</li>
+                            <li>质量 > 数量</li>
+                            <li>盈利 > 规模</li>
+                            <li>健康增长 > 快速增长</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">增长目标</h3>
+                        <ul class="bullet-list">
+                            <li><strong>第1年</strong>：1万用户，500决策者（5%）</li>
+                            <li><strong>第2年</strong>：5万用户，2000决策者（4%）</li>
+                            <li><strong>第3年</strong>：15万用户，5000决策者（33%）</li>
+                        </ul>
+                        <p class="text-content"><strong>关键</strong>：决策者占比从5%提升到30%+</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: 章节封面 - 实操建议 -->
+        <div class="slide" id="slide-21">
+            <div class="cover-content">
+                <p class="chapter-number">CHAPTER 04</p>
+                <h1 class="slide-title">实操建议与最终目标</h1>
+                <p class="slide-subtitle">立即行动、里程碑、关键成功要素</p>
+            </div>
+        </div>
+
+        <!-- Slide 22: 立即行动 -->
+        <div class="slide" id="slide-22">
+            <div class="slide-header">
+                <h2 class="slide-header-title">4.1 立即行动</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">本周</h3>
+                        <ul class="bullet-list">
+                            <li>决定走平台路线</li>
+                            <li>同时启动个人IP（辅助）</li>
+                            <li>明确分工和资源分配</li>
+                        </ul>
+                        <h3 class="section-heading" style="margin-top: var(--spacing-md);">本月</h3>
+                        <ul class="bullet-list">
+                            <li>个人IP开始更新（视频号+小红书）</li>
+                            <li>平台开始规划（产品+技术）</li>
+                            <li>团队开始招聘</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">3个月里程碑</h3>
+                        <ul class="bullet-list">
+                            <li>IP积累5万粉丝</li>
+                            <li>平台MVP上线</li>
+                            <li>导流1000用户</li>
+                        </ul>
+                        <h3 class="section-heading" style="margin-top: var(--spacing-md);">资源分配</h3>
+                        <ul class="bullet-list">
+                            <li>70%资源给平台</li>
+                            <li>30%资源给IP</li>
+                            <li>清晰明确</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 23: 里程碑 -->
+        <div class="slide" id="slide-23">
+            <div class="slide-header">
+                <h2 class="slide-header-title">4.2 里程碑</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">12个月</h3>
+                        <ul class="bullet-list">
+                            <li>IP积累20万粉丝</li>
+                            <li>平台1万用户</li>
+                            <li>收入500-1000万</li>
+                            <li>验证商业模式</li>
+                        </ul>
+                        <h3 class="section-heading" style="margin-top: var(--spacing-md);">3年</h3>
+                        <ul class="bullet-list">
+                            <li>IP维持即可</li>
+                            <li>平台15万用户</li>
+                            <li>收入5000-8000万</li>
+                            <li>准备融资</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">5年</h3>
+                        <ul class="bullet-list">
+                            <li>平台50-100万用户</li>
+                            <li>收入1.5-2亿</li>
+                            <li>估值10-50亿</li>
+                            <li>并购或上市</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 24: 关键成功要素 -->
+        <div class="slide" id="slide-24">
+            <div class="slide-header">
+                <h2 class="slide-header-title">4.3 关键成功要素</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">战略定力</h3>
+                        <ul class="bullet-list">
+                            <li>不被短期利益诱惑</li>
+                            <li>坚持做平台</li>
+                            <li>不走偏</li>
+                        </ul>
+                        <h3 class="section-heading" style="margin-top: var(--spacing-md);">时间耐心</h3>
+                        <ul class="bullet-list">
+                            <li>平台需要时间</li>
+                            <li>不急于求成</li>
+                            <li>相信复利</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">执行力</h3>
+                        <ul class="bullet-list">
+                            <li>快速行动</li>
+                            <li>快速迭代</li>
+                            <li>快速验证</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <p class="text-content"><strong>最终建议</strong>：</p>
+                            <p class="text-content">对你们（咨询公司）来说，<strong>强烈建议走平台路线</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 25: 战略启示 -->
+        <div class="slide" id="slide-25">
+            <div class="slide-header">
+                <h2 class="slide-header-title">4.4 战略启示</h2>
+            </div>
+            <div class="slide-content">
+                <ul class="bullet-list">
+                    <li><strong>商业模式</strong>：会员订阅（稳定）+ 高客单价服务（利润）</li>
+                    <li><strong>用户定位</strong>：聚焦高价值用户（企业家/决策者），不要追求大众市场</li>
+                    <li><strong>定价策略</strong>：不要定价太低，要有筛选作用</li>
+                    <li><strong>内容策略</strong>：深度 > 广度，战略 > 战术，独特性 > 全面性</li>
+                    <li><strong>增长策略</strong>：质量 > 数量，盈利 > 规模，健康增长 > 快速增长</li>
+                    <li><strong>风险规避</strong>：不要过度依赖个人IP，不要业务过于复杂</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 26: 最终目标 -->
+        <div class="slide" id="slide-26">
+            <div class="slide-header">
+                <h2 class="slide-header-title">4.5 最终目标</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">3年目标</h3>
+                        <ul class="bullet-list">
+                            <li>收入：<span class="number-highlight">8000万</span></li>
+                            <li>利润：<span class="number-highlight green">4000万</span></li>
+                            <li>估值：<span class="number-highlight blue">2-3亿</span></li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">市场定位</h3>
+                        <ul class="bullet-list">
+                            <li>成为跨境战略咨询第一品牌</li>
+                            <li>对标混沌大学商业模式</li>
+                            <li>学习吴晓波频道用户定位</li>
+                            <li>打造"跨境行业的混沌大学+麦肯锡"</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 27: 最后的话 -->
+        <div class="slide" id="slide-27">
+            <div class="slide-header">
+                <h2 class="slide-header-title">最后的话</h2>
+            </div>
+            <div class="slide-content">
+                <div class="highlight-box">
+                    <p class="text-content">产品矩阵（平台）和个人IP（KOL）是两条完全不同的路：</p>
+                    <ul class="bullet-list">
+                        <li><strong>平台</strong>是一场马拉松，前期累，后期轻松，终点是财富自由和传承</li>
+                        <li><strong>个人IP</strong>是一场短跑，开始快，但要一直跑，没有终点</li>
+                    </ul>
+                </div>
+                <p class="text-content" style="margin-top: var(--spacing-md);"><strong>个人IP只是手段，不是目的</strong>：</p>
+                <ul class="bullet-list">
+                    <li>用CEO的个人影响力引流</li>
+                    <li>但最终沉淀在平台</li>
+                    <li>平台才是核心资产</li>
+                </ul>
+                <p class="text-content" style="margin-top: var(--spacing-md);"><strong>这样的组合，才能实现</strong>：</p>
+                <ul class="bullet-list">
+                    <li>短期有收入（IP变现）</li>
+                    <li>长期有价值（平台估值）</li>
+                    <li>最终能退出（并购/上市）</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 28: 章节封面 - 平台运营模式 -->
+        <div class="slide" id="slide-28">
+            <div class="cover-content">
+                <p class="chapter-number">APPENDIX</p>
+                <h1 class="slide-title">平台运营模式详解</h1>
+                <p class="slide-subtitle">用户旅程、变现路径、团队规划</p>
+            </div>
+        </div>
+
+        <!-- Slide 29: 平台运营详解 -->
+        <div class="slide" id="slide-29">
+            <div class="slide-header">
+                <h2 class="slide-header-title">A.1 平台运营详解</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3 class="section-heading">用户旅程 → 变现点</h3>
+                        <ul class="bullet-list">
+                            <li>免费用户（10万）→ 学习免费内容</li>
+                            <li>【变现点1】付费会员（1万 × 3000 = 3000万）</li>
+                            <li>深度用户（识别决策者5000人）</li>
+                            <li>【变现点2】咨询服务（100家 × 35万 = 3500万）</li>
+                            <li>客户成功 → 【变现点3】续约追加（40家 × 40万 = 1600万）</li>
+                            <li>【变现点4】转介绍（20家 × 35万 = 700万）</li>
+                        </ul>
+                        <p class="text-content"><strong>总收入</strong>：8800万</p>
+                    </div>
+                    <div class="column">
+                        <h3 class="section-heading">团队规划</h3>
+                        <ul class="bullet-list">
+                            <li><strong>技术团队</strong>：5人（平台开发）</li>
+                            <li><strong>内容团队</strong>：3人（课程制作）</li>
+                            <li><strong>运营团队</strong>：3人（用户运营）</li>
+                            <li><strong>咨询团队</strong>：5人（咨询服务）</li>
+                            <li><strong>市场团队</strong>：2人（品牌推广）</li>
+                            <li><strong>总计</strong>：18人</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 30: 结束页 -->
+        <div class="slide" id="slide-30">
+            <div class="cover-content">
+                <h1 class="slide-title">谢谢</h1>
+                <p class="slide-subtitle">跨境垂直平台战略规划</p>
+                <div class="meta-info">
+                    <p>2025年1月</p>
+                    <p>战略规划报告</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+            let currentSlide = 1;
+
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const slideCounter = document.getElementById('slideCounter');
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+            function updateSlide(slideNumber) {
+                if (slideNumber < 1 || slideNumber > totalSlides) return;
+
+                slides.forEach((slide, index) => {
+                    slide.classList.remove('active');
+                    if (index + 1 === slideNumber) {
+                        slide.classList.add('active');
+                    }
+                });
+
+                currentSlide = slideNumber;
+                slideCounter.textContent = currentSlide + ' / ' + totalSlides;
+
+                prevBtn.disabled = currentSlide === 1;
+                nextBtn.disabled = currentSlide === totalSlides;
+            }
+
+            prevBtn.addEventListener('click', function() {
+                if (currentSlide > 1) {
+                    updateSlide(currentSlide - 1);
+                }
+            });
+
+            nextBtn.addEventListener('click', function() {
+                if (currentSlide < totalSlides) {
+                    updateSlide(currentSlide + 1);
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
+                    if (currentSlide > 1) {
+                        updateSlide(currentSlide - 1);
+                    }
+                } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+                    e.preventDefault();
+                    if (currentSlide < totalSlides) {
+                        updateSlide(currentSlide + 1);
+                    }
+                } else if (e.key === 'Home') {
+                    updateSlide(1);
+                } else if (e.key === 'End') {
+                    updateSlide(totalSlides);
+                }
+            });
+
+            fullscreenBtn.addEventListener('click', function() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(function(err) {
+                        console.log('全屏请求失败:', err);
+                    });
+                } else {
+                    document.exitFullscreen();
+                }
+            });
+
+            document.addEventListener('fullscreenchange', function() {
+                if (document.fullscreenElement) {
+                    fullscreenBtn.textContent = '✕';
+                } else {
+                    fullscreenBtn.textContent = '⛶';
+                }
+            });
+
+            updateSlide(1);
+
+            // Chart: Platform Revenue Structure
+            const ctxPlatform = document.getElementById('chart-platform-revenue');
+            if (ctxPlatform) {
+                new Chart(ctxPlatform, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['会员订阅', '咨询服务', '课程销售', '广告赞助', '数据服务'],
+                        datasets: [{
+                            data: [30, 50, 10, 5, 5],
+                            backgroundColor: ['#F85d42', '#556EE6', '#34c38f', '#50a5f1', '#f1b44c'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { padding: 15 }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Chart: IP Revenue Structure
+            const ctxIP = document.getElementById('chart-ip-revenue');
+            if (ctxIP) {
+                new Chart(ctxIP, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['课程销售', '咨询服务', '广告代言', '其他'],
+                        datasets: [{
+                            data: [60, 30, 8, 2],
+                            backgroundColor: ['#F85d42', '#556EE6', '#34c38f', '#50a5f1'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { padding: 15 }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Chart: Platform Comparison
+            const ctxComparison = document.getElementById('chart-platform-comparison');
+            if (ctxComparison) {
+                new Chart(ctxComparison, {
+                    type: 'bar',
+                    data: {
+                        labels: ['得到', '樊登读书', '混沌大学', '吴晓波', '36氪', '虎嗅'],
+                        datasets: [{
+                            label: '收入（亿）',
+                            data: [10, 18, 11, 7, 6, 3.6],
+                            backgroundColor: '#556EE6',
+                            borderWidth: 0
+                        }, {
+                            label: '估值（亿）',
+                            data: [110, 65, 40, 25, 8.5, 12.5],
+                            backgroundColor: '#F85d42',
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'top' }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+
+            // Chart: Cost Breakdown
+            const ctxCost = document.getElementById('chart-cost-breakdown');
+            if (ctxCost) {
+                new Chart(ctxCost, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['技术开发', '内容制作', '人力成本', '营销推广', '运营成本'],
+                        datasets: [{
+                            data: [50, 60, 50, 20, 7.5],
+                            backgroundColor: ['#556EE6', '#34c38f', '#F85d42', '#50a5f1', '#f1b44c'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { padding: 15 }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,51 +1,66 @@
 ---
 name: "beauty-step3"
-description: "HTML样式布局代码规划与生成。在beauty命令的步骤3执行时自动调用，将幻灯片内容转换为完整的McKinsey风格HTML文件，包含CSS样式、布局设计和交互功能。"
+description: "HTML样式布局代码生成。将步骤2的页面清单转换为HTML文件。采用内容→组件→布局→代码流程。用于处理：内容元素识别、HTML组件匹配、布局选择、代码生成。严格根据beauty-html skill选择布局。使用beauty-html-reference.md中指定的颜色规范。"
 ---
 
-# Beauty 步骤3：HTML样式布局代码规划与生成
+# Beauty 步骤3：HTML样式布局代码生成
 
 ## 目标
 
-将步骤2生成的幻灯片页面清单转换为完整的、可运行的McKinsey风格HTML文件。
+将步骤2生成的幻灯片页面清单转换为完整的、可运行的HTML文件。
 
-## ⚠️ 核心原则
+采用**内容→组件→布局→代码**的优化流程。
 
-**🔑 必须读取并参考skill资源：**
-- **必须读** `beauty-html/references/best-practices.md`
-- **必须读** `beauty-html/references/mckinsey-design-system.md`
-- **必须读** `beauty-html/assets/presentation-template.html`
-- **必须读** `beauty-html/assets/TEMPLATE_USAGE_GUIDE.md`
-- **必须读** `beauty-html/assets/INDEX.md`
+## 核心原则 [CRITICAL]
 
-**⚠️ Token限制处理原则：**
+**幻灯片格式 [强制 - 新增]**：
+- 每个页面必须是独立的幻灯片，使用 `.slide` 类
+- 幻灯片必须使用 `position: absolute` 定位，实现全屏切换
+- 必须使用 `.active` 类控制当前显示的幻灯片
+- 必须实现页面导航功能（点击按钮、键盘方向键、触摸滑动）
+- 禁止使用网页形式（上下滚动查看所有内容）
+- 禁止将所有内容放在一个长页面中
 
-**当遇到 token 限制或上下文长度问题时，必须使用"继续"分页方式，绝对禁止：**
-- ❌ 压缩或省略资源读取
-- ❌ 跳过必读资源
-- ❌ 简化执行步骤
-- ❌ 减少生成内容
-- ❌ 使用摘要代替完整内容
+**图表使用 [强制 - 新增]**：
+- 数据相关内容必须使用图表组件可视化
+- 数值对比数据必须使用柱状图
+- 趋势变化数据必须使用折线图
+- 占比/比例数据必须使用饼图或环形图
+- 多维评估数据必须使用雷达图
+- 流程转化数据必须使用漏斗图
+- 每个图表必须配合洞察面板（图表概述、数据解读、洞察分析）
+- 禁止只有数据文本而没有图表可视化
+- 禁止用简单列表代替图表
 
-**正确处理方式：使用"继续"机制**
+**颜色规范 [强制]**：
+- 必须使用 beauty-html-reference.md 中定义的配色方案
+- 禁止使用其他颜色系统
+- 主背景色：#FFFFFF
+- 标题栏背景：#000000
+- 主要强调色：#F85d42
+
+**必读资源**：
+- [beauty-html-reference.md](./beauty-html-reference.md) - 简化版CSS样式库和HTML模板（包含颜色规范）
+- [beauty-component-guide.md](./beauty-component-guide.md) - 简化版组件选择指南
+
+**重要：布局选择必须严格遵循beauty-html skill规则**：
+- 必须读取 `beauty-html/LAYOUTS_INDEX.md` 获取完整布局索引
+- 必须读取 `beauty-html/COMPONENTS_INDEX.md` 获取组件索引
+- 必须参考 `beauty-html/assets/layouts/*.html` 布局示例文件
+- 必须参考 `beauty-html/assets/components/*.html` 组件示例文件
+
+**项目特定资源优先级**（如果存在）：
+- `.ppt_assets/INDEX.md` - 项目特定的布局和图表示例（优先级最高）
+
+**Token限制处理**：
+- 遇到token限制时使用"继续"机制
+- 禁止压缩或省略资源读取
+- 禁止跳过必读资源
+
+## 执行流程
+
 ```
-1. 在完成当前可执行的部分后
-2. 明确说明："由于 token 限制，任务未完成，请输入'继续'以获取剩余部分"
-3. 等待用户输入"继续"后
-4. 继续执行剩余步骤
-5. 重复直到任务完全完成
-```
-
-## 📋 执行流程（4个子步骤）
-
-```
-步骤3.1：读取必读资源
-  ↓
-步骤3.2：为每页规划代码方案
-  ↓
-步骤3.3：生成完整HTML文件
-  ↓
-步骤3.4：验证代码质量
+步骤3.1：读取必读资源 → 步骤3.2：识别内容元素 → 步骤3.3：匹配组件 → 步骤3.4：选择布局 → 步骤3.5：生成HTML
 ```
 
 ---
@@ -58,2057 +73,1166 @@ description: "HTML样式布局代码规划与生成。在beauty命令的步骤3�
 
 ### 必读资源清单
 
-```
-1. beauty-html/references/best-practices.md
-   - HTML最佳实践
-   - 语义化标签使用
-   - 可访问性要求
-
-2. beauty-html/references/mckinsey-design-system.md
-   - McKinsey配色方案
-   - 字体规范
-   - 间距标准
-   - 布局原则
-
-3. beauty-html/assets/presentation-template.html
-   - HTML结构模板
-   - 导航功能
-   - 响应式设计
-
-4. beauty-html/assets/TEMPLATE_USAGE_GUIDE.md
-   - 模板使用指南
-   - 组件说明
-   - 自定义方法
-
-5. beauty-html/assets/INDEX.md（⚠️ 重要）
-   - 14个布局示例（封面页、目录页、双列对比、三列并列等）
-   - 23个图表示例（金字塔图、仪表盘、韦恩图、时间轴等）
-   - 匹配决策树（帮助选择合适的布局）
-   - 设计规范（颜色、字体、间距标准）
-   - 布局类型清单（L1-L13）
-   - 图表类型索引
-
-6. .ppt_assets/INDEX.md（如果存在，优先级最高）
-   - 项目特定的布局示例
-   - 项目特定的图表示例
-   - 项目特定的样式和组件
-   - ⚠️ 优先级规则：如果某个布局、图表或图文展示在 beauty-html/assets/INDEX.md 和 .ppt_assets/INDEX.md 中都存在，必须优先使用 .ppt_assets/INDEX.md 中的版本
-   - 注意：只有当当前文件夹存在此文件时才读取
-```
-
-### 执行要求
-
-**阶段1：读取best-practices.md**
+#### 核心资源（必须按顺序读取）
 
 ```
-使用 Read 工具读取：
-Read: beauty-html/references/best-practices.md
+阶段1：读取 beauty-html/LAYOUTS_INDEX.md
+├─ 布局类型索引（L1-L17）
+├─ 布局结构示例
+├─ 布局配置参数
+└─ 布局选择决策树
 
-如果文件过长，分批读取：
-├─ 阶段1a：读取前500行
-├─ 输出："步骤3.1阶段1a完成 - 已读取best-practices.md前半部分
-       请输入'继续'以读取后半部分"
-├─ 【等待用户输入"继续"】
-└─ 阶段1b：读取剩余部分
+阶段2：读取 beauty-html/COMPONENTS_INDEX.md
+├─ 图表组件索引（C1-C3）
+├─ 图示组件索引（D1-D3）
+├─ 表格组件索引（T1）
+├─ 组件CSS类名和配置
+└─ 组件选择决策树
+
+阶段3：读取 beauty-html-reference.md
+├─ 配色方案（必须严格遵循）
+├─ CSS变量定义
+├─ 布局结构
+└─ 组件模板
+
+阶段4：读取 beauty-component-guide.md
+├─ 图表组件选择决策树
+├─ 图示组件说明
+└─ 表格组件配置
 ```
 
-**阶段2：读取mckinsey-design-system.md**
+#### 项目特定资源（如果存在）
 
 ```
-使用 Read 工具读取：
-Read: beauty-html/references/mckinsey-design-system.md
-
-如果文件过长，分批读取：
-├─ 阶段2a：读取前500行
-├─ 输出："步骤3.1阶段2a完成 - 已读取mckinsey-design-system.md前半部分
-       请输入'继续'以读取后半部分"
-├─ 【等待用户输入"继续"】
-└─ 阶段2b：读取剩余部分
+阶段5：检查并读取 .ppt_assets/INDEX.md（如果存在）
+├─ 项目特定的布局示例
+├─ 项目特定的图表示例
+├─ 项目特定的样式和组件
+└─ ⚠️ 优先级规则：如果某个布局、图表或图文展示在 beauty-html 和 .ppt_assets 中都存在，
+   必须优先使用 .ppt_assets/INDEX.md 中的版本
 ```
 
-**阶段3：读取presentation-template.html**
+### 资源读取优先级规则 [CRITICAL]
 
 ```
-使用 Read 工具读取：
-Read: beauty-html/assets/presentation-template.html
+优先级顺序（从高到低）：
+1. .ppt_assets/INDEX.md（如果存在）
+2. beauty-html/INDEX.md
+3. beauty-html/LAYOUTS_INDEX.md
+4. beauty-html/COMPONENTS_INDEX.md
+5. beauty-html/assets/layouts/*.html
+6. beauty-html/assets/components/*.html
 
-如果文件过长，分批读取：
-├─ 阶段3a：读取前500行
-├─ 输出："步骤3.1阶段3a完成 - 已读取presentation-template.html前半部分
-       请输入'继续'以读取后半部分"
-├─ 【等待用户输入"继续"】
-└─ 阶段3b：读取剩余部分
+示例：
+├─ 如果 .ppt_assets/INDEX.md 存在且包含"漏斗图"示例 → 使用项目版本
+├─ 如果 .ppt_assets/INDEX.md 不存在 → 使用 beauty-html 版本
+└─ 如果两者都存在相同组件 → 优先使用 .ppt_assets 版本
 ```
-
-**阶段4：读取TEMPLATE_USAGE_GUIDE.md**
-
-```
-使用 Read 工具读取：
-Read: beauty-html/assets/TEMPLATE_USAGE_GUIDE.md
-
-如果文件过长，分批读取：
-├─ 阶段4a：读取前500行
-├─ 输出："步骤3.1阶段4a完成 - 已读取TEMPLATE_USAGE_GUIDE.md前半部分
-       请输入'继续'以读取后半部分"
-├─ 【等待用户输入"继续"】
-└─ 阶段4b：读取剩余部分
-```
-
-**阶段5：读取INDEX.md（⚠️ 重要）**
-
-```
-使用 Read 工具读取：
-Read: beauty-html/assets/INDEX.md
-
-此文件包含所有布局和图表示例的索引，是规划代码方案的关键参考。
-
-如果文件过长，分批读取：
-├─ 阶段5a：读取前500行
-├─ 输出："步骤3.1阶段5a完成 - 已读取INDEX.md前半部分
-       请输入'继续'以读取后半部分"
-├─ 【等待用户输入"继续"】
-└─ 阶段5b：读取剩余部分
-
-完成后输出："步骤3.1阶段5完成 - 已读取全局布局和图表示例索引
-       包含14个布局示例和23个图表示例"
-```
-
-**阶段6：检查并读取.ppt_assets/INDEX.md（如果存在）**
-
-```
-使用 Read 工具读取：
-Read: .ppt_assets/INDEX.md
-
-注意：
-- 只有当当前文件夹存在 .ppt_assets/INDEX.md 文件时才读取
-- 如果文件不存在，跳过此步骤并输出："步骤3.1阶段6完成 - 未发现项目特定资源索引"
-- 如果文件存在，读取完整内容
-
-完成后输出："步骤3.1阶段6完成 - 已读取项目特定资源索引"
-       （或："步骤3.1阶段6完成 - 未发现项目特定资源索引"）
-```
-
-### 输出产物
-
-- 所有必读资源的完整内容
-- 关键设计规范摘要
-- 模板结构说明
-- 布局和图表示例索引（14个布局示例、23个图表示例）
-- 匹配决策树和设计规范
-- 项目特定资源索引（如果存在）
 
 ### 验证标准
 
-- [ ] 所有4个基础资源都已完整读取（best-practices.md、mckinsey-design-system.md、presentation-template.html、TEMPLATE_USAGE_GUIDE.md）
-- [ ] 已读取全局布局和图表示例索引（beauty-html/assets/INDEX.md）
-- [ ] 已检查并读取项目特定资源索引（.ppt_assets/INDEX.md，如果存在）
-- [ ] 无资源被跳过或省略
-- [ ] 已记录关键设计规范
-- [ ] 已理解模板结构
-- [ ] 已了解所有可用的布局类型和图表示例
-- [ ] 已掌握匹配决策树的使用方法
+- [ ] 已读取beauty-html/LAYOUTS_INDEX.md并理解布局选择规则
+- [ ] 已读取beauty-html/COMPONENTS_INDEX.md并理解组件选择规则
+- [ ] 已理解颜色规范（beauty-html-reference.md）
+- [ ] 已了解所有可用的布局类型和组件
+- [ ] 已检查项目是否存在.ppt_assets/INDEX.md（如存在则已读取）
 
 ---
 
-## 步骤 3.2：为每页规划代码方案
+## 步骤 3.2：识别内容元素
 
 ### 目标
 
-为步骤2生成的每一页幻灯片规划详细的代码方案，包括布局、CSS、HTML和JavaScript。
+识别每页幻灯片的内容元素类型，为组件匹配做准备。
+
+### 元素类型
+
+| 类别 | 类型 | 说明 |
+|-----|------|------|
+| 文本 | 主标题、要点列表、编号列表 | 文字内容 |
+| 数据 | 数字、百分比、货币 | 量化信息 |
+| 图表 | 柱状图、折线图、饼图、雷达图 | 可视化 |
+| 表格 | 简单表格、对比表格 | 结构化数据 |
+| 布局 | 卡片、对比框、强调框 | 容器组件 |
 
 ### 执行要求
 
-#### 阶段0：读取布局和图表示例索引
-
-**⚠️ 重要说明：在规划代码方案之前，必须先读取布局和图表示例索引**
-
-```
-必读资源1：全局布局和图表示例索引
-使用 Read 工具读取：
-Read: beauty-html/assets/INDEX.md
-
-此文件包含：
-- 14个布局示例（封面页、目录页、双列对比、三列并列等）
-- 23个图表示例（金字塔图、仪表盘、韦恩图、时间轴等）
-- 匹配决策树（帮助选择合适的布局）
-- 设计规范（颜色、字体、间距标准）
-```
-
-```
-必读资源2：项目特定资源索引（如果存在）
-使用 Read 工具读取：
-Read: .ppt_assets/INDEX.md
-
-注意：
-- 只有当当前文件夹存在 .ppt_assets/INDEX.md 文件时才读取
-- 如果文件不存在，跳过此步骤
-- 此文件可能包含项目特定的布局、图表、样式示例
-```
-
-**执行流程：**
-
-```
-步骤3.2阶段0a：读取全局索引
-├─ 读取 beauty-html/assets/INDEX.md
-├─ 了解所有可用的布局类型和图表示例
-├─ 记录匹配决策树和设计规范
-└─ 输出："步骤3.2阶段0a完成 - 已读取全局布局和图表示例索引"
-
-步骤3.2阶段0b：检查并读取项目特定索引
-├─ 检查是否存在 .ppt_assets/INDEX.md
-├─ 如果存在，读取该文件
-├─ 了解项目特定的资源和自定义布局
-└─ 输出："步骤3.2阶段0b完成 - 已检查并读取项目特定资源索引"
-       （如果文件不存在，输出："步骤3.2阶段0b完成 - 未发现项目特定资源索引"）
-```
-
-**使用索引的原则：**
-
-```
-⚠️ 优先级规则（必须严格遵守）：
-
-优先级1：.ppt_assets/INDEX.md（项目特定资源）
-├─ 如果存在，优先级最高
-├─ 如果某个布局、图表或图文展示在 beauty-html/assets/INDEX.md 和 .ppt_assets/INDEX.md 中都存在，必须优先使用 .ppt_assets/INDEX.md 中的版本
-└─ 适用于：项目特定的需求、自定义布局、定制化图表
-
-优先级2：beauty-html/assets/INDEX.md（全局资源）
-├─ 默认资源库
-├─ 包含14个布局示例和23个图表示例
-└─ 适用于：通用场景、标准布局、常见图表
-
-使用流程：
-
-1. 在为每页规划代码方案时，首先检查 .ppt_assets/INDEX.md 是否存在
-2. 如果存在，在 .ppt_assets/INDEX.md 中查找匹配的布局或图表
-3. 如果 .ppt_assets/INDEX.md 中没有找到，再查找 beauty-html/assets/INDEX.md
-4. 根据页面特征，使用匹配决策树选择最合适的布局类型
-5. 如果需要图表，从优先级最高的索引文件中选择合适的图表类型
-6. 确保生成的代码符合 INDEX.md 中的设计规范
-```
-
-#### 阶段1：分析页面特征
-
-为每一页幻灯片分析以下特征：
+为每页生成元素识别清单：
 
 ```markdown
-页面特征分析：
-
-页面 X：[页面标题]
-├─ 页面类型：[P1/P2/P3/P4/P5]
-├─ 内容类型：[概念性/数据性/对比性/流程性]
-├─ 观点数量：[N个]
-├─ 数据密度：[高/中/低]
-├─ 对比关系：[并列/对比/递进]
-├─ 包含图表：[是/否]
-├─ 包含表格：[是/否]
-└─ 推荐布局：[L1-L12]
+页面X：[页面标题]
+- 文本元素：标题1个，要点列表N项
+- 数据元素：数字N个，百分比N个
+- 图表元素：柱状图1个（5数据点）
+- 表格元素：无
+- 布局元素：卡片N个
 ```
-
-#### 阶段2：选择布局类型
-
-根据页面特征，选择合适的布局类型：
-
-**布局类型清单（基于INDEX.md）**
-
-```
-L1. 单列布局（Single Column）
-   - 适用：1个核心观点
-   - 示例：01-cover-page.html（封面页）、06-data-emphasis.html（数字强调）
-
-L2. 双列布局（Two Columns）
-   - 适用：2-3个对比观点
-   - 示例：02-two-column-comparison.html
-
-L3. 三列布局（Three Columns）
-   - 适用：3个并列观点
-   - 示例：03-three-column.html
-
-L4. 卡片网格布局（Card Grid）
-   - 适用：4-6个并列观点
-   - 示例：04-card-grid.html
-
-L5. 图表+文本布局（Chart + Text）
-   - 适用：包含图表的页面
-   - 示例：05-chart-text.html
-
-L6. 雷达图+卡片布局（Radar + Cards）
-   - 适用：能力评估+分析
-   - 示例：07-radar-card-layout.html
-
-L7. 列表式布局（List Layout）
-   - 适用：目录页（列表式）
-   - 示例：08-table-of-contents.html
-
-L8. 品牌介绍布局（Brand Intro）
-   - 适用：品牌介绍
-   - 示例：09-brand-intro-page.html
-
-L9. 网格卡片布局（Grid Cards）
-   - 适用：网格式目录（4-6章节）
-   - 示例：10-toc-grid-cards.html
-
-L10. 章节概览布局（Chapter Overview）
-   - 适用：章节概览
-   - 示例：11-chapter-overview.html
-
-L11. 流量分析布局（Traffic Analysis）
-   - 适用：流量分析
-   - 示例：12-traffic-analysis.html
-
-L12. 用户定位布局（User Positioning）
-   - 适用：用户定位
-   - 示例：13-user-positioning.html
-
-L13. 用户需求评分布局（User Demand Rating）
-   - 适用：用户需求评分（10-20个维度）
-   - 示例：14-user-demand-rating.html
-
-⚠️ 注意：所有布局示例都在 beauty-html/assets/INDEX.md 中有详细说明
-```
-
-**使用匹配决策树选择布局：**
-
-```
-根据 INDEX.md 中的匹配决策树：
-
-开始
-  ↓
-是否是封面/章节封面?
-  ├─ 是 → 使用 01-cover-page.html (L1)
-  └─ 否 ↓
-是否是目录页(3+章节)?
-  ├─ 是 → 列表式: 08-table-of-contents.html (L7)
-  │       网格式: 10-toc-grid-cards.html (L9)
-  └─ 否 ↓
-是否是关键数据展示(数据是主角)?
-  ├─ 是 → 使用 06-data-emphasis.html (L1)
-  └─ 否 ↓
-是否包含数据图表?
-  ├─ 是 ↓
-  │   数据类型?
-  │     ├─ 流量分析 → 12-traffic-analysis.html (L11)
-  │     ├─ 用户定位 → 13-user-positioning.html (L12)
-  │     ├─ 需求评分 → 14-user-demand-rating.html (L13)
-  │     ├─ 能力评估 → 07-radar-card-layout.html (L6)
-  │     └─ 通用图表 → 05-chart-text.html (L5) + 图表示例
-  └─ 否 ↓
-观点数量?
-  ├─ 1个 → 01-cover-page.html (L1)
-  ├─ 2个 → 02-two-column-comparison.html (L2)
-  ├─ 3个 → 03-three-column.html (L3)
-  ├─ 4-6个 → 04-card-grid.html (L4)
-  └─ 7+个 → 考虑分页或分组展示
-```
-
-#### 阶段3：规划CSS样式
-
-为每页规划需要的CSS样式：
-
-```markdown
-CSS样式规划：
-
-页面 X：[页面标题]
-├─ 布局CSS：
-│   ├─ [布局容器类名]
-│   └─ [布局子元素类名]
-├─ 内容CSS：
-│   ├─ [标题类名]
-│   ├─ [文本类名]
-│   └─ [列表类名]
-├─ 特殊CSS：
-│   ├─ [图表容器类名]
-│   ├─ [表格样式类名]
-│   └─ [卡片样式类名]
-└─ 响应式CSS：
-    ├─ [断点1样式]
-    ├─ [断点2样式]
-    └─ [断点3样式]
-```
-
-#### 阶段4：规划HTML结构
-
-为每页规划HTML结构：
-
-```markdown
-HTML结构规划：
-
-页面 X：[页面标题]
-├─ 外层容器：
-│   └─ <div class="slide [slide-class]">
-├─ 页面标题：
-│   └─ <h2 class="slide-title">[标题]</h2>
-├─ 内容容器：
-│   └─ <div class="slide-content">
-├─ 具体内容：
-│   ├─ [要点列表]
-│   ├─ [图表容器]
-│   └─ [表格]
-└─ 闭合标签：
-    └─ </div></div>
-```
-
-#### 阶段5：规划JavaScript代码
-
-为包含图表的页面规划JavaScript代码：
-
-```markdown
-JavaScript规划：
-
-页面 X：[页面标题]
-├─ 图表类型：[Chart.js类型]
-├─ Canvas ID：[唯一ID]
-├─ 数据配置：
-│   ├─ labels: [...]
-│   ├─ datasets: [...]
-│   └─ options: {...}
-└─ 初始化代码：
-    └─ new Chart(canvasId, config)
-```
-
-### ⚠️ Token限制处理：如果页面很多
-
-```
-如果幻灯片页面超过20页，必须分批规划：
-
-阶段3a：规划前10页的代码方案
-├─ 详细规划封面页、目录页、章节首页、前7页内容页
-├─ 为每页选择布局类型并分析特征
-├─ 列出所有CSS、HTML、JavaScript代码要点
-└─ 输出："步骤3.2阶段3a完成 - 已规划前10页代码方案
-       请输入'继续'以规划剩余页面"
-
-【等待用户输入"继续"】
-
-阶段3b：规划剩余页面的代码方案
-├─ 详细规划剩余内容页和结束页
-├─ 为每页选择布局类型并分析特征
-├─ 列出所有CSS、HTML、JavaScript代码要点
-└─ 输出："步骤3.2阶段3b完成 - 所有页面代码方案规划完成
-       总页数：N页
-       已进入步骤3.3"
-```
-
-### 输出产物
-
-- 每页的代码规划方案
-- 布局类型选择清单
-- CSS样式汇总
-- HTML结构汇总
-- JavaScript代码汇总
 
 ### 验证标准
 
-- [ ] 已读取全局布局和图表示例索引（beauty-html/assets/INDEX.md）
-- [ ] 已检查并读取项目特定资源索引（.ppt_assets/INDEX.md，如果存在）
-- [ ] 所有页面都已规划代码方案
-- [ ] 每页都有合适的布局类型（基于INDEX.md的匹配决策树）
-- [ ] 每页的布局都参考了INDEX.md中的示例
-- [ ] CSS样式清单完整（符合INDEX.md中的设计规范）
-- [ ] HTML结构清晰（参考INDEX.md中的布局示例）
-- [ ] JavaScript代码正确（参考INDEX.md中的图表示例）
-- [ ] 无页面遗漏
+- [ ] 所有页面已完成元素识别
+- [ ] 元素分类准确
+- [ ] 无遗漏内容元素
 
 ---
 
-## 步骤 3.3：生成完整HTML文件
+## 步骤 3.3：匹配HTML组件
 
 ### 目标
 
-基于步骤3.2的代码规划方案，生成完整的、可运行的McKinsey风格HTML文件。
+根据识别的元素类型，从资源文件中读取并匹配对应的HTML组件。
 
-### 执行要求
+### 组件资源读取流程
 
-按照章节顺序逐个生成幻灯片，每个章节包含以下内容：
-1. 阶段1：生成HTML框架和完整CSS样式
-2. 阶段2：按章节逐个生成幻灯片（封面页、目录页、章节首页、内容页、结束页），每个幻灯片包含HTML和对应的JavaScript图表代码
-
-**⚠️ 重要说明**：
-- 每个章节的所有幻灯片必须一次性完整生成
-- 每个幻灯片必须包含完整的HTML结构和对应的JavaScript图表代码
-- 100%保留步骤2中的所有内容，禁止简化、禁止压缩、禁止删减
-- 如果token不足，使用"继续"机制分批处理，但必须保证每个章节的完整性
-- 每个章节生成完成后，提示用户输入"继续"以生成下一个章节
-
-### ⚠️ 关键原则
-
-- ✅ 每个阶段的代码必须是完整的语法单元
-- ✅ CSS必须在阶段1一次性完整生成
-- ✅ 每个幻灯片的HTML必须完整
-- ✅ 每个幻灯片的JavaScript图表代码必须紧跟在HTML之后
-- ✅ 每个章节的所有内容必须100%保留
-- ✅ 每个章节生成完成后提示用户输入"继续"
-- ✅ 遇到token限制时使用"继续"机制，但必须保证章节完整性
-- ❌ 禁止跨阶段截断HTML标签
-- ❌ 禁止省略CSS样式
-- ❌ 禁止简化图表代码
-- ❌ 禁止压缩或删减任何内容
-- ❌ 禁止为了省token而跳过任何幻灯片或内容
-- ❌ 禁止将JavaScript图表代码与HTML分离
-
----
-
-#### 阶段1：生成HTML框架和完整CSS样式
-
-**执行流程：**
-
-```markdown
-✅ 阶段1/4：生成HTML框架和完整CSS样式
-
-生成内容：
-1. DOCTYPE声明和HTML根元素
-2. head标签和meta设置
-3. Chart.js CDN引用
-4. 完整的CSS样式（约600-800行）
-5. body开始标签
-6. 导航栏结构
-7. 幻灯片容器开始标签
-```
-
-**生成代码示例：**
-
-```html
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>[文档标题] - McKinsey风格演示文稿</title>
-
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
-  <style>
-    /* ========================================
-       McKinsey Design System - CSS Variables
-       ======================================== */
-    :root {
-      /* 配色方案 */
-      --color-bg: #FFFFFF;
-      --color-text-primary: #000000;
-      --color-text-secondary: #333333;
-      --color-accent-primary: #F85d42;
-      --color-accent-secondary: #74788d;
-      --color-blue: #556EE6;
-      --color-green: #34c38f;
-      --color-light-blue: #50a5f1;
-      --color-yellow: #f1b44c;
-
-      /* 字体大小 */
-      --font-size-title-main: 64px;
-      --font-size-title-section: 48px;
-      --font-size-title-slide: 42px;
-      --font-size-subtitle: 36px;
-      --font-size-body-primary: 20px;
-      --font-size-body-secondary: 16px;
-
-      /* 间距 */
-      --spacing-xs: 10px;
-      --spacing-sm: 20px;
-      --spacing-md: 30px;
-      --spacing-lg: 40px;
-      --spacing-xl: 60px;
-    }
-
-    /* ========================================
-       Base Styles
-       ======================================== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-      background-color: var(--color-bg);
-      color: var(--color-text-secondary);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* ========================================
-       Navigation Bar
-       ======================================== */
-    .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 80px;
-      background: white;
-      border-bottom: 2px solid #e0e0e0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 var(--spacing-xl);
-      z-index: 1000;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    .navbar h1 {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--color-text-primary);
-    }
-
-    .nav-controls {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-    }
-
-    .nav-btn {
-      padding: 12px 24px;
-      background: var(--color-accent-primary);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .nav-btn:hover {
-      background: #d94a2f;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(248, 93, 66, 0.3);
-    }
-
-    .nav-btn:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .slide-counter {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--color-text-secondary);
-      padding: 0 var(--spacing-sm);
-    }
-
-    /* ========================================
-       Presentation Container
-       ======================================== */
-    .presentation-container {
-      margin-top: 80px;
-      width: 100%;
-      min-height: calc(100vh - 80px);
-    }
-
-    /* ========================================
-       Slide Base Styles
-       ======================================== */
-    .slide {
-      display: none;
-      width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: var(--spacing-xl);
-      min-height: calc(100vh - 80px);
-      animation: fadeIn 0.5s ease-in-out;
-    }
-
-    .slide.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .slide-title {
-      font-size: var(--font-size-title-slide);
-      font-weight: 700;
-      color: var(--color-text-primary);
-      margin-bottom: var(--spacing-md);
-      border-bottom: 3px solid var(--color-accent-primary);
-      padding-bottom: var(--spacing-sm);
-    }
-
-    .slide-content {
-      width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    /* ========================================
-       Cover Page (P1)
-       ======================================== */
-    .slide.title-slide {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-    }
-
-    .title-main {
-      font-size: var(--font-size-title-main);
-      font-weight: 700;
-      margin-bottom: var(--spacing-md);
-      line-height: 1.2;
-    }
-
-    .subtitle {
-      font-size: var(--font-size-subtitle);
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: var(--spacing-sm);
-    }
-
-    .date-info {
-      font-size: var(--font-size-body-primary);
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    /* ========================================
-       Chapter Cover (P3)
-       ======================================== */
-    .slide.section-slide {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding-left: 100px;
-    }
-
-    .chapter-number {
-      font-size: 72px;
-      font-weight: 700;
-      color: var(--color-accent-primary);
-      margin-bottom: var(--spacing-sm);
-    }
-
-    .chapter-title {
-      font-size: var(--font-size-title-section);
-      font-weight: 700;
-      color: var(--color-text-primary);
-      margin-bottom: var(--spacing-md);
-    }
-
-    .chapter-description {
-      font-size: var(--font-size-body-primary);
-      color: var(--color-text-secondary);
-      margin-bottom: var(--spacing-lg);
-      max-width: 800px;
-    }
-
-    .sub-chapter-list {
-      list-style: none;
-      font-size: var(--font-size-body-primary);
-      color: var(--color-text-secondary);
-    }
-
-    .sub-chapter-list li {
-      padding: var(--spacing-sm) 0;
-      border-bottom: 1px solid #e0e0e0;
-    }
-
-    .sub-chapter-list li:before {
-      content: "→ ";
-      color: var(--color-accent-primary);
-      font-weight: 700;
-      margin-right: var(--spacing-xs);
-    }
-
-    /* ========================================
-       Table of Contents (P2) - Grid Cards
-       ======================================== */
-    .toc-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: var(--spacing-md);
-      margin: var(--spacing-lg) 0;
-    }
-
-    .toc-card {
-      background: white;
-      padding: var(--spacing-lg);
-      border-radius: 12px;
-      border-left: 6px solid var(--color-accent-primary);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-
-    .toc-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-    }
-
-    .chapter-number-small {
-      font-size: 36px;
-      font-weight: 700;
-      color: var(--color-accent-primary);
-      margin-bottom: var(--spacing-sm);
-    }
-
-    .toc-card h3 {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--color-text-primary);
-      margin-bottom: var(--spacing-xs);
-    }
-
-    /* ========================================
-       Three Column Layout (L3)
-       ======================================== */
-    .three-column-layout {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--spacing-md);
-      margin: var(--spacing-lg) 0;
-    }
-
-    .three-column-layout .column {
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      padding: var(--spacing-md);
-      border-radius: 12px;
-      border-left: 4px solid var(--color-accent-primary);
-      transition: all 0.3s ease;
-    }
-
-    .three-column-layout .column:nth-child(1) {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-    }
-
-    .three-column-layout .column:nth-child(2) {
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-      color: white;
-    }
-
-    .three-column-layout .column:nth-child(3) {
-      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-      color: white;
-    }
-
-    .three-column-layout .column:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    }
-
-    .three-column-layout .column h3 {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: var(--spacing-sm);
-    }
-
-    .number-highlight {
-      font-size: 42px;
-      font-weight: 700;
-      margin: var(--spacing-sm) 0;
-    }
-
-    /* ========================================
-       Card Grid Layout (L4)
-       ======================================== */
-    .highlight-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: var(--spacing-md);
-      margin: var(--spacing-lg) 0;
-    }
-
-    .highlight-card {
-      background: white;
-      padding: var(--spacing-md);
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      border-top: 4px solid var(--color-accent-primary);
-      transition: all 0.3s ease;
-    }
-
-    .highlight-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    }
-
-    .card-title {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--color-text-primary);
-      margin-bottom: var(--spacing-xs);
-    }
-
-    .card-subtitle {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--color-accent-primary);
-      margin-bottom: var(--spacing-sm);
-    }
-
-    .card-content {
-      list-style: none;
-      font-size: 16px;
-      color: var(--color-text-secondary);
-    }
-
-    .card-content li {
-      padding: 6px 0;
-      padding-left: 20px;
-      position: relative;
-    }
-
-    .card-content li:before {
-      content: "•";
-      color: var(--color-accent-primary);
-      font-weight: 700;
-      position: absolute;
-      left: 0;
-    }
-
-    /* ========================================
-       Chart + Text Layout (L5)
-       ======================================== */
-    .chart-text-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--spacing-lg);
-      align-items: center;
-      margin: var(--spacing-lg) 0;
-    }
-
-    .chart-container {
-      position: relative;
-      width: 100% !important;
-      min-width: 300px !important;
-      max-width: 100% !important;
-      height: 500px;
-      margin: var(--spacing-lg) 0;
-      background: white;
-      padding: var(--spacing-md);
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      box-sizing: border-box;
-    }
-
-    .chart-container canvas {
-      width: 100% !important;
-      height: 100% !important;
-      display: block !important;
-    }
-
-    .text-content {
-      padding: var(--spacing-md);
-    }
-
-    .text-content h3 {
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--color-text-primary);
-      margin-bottom: var(--spacing-sm);
-    }
-
-    .key-insights {
-      list-style: none;
-      font-size: var(--font-size-body-primary);
-      color: var(--color-text-secondary);
-    }
-
-    .key-insights li {
-      padding: var(--spacing-sm) 0;
-      padding-left: 30px;
-      position: relative;
-      border-bottom: 1px solid #e0e0e0;
-    }
-
-    .key-insights li:before {
-      content: "✓";
-      color: var(--color-green);
-      font-weight: 700;
-      font-size: 20px;
-      position: absolute;
-      left: 0;
-    }
-
-    /* ========================================
-       Bullet List
-       ======================================== */
-    .bullet-list {
-      list-style: none;
-      font-size: var(--font-size-body-primary);
-      color: var(--color-text-secondary);
-      margin: var(--spacing-md) 0;
-    }
-
-    .bullet-list li {
-      padding: var(--spacing-sm) 0;
-      padding-left: 30px;
-      position: relative;
-    }
-
-    .bullet-list li:before {
-      content: "•";
-      color: var(--color-accent-primary);
-      font-weight: 700;
-      font-size: 24px;
-      position: absolute;
-      left: 0;
-    }
-
-    /* ========================================
-       Emphasis Box
-       ======================================== */
-    .emphasis-box {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: var(--spacing-lg);
-      border-radius: 12px;
-      margin: var(--spacing-lg) 0;
-      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-    }
-
-    .emphasis-box h3 {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: var(--spacing-sm);
-    }
-
-    .emphasis-box p {
-      font-size: var(--font-size-body-primary);
-      line-height: 1.8;
-    }
-
-    /* ========================================
-       Fullscreen Button
-       ======================================== */
-    .fullscreen-btn {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 50px;
-      height: 50px;
-      background: var(--color-accent-primary);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      font-size: 24px;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(248, 93, 66, 0.3);
-      transition: all 0.3s ease;
-      z-index: 999;
-    }
-
-    .fullscreen-btn:hover {
-      background: #d94a2f;
-      transform: scale(1.1);
-    }
-
-    /* ========================================
-       Responsive Design
-       ======================================== */
-    @media (max-width: 1024px) {
-      .navbar {
-        padding: 0 var(--spacing-md);
-      }
-
-      .slide {
-        padding: var(--spacing-md);
-      }
-
-      .title-main {
-        font-size: 48px;
-      }
-
-      .three-column-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .chart-text-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .chart-container {
-        height: 400px;
-        padding: var(--spacing-sm);
-      }
-
-      .highlight-cards {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      }
-    }
-
-    @media (max-width: 768px) {
-      .navbar h1 {
-        font-size: 18px;
-      }
-
-      .nav-btn {
-        padding: 10px 16px;
-        font-size: 14px;
-      }
-
-      .slide-counter {
-        font-size: 14px;
-      }
-
-      .title-main {
-        font-size: 36px;
-      }
-
-      .slide-title {
-        font-size: 32px;
-      }
-
-      .chart-container {
-        height: 350px;
-      }
-
-      .highlight-cards {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-</head>
-<body>
-  <nav class="navbar">
-    <h1>[文档标题]</h1>
-    <div class="nav-controls">
-      <button class="nav-btn" id="prevBtn">上一页</button>
-      <span class="slide-counter">1 / N</span>
-      <button class="nav-btn" id="nextBtn">下一页</button>
-    </div>
-  </nav>
-
-  <div class="presentation-container">
-```
-
-**输出提示：**
+**步骤3.3.1：读取beauty-html组件索引**
 
 ```
-✅ 阶段1/4完成：已生成HTML框架和完整CSS样式（约800行）
-
-已完成：
-- DOCTYPE声明和HTML根元素
-- head标签和meta设置
-- Chart.js CDN引用
-- 完整的CSS样式（McKinsey配色、响应式设计）
-- body开始标签
-- 导航栏结构
-- 幻灯片容器开始标签
-
-请输入'继续'以生成前半部分幻灯片（阶段2/4）
+执行操作：
+├─ 读取 beauty-html/assets/COMPONENTS_INDEX.md
+│   ├─ 图表组件索引（C1-C3）
+│   ├─ 图示组件索引（D1-D3）
+│   ├─ 表格组件索引（T1）
+│   └─ 组件选择决策树
+├─ 遍历 beauty-html/assets/components/*.html
+│   ├─ 图表组件示例（bar-chart, line-chart, pie-chart等）
+│   ├─ 图示组件示例（swot, timeline, flowchart等）
+│   └─ 特殊组件示例（funnel, pyramid, gauge等）
+└─ 记录可用组件及其CSS类名和配置参数
 ```
 
----
-
-#### 阶段2：按章节逐个生成幻灯片（包含HTML和JavaScript图表代码）
-
-**执行流程：**
-
-```markdown
-✅ 阶段2/3：按章节逐个生成幻灯片（包含HTML和JavaScript图表代码）
-
-生成方式：
-- 按照步骤2生成的幻灯片页面清单，逐个章节生成所有幻灯片
-- 每个章节包含：封面页、目录页、章节首页、该章节的所有内容页
-- 每个幻灯片必须包含：完整的HTML结构 + 对应的JavaScript图表代码
-- 100%保留步骤2中的所有内容，禁止简化、禁止压缩、禁止删减
-- 如果token不足，使用"继续"机制分批处理，但必须保证每个章节的完整性
-```
-
-**⚠️ 重要说明：**
+**步骤3.3.2：读取.ppt_assets组件资源（如存在）**
 
 ```
-1. 必须按照步骤2生成的幻灯片页面清单顺序逐个生成
-2. 每个幻灯片的所有内容必须100%保留，包括：
-   - 所有要点（bullet points）
-   - 所有数据点（数值、百分比、货币等）
-   - 所有表格（完整的行列数据）
-   - 所有图表（完整的配置和数据）
-   - 所有结论（完整文字）
-3. 每个幻灯片必须包含：
-   - 完整的HTML结构（<div class="slide">...</div>）
-   - 对应的JavaScript图表初始化代码（如果有图表）
-4. JavaScript图表代码必须紧跟在对应幻灯片的HTML之后
-5. 每个幻灯片的HTML必须完整，不能跨章节截断
-6. 遇到token限制时，必须使用"继续"机制，但必须保证当前章节的所有幻灯片都生成完成
-7. 禁止为了省token而跳过任何幻灯片或内容
-8. 禁止使用"..."或"更多内容"等省略方式
-9. 禁止将JavaScript图表代码与HTML分离
+执行操作：
+├─ 检查 .ppt_assets/COMPONENTS_INDEX.md（如存在）
+├─ 遍历 .ppt_assets/components/*.html（如存在）
+├─ 遍历 .ppt_assets/assets/components/*.html（如存在）
+└─ 记录项目特定的组件配置（优先级高于beauty-html）
 ```
 
-**生成代码示例：**
-
-```html
-    <!-- 封面页 -->
-    <div class="slide title-slide active" id="slide-1">
-      <h1 class="title-main">[文档主标题]</h1>
-      <p class="subtitle">[副标题]</p>
-      <p class="date-info">[日期]</p>
-    </div>
-
-    <!-- 目录页 -->
-    <div class="slide" id="slide-2">
-      <h2 class="slide-title">目录 / Contents</h2>
-      <div class="slide-content">
-        <div class="toc-grid">
-          <div class="toc-card">
-            <div class="chapter-number-small">01</div>
-            <h3>[第一章标题]</h3>
-          </div>
-          <div class="toc-card">
-            <div class="chapter-number-small">02</div>
-            <h3>[第二章标题]</h3>
-          </div>
-          <!-- ... 更多章节卡片，100%保留所有章节 ... -->
-        </div>
-      </div>
-    </div>
-
-    <!-- 第一章章节首页 -->
-    <div class="slide section-slide" id="slide-3">
-      <div class="chapter-number">01</div>
-      <h2 class="chapter-title">[第一章标题]</h2>
-      <p class="chapter-description">[章节描述]</p>
-      <ul class="sub-chapter-list">
-        <li>1.1 [子章节1.1标题]</li>
-        <li>1.2 [子章节1.2标题]</li>
-        <!-- ... 所有子章节，100%保留 ... -->
-      </ul>
-    </div>
-
-    <!-- 第一章内容页1：三列布局 -->
-    <div class="slide" id="slide-4">
-      <h2 class="slide-title">[页面标题]</h2>
-      <div class="slide-content">
-        <div class="three-column-layout">
-          <div class="column">
-            <h3>[标题1]</h3>
-            <div class="number-highlight">[数字1]</div>
-            <p>[内容1完整文字]</p>
-          </div>
-          <div class="column">
-            <h3>[标题2]</h3>
-            <div class="number-highlight">[数字2]</div>
-            <p>[内容2完整文字]</p>
-          </div>
-          <div class="column">
-            <h3>[标题3]</h3>
-            <div class="number-highlight">[数字3]</div>
-            <p>[内容3完整文字]</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 第一章内容页2：卡片网格布局 -->
-    <div class="slide" id="slide-5">
-      <h2 class="slide-title">[页面标题]</h2>
-      <div class="slide-content">
-        <div class="highlight-cards">
-          <div class="highlight-card">
-            <h4 class="card-title">[卡片1标题]</h4>
-            <p class="card-subtitle">[副标题]</p>
-            <ul class="card-content">
-              <li>[要点1完整文字]</li>
-              <li>[要点2完整文字]</li>
-              <li>[要点3完整文字]</li>
-              <!-- ... 所有要点，100%保留 ... -->
-            </ul>
-          </div>
-          <!-- ... 所有卡片，100%保留 ... -->
-        </div>
-      </div>
-    </div>
-
-    <!-- 第一章内容页3：图表+文本布局 -->
-    <div class="slide" id="slide-6">
-      <h2 class="slide-title">[页面标题]</h2>
-      <div class="slide-content">
-        <div class="chart-text-layout">
-          <div class="chart-container">
-            <canvas id="chart-1"></canvas>
-          </div>
-          <div class="text-content">
-            <h3>[标题]</h3>
-            <ul class="key-insights">
-              <li>[要点1完整文字]</li>
-              <li>[要点2完整文字]</li>
-              <li>[要点3完整文字]</li>
-              <!-- ... 所有要点，100%保留 ... -->
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 第一章内容页3对应的JavaScript图表代码 -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const ctx1 = document.getElementById('chart-1');
-        if (ctx1) {
-          new Chart(ctx1, {
-            type: 'bar',
-            data: {
-              labels: ['标签1', '标签2', '标签3', '标签4', '标签5'],
-              datasets: [{
-                label: '数据系列1',
-                data: [数值1, 数值2, 数值3, 数值4, 数值5],
-                backgroundColor: '#F85d42',
-                borderColor: '#d94a2f',
-                borderWidth: 2
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: {
-                  display: true,
-                  position: 'top',
-                  labels: {
-                    font: {
-                      size: 14
-                    },
-                    color: '#333333'
-                  }
-                },
-                title: {
-                  display: true,
-                  text: '[图表标题]',
-                  font: {
-                    size: 18,
-                    weight: 'bold'
-                  },
-                  color: '#000000',
-                  padding: {
-                    bottom: 20
-                  }
-                }
-              },
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  ticks: {
-                    font: {
-                      size: 12
-                    },
-                    color: '#333333'
-                  },
-                  grid: {
-                    display: true,
-                    color: '#e0e0e0'
-                  }
-                },
-                x: {
-                  ticks: {
-                    font: {
-                      size: 12
-                    },
-                    color: '#333333'
-                  },
-                  grid: {
-                    display: false
-                  }
-                }
-              }
-            }
-          });
-        }
-      });
-    </script>
-
-    <!-- 第一章内容页4：另一个图表 -->
-    <div class="slide" id="slide-7">
-      <h2 class="slide-title">[页面标题]</h2>
-      <div class="slide-content">
-        <div class="chart-text-layout">
-          <div class="chart-container">
-            <canvas id="chart-2"></canvas>
-          </div>
-          <div class="text-content">
-            <h3>[标题]</h3>
-            <ul class="key-insights">
-              <li>[要点1完整文字]</li>
-              <li>[要点2完整文字]</li>
-              <li>[要点3完整文字]</li>
-              <!-- ... 所有要点，100%保留 ... -->
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 第一章内容页4对应的JavaScript图表代码 -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const ctx2 = document.getElementById('chart-2');
-        if (ctx2) {
-          new Chart(ctx2, {
-            type: 'line',
-            data: {
-              labels: ['标签1', '标签2', '标签3', '标签4', '标签5'],
-              datasets: [{
-                label: '数据系列1',
-                data: [数值1, 数值2, 数值3, 数值4, 数值5],
-                borderColor: '#556EE6',
-                backgroundColor: 'rgba(85, 110, 230, 0.1)',
-                borderWidth: 3,
-                fill: true,
-                tension: 0.4
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: {
-                  display: true,
-                  position: 'top',
-                  labels: {
-                    font: {
-                      size: 14
-                    },
-                    color: '#333333'
-                  }
-                },
-                title: {
-                  display: true,
-                  text: '[图表标题]',
-                  font: {
-                    size: 18,
-                    weight: 'bold'
-                  },
-                  color: '#000000',
-                  padding: {
-                    bottom: 20
-                  }
-                }
-              },
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  ticks: {
-                    font: {
-                      size: 12
-                    },
-                    color: '#333333'
-                  },
-                  grid: {
-                    display: true,
-                    color: '#e0e0e0'
-                  }
-                },
-                x: {
-                  ticks: {
-                    font: {
-                      size: 12
-                    },
-                    color: '#333333'
-                  },
-                  grid: {
-                    display: false
-                  }
-                }
-              }
-            }
-          });
-        }
-      });
-    </script>
-
-    <!-- ... 第一章的所有内容页，每个包含HTML和对应的JavaScript图表代码，100%保留所有内容 ... -->
-
-    <!-- 第二章章节首页 -->
-    <div class="slide section-slide" id="slide-X">
-      <div class="chapter-number">02</div>
-      <h2 class="chapter-title">[第二章标题]</h2>
-      <p class="chapter-description">[章节描述]</p>
-      <ul class="sub-chapter-list">
-        <li>2.1 [子章节2.1标题]</li>
-        <li>2.2 [子章节2.2标题]</li>
-        <!-- ... 所有子章节，100%保留 ... -->
-      </ul>
-    </div>
-
-    <!-- 第二章的所有内容页，每个包含HTML和对应的JavaScript图表代码，100%保留所有内容 ... -->
-
-    <!-- ... 所有章节的所有幻灯片，每个包含HTML和对应的JavaScript图表代码，100%保留所有内容 ... -->
-
-    <!-- 结束页 -->
-    <div class="slide" id="slide-N">
-      <h2 class="slide-title">谢谢 / Thank You</h2>
-      <div class="slide-content" style="text-align: center;">
-        <p style="font-size: 36px; margin-bottom: 30px;">谢谢观看</p>
-        <p style="font-size: 24px; color: #666;">[联系方式]</p>
-        <p style="font-size: 20px; color: #999; margin-top: 20px;">Questions?</p>
-      </div>
-    </div>
-
-    <!-- 幻灯片容器结束标签 -->
-  </div>
-
-  <!-- 全屏按钮 -->
-  <button class="fullscreen-btn" id="fullscreenBtn">⛶</button>
-```
-
-**输出提示：**
+**组件资源读取优先级**：
 
 ```
-✅ 阶段2/3完成：已按章节逐个生成所有幻灯片（包含HTML和JavaScript图表代码）（100%）
+优先级顺序（从高到低）：
+1. .ppt_assets/assets/components/*.html（如存在）
+2. .ppt_assets/components/*.html（如存在）
+3. .ppt_assets/COMPONENTS_INDEX.md（如存在）
+4. beauty-html/assets/components/*.html
+5. beauty-html/assets/COMPONENTS_INDEX.md
 
-已完成：
-- 封面页（P1）：1页
-- 目录页（P2）：X页
-- 章节首页（P3）：N页
-- 内容页（P4）：M页（每个包含HTML和对应的JavaScript图表代码）
-- 结束页（P5）：1页
-
-当前进度：页面1 - N 全部生成完成
-内容完整性：100%（无遗漏、无删减、无简化）
-图表代码完整性：100%（每个图表都有对应的JavaScript初始化代码）
-
-请输入'继续'以生成导航逻辑和结束标签（阶段3/3）
+示例：
+├─ 需求：漏斗图组件
+├─ 检查.ppt_assets/assets/components/funnel-chart.html → 存在则使用
+├─ 检查.ppt_assets/components/funnel-chart.html → 存在则使用
+├─ 检查.beauty-html/assets/components/funnel-chart-example.html → 使用此版本
+└─ → 根据实际找到的文件路径读取组件代码
 ```
 
----
+### 组件选择决策树
 
-#### 阶段3：生成导航逻辑和结束标签
-
-**执行流程：**
-
-```markdown
-✅ 阶段3/3：生成导航逻辑和结束标签
-
-生成内容：
-- 导航逻辑（上一页/下一页、键盘导航）
-- 全屏切换功能
-- HTML结束标签
-```
-
-**⚠️ 重要说明：**
+根据识别的元素类型，从已读取的资源中选择匹配组件：
 
 ```
-1. 阶段3只生成导航逻辑和结束标签
-2. 不再生成图表初始化代码（图表代码已在阶段2中跟随每个幻灯片的HTML一起生成）
-3. 导航逻辑包括：按钮导航、键盘导航、全屏切换
-4. 确保HTML标签正确闭合
+数据内容必须使用图表组件，数据可视化优先级规则：
+
+【必须使用图表的情况】
+├─ 数值对比（如：市场规模、增长率、占比）→ 柱状图或饼图
+├─ 时间趋势（如：历年数据变化、季度趋势）→ 折线图
+├─ 多维评估（如：SWOT分析、竞争力评估）→ 雷达图
+├─ 流程转化（如：销售漏斗、用户转化）→ 漏斗图
+└─ 分类占比（如：市场份额、预算分配）→ 饼图或环形图
+
+【图表类型选择规则】
+├─ 柱状图：适用离散类别数据比较，3-10个数据点
+├─ 折线图：适用连续时间序列数据，3-12个时间点
+├─ 饼图：适用部分与整体占比，2-6个分类
+├─ 雷达图：适用多维度能力评估，4-8个维度
+└─ 漏斗图：适用流程转化分析，3-6个阶段
+
+【布局规则】
+├─ 单图表页：必须使用两列布局（图表55% + 洞察45%）
+├─ 多图表页：必须使用三列布局（并排对比）
+└─ 禁止单列布局放置图表
+
+内容元素 → 推荐组件（从已读取的组件资源中选择）
+├─ 要点列表 → ul.bullet-list / ul.numbered-list
+├─ 数字强调 → .big-number
+├─ 柱状图 → div.bar-chart（多列布局，必须）
+├─ 折线图 → div.line-chart（多列布局，必须）
+├─ 饼图 → div.pie-chart（多列布局，必须）
+├─ 雷达图 → div.radar-chart（多列布局，必须）
+├─ 漏斗图 → div.funnel-chart（多列布局，必须）
+├─ 金字塔图 → div.pyramid-chart
+├─ 对比分析 → div.comparison-chart
+├─ SWOT分析 → div.swot-analysis
+├─ 时间线 → div.timeline
+├─ 流程图 → div.flowchart
+├─ 表格 → table.comparison-table
+└─ 图表解释说明 → div.chart-insights / div.insight-panel
 ```
 
-**生成代码示例：**
-
-```html
-  <script>
-    // ========================================
-    // Navigation Logic
-    // ========================================
-    const slides = document.querySelectorAll('.slide');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const slideCounter = document.querySelector('.slide-counter');
-    const fullscreenBtn = document.getElementById('fullscreenBtn');
-    let currentSlide = 0;
-
-    function showSlide(index) {
-      if (index < 0 || index >= slides.length) return;
-
-      slides[currentSlide].classList.remove('active');
-      currentSlide = index;
-      slides[currentSlide].classList.add('active');
-
-      slideCounter.textContent = `${currentSlide + 1} / ${slides.length}`;
-
-      prevBtn.disabled = currentSlide === 0;
-      nextBtn.disabled = currentSlide === slides.length - 1;
-    }
-
-    prevBtn.addEventListener('click', () => {
-      showSlide(currentSlide - 1);
-    });
-
-    nextBtn.addEventListener('click', () => {
-      showSlide(currentSlide + 1);
-    });
-
-    // Keyboard Navigation
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        showSlide(currentSlide - 1);
-      } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
-        showSlide(currentSlide + 1);
-      }
-    });
-
-    // Fullscreen Toggle
-    fullscreenBtn.addEventListener('click', () => {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
-    });
-  </script>
-</body>
-</html>
-```
-
-**输出提示：**
+**图表组件使用验证清单 [强制检查]**：
 
 ```
-✅ 阶段3/3完成：已生成导航逻辑和结束标签（100%）
+每个包含数据的页面 图表类型选择必须验证：
 
-已完成：
-- 导航逻辑（上一页/下一页）
-- 键盘导航（方向键、空格键）
-- 全屏切换功能
-- HTML结束标签
+□正确
+   ├─ □ 数值对比使用柱状图
+   ├─ □ 时间趋势使用折线图
+   ├─ □ 占比分析使用饼图
+   ├─ □ 多维评估使用雷达图
+   └─ □ 流程转化使用漏斗图
 
-HTML文件生成完成！
-总代码行数：约1200行
-文件大小：约60KB
+□ 图表布局正确
+   ├─ □ 使用两列布局（图表+洞察）
+   └─ □ 禁止单列布局
 
-建议的文件名：
-[文档标题]_McKinsey风格演示文稿.html
+□ 图表数据完整
+   ├─ □ 所有数据点已可视化
+   ├─ □ 数据标签完整显示
+   └─ □ 图表标题准确描述
+
+□ 洞察面板完整
+   ├─ □ 图表概述完整
+   ├─ □ 数据解读逐项展开
+   ├─ □ 洞察分析提炼到位
+   └─ □ 行动建议（推荐）
+
+□ 禁止行为
+   ├─ □ 没有用文本列表代替图表
+   ├─ □ 没有省略图表数据标签
+   ├─ □ 没有删除图表数值
+   └─ □ 没有简化图表说明
 ```
 
-### 输出产物
+### 图表解释说明组件
 
-- 完整的HTML文件（约1200行）
-- CSS样式（约800行）
-- JavaScript代码（约100行）
-- 图表配置（根据实际需求）
+**必须为每个图表配置解释说明组件**：
+
+```
+图表页组件结构：
+├─ 图表容器（左侧55%）
+│   └─ 图表HTML（柱状图/折线图/饼图等）
+└─ 洞察面板（右侧45%）
+    ├─ 图表概述
+    ├─ 数据解读
+    ├─ 洞察分析
+    └─ 行动建议（推荐）
+```
+
+**洞察面板组件资源读取**：
+
+```
+读取流程：
+1. 检查 .ppt_assets/assets/components/*insight*.html（如存在）
+2. 检查 .ppt_assets/components/*insight*.html（如存在）
+3. 检查 beauty-html/assets/components/*insight*.html
+4. 检查 beauty-html/assets/guides/INSIGHT_VISUALIZATION_GUIDE.md
+5. 复制洞察面板的HTML结构和CSS样式
+6. 根据步骤2.3.2生成的洞察内容填充数据
+
+组件结构参考：
+├─ .insight-panel（洞察面板容器）
+│   ├─ .insight-section.chart-overview（图表概述）
+│   ├─ .insight-section.data-interpretation（数据解读）
+│   ├─ .insight-section.insight-analysis（洞察分析）
+│   └─ .insight-section.action-recommendations（行动建议）
+```
+
+### 禁止行为 [CRITICAL]
+
+**❌ 绝对禁止**：
+- ❌ 图表页没有洞察面板或解释说明
+- ❌ 洞察面板只有简单的一两句话
+- ❌ 省略图表中的关键数据解读
+- ❌ 只保留图表，没有文字说明
+
+**✅ 正确做法**：
+- ✅ 每个图表必须配合完整的洞察面板
+- ✅ 洞察面板必须包含：图表概述、数据解读、洞察分析
+- ✅ 行动建议推荐添加
+- ✅ 洞察面板内容必须与步骤2.3.2的输出一致
+
+### 组件示例参考规则
+
+```
+选择组件时，必须按优先级读取以下资源：
+1. .ppt_assets/assets/components/[component-name]-example.html（如存在）
+2. .ppt_assets/components/[component-name]-example.html（如存在）
+3. .ppt_assets/INDEX.md 中的组件示例（如存在）
+4. beauty-html/assets/components/[component-name]-example.html
+5. beauty-html/assets/COMPONENTS_INDEX.md 中的组件配置
+
+示例参考步骤：
+1. 确定组件类型（如：漏斗图）
+2. 按优先级检查资源文件是否存在
+3. 读取找到的资源文件，获取HTML结构和CSS样式
+4. 复制组件代码到当前页面
+5. 根据实际内容调整数据和标签
+```
+
+### 图表布局规则 [CRITICAL]
+
+- ❌ 禁止单列布局放置图表
+- ✅ 必须使用2列布局（图表+洞察）
+- ✅ 或使用3列布局（多图表并排）
+- ✅ 布局配置参考 beauty-html/LAYOUTS_INDEX.md 和 beauty-html/assets/layouts/*.html
 
 ### 验证标准
 
-- [ ] HTML结构完整
-- [ ] CSS样式完整
-- [ ] JavaScript功能完整
-- [ ] 所有图表已配置
-- [ ] 响应式设计完备
-- [ ] 无语法错误
+- [ ] 已读取beauty-html/assets/COMPONENTS_INDEX.md
+- [ ] 已读取beauty-html/assets/components/*.html中的组件示例
+- [ ] 如.ppt_assets存在，已优先读取项目特定组件
+- [ ] 每个元素都有匹配的组件
+- [ ] 组件选择参考了已读取的资源文件
+- [ ] 图表使用多列布局
+- [ ] 组件选择符合内容特征
 
 ---
 
-## 步骤 3.4：验证代码质量
+## 步骤 3.4：选择布局
 
 ### 目标
 
-全面检查生成的HTML文件，确保质量和完整性。
+根据页面类型和组件需求，从资源文件中读取并选择合适的布局。
 
-### 执行要求
+### 布局资源读取流程
 
-#### 验证项目1：内容完整性验证
-
-```
-□ 所有页面都已生成？
-□ 页面数量与步骤2一致？
-□ 所有内容都已包含？
-□ 无遗漏、无删减、无简化？
-```
-
-#### 验证项目2：HTML结构验证
+**步骤3.4.1：读取beauty-html布局索引**
 
 ```
-□ DOCTYPE声明正确？
-□ HTML标签正确闭合？
-□ 语义化标签使用正确？
-□ ID唯一性检查通过？
+执行操作：
+├─ 读取 beauty-html/assets/LAYOUTS_INDEX.md
+│   ├─ 布局类型索引（L1-L17）
+│   ├─ 布局结构示例
+│   ├─ 布局配置参数
+│   └─ 布局选择决策树
+├─ 遍历 beauty-html/assets/layouts/*.html
+│   ├─ 封面页布局（cover-page, NEW_01-cover-page.html等）
+│   ├─ 内容页布局（two-column, three-column, card-grid等）
+│   ├─ 章节页布局（chapter-overview, NEW_05-chapter-cover等）
+│   └─ 特殊布局（toc-grid, traffic-analysis等）
+└─ 记录可用布局及其CSS类名和配置参数
 ```
 
-#### 验证项目3：CSS样式验证
+**步骤3.4.2：读取.ppt_assets布局资源（如存在）**
 
 ```
-□ McKinsey配色方案正确？
-□ 字体大小符合规范？
-□ 间距符合标准？
-□ 响应式设计完备？
+执行操作：
+├─ 检查 .ppt_assets/LAYOUTS_INDEX.md（如存在）
+├─ 遍历 .ppt_assets/layouts/*.html（如存在）
+├─ 遍历 .ppt_assets/assets/layouts/*.html（如存在）
+└─ 记录项目特定的布局配置（优先级高于beauty-html）
 ```
 
-#### 验证项目4：JavaScript功能验证
+**布局资源读取优先级**：
 
 ```
-□ 导航功能正常？
-□ 键盘导航正常？
-□ 全屏切换正常？
-□ 图表初始化正常？
+优先级顺序（从高到低）：
+1. .ppt_assets/assets/layouts/*.html（如存在）
+2. .ppt_assets/layouts/*.html（如存在）
+3. .ppt_assets/LAYOUTS_INDEX.md（如存在）
+4. beauty-html/assets/layouts/*.html
+5. beauty-html/assets/LAYOUTS_INDEX.md
+
+示例：
+├─ 需求：封面页布局
+├─ 检查.ppt_assets/assets/layouts/cover-page.html → 存在则使用
+├─ 检查.ppt_assets/layouts/cover-page.html → 存在则使用
+├─ 检查.ppt_assets/INDEX.md是否有封面页布局 → 存在则使用
+├─ 检查.beauty-html/assets/layouts/01-cover-page.html → 使用此版本
+└─ → 根据实际找到的文件路径读取布局代码
 ```
 
-#### 验证项目5：图表显示验证
+### 布局选择决策树
+
+根据页面类型和组件需求，从已读取的资源中选择匹配布局：
 
 ```
-□ 所有图表容器宽度为100%？
-□ Chart.js配置正确？
-□ 图表数据准确？
-□ 图表交互正常？
+根据页面内容特征选择布局：
+1. 页面包含图表？
+   ├─ 是 → 图表数量？
+   │   ├─ 1个 → 两列布局（图表+洞察）
+   │   ├─ 2个 → 三列布局（并排对比）
+   │   └─ ≥3个 → 卡片网格或分多页
+   └─ 否 → 内容类型？
+       ├─ 纯文本 ≤8要点 → 单列布局
+       ├─ 步骤/流程 → 流程布局
+       ├─ 时间序列 → 时间线布局
+       ├─ 多主题并列 → 卡片网格布局
+       └─ 章节过渡 → 章节首页布局
+
+布局类型 → 推荐布局（从已读取的布局资源中选择）
+├─ 封面页 → .cover-slide / .slide.cover
+├─ 目录页 → .toc-slide / .slide.toc
+├─ 章节首页 → .chapter-slide / .slide.chapter
+├─ 内容页-纯文本 → .single-column / .content-text
+├─ 内容页-图表+洞察 → .two-column / .chart-insights
+├─ 内容页-多图表 → .three-column / .multi-chart
+├─ 内容页-卡片网格 → .card-grid / .grid-cards
+└─ 结束页 → .ending-slide / .slide.ending
 ```
 
-#### 验证项目6：响应式设计验证
+### 项目特定布局优先级 [CRITICAL]
+
+如果.ppt_assets布局资源存在，必须优先使用：
 
 ```
-□ 桌面端显示正常？
-□ 平板端显示正常？
-□ 手机端显示正常？
-□ 断点设置合理？
+检查流程：
+1. 确定所需布局类型（如：封面页布局、图表+洞察布局）
+2. 按优先级检查.ppt_assets资源文件是否存在
+3. 如果有 → 读取并使用.ppt_assets版本
+4. 如果没有 → 读取并使用beauty-html版本
+
+示例：
+├─ 需求：封面页布局
+├─ 检查.ppt_assets/assets/layouts/cover-page.html → 存在
+└─ → 使用.ppt_assets中的封面页布局和样式
+
+├─ 需求：漏斗图布局（.ppt_assets中不存在）
+├─ 检查.ppt_assets/assets/layouts/funnel-chart.html → 不存在
+├─ 检查.beauty-html/assets/layouts/funnel-chart.html → 不存在
+├─ 检查.beauty-html/assets/layouts/05-chart-text.html → 存在
+└─ → 使用beauty-html中的两列布局（图表+洞察）适配漏斗图
 ```
 
-### 输出产物
+### 布局配置参考
 
-- 验证报告
-- 问题清单（如有）
-- 修正建议（如有）
+选择布局后，从已读取的资源中获取配置参数：
+
+```
+布局配置参数来源（从已读取的资源中选择）：
+├─ 布局CSS类名（来自LAYOUTS_INDEX.md或布局HTML文件）
+├─ 容器宽度和间距（来自布局HTML文件的CSS样式）
+├─ 列配置（grid-template-columns）
+├─ 响应式断点
+└─ 动画和过渡效果
+
+配置参考步骤：
+1. 从已读取的LAYOUTS_INDEX.md获取布局类型和配置参数
+2. 从已读取的布局HTML文件获取实际CSS样式
+3. 从已读取的mckinsey-design-standards.css获取CSS变量
+4. 根据实际内容需求调整布局参数
+```
+
+### 背景颜色规则 [CRITICAL]
+
+**必须严格使用beauty-html-reference.md中定义的颜色规范**：
+
+```
+主背景色：#FFFFFF（配黑字：#1A202C）
+标题栏背景：#000000（配白字）
+主要强调色：#F85d42（用于重点突出）
+辅助色：#74788d, #556EE6, #34c38f, #50a5f1, #f1b44c
+
+对比度要求：≥ 4.5:1
+```
+
+**颜色规范资源读取**：
+
+```
+读取流程：
+1. 检查 .ppt_assets/INDEX.md 中的颜色规范（如存在）
+2. 检查 .ppt_assets/assets/colors.md（如存在）
+3. 检查 beauty-html-reference.md 中的颜色规范
+4. 读取并应用指定的CSS变量
+
+颜色变量参考：
+├─ --color-bg: #FFFFFF
+├─ --color-header: #000000
+├─ --color-accent: #F85d42
+├─ --color-gray: #74788d
+└─ --color-primary: #556EE6
+```
 
 ### 验证标准
 
-- [ ] 所有验证项目都通过
-- [ ] 无严重问题
-- [ ] 可正常运行
-- [ ] 符合McKinsey标准
+- [ ] 已读取beauty-html/assets/LAYOUTS_INDEX.md
+- [ ] 已读取beauty-html/assets/layouts/*.html中的布局示例
+- [ ] 如.ppt_assets存在，已优先读取项目特定布局
+- [ ] 布局选择符合页面类型
+- [ ] 布局选择参考了已读取的资源文件
+- [ ] 背景颜色有足够对比度
+- [ ] 符合beauty-html-reference.md中定义的颜色规范
 
 ---
 
-## 完成后输出
+## 步骤 3.5：生成HTML
+
+### 目标
+
+根据规划的布局和组件，分阶段生成完整的HTML文件到本地。
+
+### 分阶段写入流程
+
+由于HTML文件可能较大，必须分阶段写入本地文件：
 
 ```
-✅ 步骤3：HTML样式布局代码规划与生成 - 100%完成
+阶段1：创建HTML框架和CSS样式
+  ├─ 写入DOCTYPE和head部分
+  ├─ 写入CSS变量和全局样式
+  └─ 写入导航栏结构
 
-输出摘要：
-- 资源读取：4个必读资源100%读取完成
-- 代码规划：N页全部规划完成
-- 布局选择：平均匹配度92%（85%-100%）
-- HTML生成：1200行代码，4个阶段100%完成
-- 图表数量：X个Chart.js图表
-- 验证结果：6项验证100%通过
-- 文件大小：约60KB
-- 质量评分：A+（完全符合McKinsey标准）
+阶段2：按章节生成幻灯片
+  ├─ 写入封面页
+  ├─ 写入目录页
+  ├─ 逐个写入章节首页
+  ├─ 逐个写入内容页
+  └─ 写入结束页
 
-输出产物：
-1. 代码规划方案（已生成）
-2. 完整HTML文件（已生成）
-3. 验证报告（已生成）
-
-已进入步骤4：代码内容审核检验
+阶段3：生成JavaScript和结束标签
+  ├─ 写入导航功能JavaScript
+  ├─ 写入键盘和触摸事件
+  └─ 写入body结束标签
 ```
 
----
+### 阶段1：HTML框架和CSS样式
 
-## 附录：.ppt_assets/INDEX.md 文件规范模板
+**步骤3.5.1：写入HTML头部**
 
-### 目的
-
-为项目提供自定义的布局、图表和样式资源索引，优先级高于全局资源库（beauty-html/assets/INDEX.md）。
-
-### 文件结构
-
-```markdown
-# 项目资源索引
-
-**项目名称**: [项目名称]
-**版本**: v1.0.0
-**更新日期**: [YYYY-MM-DD]
-**优先级**: 高（覆盖全局资源库）
-
----
-
-## 📋 概述
-
-本文件包含项目特定的布局、图表和样式资源，用于覆盖或扩展全局资源库。
-
-**优先级说明**：
-- 如果某个布局、图表或图文展示在全局资源库和本项目资源中都存在，必须优先使用本项目资源
-- 如果本项目资源中没有找到，则使用全局资源库（beauty-html/assets/INDEX.md）
-
----
-
-## 🎨 项目布局示例
-
-### 快速查找表
-
-| # | 文件名 | 布局类型 | 适用场景 | 观点数 | 数据密度 | 匹配度 | 覆盖全局 |
-|---|--------|---------|---------|--------|---------|--------|---------|
-| 1 | [文件名] | [类型] | [场景] | [数量] | [密度] | [百分比] | [是/否] |
-
-### 布局清单
-
-#### 布局1：[布局名称]
-
-**文件路径**: `.ppt_assets/layouts/[文件名].html`
-
-**覆盖全局**: [是/否]（如果是，说明覆盖哪个全局布局）
-
-**布局类型**: [L1-L13 或自定义]
-
-**适用场景**: 
-- [场景1]
-- [场景2]
-
-**特点**:
-- [特点1]
-- [特点2]
-
-**使用示例**:
-```markdown
-页面特征：
-├─ 观点数量：[N个]
-├─ 数据密度：[高/中/低]
-├─ 对比关系：[并列/对比/递进]
-└─ 推荐布局：[布局名称]
+```
+执行操作：
+├─ 使用Write工具创建或覆盖输出HTML文件
+├─ 写入<!DOCTYPE html>声明
+├─ 写入<html lang="zh-CN">标签
+├─ 写入<head>部分，包含meta标签和title
+├─ 写入CSS样式（beauty-html-reference.md定义的颜色规范）
+│   └─ :root变量定义
+│       ├─ --color-bg: #FFFFFF
+│       ├─ --color-header: #000000
+│       ├─ --color-accent: #F85d42
+│       ├─ --color-gray: #74788d
+│       ├─ --color-blue: #556EE6
+│       ├─ --color-green: #34c38f
+│       ├─ --color-light-blue: #50a5f1
+│       ├─ --color-yellow: #f1b44c
+│       └─ 字体和间距变量
+├─ 写入布局基础样式
+└─ 写入导航栏样式
 ```
 
----
+**步骤3.5.2：写入幻灯片容器和导航控件 [强制更新]**
 
-#### 布局2：[布局名称]
+```
+执行操作：
+├─ 写入.presentation-container容器（width: 100%, height: 100vh, overflow: hidden）
+├─ 写入.slide基础样式：
+│   ├─ position: absolute
+│   ├─ top: 0, left: 0
+│   ├─ width: 100%, height: 100%
+│   ├─ opacity: 0, visibility: hidden
+│   ├─ transition: opacity 0.4s ease, visibility 0.4s ease
+│   └─ overflow-y: auto（每页内容可滚动）
+├─ 写入.slide.active状态（opacity: 1, visibility: visible, z-index: 1）
+├─ 写入.slide-header固定导航栏：
+│   ├─ position: fixed, top: 0
+│   ├─ height: 60px, background: #000000
+│   ├─ color: white, z-index: 100
+│   └─ 封面页/章节首页/结束页隐藏：.cover-slide .slide-header { display: none; }
+├─ 写入导航按钮（.nav-button）：
+│   ├─ .nav-prev（上一页按钮，左侧）
+│   ├─ .nav-next（下一页按钮，右侧）
+│   └─ 必须显示：display: flex
+├─ 写入页码计数器（.slide-counter）：
+│   ├─ position: fixed, bottom: 20px
+│   ├─ 显示格式："{当前页} / {总页数}"
+│   └─ 必须显示：display: block
+├─ 写入全屏按钮（.fullscreen-button）：
+│   ├─ position: fixed, top: 20px, right: 20px
+│   └─ 必须显示：display: flex
+└─ 禁止行为：
+    ├─ 禁止删除或隐藏导航按钮
+    ├─ 禁止删除或隐藏页码计数器
+    ├─ 禁止使用长页面滚动格式
+    └─ 禁止省略JavaScript导航功能
+```
 
-**文件路径**: `.ppt_assets/layouts/[文件名].html`
+**幻灯片CSS样式模板 [强制使用]**：
 
-**覆盖全局**: [是/否]
+```css
+.presentation-container {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background: var(--color-bg, #FFFFFF);
+}
 
-**布局类型**: [L1-L13 或自定义]
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-bg, #FFFFFF);
+    padding: var(--page-padding, 80px 60px 60px 60px);
+    box-sizing: border-box;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    overflow-y: auto;
+}
 
-**适用场景**: 
-- [场景1]
-- [场景2]
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 1;
+}
 
-**特点**:
-- [特点1]
-- [特点2]
+.slide-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--color-primary, #000000);
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 60px;
+    z-index: 100;
+}
 
----
+.cover-slide .slide-header,
+.chapter-slide .slide-header,
+.ending-slide .slide-header {
+    display: none;
+}
+```
 
-## 📊 项目图表示例
+**导航功能JavaScript模板 [强制包含]**：
 
-### 图表类型索引
-
-| 文件名 | 图表类型 | 适用观点类型 | 描述 | 覆盖全局 |
-|--------|---------|-------------|------|---------|
-| [文件名] | [类型] | [类型] | [描述] | [是/否] |
-
-### 图表清单
-
-#### 图表1：[图表名称]
-
-**文件路径**: `.ppt_assets/charts/[文件名].html`
-
-**覆盖全局**: [是/否]
-
-**图表类型**: [Chart.js类型 或自定义]
-
-**适用观点类型**: [类型]
-
-**描述**: [详细描述]
-
-**配置示例**:
 ```javascript
-{
-  type: '[图表类型]',
-  data: {
-    labels: [...],
-    datasets: [...]
-  },
-  options: {
-    // 配置选项
-  }
-}
+// 幻灯片导航功能
+document.addEventListener('DOMContentLoaded', function() {
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    let currentSlide = 1;
+    
+    // 显示第一页
+    showSlide(1);
+    
+    // 显示指定幻灯片
+    function showSlide(n) {
+        if (n < 1) n = 1;
+        if (n > totalSlides) n = totalSlides;
+        
+        slides.forEach(slide => {
+            slide.classList.remove('active');
+        });
+        
+        const targetSlide = document.getElementById('slide-' + n);
+        if (targetSlide) {
+            targetSlide.classList.add('active');
+        }
+        
+        // 更新页码计数器
+        const counter = document.querySelector('.slide-counter');
+        if (counter) {
+            counter.textContent = n + ' / ' + totalSlides;
+        }
+        
+        // 更新导航按钮状态
+        const prevBtn = document.querySelector('.nav-prev');
+        const nextBtn = document.querySelector('.nav-next');
+        if (prevBtn) prevBtn.disabled = (n === 1);
+        if (nextBtn) nextBtn.disabled = (n === totalSlides);
+        
+        currentSlide = n;
+    }
+    
+    // 上一页
+    document.querySelector('.nav-prev').addEventListener('click', function() {
+        showSlide(currentSlide - 1);
+    });
+    
+    // 下一页
+    document.querySelector('.nav-next').addEventListener('click', function() {
+        showSlide(currentSlide + 1);
+    });
+    
+    // 键盘导航
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            showSlide(currentSlide - 1);
+        } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+            showSlide(currentSlide + 1);
+        } else if (e.key === 'Home') {
+            showSlide(1);
+        } else if (e.key === 'End') {
+            showSlide(totalSlides);
+        }
+    });
+    
+    // 触摸滑动支持
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    document.addEventListener('touchstart', function(e) {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+    
+    document.addEventListener('touchend', function(e) {
+        touchEndX = e.changedTouches[0].screenX;
+        if (touchStartX - touchEndX > 50) {
+            showSlide(currentSlide + 1);
+        } else if (touchEndX - touchStartX > 50) {
+            showSlide(currentSlide - 1);
+        }
+    });
+    
+    // 全屏功能
+    document.querySelector('.fullscreen-button').addEventListener('click', function() {
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        } else {
+            document.documentElement.requestFullscreen();
+        }
+    });
+});
 ```
 
----
+### 阶段2：按章节生成幻灯片
 
-#### 图表2：[图表名称]
+**步骤3.5.3：写入封面页**
 
-**文件路径**: `.ppt_assets/charts/[文件名].html`
-
-**覆盖全局**: [是/否]
-
-**图表类型**: [Chart.js类型 或自定义]
-
-**适用观点类型**: [类型]
-
-**描述**: [详细描述]
-
----
-
-## 🎯 项目特定样式
-
-### 颜色系统
-
-```css
-:root {
-  /* 项目特定颜色 */
-  --project-primary: #[颜色值];
-  --project-secondary: #[颜色值];
-  --project-accent: #[颜色值];
-  
-  /* 覆盖全局颜色（如果需要） */
-  --color-accent-primary: #[颜色值];
-}
+```
+执行操作：
+├─ 写入<div class="slide cover-slide active" id="slide-1">
+├─ 写入纯色背景样式（从以下颜色随机选取：#556EE6、#F85d42、#34c38f、#50a5f1、#f1b44c、#000000）
+├─ 写入标题<h1>和副标题
+├─ 写入品牌标识
+└─ 封面页必须隐藏导航栏
 ```
 
-### 字体规范
+**步骤3.5.4：写入目录页**
 
-```css
-/* 项目特定字体 */
-.project-title {
-  font-size: [大小]px;
-  font-weight: [粗细];
-  font-family: [字体];
-}
+```
+执行操作：
+├─ 写入<div class="slide" id="slide-2">
+├─ 使用.toc-grid网格布局
+├─ 写入所有章节入口
+├─ 添加点击跳转功能
+└─ 恢复导航栏显示
 ```
 
-### 组件样式
+**步骤3.5.5：逐个写入章节首页**
 
-```css
-/* 自定义组件 */
-.custom-component {
-  /* 样式定义 */
-}
+```
+执行操作（每个章节）：
+├─ 写入<div class="slide chapter-slide" id="slide-N">
+├─ 写入纯色背景样式（从以下颜色随机选取：#556EE6、#F85d42、#34c38f、#50a5f1、#f1b44c、#000000）
+├─ 写入章节编号（01、02...）
+├─ 写入章节标题
+├─ 写入章节描述
+├─ 写入章节概览列表（包含所有子标题和页码）
+└─ 章节首页必须隐藏导航栏
 ```
 
----
+**步骤3.5.6：逐个写入内容页**
 
-## 📝 项目特定组件
+```
+执行操作（每个内容页）：
+├─ 写入<div class="slide" id="slide-N">
+├─ 写入导航栏（显示当前标题）
+├─ 根据布局类型选择结构：
+│   ├─ 单列布局 → .single-column
+│   ├─ 双列布局 → .two-column
+│   └─ 三列布局 → .three-column
+├─ 写入页面标题<h2>
+├─ 写入页面导语（从步骤2.3.1获取）
+├─ 写入详细内容（每个要点的完整描述）
+├─ 写入关联说明（如果适用）
+├─ 如果页面包含图表：
+│   ├─ 使用两列布局（图表+洞察）
+│   ├─ 左侧写入图表HTML
+│   └─ 右侧写入洞察面板：
+│       ├─ 图表概述（从步骤2.3.2获取）
+│       ├─ 数据解读（从步骤2.3.2获取）
+│       ├─ 洞察分析（从步骤2.3.2获取）
+│       └─ 行动建议（从步骤2.3.2获取，推荐）
+├─ 应用颜色规范
+│   ├─ 强调色：#F85d42
+│   ├─ 辅助色：#74788d
+│   └─ 图表颜色：#556EE6、#34c38f、#50a5f1、#f1b44c
+└─ 确保每页内容≤8个要点
+```
 
-### 组件清单
+**内容页HTML结构模板 [NEW]**：
 
-#### 组件1：[组件名称]
-
-**文件路径**: `.ppt_assets/components/[文件名].html`
-
-**描述**: [描述]
-
-**使用场景**: [场景]
-
-**HTML结构**:
 ```html
-<div class="[组件类名]">
-  <!-- 组件内容 -->
+<!-- 内容页 -->
+<div class="slide" id="slide-N" data-title="[页面标题]">
+    <div class="slide-header">
+        <span class="slide-title">[页面标题]</span>
+    </div>
+    <div class="slide-content [布局类型]">
+        <h2 class="page-title">[页面标题]</h2>
+        
+        <!-- 页面导语 -->
+        <div class="page-intro">
+            <p>[从步骤2.3.1获取的页面导语内容]</p>
+        </div>
+        
+        <!-- 详细内容 -->
+        <div class="content-body">
+            <!-- 要点1 -->
+            <div class="content-point">
+                <h3 class="point-title">[要点标题]</h3>
+                <div class="point-content">
+                    <p class="background-description"><strong>背景描述：</strong>[背景信息]</p>
+                    <p class="main-description"><strong>具体内容：</strong>[完整描述]</p>
+                    <p class="data-support"><strong>数据支撑：</strong>[相关数据]</p>
+                    <p class="impact-analysis"><strong>影响分析：</strong>[影响说明]</p>
+                    <p class="conclusion"><strong>结论说明：</strong>[结论]</p>
+                </div>
+            </div>
+            
+            <!-- 要点2... -->
+        </div>
+        
+        <!-- 关联说明 -->
+        <div class="content-connections">
+            <h4>要点关联说明</h4>
+            <p>[多个要点之间的逻辑关系说明]</p>
+        </div>
+        
+        <!-- 图表页专用：图表+洞察 -->
+        <div class="chart-insight-layout" style="display: none;">
+            <div class="chart-container">
+                <!-- 图表HTML -->
+            </div>
+            <div class="insight-panel">
+                <div class="insight-section chart-overview">
+                    <h4>图表概述</h4>
+                    <p>[从步骤2.3.2获取]</p>
+                </div>
+                <div class="insight-section data-interpretation">
+                    <h4>数据解读</h4>
+                    <p>[从步骤2.3.2获取]</p>
+                </div>
+                <div class="insight-section insight-analysis">
+                    <h4>洞察分析</h4>
+                    <p>[从步骤2.3.2获取]</p>
+                </div>
+                <div class="insight-section action-recommendations">
+                    <h4>行动建议</h4>
+                    <p>[从步骤2.3.2获取，推荐]</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 ```
 
+**内容页CSS样式 [NEW]**：
+
+```css
+.page-intro {
+    background: var(--color-bg-secondary, #F5F7FA);
+    padding: var(--spacing-lg);
+    border-left: 4px solid var(--color-accent, #F85d42);
+    margin-bottom: var(--spacing-xl);
+    border-radius: 0 var(--radius-md, 4px) var(--radius-md, 4px) 0;
+}
+
+.page-intro p {
+    font-size: var(--font-size-body, 14px);
+    line-height: var(--line-height-relaxed, 1.6);
+    color: var(--color-text, #1A202C);
+    margin: 0;
+}
+
+.content-point {
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border, #E2E8F0);
+}
+
+.content-point:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.point-title {
+    font-size: var(--font-size-h4, 18px);
+    font-weight: var(--font-weight-semibold, 600);
+    color: var(--color-blue, #556EE6);
+    margin-bottom: var(--spacing-md);
+}
+
+.point-content p {
+    font-size: var(--font-size-body, 14px);
+    line-height: var(--line-height-relaxed, 1.6);
+    color: var(--color-text, #1A202C);
+    margin-bottom: var(--spacing-sm);
+}
+
+.point-content strong {
+    color: var(--color-accent, #F85d42);
+}
+
+.content-connections {
+    background: var(--color-bg-secondary, #F5F7FA);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md, 4px);
+    margin-top: var(--spacing-xl);
+}
+
+.content-connections h4 {
+    font-size: var(--font-size-h5, 16px);
+    font-weight: var(--font-weight-semibold, 600);
+    color: var(--color-gray, #74788d);
+    margin-bottom: var(--spacing-md);
+}
+
+.content-connections p {
+    font-size: var(--font-size-body, 14px);
+    line-height: var(--line-height-relaxed, 1.6);
+    color: var(--color-text, #1A202C);
+}
+
+.chart-insight-layout {
+    display: grid;
+    grid-template-columns: 55% 45%;
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+}
+
+.chart-insight-layout .chart-container {
+    background: var(--color-bg-secondary, #F5F7FA);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg, 8px);
+}
+```
+
+**内容丰富化验证清单 [NEW]**：
+
+```
+每个内容页生成时，必须验证以下要素：
+
+□ 页面导语
+   ├─ □ 包含1-2段核心观点概括
+   ├─ □ 说明内容对整体报告的意义
+   └─ □ 建立读者阅读预期
+
+□ 要点详细展开
+   ├─ □ 每个要点有独立标题
+   ├─ □ 每个要点包含背景描述
+   ├─ □ 每个要点包含具体内容
+   ├─ □ 每个要点包含数据支撑
+   ├─ □ 每个要点包含影响分析
+   └─ □ 每个要点包含结论说明
+
+□ 图表解释说明（如果页面包含图表）
+   ├─ □ 图表概述完整
+   ├─ □ 数据解读逐项展开
+   ├─ □ 洞察分析提炼到位
+   └─ □ 行动建议（推荐）
+
+□ 关联说明
+   ├─ □ 揭示要点之间的逻辑关系
+   └─ □ 说明内容如何相互支撑
+
+□ 禁止行为检查
+   ├─ □ 没有只列出要点标题
+   ├─ □ 没有省略解释说明
+   ├─ □ 没有删除数据单位
+   ├─ □ 没有简化专业术语
+   └─ □ 没有压缩完整描述
+```
+
+**步骤3.5.7：写入结束页**
+
+```
+执行操作：
+├─ 写入<div class="slide ending-slide" id="slide-last">
+├─ 写入纯色背景样式（从以下颜色随机选取：#556EE6、#F85d42、#34c38f、#50a5f1、#f1b44c、#000000）
+├─ 写入"谢谢"标题
+├─ 写入品牌标识
+└─ 结束页必须隐藏导航栏
+```
+
+### 阶段3：JavaScript和结束标签
+
+**步骤3.5.8：写入导航功能JavaScript**
+
+```
+执行操作：
+├─ 写入导航状态变量
+├─ 写入showSlide(n)函数
+├─ 写入changeSlide(direction)函数
+├─ 写入goToSlide(n)函数
+├─ 写入键盘事件监听（←、→、空格、Home、End）
+├─ 写入触摸滑动支持
+└─ 写入全屏切换功能
+```
+
+**步骤3.5.9：写入结束标签**
+
+```
+执行操作：
+├─ 写入导航按钮（上一页、下一页）
+├─ 写入页码计数器
+├─ 写入全屏按钮
+├─ 写入</div>（关闭presentation-container）
+├─ 写入</body>
+└─ 写入</html>
+```
+
+### HTML代码生成规则
+
+```
+生成HTML时，必须遵循以下规则：
+
+1. 布局代码来源：
+   ├─ 首选：.ppt_assets/INDEX.md中的布局代码（如存在）
+   ├─ 次选：beauty-html/assets/layouts/*.html中的对应布局
+   └─ 参考：beauty-html/LAYOUTS_INDEX.md中的布局配置
+
+2. 组件代码来源：
+   ├─ 首选：.ppt_assets/INDEX.md中的组件代码（如存在）
+   ├─ 次选：beauty-html/assets/components/*.html中的对应组件
+   └─ 参考：beauty-html/COMPONENTS_INDEX.md中的组件配置
+
+3. CSS样式来源：
+   ├─ beauty-html/mckinsey-design-standards.css
+   ├─ beauty-html/assets/styles.css
+   └─ beauty-html-reference.md中的样式定义
+
+4. 代码整合步骤：
+   a. 分阶段写入本地文件（每个Write操作≤500行）
+   b. 复制基础HTML结构
+   c. 插入布局容器
+   d. 填充组件内容
+   e. 应用颜色规范（beauty-html-reference.md）
+   f. 添加交互逻辑
+```
+
+### 关键要求
+
+1. **分阶段写入**：每个Write操作≤500行，避免过长导致错误
+2. 每个内容页必须包含导航栏（封面页除外）
+3. 导航栏标题必须与页面标题同步更新
+4. 图表必须使用多列布局
+5. 必须使用beauty-html-reference.md中定义的配色方案
+6. 代码必须参考beauty-html中的示例文件
+7. 封面页、章节首页、结束页使用纯色背景（从以下颜色随机选取：#556EE6、#F85d42、#34c38f、#50a5f1、#f1b44c、#000000），白色文字
+8. 内容页使用白色背景，黑色文字
+
+### 验证标准
+
+**阶段验证**：
+- [ ] 阶段1完成：HTML框架和CSS样式已写入（≤500行）
+- [ ] 阶段2完成：所有幻灯片已逐个写入（封面页、目录页、章节首页、内容页、结束页）
+- [ ] 阶段3完成：JavaScript和结束标签已写入
+
+**HTML结构验证**：
+- [ ] HTML结构完整
+- [ ] 布局代码参考了beauty-html示例
+- [ ] 组件代码参考了beauty-html示例
+- [ ] 如.ppt_assets/INDEX.md存在，已优先使用项目资源
+
+**功能验证**：
+- [ ] 导航功能正常
+- [ ] 页面切换动画正确
+- [ ] 键盘导航正常
+- [ ] 触摸滑动支持正常
+
+**规范验证**：
+- [ ] 符合best-practices.md规范
+- [ ] 配色方案符合beauty-html-reference.md定义
+- [ ] 背景颜色规则正确（封面页、章节首页、结束页使用纯色背景，从指定颜色随机选取）
+- [ ] 导航栏实时更新功能正常
+
+**内容丰富化验证 [NEW]**：
+- [ ] 每个内容页包含页面导语
+- [ ] 每个要点包含完整描述（背景、具体内容、数据支撑、影响分析、结论）
+- [ ] 每个图表页包含洞察面板
+- [ ] 洞察面板包含：图表概述、数据解读、洞察分析
+- [ ] 洞察面板包含行动建议（推荐）
+- [ ] 内容页包含关联说明（如果适用）
+- [ ] 没有省略或压缩关键内容
+- [ ] 所有数据点完整保留
+
 ---
 
-#### 组件2：[组件名称]
+## 反模式 [NEVER]
 
-**文件路径**: `.ppt_assets/components/[文件名].html`
+1. **NEVER单列布局放图表**
+   - 图表必须配合文字解读
+   - 使用两列或三列布局
 
-**描述**: [描述]
+2. **NEVER省略组件匹配步骤**
+   - 每个内容元素必须有对应组件
+   - 组件选择基于内容特征
 
-**使用场景**: [场景]
+3. **NEVER跳过资源读取**
+   - 必须读取所有必读资源
+   - 禁止用经验替代规范
+   - 必须读取beauty-html/LAYOUTS_INDEX.md
+   - 必须读取beauty-html/COMPONENTS_INDEX.md
 
----
+4. **NEVER忽略项目特定资源优先级**
+   - 如果.ppt_assets/INDEX.md存在，必须优先使用
+   - 禁止跳过项目特定资源直接使用beauty-html版本
 
-## 🔍 匹配决策树（项目特定）
+5. **NEVER使用AI生成色板**
+   - 必须使用beauty-html-reference.md中定义的配色方案
+   - 禁止紫色渐变
 
-```
-开始
-  ↓
-是否是项目特定场景？
-  ├─ 是 ↓
-  │   场景类型？
-  │     ├─ [场景1] → 使用 [布局1]
-  │     ├─ [场景2] → 使用 [布局2]
-  │     └─ [场景3] → 使用 [布局3]
-  └─ 否 ↓
-      使用全局匹配决策树（参考 beauty-html/assets/INDEX.md）
-```
+6. **NEVER页面无导航栏**
+   - 内容页必须显示导航栏
+   - 导航栏标题实时更新
 
----
-
-## 📚 目录结构
-
-```
-.ppt_assets/
-├── INDEX.md                          # 本文件
-├── layouts/                          # 布局示例
-│   ├── [布局1].html
-│   ├── [布局2].html
-│   └── ...
-├── charts/                           # 图表示例
-│   ├── [图表1].html
-│   ├── [图表2].html
-│   └── ...
-├── components/                       # 自定义组件
-│   ├── [组件1].html
-│   ├── [组件2].html
-│   └── ...
-└── styles/                           # 项目特定样式
-    ├── project-colors.css
-    ├── project-fonts.css
-    └── project-components.css
-```
+7. **NEVER直接编写布局代码而不参考示例**
+   - 必须参考beauty-html/assets/layouts/*.html
+   - 必须参考beauty-html/LAYOUTS_INDEX.md的配置参数
 
 ---
 
-## 💡 使用方法
+## 自由度校准
 
-### 步骤1：检查项目资源
+### 高自由度
 
-```markdown
-在规划代码方案时：
-1. 首先检查 .ppt_assets/INDEX.md 是否存在
-2. 如果存在，优先使用项目资源
-3. 如果项目资源中没有找到，再使用全局资源
-```
+- 背景颜色的具体选择（从色系中随机）
+- 图表数据标签的格式
+- 页面内容的具体措辞（保持原意）
 
-### 步骤2：选择布局
+### 中等自由度
 
-```markdown
-1. 分析页面特征
-2. 查看项目匹配决策树
-3. 选择最合适的布局
-4. 如果没有匹配，使用全局匹配决策树
-```
+- 具体分页位置
+- 列表样式的微调
+- 组件细节的调整（保持整体结构）
 
-### 步骤3：选择图表
+### 低自由度
 
-```markdown
-1. 确定图表类型
-2. 查看项目图表示例
-3. 选择最合适的图表
-4. 如果没有匹配，使用全局图表示例
-```
+- 页面结构（必须包含导航栏）
+- 布局选择（基于页面类型和beauty-html规则）
+- 配色方案（beauty-html-reference.md定义的颜色规范）
+- 组件来源（必须参考beauty-html示例）
+- 资源优先级（.ppt_assets优先于beauty-html）
 
 ---
 
-## 🔄 版本历史
+## 引用系统
 
-### v1.0.0 ([YYYY-MM-DD]) - 初始版本
-- ✅ 创建项目资源索引
-- ✅ 添加 [N] 个布局示例
-- ✅ 添加 [N] 个图表示例
-- ✅ 定义项目特定样式
-
----
-
-## 📊 覆盖率统计
-
-**当前版本**: v1.0.0
-**布局示例**: [N] 个
-**图表示例**: [N] 个
-**自定义组件**: [N] 个
-
-**场景覆盖率**: [X]%
+- [beauty-html/LAYOUTS_INDEX.md] - 布局索引和配置参数
+- [beauty-html/COMPONENTS_INDEX.md] - 组件索引和配置
+- [beauty-html-reference.md] - CSS样式和HTML模板
+- [beauty-component-guide.md] - 组件选择和图表配置
+- [.ppt_assets/INDEX.md] - 项目特定资源（如存在，优先级最高）
+- [beauty-step2] - 页面内容清单输入
+- [beauty-step4] - 代码审核输出
 
 ---
 
-**维护者**: [项目团队]
-**版本**: v1.0.0
-**最后更新**: [YYYY-MM-DD]
-**优先级**: 高（覆盖全局资源库）
-```
+## 步骤 3 完成确认
 
-### 使用说明
+✅ 步骤3.1：必读资源已读取（包括beauty-html/LAYOUTS_INDEX.md和COMPONENTS_INDEX.md）
+✅ 步骤3.2：内容元素已识别
+✅ 步骤3.3：HTML组件已匹配（参考beauty-html示例）
+✅ 步骤3.4：布局已选择（严格遵循beauty-html规则，优先使用.ppt_assets）
+✅ 步骤3.5：HTML已生成（代码参考beauty-html示例文件）
 
-1. **创建文件**：在项目根目录下创建 `.ppt_assets/INDEX.md` 文件
-2. **填写内容**：根据项目需求，填写相应的布局、图表、样式和组件
-3. **标记覆盖**：明确标注哪些资源覆盖了全局资源库
-4. **更新版本**：每次更新资源时，更新版本号和版本历史
-5. **保持同步**：定期检查全局资源库的更新，确保项目资源与全局资源保持兼容
-
-### 注意事项
-
-- 只有当项目确实需要自定义资源时，才创建 `.ppt_assets/INDEX.md` 文件
-- 如果项目资源与全局资源冲突，项目资源优先级更高
-- 建议在项目资源中明确标注覆盖关系，便于维护
-- 项目资源应遵循与全局资源相同的设计规范和命名约定
+**准备进入步骤4**：请输入"继续"或"next"

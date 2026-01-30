@@ -1,13 +1,15 @@
 ---
 name: "beauty-normal-step3"
-description: "JSON数据生成与HTML渲染。在beauty-normal命令的步骤3执行时自动调用，将幻灯片内容转换为JSON数据结构，并生成JSON驱动的McKinsey风格HTML文件，包含CSS样式、JSON数据和JavaScript渲染逻辑。"
+description: "JSON data generation and HTML rendering. Automatically invoked during step 3 of the beauty-normal command to convert slide content into JSON data structure and generate JSON-driven McKinsey-style HTML files, including CSS styles, JSON data, and JavaScript rendering logic. JSON数据生成与HTML渲染。在beauty-normal命令的步骤3执行时自动调用，将幻灯片内容转换为JSON数据结构，并生成JSON驱动的McKinsey风格HTML文件，包含CSS样式、JSON数据和JavaScript渲染逻辑。"
 ---
 
-# Beauty-Normal 步骤3：JSON数据生成与HTML渲染
+# Beauty-Normal 步骤3：JSON数据生成与HTML渲染 / Beauty-Normal Step 3: JSON Data Generation and HTML Rendering
 
-## 目标
+## 目标 / Goal
 
 将步骤2生成的幻灯片页面清单转换为JSON数据结构，并使用JSON+HTML方式生成完整的、可运行的McKinsey风格HTML文件。
+
+Convert the slide page list generated in Step 2 into JSON data structure, and use JSON+HTML method to generate a complete, runnable McKinsey-style HTML file.
 
 ## ⚠️ 核心原则
 

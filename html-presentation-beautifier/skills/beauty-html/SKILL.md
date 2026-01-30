@@ -94,6 +94,10 @@ Trigger scenarios:
 
 **MANDATORY - READ ENTIRE FILE**: Read [`mckinsey-design-system.md`](references/mckinsey-design-system.md) for complete design specifications.
 
+**Additional References**:
+- `assets/LAYOUTS_INDEX.md` - Layout type index with structure examples and configuration parameters
+- `assets/layouts/*.html` - Actual layout example files for reference
+
 **Do NOT load** other reference files for this phase.
 
 **Key Actions**:
@@ -115,6 +119,10 @@ Trigger scenarios:
 
 **MANDATORY - READ ENTIRE FILE**: Read [`chart-selection-guide.md`](references/chart-selection-guide.md) for complete visualization decision trees.
 
+**Additional References**:
+- `assets/COMPONENTS_INDEX.md` - Complete component index with CSS classes, Chart.js configurations, and component selection decision tree
+- `assets/components/*.html` - Actual component example files for reference
+
 **Do NOT load** other reference files for this phase.
 
 **Subagent Task**:
@@ -133,7 +141,7 @@ Trigger scenarios:
 8. **Cyclical** (循环型) → cycle, circular-flow
 9. **Causal** (因果型) → problem-solution, pareto, gauge
 
-**Example Files Location**: `assets/*.html` (flowchart-example.html, pyramid-chart-example.html, etc.)
+**Example Files Location**: `assets/components/*.html` and `assets/layouts/*.html` (e.g., flowchart-example.html, pyramid-chart-example.html)
 
 **Exit Criteria**: All content slides enhanced with appropriate visualizations, no plain text bullet lists for insights.
 
@@ -147,6 +155,12 @@ Trigger scenarios:
 
 **MANDATORY - READ ENTIRE FILE**: Read [`template-guide.md`](references/template-guide.md) for complete template usage instructions.
 
+**Additional References**:
+- `assets/INDEX.md` - Master index with directory structure and quick start guide
+- `assets/LAYOUTS_INDEX.md` - Layout type index with structure examples and configuration parameters
+- `assets/layout-template.html` - Layout template with single/double/triple column and card grid examples
+- `assets/component-template.html` - Component template with chart and diagram examples
+
 **MANDATORY - READ ENTIRE FILE**: Read [`subagent-prompts.md`](references/subagent-prompts.md) for the Phase 4 prompt template.
 
 **Do NOT load** other reference files for this phase.
@@ -159,10 +173,19 @@ Trigger scenarios:
 - Slides #3-#N-1 → `templates/content-slide-template.html`
 - Slide #N → `templates/end-slide-template.html`
 
+**NOTE**: Also reference `assets/layouts/` for additional layout examples and `assets/LAYOUTS_INDEX.md` for layout selection guidance.
+
 ### Step 4.2: Content Analysis & Chart Selection
 - For DATA_VISUALIZATION slides: Use `chart_type` field (bar, line, pie, doughnut, radar, polarArea, bubble, scatter)
 - For other slides: Use `visualization_type` field (pyramid, timeline, flowchart, mindmap, etc.)
-- Copy CSS and HTML from corresponding `assets/*.html` example files
+- Copy CSS and HTML from corresponding `assets/components/*.html` and `assets/layouts/*.html` example files
+- **IMPORTANT**: Reference `assets/COMPONENTS_INDEX.md` for chart component details and `assets/LAYOUTS_INDEX.md` for layout configurations
+
+**Additional Optimization Tips**:
+- Use `assets/layout-template.html` as a reference for layout structure
+- Use `assets/component-template.html` as a reference for component structure
+- All charts must use 100% width within their containers
+- Charts on chart pages must use 2-column or 3-column layouts (never single column)
 
 ### Step 4.3: Apply Optimization
 - Integrate template structure with content
@@ -271,10 +294,30 @@ All detailed guides are in `references/`:
 - **Chart Selection**: `chart-selection-guide.md` - Decision trees for visualizations
 - **Subagent Prompts**: `subagent-prompts.md` - Optimized prompts for all phases
 
-Visualization examples in `assets/`:
-- See `assets/CHART_EXAMPLES_INDEX.md` for complete list
-- See `assets/INSIGHT_VISUALIZATION_GUIDE.md` for detailed visualization guide
-- See `assets/TEMPLATE_USAGE_GUIDE.md` for template usage examples
+**Index Files** (New in v2.0):
+- **`assets/COMPONENTS_INDEX.md`** - Complete chart and diagram component index with CSS classes, Chart.js configurations, and selection decision tree
+- **`assets/LAYOUTS_INDEX.md`** - Complete layout type index with structure examples, configuration parameters, and layout selection decision tree
+- **`assets/INDEX.md`** - Master index with directory structure and quick start guide
+
+**Visualization examples in `assets/`:**
+
+**Components** (`assets/components/*.html`):
+- Chart examples: chart-examples.html, mckinsey-label-bar-example.html, pareto-chart-example.html
+- Special charts: pyramid-chart-example.html, funnel-chart-example.html, gauge-chart-example.html
+- Diagrams: swot-analysis.html, ansoff-matrix.html, 5w1h.html, competitive-4box.html
+- Flowcharts: flowchart.html, mindmap.html, timeline.html, swimlane.html
+
+**Layouts** (`assets/layouts/*.html`):
+- Cover layouts: 01-cover-page.html, NEW_01-cover-page.html
+- Content layouts: 05-chart-text.html, NEW_02-content-page-chart-insights.html
+- Special layouts: 07-radar-card-layout.html, 08-table-of-contents.html
+- NEW layouts: NEW_03-content-page-text-only.html, NEW_04-content-page-three-charts.html
+
+**Guides** (`assets/guides/`):
+- See `assets/guides/CHART_EXAMPLES_INDEX.md` for complete component list
+- See `assets/guides/INSIGHT_VISUALIZATION_GUIDE.md` for detailed visualization guide
+- See `assets/guides/TEMPLATE_USAGE_GUIDE.md` for template usage examples
+- See `assets/guides/HTML_OPTIMIZATION_GUIDE.md` for optimization techniques
 
 ---
 

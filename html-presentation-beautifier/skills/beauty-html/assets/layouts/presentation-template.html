@@ -7,6 +7,12 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     <style>
         /* ===== McKinsey/BCG Design System ===== */
+        /* Updated: 2026-01-29 */
+        /* New Features: */
+        /* - Slide header styling (black background, white text) */
+        /* - Chart layouts (2-column and 3-column for charts) */
+        /* - Design system color palette integration */
+        /* - Enhanced chart examples with multiple chart types */
 
         /* Color Variables */
         :root {
@@ -32,10 +38,11 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', 
+                         'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
             background-color: var(--primary-bg);
             color: var(--text-secondary);
-            line-height: 1.6;
+            line-height: 1.7;
             overflow: hidden;
             height: 100vh;
             width: 100vw;
@@ -69,7 +76,7 @@
             transition: all 0.3s ease;
         }
 
-        .nav-btn:hover:notisabled) {
+        .nav-btn:hover:not(:disabled) {
             background-color: #e04a31;
             transform: translateY(-1px);
         }
@@ -84,7 +91,7 @@
             color: var(--text-light);
             font-size: 18px;
             font-weight: 600;
-      }
+        }
 
         /* ===== Presentation Container ===== */
         .presentation-container {
@@ -116,18 +123,18 @@
             opacity: 1;
         }
 
-        /* =====itle Slide ===== */
+        /* ===== Title Slide - McKinsey Standard ===== */
         .slide.title-slide {
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--primary-bg);
         }
 
         .title-slide .title {
             font-size: 64px;
             font-weight: 700;
-            color: var(--text-light);
+            color: var(--text-primary);
             margin-bottom: 20px;
             line-height: 1.2;
         }
@@ -135,7 +142,7 @@
         .title-slide .subtitle {
             font-size: 32px;
             font-weight: 400;
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--primary-accent);
             margin-top: 10px;
         }
 
@@ -146,6 +153,39 @@
             color: var(--text-primary);
             margin-bottom: 40px;
             line-height: 1.2;
+        }
+
+        /* ===== Slide Header (Content Pages) ⭐ 新增 ===== */
+        .slide-header {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--header-bg);
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .slide-header-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-light);
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        /* Cover slides hide the slide header */
+        .slide.title-slide .slide-header {
+            display: none;
+        }
+
+        /* Content area adjustment for slide header */
+        .slide:not(.title-slide) {
+            padding-top: 140px;
         }
 
         .slide-subtitle {
@@ -249,19 +289,90 @@
             flex-direction: column;
         }
 
-        /* ===== Chart Container ===== */
+        /* ===== Chart Layouts - 2 Column & 3 Column ⭐ 新增 ===== */
+        .chart-text-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .chart-text-layout.chart-left-55 {
+            grid-template-columns: 1.2fr 1fr;
+        }
+
+        .chart-text-layout.chart-left-60 {
+            grid-template-columns: 1.5fr 1fr;
+        }
+
+        .three-column-chart-layout {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .chart-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-column .chart-container {
+            flex: 1;
+            min-height: 350px;
+        }
+
+        /* Chart Insights Column */
+        .insights-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .insights-column h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--deep-blue);
+            margin-bottom: 20px;
+        }
+
+        .key-insights {
+            list-style: none;
+            padding: 0;
+        }
+
+        .key-insights li {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            padding-left: 28px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .key-insights li::before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: var(--primary-accent);
+            font-weight: bold;
+        }
+
+        /* ===== Chart Container - McKinsey Standard ===== */
         .chart-container {
-            width: 100%;
-            max-width: 800px;
+            width: 100% !important;
+            max-width: 100%;
+            min-height: 400px;
             height: 400px;
             margin: 30px auto;
             padding: 20px;
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
         }
 
         .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
             max-height: 100%;
         }
 
@@ -277,17 +388,17 @@
             display: flex;
             align-items: center;
             gap: 20px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            background: #f8f9fa;
             padding: 25px 30px;
-            border-radius: 12px;
-            border-left: 6px solid var(--primary-accent);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-radius: 0;
+            border-left: 4px solid var(--primary-accent);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
         }
 
-        .emphahover {
-            transform: translateX(10px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        .emphasis-box:hover {
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
         }
 
         .emphasis-icon {
@@ -373,7 +484,8 @@
             color: var(--text-secondary);
         }
 
-        .data-table tr:last-child           border-bottom: none;
+        .data-table tr:last-child td {
+            border-bottom: none;
         }
 
         .data-table tr:hover {
@@ -521,6 +633,11 @@
 
         <!-- Slide 2: Content Slide with Bullets -->
         <div class="slide" data-slide="2">
+            <!-- Slide Header -->
+            <div class="slide-header">
+                <h2 class="slide-header-title">{{SECTION_TITLE}}</h2>
+            </div>
+            <!-- Content -->
             <h2 class="slide-title">{{SECTION_TITLE}}</h2>
             <ul class="bullet-list">
                 <li>{{BULLET_POINT_1}}</li>
@@ -531,6 +648,11 @@
 
         <!-- Slide 3: Two Column Layout -->
         <div class="slide" data-slide="3">
+            <!-- Slide Header -->
+            <div class="slide-header">
+                <h2 class="slide-header-title">{{SECTION_TITLE}}</h2>
+            </div>
+            <!-- Content -->
             <h2 class="slide-title">{{SECTION_TITLE}}</h2>
             <div class="two-column">
                 <div class="column">
@@ -550,16 +672,68 @@
             </div>
         </div>
 
-        <!-- Slide 4: Data Visualization -->
+        <!-- Slide 4: Chart + Insights Layout (2 Column) ⭐ 新增 -->
         <div class="slide" data-slide="4">
+            <!-- Slide Header -->
+            <div class="slide-header">
+                <h2 class="slide-header-title">{{CHART_TITLE}}</h2>
+            </div>
+            <!-- Content -->
             <h2 class="slide-title">{{CHART_TITLE}}</h2>
-            <div class="chart-container">
-                <canvas id="chart1"></canvas>
+            <div class="chart-text-layout chart-left-55">
+                <div class="chart-column">
+                    <div class="chart-container">
+                        <canvas id="chart1"></canvas>
+                    </div>
+                </div>
+                <div class="insights-column">
+                    <h3>关键洞察</h3>
+                    <ul class="key-insights">
+                        <li>{{INSIGHT_1}}</li>
+                        <li>{{INSIGHT_2}}</li>
+                        <li>{{INSIGHT_3}}</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <!-- Slide 5: Emphasis Boxes -->
+        <!-- Slide 5: Multiple Charts Layout (3 Column) ⭐ 新增 -->
         <div class="slide" data-slide="5">
+            <!-- Slide Header -->
+            <div class="slide-header">
+                <h2 class="slide-header-title">{{SECTION_TITLE}}</h2>
+            </div>
+            <!-- Content -->
+            <h2 class="slide-title">{{SECTION_TITLE}}</h2>
+            <div class="three-column-chart-layout">
+                <div class="chart-column">
+                    <h3 class="section-heading">{{CHART_1_TITLE}}</h3>
+                    <div class="chart-container">
+                        <canvas id="chartA"></canvas>
+                    </div>
+                </div>
+                <div class="chart-column">
+                    <h3 class="section-heading">{{CHART_2_TITLE}}</h3>
+                    <div class="chart-container">
+                        <canvas id="chartB"></canvas>
+                    </div>
+                </div>
+                <div class="chart-column">
+                    <h3 class="section-heading">{{CHART_3_TITLE}}</h3>
+                    <div class="chart-container">
+                        <canvas id="chartC"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Emphasis Boxes -->
+        <div class="slide" data-slide="6">
+            <!-- Slide Header -->
+            <div class="slide-header">
+                <h2 class="slide-header-title">{{SECTION_TITLE}}</h2>
+            </div>
+            <!-- Content -->
             <h2 class="slide-title">{{SECTION_TITLE}}</h2>
             <div class="emphasis-container">
                 <div class="emphasis-box">
@@ -577,8 +751,13 @@
             </div>
         </div>
 
-        <!-- Slide 6: Conclusions Grid -->
-        <div class="slide" data-slide="6">
+        <!-- Slide 7: Conclusions Grid -->
+        <div class="slide" data-slide="7">
+            <!-- Slide Header -->
+            <div class="slide-header">
+                <h2 class="slide-header-title">核心结论</h2>
+            </div>
+            <!-- Content -->
             <h2 class="slide-title">核心结论</h2>
             <div class="conclusions-grid">
                 <div class="conclusion-card">
@@ -593,7 +772,7 @@
                 </div>
                 <div class="conclusion-card">
                     <div class="conclusion-number">03</div>
-               ss="conclusion-title">{{CONCLUSION_3_TITLE}}</h3>
+                    <h3 class="conclusion-title">{{CONCLUSION_3_TITLE}}</h3>
                     <p class="conclusion-text">{{CONCLUSION_3_TEXT}}</p>
                 </div>
             </div>
@@ -676,24 +855,26 @@
         }
 
         function initializeCharts() {
-            // Example chart initialization
-            // Replace with actual chart data
+            // Design System Color Palette
+            const designColors = [
+                '#556EE6',  // 深蓝色
+                '#F85d42',  // 橙色
+                '#34c38f',  // 绿色
+                '#50a5f1',  // 蓝色
+                '#f1b44c'   // 黄色
+            ];
 
+            // Example chart initialization - Chart 1
             const chart1Canvas = document.getElementById('chart1');
             if (chart1Canvas) {
                 new Chart(chart1Canvas, {
                     type: 'bar',
                     data: {
-                        labels: ['项目 A', '项目 B', '项目 C', '项目 D'],
+                        labels: ['类别 A', '类别 B', '类别 C', '类别 D', '类别 E'],
                         datasets: [{
                             label: '数据示例',
-                            data: [65, 59, 80, 81],
-                            backgroundColor: [
-                                '#F85d42',
-                                '#556EE6',
-                                '#34c38f',
-                                '#50a5f1'
-                            ],
+                            data: [65, 59, 80, 81, 56],
+                            backgroundColor: designColors[0],
                             borderWidth: 0
                         }]
                     },
@@ -702,22 +883,146 @@
                         maintainAspectRatio: false,
                         plugins: {
                             legend: {
-                                display: false
-                            },
-                            title: {
-                                display: false
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    font: { size: 14 },
+                                    color: '#333333'
+                                }
                             }
                         },
                         scales: {
                             y: {
                                 beginAtZero: true,
-                                grid: {
-                                    color: '#e9ecef'
-                                }
+                                grid: { color: '#f0f0f0' },
+                                ticks: { color: '#74788d' }
                             },
                             x: {
+                                grid: { display: false },
+                                ticks: { color: '#74788d' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Chart A - Line Chart Example
+            const chartACanvas = document.getElementById('chartA');
+            if (chartACanvas) {
+                new Chart(chartACanvas, {
+                    type: 'line',
+                    data: {
+                        labels: ['2020', '2021', '2022', '2023', '2024'],
+                        datasets: [{
+                            label: '趋势数据',
+                            data: [30, 45, 55, 70, 85],
+                            borderColor: designColors[0],
+                            backgroundColor: designColors[0] + '20',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    font: { size: 12 },
+                                    color: '#333333'
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: { color: '#f0f0f0' },
+                                ticks: { color: '#74788d' }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: '#74788d' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Chart B - Doughnut Chart Example
+            const chartBCanvas = document.getElementById('chartB');
+            if (chartBCanvas) {
+                new Chart(chartBCanvas, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['部分 A', '部分 B', '部分 C', '部分 D'],
+                        datasets: [{
+                            data: [25, 35, 20, 20],
+                            backgroundColor: designColors,
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'right',
+                                labels: {
+                                    font: { size: 12 },
+                                    color: '#333333'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Chart C - Radar Chart Example
+            const chartCCanvas = document.getElementById('chartC');
+            if (chartCCanvas) {
+                new Chart(chartCCanvas, {
+                    type: 'radar',
+                    data: {
+                        labels: ['维度 1', '维度 2', '维度 3', '维度 4', '维度 5'],
+                        datasets: [{
+                            label: '能力评估',
+                            data: [80, 70, 90, 75, 85],
+                            backgroundColor: designColors[1] + '30',
+                            borderColor: designColors[1],
+                            borderWidth: 2,
+                            pointBackgroundColor: designColors[1]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    font: { size: 12 },
+                                    color: '#333333'
+                                }
+                            }
+                        },
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    stepSize: 20,
+                                    color: '#74788d'
+                                },
                                 grid: {
-                                    display: false
+                                    color: '#f0f0f0'
+                                },
+                                pointLabels: {
+                                    color: '#333333',
+                                    font: { size: 12 }
                                 }
                             }
                         }

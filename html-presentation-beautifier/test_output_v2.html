@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简优战略方向梳理 - McKinsey风格演示文稿</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --color-bg: #FFFFFF;
+            --color-header-bg: #000000;
+            --color-header-text: #FFFFFF;
+            --color-accent-primary: #F85d42;
+            --color-text-secondary: #74788d;
+            --color-text-muted: #999999;
+            --color-border-light: #e0e0e0;
+            --color-bg-secondary: #fafafa;
+            --color-blue-deep: #556EE6;
+            --color-green: #34c38f;
+            --color-blue-light: #50a5f1;
+            --color-yellow: #f1b44c;
+            --font-family-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-size-h1: 48px;
+            --font-size-h2: 36px;
+            --font-size-h3: 24px;
+            --font-size-body: 18px;
+            --font-size-body-secondary: 14px;
+            --slide-padding: 40px;
+            --spacing-xs: 8px;
+            --spacing-sm: 16px;
+            --spacing-md: 24px;
+            --spacing-lg: 32px;
+            --spacing-xl: 48px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-primary);
+            background: var(--color-bg-secondary);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .slide-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--color-header-bg);
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .slide-header-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--color-header-text);
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--color-bg);
+            padding: var(--slide-padding);
+            padding-top: 100px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 1;
+        }
+
+        .slide.title-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+        }
+
+        .slide.title-slide .slide-header {
+            display: none;
+        }
+
+        .title-slide h1 {
+            font-size: 52px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .title-slide .subtitle {
+            font-size: 28px;
+            color: var(--color-text-secondary);
+            margin-bottom: 48px;
+            font-weight: 400;
+        }
+
+        .title-slide .brand {
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--color-blue-deep);
+            padding: 16px 48px;
+            border: 2px solid var(--color-blue-deep);
+            border-radius: 4px;
+        }
+
+        .nav-button {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid var(--color-border-light);
+            cursor: pointer;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--color-text-secondary);
+            transition: all 0.2s ease;
+            border-radius: 4px;
+        }
+
+        .nav-button:hover {
+            background: var(--color-accent-primary);
+            color: white;
+            border-color: var(--color-accent-primary);
+        }
+
+        .nav-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .nav-prev { left: 20px; }
+        .nav-next { right: 20px; }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 24px;
+            font-size: var(--font-size-body-secondary);
+            color: var(--color-text-secondary);
+            z-index: 200;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        .fullscreen-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid var(--color-border-light);
+            cursor: pointer;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            font-size: 18px;
+        }
+
+        .fullscreen-button:hover {
+            background: var(--color-accent-primary);
+            color: white;
+            border-color: var(--color-accent-primary);
+        }
+
+        h1.slide-title {
+            font-size: var(--font-size-h1);
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.3;
+        }
+
+        h2.slide-title {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: var(--spacing-md);
+            line-height: 1.4;
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--color-blue-deep);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .section-tag {
+            display: inline-block;
+            background: var(--color-accent-primary);
+            color: white;
+            padding: 6px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 4px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: var(--spacing-lg);
+        }
+
+        .three-column {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: var(--spacing-lg);
+        }
+
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bullet-list li {
+            padding: 12px 0;
+            padding-left: 28px;
+            position: relative;
+            font-size: var(--font-size-body);
+            color: #444;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .bullet-list li:last-child {
+            border-bottom: none;
+        }
+
+        .bullet-list li::before {
+            content: "•";
+            color: var(--color-accent-primary);
+            font-weight: bold;
+            font-size: 20px;
+            position: absolute;
+            left: 0;
+            top: 10px;
+        }
+
+        .emphasis-box {
+            background: var(--color-bg-secondary);
+            border-left: 4px solid var(--color-accent-primary);
+            padding: 24px 32px;
+            margin: var(--spacing-md) 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .emphasis-box .emphasis-icon {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .emphasis-box .emphasis-text {
+            font-size: var(--font-size-body);
+            color: #444;
+            line-height: 1.7;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 380px;
+            background: #fafafa;
+            border-radius: 4px;
+            padding: 20px;
+            margin: var(--spacing-md) 0;
+        }
+
+        .insights-column {
+            padding: 20px;
+            background: var(--color-bg-secondary);
+            border-radius: 4px;
+        }
+
+        .insights-column h3 {
+            font-size: 18px;
+            color: var(--color-accent-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .key-insights {
+            list-style: none;
+            padding: 0;
+        }
+
+        .key-insights li {
+            padding: 10px 0;
+            font-size: 15px;
+            color: #555;
+            border-bottom: 1px solid #eee;
+        }
+
+        .key-insights li:last-child {
+            border-bottom: none;
+        }
+
+        .data-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: var(--spacing-lg);
+        }
+
+        .data-card {
+            background: var(--color-bg-secondary);
+            padding: 28px;
+            text-align: center;
+            border-radius: 4px;
+            border-top: 3px solid var(--color-blue-deep);
+        }
+
+        .data-card .number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--color-blue-deep);
+            margin-bottom: 12px;
+        }
+
+        .data-card .label {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: var(--spacing-lg);
+        }
+
+        .highlight-card {
+            background: var(--color-bg-secondary);
+            padding: 24px;
+            border-radius: 4px;
+            border-left: 4px solid var(--color-green);
+        }
+
+        .highlight-card h4 {
+            font-size: 18px;
+            color: var(--color-green);
+            margin-bottom: 12px;
+        }
+
+        .highlight-card p {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .comparison-table {
+            margin-top: var(--spacing-lg);
+            overflow-x: auto;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .comparison-table th {
+            background: var(--color-header-bg);
+            color: white;
+            padding: 16px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .comparison-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .chapter-cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            padding: 60px;
+        }
+
+        .chapter-cover .chapter-number {
+            font-size: 100px;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.08);
+            line-height: 1;
+            margin-bottom: -40px;
+        }
+
+        .chapter-cover h2 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 24px;
+        }
+
+        .chapter-cover .chapter-desc {
+            font-size: 20px;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .toc-item {
+            background: var(--color-bg-secondary);
+            padding: 28px;
+            border-radius: 4px;
+            border-left: 4px solid var(--color-blue-deep);
+            transition: all 0.2s ease;
+        }
+
+        .toc-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .toc-item .toc-number {
+            font-size: 14px;
+            color: var(--color-accent-primary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .toc-item .toc-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .toc-item .toc-desc {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+
+        .closing-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .closing-slide h2 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 32px;
+        }
+
+        .closing-slide .conclusion-box {
+            background: var(--color-bg-secondary);
+            padding: 40px 60px;
+            border-radius: 4px;
+            border-left: 4px solid var(--color-accent-primary);
+            max-width: 800px;
+        }
+
+        .closing-slide .conclusion-box p {
+            font-size: 20px;
+            color: #444;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .closing-slide .brand-final {
+            font-size: 36px;
+            font-weight: 600;
+            color: var(--color-blue-deep);
+            margin-top: 48px;
+        }
+
+        @media (max-width: 1024px) {
+            .two-column, .three-column, .data-cards, .card-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .toc-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 20px;
+                padding-top: 80px;
+            }
+            
+            .title-slide h1 {
+                font-size: 36px;
+            }
+            
+            .toc-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-button {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-header">
+        <h2 class="slide-header-title">简优战略方向梳理</h2>
+    </div>
+
+    <div class="presentation-container">
+        <!-- Slide 1: Title Slide -->
+        <div class="slide title-slide active" data-slide="1">
+            <h1>简优战略方向梳理</h1>
+            <p class="subtitle">聚焦「学童优选」，打造开学与校园成长辅助一站式品牌</p>
+            <p class="brand">SchoolReady™</p>
+        </div>
+
+        <!-- Slide 2: Table of Contents -->
+        <div class="slide" data-slide="2">
+            <h2 class="slide-title">目录</h2>
+            <div class="toc-grid">
+                <div class="toc-item">
+                    <div class="toc-number">第一部分</div>
+                    <div class="toc-title">商业模式介绍</div>
+                    <div class="toc-desc">亚马逊品牌流量价值转化模式</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-number">第二部分</div>
+                    <div class="toc-title">为什么要选择开学季？</div>
+                    <div class="toc-desc">市场规模、产品契合度与营销优势</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-number">第三部分</div>
+                    <div class="toc-title">简优赛道定义</div>
+                    <div class="toc-desc">「学童优选」赛道核心</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-number">第四部分</div>
+                    <div class="toc-title">对标案例</div>
+                    <div class="toc-desc">School Supply Boxes 案例分析</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-number">第五部分</div>
+                    <div class="toc-title">品牌战略规划</div>
+                    <div class="toc-desc">SchoolReady™ 完整落地路径</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-number">核心结论</div>
+                    <div class="toc-title">战略逻辑总结</div>
+                    <div class="toc-desc">模式-场景-赛道-落地完整闭环</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Chapter 1 Cover -->
+        <div class="slide" data-slide="3">
+            <div class="chapter-cover">
+                <div class="chapter-number">01</div>
+                <h2>第一部分：商业模式介绍</h2>
+                <p class="chapter-desc">亚马逊品牌流量价值转化模式，通过识别共同消费心智，占领消费者心智空间，将心智流量转化为品牌搜索流量，最终在亚马逊平台上实现高效变现</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Part 1 - Model Overview -->
+        <div class="slide" data-slide="4">
+            <span class="section-tag">模式简述</span>
+            <h2 class="slide-title">亚马逊品牌流量价值转化模式</h2>
+            <div class="emphasis-box">
+                <div class="emphasis-text">通过识别目前企业在亚马逊所售主要产品的共同心智，占领消费者共同心智空间，将心智流量转化为品牌搜索流量，最终在亚马逊平台上实现高效变现的战略性商业模式</div>
+            </div>
+            <div class="two-column">
+                <div class="column">
+                    <h3>传统模式：产品竞争型</h3>
+                    <ul class="bullet-list">
+                        <li>通过价格战获取产品关键词流量</li>
+                        <li>依赖评价竞争</li>
+                        <li>易陷入同质化竞争</li>
+                        <li>利润空间受限</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>新模式：心智占领型</h3>
+                    <ul class="bullet-list">
+                        <li>通过品牌化消费者心智需求</li>
+                        <li>绕过产品层面激烈竞争</li>
+                        <li>创造更可持续的竞争优势</li>
+                        <li>实现长期稳定盈利</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Part 1 - Core Mechanism -->
+        <div class="slide" data-slide="5">
+            <span class="section-tag">核心运作机制</span>
+            <h2 class="slide-title">六大核心机制</h2>
+            <div class="two-column">
+                <div class="column">
+                    <ul class="bullet-list">
+                        <li><strong>心智识别与整合</strong>：分析多个弱势品类产品背后的共同消费心智</li>
+                        <li><strong>品牌心智绑定</strong>：将识别出的消费心智与自有品牌强关联</li>
+                        <li><strong>站外品牌放大</strong>：通过KOL合作、PR、社交媒体营销大规模提升品牌知名度</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <ul class="bullet-list">
+                        <li><strong>双向流量转化</strong>：心智→品牌搜索流量+站外直接流量</li>
+                        <li><strong>平台算法利用</strong>：利用A9算法偏好提升所有产品listing自然排名</li>
+                        <li><strong>规模化产品覆盖</strong>：上架100+相关产品最大化品牌流量变现</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Part 1 - Revenue Sources -->
+        <div class="slide" data-slide="6">
+            <span class="section-tag">盈利来源</span>
+            <h2 class="slide-title">心智流量溢价</h2>
+            <div class="data-cards">
+                <div class="data-card">
+                    <div class="number">品牌溢价</div>
+                    <div class="label">减少价格比较<br>获得更高利润空间</div>
+                </div>
+                <div class="data-card">
+                    <div class="number">算法红利</div>
+                    <div class="label">高品牌搜索量<br>提升自然排名</div>
+                </div>
+                <div class="data-card">
+                    <div class="number">转化效率</div>
+                    <div class="label">品牌流量转化率高<br>不与普通产品竞争</div>
+                </div>
+                <div class="data-card">
+                    <div class="number">规模效应</div>
+                    <div class="label">单一品牌心智<br>带动多类别销售</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Part 2 Cover -->
+        <div class="slide" data-slide="7">
+            <div class="chapter-cover">
+                <div class="chapter-number">02</div>
+                <h2>第二部分：为什么要选择开学季？</h2>
+                <p class="chapter-desc">论证开学季是简优最优切入场景，市场规模大、产品契合度高、营销优势明显</p>
+            </div>
+        </div>
+
+        <!-- Slide 8: Part 2 - Global Market Size -->
+        <div class="slide" data-slide="8">
+            <span class="section-tag">市场规模</span>
+            <h2 class="slide-title">全球返校季市场</h2>
+            <div class="two-column">
+                <div class="column">
+                    <div class="chart-container">
+                        <canvas id="chart-global-market"></canvas>
+                    </div>
+                </div>
+                <div class="insights-column">
+                    <h3>关键数据</h3>
+                    <ul class="key-insights">
+                        <li><strong>2024年</strong>：1723.498亿美元</li>
+                        <li><strong>2030年预测</strong>：2301.489亿美元</li>
+                        <li><strong>CAGR</strong>：4.8%</li>
+                        <li><strong>最大区域</strong>：亚太地区</li>
+                        <li><strong>增长最快</strong>：印度</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Part 2 - North America Market -->
+        <div class="slide" data-slide="9">
+            <span class="section-tag">北美市场</span>
+            <h2 class="slide-title">北美返校季核心市场</h2>
+            <div class="data-cards">
+                <div class="data-card">
+                    <div class="number">365.9亿</div>
+                    <div class="label">2024年北美市场收入<br>（美元）</div>
+                </div>
+                <div class="data-card">
+                    <div class="number">473.6亿</div>
+                    <div class="label">2030年预测<br>（美元）</div>
+                </div>
+                <div class="data-card">
+                    <div class="number">1282亿</div>
+                    <div class="label">2025年K-12及大学生<br>家庭总支出</div>
+                </div>
+                <div class="data-card">
+                    <div class="number">570</div>
+                    <div class="label">全美K-12学生<br>人均支出（美元）</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Part 2 - Product Fit -->
+        <div class="slide" data-slide="10">
+            <span class="section-tag">产品契合度</span>
+            <h2 class="slide-title">三条产品线高度契合开学季</h2>
+            <div class="two-column">
+                <div class="column">
+                    <div class="chart-container">
+                        <canvas id="chart-product-fit"></canvas>
+                    </div>
+                </div>
+                <div class="insights-column">
+                    <h3>关键发现</h3>
+                    <ul class="key-insights">
+                        <li><strong>儿童耳机</strong>：开学动机满分10.00</li>
+                        <li><strong>绘画用品</strong>：开学动机满分10.00</li>
+                        <li><strong>贴纸本</strong>：开学动机8.96分</li>
+                        <li><strong>校园场景</strong>：所有产品得分≥9.00</li>
+                        <li><strong>结论</strong>：开学季是核心消费节点</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Part 2 - Sales Contribution -->
+        <div class="slide" data-slide="11">
+            <span class="section-tag">销售额占比</span>
+            <h2 class="slide-title">返校季销售贡献显著</h2>
+            <div class="two-column">
+                <div class="column">
+                    <div class="chart-container">
+                        <canvas id="chart-sales-contribution"></canvas>
+                    </div>
+                </div>
+                <div class="insights-column">
+                    <h3>销售数据分析</h3>
+                    <ul class="key-insights">
+                        <li><strong>头戴耳机</strong>：7-8月占全年47.96%</li>
+                        <li><strong>贴纸本</strong>：7-8月占全年36.18%</li>
+                        <li><strong>绘画套装</strong>：7-8月占全年约30%</li>
+                        <li><strong>趋势</strong>：占比逐年提升</li>
+                        <li><strong>结论</strong>：开学季是关键销售周期</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Part 3 Cover -->
+        <div class="slide" data-slide="12">
+            <div class="chapter-cover">
+                <div class="chapter-number">03</div>
+                <h2>第三部分：简优赛道定义</h2>
+                <p class="chapter-desc">「学童优选」赛道：围绕3-12岁学龄儿童开学前及学年中的学习用品、生活装备、教育发展工具，提供一站式服务</p>
+            </div>
+        </div>
+
+        <!-- Slide 13: Part 3 - Market Definition -->
+        <div class="slide" data-slide="13">
+            <span class="section-tag">赛道定义</span>
+            <h2 class="slide-title">"学童优选"赛道核心</h2>
+            <div class="two-column">
+                <div class="column">
+                    <h3>赛道内涵</h3>
+                    <ul class="bullet-list">
+                        <li>围绕3-12岁学龄儿童开学前及学年中的产品服务</li>
+                        <li>提供"便捷决策+一站式购买+教育价值"</li>
+                        <li>核心：减轻家长负担+满足儿童成长需求</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>赛道特征</h3>
+                    <ul class="bullet-list">
+                        <li>一站式购物（一次买齐）</li>
+                        <li>决策简化（按年级分类）</li>
+                        <li>教育价值融入</li>
+                        <li>分龄适配</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Part 3 - User Profile -->
+        <div class="slide" data-slide="14">
+            <span class="section-tag">用户画像</span>
+            <h2 class="slide-title">目标用户群体</h2>
+            <div class="card-grid">
+                <div class="highlight-card">
+                    <h4>核心用户：效率导向型父母</h4>
+                    <p>双职工家庭，需省心方案，追求快速决策，关注时间成本</p>
+                </div>
+                <div class="highlight-card">
+                    <h4>拓展用户：成长关注型父母</h4>
+                    <p>关注教育价值，愿为有意义产品付费，注重产品教育属性</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Part 3 - Market Size -->
+        <div class="slide" data-slide="15">
+            <span class="section-tag">市场规模</span>
+            <h2 class="slide-title">TAM：494.2亿美元</h2>
+            <div class="data-cards">
+                <div class="data-card">
+                    <div class="number">4000万</div>
+                    <div class="label">美国3-12岁学龄儿童<br>目标人群</div>
+                </div>
+                <div class="data-card">
+                    <div class="number">$123.55</div>
+                    <div class="label">人均年度支出<br>（美元）</div>
+                </div>
+                <div class="data-card">
+                    <div class="number">494.2亿</div>
+                    <div class="label">总潜在市场规模<br>（美元）</div>
+                </div>
+                <div class="data-card">
+                    <div class="number">8-12%</div>
+                    <div class="label">高于普通文具品牌<br>毛利率</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Part 3 - Competitive Landscape -->
+        <div class="slide" data-slide="16">
+            <span class="section-tag">竞争格局</span>
+            <h2 class="slide-title">差异化竞争定位</h2>
+            <div class="comparison-table">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="background: var(--color-header-bg); color: white;">
+                        <th style="padding: 14px; text-align: left;">竞品类型</th>
+                        <th style="padding: 14px; text-align: left;">特点</th>
+                        <th style="padding: 14px; text-align: left;">SchoolReady优势</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 14px; border-bottom: 1px solid #e9ecef;">纯文具品牌</td>
+                        <td style="padding: 14px; border-bottom: 1px solid #e9ecef;">基础工具，无教育属性</td>
+                        <td style="padding: 14px; border-bottom: 1px solid #e9ecef;">分龄设计+教育价值</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 14px; border-bottom: 1px solid #e9ecef;">专业教具品牌</td>
+                        <td style="padding: 14px; border-bottom: 1px solid #e9ecef;">教育内容强，脱离开学刚需</td>
+                        <td style="padding: 14px; border-bottom: 1px solid #e9ecef;">开学刚需+成长辅助</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 14px; border-bottom: 1px solid #e9ecef;">开学套装品牌</td>
+                        <td style="padding: 14px; border-bottom: 1px solid #e9ecef;">基础文具组合，无教育属性</td>
+                        <td style="padding: 14px; border-bottom: 1px solid #e9ecef;">一站式+教育双轨</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 17: Part 4 Cover -->
+        <div class="slide" data-slide="17">
+            <div class="chapter-cover">
+                <div class="chapter-number">04</div>
+                <h2>第四部分：对标案例</h2>
+                <p class="chapter-desc">School Supply Boxes：北美开学套装龙头，定位"教育机构合作伙伴"，B2B2C社区化电商模式</p>
+            </div>
+        </div>
+
+        <!-- Slide 18: Part 4 - Case Study -->
+        <div class="slide" data-slide="18">
+            <span class="section-tag">案例介绍</span>
+            <h2 class="slide-title">School Supply Boxes 核心亮点</h2>
+            <div class="two-column">
+                <div class="column">
+                    <h3>商业模式</h3>
+                    <ul class="bullet-list">
+                        <li>定位：教育机构的合作伙伴</li>
+                        <li>产品：清单驱动的套装组合</li>
+                        <li>渠道：与2000+学校合作</li>
+                        <li>模式：B2B2C社区化电商</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>关键数据</h3>
+                    <ul class="bullet-list">
+                        <li>年销售额：数千万美元</li>
+                        <li>员工规模：少于25人</li>
+                        <li>覆盖学段：Pre-K到大学</li>
+                        <li>核心价值：简化采购过程</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Part 4 - Key Insights -->
+        <div class="slide" data-slide="19">
+            <span class="section-tag">核心启示</span>
+            <h2 class="slide-title">对简优的五大启示</h2>
+            <ul class="bullet-list">
+                <li><strong>清单驱动，套装为王</strong>：提供解决特定需求的完整套装，而非零散单品</li>
+                <li><strong>极简化SKU管理</strong>：将创新重心放在"如何搭配"而非创造新单品</li>
+                <li><strong>提供灵活性</strong>：标准套装+自选套装满足不同需求</li>
+                <li><strong>定位为解决方案专家</strong>：成为"家庭的返校季全能管家"</li>
+                <li><strong>突破季节性限制</strong>：从开学季延伸至日常校园生活场景</li>
+            </ul>
+        </div>
+
+        <!-- Slide 20: Part 5 Cover -->
+        <div class="slide" data-slide="20">
+            <div class="chapter-cover">
+                <div class="chapter-number">05</div>
+                <h2>第五部分：品牌战略规划</h2>
+                <p class="chapter-desc">SchoolReady™完整落地路径：从品牌定位到三阶段目标，打造全球学童成长服务领导者</p>
+            </div>
+        </div>
+
+        <!-- Slide 21: Part 5 - Brand Positioning -->
+        <div class="slide" data-slide="21">
+            <span class="section-tag">品牌定位</span>
+            <h2 class="slide-title">SchoolReady™品牌定位</h2>
+            <div class="emphasis-box">
+                <div class="emphasis-text">首个专注于3-12岁学龄儿童开学准备与家庭教育适配的一站式用品品牌，让开学准备更省心，让校园适配更精准</div>
+            </div>
+            <div class="two-column">
+                <div class="column">
+                    <h3>核心价值</h3>
+                    <ul class="bullet-list">
+                        <li>省心：一站式购齐开学必需品</li>
+                        <li>精准：按年级分层设计</li>
+                        <li>可靠：贴合学校清单需求</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>用户痛点解决</h3>
+                    <ul class="bullet-list">
+                        <li>采购繁琐</li>
+                        <li>决策负担重</li>
+                        <li>担心遗漏必需品</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22: Part 5 - Differentiated Advantages -->
+        <div class="slide" data-slide="22">
+            <span class="section-tag">差异化优势</span>
+            <h2 class="slide-title">四大核心差异化优势</h2>
+            <div class="card-grid">
+                <div class="highlight-card">
+                    <h4>一站式 + 教育双轨</h4>
+                    <p>区别于基础文具套装，新增教育类套装，填补缺乏教育属性的空白</p>
+                </div>
+                <div class="highlight-card">
+                    <h4>分龄化校园场景精准适配</h4>
+                    <p>严格按3-12岁学龄段分层设计，Preschool防误吞、5-6年级专业级工具</p>
+                </div>
+                <div class="highlight-card">
+                    <h4>家长决策减负与教育价值双赋能</h4>
+                    <p>解决采购繁琐痛点，同时融入教育价值（如分类文件夹培养组织能力）</p>
+                </div>
+                <div class="highlight-card">
+                    <h4>B2B2C + C端灵活定制双模式</h4>
+                    <p>校园合作获取清单，同时提供自定义配件满足个性化需求</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 23: Part 5 - Naming Suggestions -->
+        <div class="slide" data-slide="23">
+            <span class="section-tag">品牌命名</span>
+            <h2 class="slide-title">品牌命名建议</h2>
+            <div class="three-column">
+                <div class="highlight-card">
+                    <h4>SchoolReady™</h4>
+                    <p>"让孩子为开学做好准备"，直接关联Back to School核心场景，认知成本低</p>
+                </div>
+                <div class="highlight-card">
+                    <h4>KidSelect™</h4>
+                    <p>"为学童精选"，传递"优选"核心逻辑，贴合"学童优选"赛道定位</p>
+                </div>
+                <div class="highlight-card">
+                    <h4>SchoolPick™</h4>
+                    <p>"校园优选"，口语化表达，北美家长易理解且记忆成本低</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 24: Part 5 - Slogan Options -->
+        <div class="slide" data-slide="24">
+            <span class="section-tag">Slogan</span>
+            <h2 class="slide-title">Slogan方案</h2>
+            <div class="card-grid">
+                <div class="emphasis-box">
+                    <div class="emphasis-text"><strong>方案一</strong>：One Stop, School Ready<br>一站式备齐，开学更省心</div>
+                </div>
+                <div class="emphasis-box">
+                    <div class="emphasis-text"><strong>方案二</strong>：Fit for Class, Ready for School<br>适配校园需求，开学从容就绪</div>
+                </div>
+                <div class="emphasis-box">
+                    <div class="emphasis-text"><strong>方案三</strong>：Ready for School, Grown for Life<br>开学准备就绪，成长一路相伴</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 25: Part 5 - Business Model -->
+        <div class="slide" data-slide="25">
+            <span class="section-tag">商业模式</span>
+            <h2 class="slide-title">教育价值驱动的分龄产品矩阵</h2>
+            <div class="three-column">
+                <div class="highlight-card">
+                    <h4>Preschool（3-5岁）</h4>
+                    <p>安全导向+学前适应：无小零件文具、情绪认知贴纸本，解决"入园准备"痛点</p>
+                </div>
+                <div class="highlight-card">
+                    <h4>Kindergarten（5-6岁）</h4>
+                    <p>课堂适配+习惯启蒙：钝化工具、校园规则卡片，解决"幼小衔接"痛点</p>
+                </div>
+                <div class="highlight-card">
+                    <h4>1-6年级</h4>
+                    <p>学科适配+自主管理：分类文件夹、学习进度表，解决"学龄能力培养"痛点</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 26: Part 5 - Channel Strategy -->
+        <div class="slide" data-slide="26">
+            <span class="section-tag">渠道策略</span>
+            <h2 class="slide-title">校园协同的多元渠道策略</h2>
+            <div class="data-cards">
+                <div class="data-card">
+                    <div class="number">30-35%</div>
+                    <div class="label">B2B2C校园渠道<br>合作2000+学校</div>
+                </div>
+                <div class="data-card">
+                    <div class="number">25-30%</div>
+                    <div class="label">DTC品牌站<br>用户沉淀</div>
+                </div>
+                <div class="data-card">
+                    <div class="number">30-35%</div>
+                    <div class="label">电商平台<br>规模扩张</div>
+                </div>
+                <div class="data-card">
+                    <div class="number">5-10%</div>
+                    <div class="label">专业零售渠道<br>场景补充</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 27: Part 5 - Stage Goals -->
+        <div class="slide" data-slide="27">
+            <span class="section-tag">阶段目标</span>
+            <h2 class="slide-title">商业终局的阶段性目标</h2>
+            <div class="two-column">
+                <div class="column">
+                    <div class="chart-container">
+                        <canvas id="chart-stage-goals"></canvas>
+                    </div>
+                </div>
+                <div class="insights-column">
+                    <h3>三阶段目标</h3>
+                    <ul class="key-insights">
+                        <li><strong>1-3年</strong>：1.2-1.8亿美元，北美市场立足</li>
+                        <li><strong>3-5年</strong>：3.5-5亿美元，全学龄覆盖</li>
+                        <li><strong>5-10年</strong>：8-12亿美元，全球化领导</li>
+                        <li><strong>复购率</strong>：从25%提升至40%</li>
+                        <li><strong>核心成果</strong>：细分赛道Top3品牌</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 28: Part 5 - Core Barriers -->
+        <div class="slide" data-slide="28">
+            <span class="section-tag">核心壁垒</span>
+            <h2 class="slide-title">商业终局的核心竞争壁垒</h2>
+            <div class="card-grid">
+                <div class="highlight-card">
+                    <h4>分龄教育体系壁垒</h4>
+                    <p>产品与学龄教育理论深度绑定，竞争对手难以快速复制</p>
+                </div>
+                <div class="highlight-card">
+                    <h4>成长路径壁垒</h4>
+                    <p>家长一旦选择分龄套装，后续年级升级可直接匹配，切换品牌成本高</p>
+                </div>
+                <div class="highlight-card">
+                    <h4>校园合作壁垒</h4>
+                    <p>与学校建立的"清单定制+长期合作"关系，新品牌难以快速获取</p>
+                </div>
+                <div class="highlight-card">
+                    <h4>数据积累壁垒</h4>
+                    <p>用户使用反馈持续优化产品教育价值，形成正向循环</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 29: Conclusion -->
+        <div class="slide" data-slide="29">
+            <span class="section-tag">核心结论</span>
+            <h2 class="slide-title">战略逻辑总结</h2>
+            <div class="emphasis-box">
+                <div class="emphasis-text">本规划形成"模式-场景-赛道-落地"的完整逻辑：以"亚马逊品牌流量价值转化模式"为基础，选择"开学季"为核心场景，切入"学童优选"蓝海赛道，通过分龄产品、B2B2C渠道、教育价值融入，打造SchoolReady™品牌，最终实现从"季节性单品销售"到"全球学童成长服务领导者"的转型</div>
+            </div>
+        </div>
+
+        <!-- Slide 30: Closing -->
+        <div class="slide closing-slide" data-slide="30">
+            <h2>谢谢</h2>
+            <div class="conclusion-box">
+                <p>简优战略方向梳理：聚焦「学童优选」</p>
+                <p>打造开学与校园成长辅助一站式品牌</p>
+            </div>
+            <p class="brand-final">SchoolReady™</p>
+        </div>
+
+        <!-- Navigation Controls -->
+        <button class="nav-button nav-prev" onclick="prevSlide()" disabled>‹</button>
+        <button class="nav-button nav-next" onclick="nextSlide">›</button>
+        <div class="slide-counter"><span id="current-slide">1</span> / <span id="total-slides">30</span></div>
+        <button class="fullscreen-button" onclick="toggleFullscreen()">⛶</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 30;
+
+        function updateSlide() {
+            document.querySelectorAll('.slide').forEach((slide, index) => {
+                slide.classList.remove('active');
+                if (index + 1 === currentSlide) {
+                    slide.classList.add('active');
+                }
+            });
+            
+            document.getElementById('current-slide').textContent = currentSlide;
+            document.querySelector('.nav-prev').disabled = currentSlide === 1;
+            document.querySelector('.nav-next').disabled = currentSlide === totalSlides;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'f' || e.key === 'F') {
+                toggleFullscreen();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const designColors = ['#556EE6', '#F85d42', '#34c38f', '#50a5f1', '#f1b44c'];
+            
+            const chartConfigs = [
+                {
+                    id: 'chart-global-market',
+                    type: 'bar',
+                    title: '全球返校季市场规模（十亿美元）',
+                    labels: ['2024年', '2025年', '2026年', '2027年', '2028年', '2029年', '2030年'],
+                    data: [172.3, 180.6, 189.3, 198.4, 207.9, 217.9, 230.1],
+                    yLabel: '十亿美元'
+                },
+                {
+                    id: 'chart-product-fit',
+                    type: 'radar',
+                    title: '三条产品线开学动机得分',
+                    labels: ['儿童耳机', '绘画用品', '贴纸本', '教室场景', '幼儿园场景'],
+                    data: [
+                        { label: '开学动机', data: [10, 10, 8.96, 0, 0] },
+                        { label: '校园场景', data: [0, 0, 0, 9.5, 10] }
+                    ],
+                    max: 10
+                },
+                {
+                    id: 'chart-sales-contribution',
+                    type: 'bar',
+                    title: '返校季销售额占比',
+                    labels: ['头戴耳机', '贴纸本', '绘画套装'],
+                    data: [47.96, 36.18, 30],
+                    yLabel: '占比 (%)',
+                    stacked: false
+                },
+                {
+                    id: 'chart-stage-goals',
+                    type: 'bar',
+                    title: '三阶段年销售额目标（亿美元）',
+                    labels: ['第一阶段\n(1-3年)', '第二阶段\n(3-5年)', '第三阶段\n(5-10年)'],
+                    data: [1.5, 4.25, 10],
+                    colors: [designColors[0], designColors[3], designColors[1]],
+                    yLabel: '亿美元'
+                }
+            ];
+
+            chartConfigs.forEach(config => {
+                const ctx = document.getElementById(config.id);
+                if (ctx) {
+                    let chartData;
+                    let chartOptions;
+
+                    if (config.type === 'bar') {
+                        chartData = {
+                            labels: config.labels,
+                            datasets: [{
+                                label: config.title,
+                                data: config.data,
+                                backgroundColor: config.colors || designColors[0],
+                                borderWidth: 0,
+                                borderRadius: 4
+                            }]
+                        };
+                        chartOptions = {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: value => config.yLabel ? value + config.yLabel : value
+                                    }
+                                }
+                            }
+                        };
+                    } else if (config.type === 'radar') {
+                        chartData = {
+                            labels: config.labels,
+                            datasets: config.data.map((d, i) => ({
+                                label: d.label,
+                                data: d.data,
+                                backgroundColor: designColors[i % designColors.length] + '33',
+                                borderColor: designColors[i % designColors.length],
+                                borderWidth: 2,
+                                pointBackgroundColor: designColors[i % designColors.length]
+                            }))
+                        };
+                        chartOptions = {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                r: {
+                                    beginAtZero: true,
+                                    max: config.max || 10
+                                }
+                            }
+                        };
+                    }
+
+                    new Chart(ctx, {
+                        type: config.type,
+                        data: chartData,
+                        options: chartOptions
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

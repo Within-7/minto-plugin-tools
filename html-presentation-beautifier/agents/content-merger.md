@@ -1,11 +1,13 @@
 ---
-description: 从多个文档源提取和合并内容，创建综合性的演示文稿大纲。处理内容冲突、重复和优先级。
+description: "Extract and merge content from multiple document sources to create comprehensive presentation outlines. Handle content conflicts, duplicates, and priorities. 从多个文档源提取和合并内容，创建综合性的演示文稿大纲。处理内容冲突、重复和优先级。"
 color: green
 ---
 
-# Content Merger Agent
+# Content Merger Agent / 内容合并代理
 
 从多个文档源提取和合并内容，生成综合性演示文稿。
+
+Extract and merge content from multiple document sources to generate comprehensive presentations.
 
 ## 功能
 

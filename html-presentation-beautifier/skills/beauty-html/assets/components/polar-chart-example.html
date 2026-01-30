@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>极坐标图示例 - McKinsey Style</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --color-bg: #FFFFFF;
+            --color-text-primary: #000000;
+            --color-text-secondary: #333333;
+            --color-text-tertiary: #74788d;
+            --color-accent-primary: #F85d42;
+            --color-blue: #556EE6;
+            --color-green: #34c38f;
+            --color-light-blue: #50a5f1;
+            --color-yellow: #f1b44c;
+            --font-size-title-main: 48px;
+            --font-size-title-section: 32px;
+            --font-size-body: 18px;
+            --font-size-caption: 14px;
+            --spacing-sm: 20px;
+            --spacing-md: 30px;
+            --spacing-lg: 40px;
+            --spacing-xl: 60px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "Microsoft YaHei", sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text-secondary);
+            padding: var(--spacing-lg);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: var(--font-size-title-main);
+            font-weight: bold;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        h2 {
+            font-size: var(--font-size-title-section);
+            font-weight: bold;
+            color: var(--color-text-primary);
+            margin: var(--spacing-xl) 0 var(--spacing-md) 0;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--color-blue);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .description {
+            color: var(--color-text-tertiary);
+            font-size: var(--font-size-body);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.6;
+        }
+
+        .chart-section {
+            margin-bottom: var(--spacing-xl);
+            width: 100%;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-lg);
+            margin: var(--spacing-md) 0;
+            width: 100%;
+        }
+
+        .chart-card {
+            background: white;
+            padding: var(--spacing-md);
+            border: 1px solid #e0e0e0;
+            border-left: 4px solid var(--color-accent-primary);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            width: 100%;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin: var(--spacing-sm) 0;
+        }
+
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid var(--color-blue);
+            padding: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+        }
+
+        .info-box h4 {
+            color: var(--color-blue);
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+        }
+
+        .use-case-card {
+            background: white;
+            padding: var(--spacing-md);
+            border: 1px solid #e0e0e0;
+            border-left: 4px solid var(--color-accent-primary);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .use-case-card h4 {
+            color: var(--color-accent-primary);
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .use-case-card p {
+            color: var(--color-text-secondary);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        footer {
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+            color: var(--color-text-tertiary);
+            font-size: var(--font-size-caption);
+        }
+
+        @media (max-width: 768px) {
+            .chart-grid,
+            .use-cases-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>极坐标图示例 - Polar Area Chart Examples</h1>
+        <p class="description">
+            McKinsey 风格周期性数据可视化，环形扇区展示分类数据。适用于季度分析、方向性数据、周期性趋势等场景。
+        </p>
+
+        <div class="chart-section">
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <h3>年度销售分布</h3>
+                    <div class="chart-container">
+                        <canvas id="polar1"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h3>产品品类分布</h3>
+                    <div class="chart-container">
+                        <canvas id="polar2"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h4>极坐标图特点</h4>
+            <ul>
+                <li><strong>周期性展示：</strong>适合显示具有周期性的数据（如季度、月份）</li>
+                <li><strong>多维对比：</strong>同时展示多个类别的数值大小和占比</li>
+                <li><strong>视觉直观：</strong>通过扇区面积直观展示数据差异</li>
+                <li><strong>颜色区分：</strong>使用不同颜色区分不同类别</li>
+            </ul>
+        </div>
+
+        <h2>适用场景 - Use Cases</h2>
+        <div class="use-cases-grid">
+            <div class="use-case-card">
+                <h4>季度分析</h4>
+                <p>Q1-Q4季度数据对比</p>
+            </div>
+            <div class="use-case-card">
+                <h4>方向数据</h4>
+                <p>东西南北区域分析</p>
+            </div>
+            <div class="use-case-card">
+                <h4>时间周期</h4>
+                <p>月度、季度、年度趋势</p>
+            </div>
+            <div class="use-case-card">
+                <h4>分类对比</h4>
+                <p>产品品类、业务线对比</p>
+            </div>
+            <div class="use-case-card">
+                <h4>市场份额</h4>
+                <p>各区域市场占比分析</p>
+            </div>
+            <div class="use-case-card">
+                <h4>资源分配</h4>
+                <p>预算、人力资源分布</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>HTML Presentation Beautifier - McKinsey Style Polar Area Chart Example</p>
+            <p>基于 Chart.js 的极坐标图实现</p>
+        </footer>
+    </div>
+
+    <script>
+        const polar1Data = {
+            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+            data: [2500, 3200, 2800, 3800]
+        };
+
+        const polar2Data = {
+            labels: ['电子产品', '服装鞋帽', '食品饮料', '家居用品', '图书文具'],
+            data: [4200, 3100, 2800, 1900, 1500]
+        };
+
+        new Chart(document.getElementById('polar1'), {
+            type: 'polarArea',
+            data: {
+                labels: polar1Data.labels,
+                datasets: [{
+                    data: polar1Data.data,
+                    backgroundColor: [
+                        'rgba(85, 110, 230, 0.7)',
+                        'rgba(52, 195, 143, 0.7)',
+                        'rgba(248, 93, 66, 0.7)',
+                        'rgba(241, 180, 76, 0.7)'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('polar2'), {
+            type: 'polarArea',
+            data: {
+                labels: polar2Data.labels,
+                datasets: [{
+                    data: polar2Data.data,
+                    backgroundColor: [
+                        'rgba(85, 110, 230, 0.7)',
+                        'rgba(248, 93, 66, 0.7)',
+                        'rgba(52, 195, 143, 0.7)',
+                        'rgba(80, 165, 241, 0.7)',
+                        'rgba(241, 180, 76, 0.7)'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

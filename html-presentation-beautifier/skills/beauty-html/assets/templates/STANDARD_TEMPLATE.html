@@ -1,0 +1,525 @@
+<!--
+================================================================================
+McKinsey-Style HTML Slide Template - Standard Version
+McKinsey风格HTML幻灯片标准模板
+================================================================================
+
+📋 模板说明 / Template Description:
+本模板严格遵循 McKinsey/BCG 设计规范，用于生成专业的HTML演示文稿页面。
+This template strictly follows McKinsey/BCG design standards for creating professional HTML presentation slides.
+
+🎯 适用场景 / Use Cases:
+[在此描述该模板的适用场景，例如：封面页、内容页、图表页等]
+[Describe the use cases here, e.g., cover page, content page, chart page, etc.]
+
+📊 布局类型 / Layout Type:
+[描述布局类型，例如：L1 单列布局、L2 双列布局、L5 图表+文本布局等]
+[Describe layout type, e.g., L1 single column, L2 two columns, L5 chart+text, etc.]
+
+✨ 使用条件 / Usage Conditions:
+- 观点数量 / Number of Points: [1-8个]
+- 数据密度 / Data Density: [无/少/中/高]
+- 对比关系 / Comparison Type: [并列/对比/流程/层级]
+- 图表需求 / Chart Required: [是/否]
+
+🎨 设计要点 / Design Key Points:
+- ✅ 使用系统字体（System Fonts Only）
+- ✅ 使用McKinsey标准色板（McKinsey Standard Color Palette）
+- ✅ 遵循布局规范（Layout Standards）
+- ✅ 内容页标题显示在固定头部导航栏（Fixed Header for Content Pages）
+- ✅ 每页最多8个要点（Maximum 8 Bullet Points）
+- ✅ 图表使用两列/三列布局（Two/Three-Column Layout for Charts）
+
+🔍 匹配规则 / Matching Rules:
+- IF [条件1]
+- AND [条件2]
+- AND [条件3]
+- THEN 使用此模板 / Use this template
+
+匹配度权重 / Matching Weight: [70-100%]
+
+⚠️ 设计规范检查清单 / Design Standards Checklist:
+
+**颜色规范 / Color Standards**:
+- [ ] 使用McKinsey标准色板 (#FFFFFF, #000000, #F85d42, #74788d, #556EE6, #34c38f, #50a5f1, #f1b44c)
+- [ ] 未使用紫色渐变背景
+- [ ] 未使用AI生成的色板
+- [ ] 对比度≥4.5:1
+
+**字体规范 / Typography Standards**:
+- [ ] 使用系统字体（-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"等）
+- [ ] 未使用Inter、Roboto作为主字体
+- [ ] 标题48-64px，副标题28-36px，正文16-20px
+- [ ] 行高1.6-1.8
+
+**布局规范 / Layout Standards**:
+- [ ] Padding 40-60px
+- [ ] Element Spacing 20-30px
+- [ ] 未使用圆角卡片（border-radius ≤ 2px）
+- [ ] 阴影使用最小化（≤ 2px）
+- [ ] 充足的白空间
+
+**内容页规范 / Content Page Standards**:
+- [ ] 标题在固定头部导航栏（.slide-header）
+- [ ] 每页≤8个要点
+- [ ] 图表使用两列/三列布局
+- [ ] 多页内容使用序号标题（一、二、三...）
+
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[页面标题 / Page Title]</title>
+    
+    <!-- Chart.js CDN (如果需要图表 / If charts are needed) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        /* ========================================
+           McKinsey Design System - CSS Variables
+           McKinsey设计系统 - CSS变量
+           ======================================== */
+        :root {
+            /* 配色方案 / Color Palette */
+            --color-bg: #FFFFFF;
+            --color-text-primary: #000000;
+            --color-text-secondary: #333333;
+            --color-text-tertiary: #74788d;
+            --color-accent-primary: #F85d42;
+            --color-accent-secondary: #74788d;
+            --color-blue: #556EE6;
+            --color-green: #34c38f;
+            --color-light-blue: #50a5f1;
+            --color-yellow: #f1b44c;
+
+            /* 字体大小 / Font Sizes */
+            --font-size-title-main: 64px;
+            --font-size-title-section: 48px;
+            --font-size-title-slide: 42px;
+            --font-size-subtitle: 36px;
+            --font-size-body-primary: 20px;
+            --font-size-body-secondary: 16px;
+            --font-size-caption: 14px;
+
+            /* 间距 / Spacing */
+            --spacing-xs: 10px;
+            --spacing-sm: 20px;
+            --spacing-md: 30px;
+            --spacing-lg: 40px;
+            --spacing-xl: 60px;
+            
+            /* 布局 / Layout */
+            --slide-padding: 50px;
+            --element-spacing: 25px;
+            --column-gap: 35px;
+            --chart-min-height: 400px;
+        }
+
+        /* ========================================
+           Base Styles
+           基础样式
+           ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", 
+                         "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+            background: #f5f7fa;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+            font-size: var(--font-size-body-secondary);
+        }
+
+        /* ========================================
+           Slide Container
+           幻灯片容器
+           ======================================== */
+        .slide {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--color-bg);
+            padding: var(--slide-padding);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            min-height: 100vh;
+        }
+
+        /* ========================================
+           Fixed Header Navigation (Content Pages Only)
+           固定头部导航栏（仅内容页）
+           ======================================== */
+        .slide-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(to right, rgba(255,255,255,0.98), rgba(255,255,255,0.95));
+            border-bottom: 2px solid var(--color-accent-primary);
+            display: flex;
+            align-items: center;
+            padding: 0 100px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .slide-header-title {
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        /* 内容页需要增加顶部边距，避免被头部导航栏遮挡 */
+        .slide.content-slide .slide-content {
+            padding-top: 100px; /* 80px头部高度 + 20px额外间距 */
+        }
+
+        /* ========================================
+           Typography
+           排版
+           ======================================== */
+        
+        /* 主标题（封面页、章节页等中心显示） */
+        .slide-title {
+            font-size: var(--font-size-title-section);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+        }
+
+        /* 副标题 */
+        .slide-subtitle {
+            font-size: var(--font-size-subtitle);
+            font-weight: 600;
+            color: var(--color-accent-primary);
+            margin-bottom: var(--spacing-md);
+            text-align: center;
+        }
+
+        /* 章节标题 */
+        .section-heading {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        /* 正文 */
+        .text-content {
+            font-size: var(--font-size-body-primary);
+            line-height: 1.7;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* 图表说明文字 */
+        .chart-caption {
+            font-size: var(--font-size-caption);
+            color: var(--color-text-tertiary);
+            text-align: center;
+            margin-top: var(--spacing-sm);
+        }
+
+        /* ========================================
+           Layout Components
+           布局组件
+           ======================================== */
+        
+        /* 两列布局（图表+洞察、对比等） */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--column-gap);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* 三列布局（多图表对比） */
+        .three-column {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--column-gap);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ========================================
+           Chart Components
+           图表组件
+           ======================================== */
+        .chart-container {
+            width: 100%;
+            min-height: var(--chart-min-height);
+            padding: var(--spacing-sm);
+            background: var(--color-bg);
+            border-radius: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* ========================================
+           List Components
+           列表组件
+           ======================================== */
+        .bullet-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .bullet-list li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-size-body-primary);
+            line-height: 1.7;
+        }
+
+        .bullet-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--color-accent-primary);
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        .bullet-list li strong {
+            color: var(--color-text-primary);
+            font-weight: 600;
+        }
+
+        /* ========================================
+           Emphasis Components
+           强调组件
+           ======================================== */
+        .emphasis-box {
+            background: #f8f9fa;
+            border-left: 4px solid var(--color-accent-primary);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .emphasis-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .emphasis-text {
+            font-size: var(--font-size-body-primary);
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ========================================
+           Responsive Design
+           响应式设计
+           ======================================== */
+        @media (max-width: 1200px) {
+            :root {
+                --slide-padding: 40px;
+                --font-size-title-section: 40px;
+                --font-size-subtitle: 28px;
+            }
+
+            .slide-header {
+                height: 60px;
+                padding: 0 60px;
+            }
+
+            .slide-header-title {
+                font-size: 24px;
+            }
+
+            .slide.content-slide .slide-content {
+                padding-top: 80px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --slide-padding: 30px;
+                --font-size-title-section: 32px;
+                --font-size-subtitle: 24px;
+                --font-size-body-primary: 18px;
+            }
+
+            .two-column,
+            .three-column {
+                grid-template-columns: 1fr;
+            }
+
+            .slide-header {
+                height: 50px;
+                padding: 0 30px;
+            }
+
+            .slide-header-title {
+                font-size: 18px;
+            }
+
+            .slide.content-slide .slide-content {
+                padding-top: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ========================================
+         页面内容 / Page Content
+         
+         根据页面类型选择以下结构之一：
+         Choose one of the following structures based on page type:
+         
+         1. 封面页/章节页（Cover/Chapter Page）- 中心显示标题
+         2. 内容页（Content Page）- 固定头部导航栏 + 内容区域
+         ======================================== -->
+
+    <!-- ============================================
+         选项1：封面页/章节页结构
+         Option 1: Cover/Chapter Page Structure
+         ============================================ -->
+    <div class="slide cover-slide">
+        <div class="slide-content">
+            <h1 class="slide-title">[主标题 / Main Title]</h1>
+            <p class="slide-subtitle">[副标题 / Subtitle]</p>
+            
+            <!-- 可选：添加额外信息 / Optional: Additional Information -->
+            <div class="meta-info">
+                <p>[作者/日期/其他信息 / Author/Date/Other Info]</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         选项2：内容页结构（带固定头部）
+         Option 2: Content Page Structure (with Fixed Header)
+         ============================================ -->
+    <!--
+    <div class="slide content-slide">
+        
+        <div class="slide-header">
+            <h2 class="slide-header-title">[页面标题 / Page Title]</h2>
+        </div>
+
+        <div class="slide-content">
+            
+            <div class="two-column">
+                
+                <div class="column">
+                    <div class="chart-container">
+                        <canvas id="chart1"></canvas>
+                    </div>
+                    <p class="chart-caption">数据来源：[来源 / Source]</p>
+                </div>
+
+                <div class="column">
+                    <h3 class="section-heading">关键洞察 / Key Insights</h3>
+                    <ul class="bullet-list">
+                        <li><strong>洞察1</strong>: 描述文字</li>
+                        <li><strong>洞察2</strong>: 描述文字</li>
+                        <li><strong>洞察3</strong>: 描述文字</li>
+                        <li><strong>洞察4</strong>: 描述文字</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    -->
+
+    <!-- ============================================
+         选项3：纯文本内容页（单列布局，≤8要点）
+         Option 3: Text-Only Content Page (Single Column, ≤8 Points)
+         ============================================ -->
+    <!--
+    <div class="slide content-slide">
+        <div class="slide-header">
+            <h2 class="slide-header-title">[页面标题 / Page Title]</h2>
+        </div>
+
+        <div class="slide-content">
+            <ul class="bullet-list">
+                <li><strong>要点1</strong>: 描述文字（最多150字）</li>
+                <li><strong>要点2</strong>: 描述文字</li>
+                <li><strong>要点3</strong>: 描述文字</li>
+                <li><strong>要点4</strong>: 描述文字</li>
+                <li><strong>要点5</strong>: 描述文字</li>
+                <li><strong>要点6</strong>: 描述文字</li>
+            </ul>
+        </div>
+    </div>
+    -->
+
+    <!-- ============================================
+         JavaScript - Chart.js 配置
+         JavaScript - Chart.js Configuration
+         ============================================ -->
+    <script>
+        // 如果使用图表，在此添加 Chart.js 配置代码
+        // If using charts, add Chart.js configuration code here
+        
+        /*
+        // 示例：柱状图配置 / Example: Bar Chart Configuration
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('chart1');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['类别1', '类别2', '类别3', '类别4'],
+                        datasets: [{
+                            label: '数据系列',
+                            data: [65, 59, 80, 81],
+                            backgroundColor: '#556EE6',
+                            borderColor: '#556EE6',
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: '#f0f0f0'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+        */
+    </script>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仪表盘图表示例 - McKinsey Style</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --color-bg: #FFFFFF;
+            --color-text-primary: #000000;
+            --color-text-secondary: #333333;
+            --color-text-tertiary: #74788d;
+            --color-accent-primary: #F85d42;
+            --color-blue: #556EE6;
+            --color-green: #34c38f;
+            --color-light-blue: #50a5f1;
+            --color-yellow: #f1b44c;
+            --font-size-title-main: 48px;
+            --font-size-title-section: 32px;
+            --font-size-body: 18px;
+            --font-size-caption: 14px;
+            --spacing-sm: 20px;
+            --spacing-md: 30px;
+            --spacing-lg: 40px;
+            --spacing-xl: 60px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "Microsoft YaHei", sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text-secondary);
+            padding: var(--spacing-lg);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: var(--font-size-title-main);
+            font-weight: bold;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        h2 {
+            font-size: var(--font-size-title-section);
+            font-weight: bold;
+            color: var(--color-text-primary);
+            margin: var(--spacing-xl) 0 var(--spacing-md) 0;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--color-blue);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .description {
+            color: var(--color-text-tertiary);
+            font-size: var(--font-size-body);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.6;
+        }
+
+        .chart-section {
+            margin-bottom: var(--spacing-xl);
+            width: 100%;
+        }
+
+        .chart-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-lg);
+            margin: var(--spacing-md) 0;
+            width: 100%;
+        }
+
+        .chart-card {
+            background: white;
+            padding: var(--spacing-md);
+            border: 1px solid #e0e0e0;
+            border-left: 4px solid var(--color-accent-primary);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            width: 100%;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            margin: var(--spacing-sm) 0;
+        }
+
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .gauge-info {
+            text-align: center;
+            margin-top: var(--spacing-sm);
+        }
+
+        .gauge-info h3 {
+            font-size: 32px;
+            margin: 10px 0;
+        }
+
+        .gauge-info p {
+            font-size: var(--font-size-caption);
+            color: var(--color-text-tertiary);
+            margin: 5px 0;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid var(--color-blue);
+            padding: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+        }
+
+        .info-box h4 {
+            color: var(--color-blue);
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+        }
+
+        .use-case-card {
+            background: white;
+            padding: var(--spacing-md);
+            border: 1px solid #e0e0e0;
+            border-left: 4px solid var(--color-accent-primary);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .use-case-card h4 {
+            color: var(--color-accent-primary);
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .use-case-card p {
+            color: var(--color-text-secondary);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        footer {
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+            color: var(--color-text-tertiary);
+            font-size: var(--font-size-caption);
+        }
+
+        @media (max-width: 1024px) {
+            .chart-grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .chart-grid-3,
+            .use-cases-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>仪表盘图表示例 - Gauge Chart Examples</h1>
+        <p class="description">
+            McKinsey 风格 KPI 指标可视化，半圆形速度计样式。适用于展示目标完成度、绩效评分、满意度等单一指标。
+        </p>
+
+        <div class="chart-section">
+            <h2>销售业绩完成率</h2>
+            <p class="description">展示当前销售额与目标的对比，直观显示完成进度</p>
+            
+            <div class="chart-grid-3">
+                <div class="chart-card">
+                    <h3>超额完成</h3>
+                    <div class="chart-container">
+                        <canvas id="gauge1"></canvas>
+                    </div>
+                    <div class="gauge-info">
+                        <h3 style="color: var(--color-green);">115%</h3>
+                        <p>销售额完成率</p>
+                        <p>目标: 100%</p>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h3>接近目标</h3>
+                    <div class="chart-container">
+                        <canvas id="gauge2"></canvas>
+                    </div>
+                    <div class="gauge-info">
+                        <h3 style="color: var(--color-blue);">85%</h3>
+                        <p>销售额完成率</p>
+                        <p>目标: 100%</p>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h3>未达标</h3>
+                    <div class="chart-container">
+                        <canvas id="gauge3"></canvas>
+                    </div>
+                    <div class="gauge-info">
+                        <h3 style="color: var(--color-accent-primary);">65%</h3>
+                        <p>销售额完成率</p>
+                        <p>目标: 100%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <h2>多 KPI 综合仪表盘</h2>
+            <p class="description">同时展示多个关键绩效指标，全面评估业务表现</p>
+            
+            <div class="chart-grid-3">
+                <div class="chart-card">
+                    <h3>客户满意度</h3>
+                    <div class="chart-container">
+                        <canvas id="gauge4"></canvas>
+                    </div>
+                    <div class="gauge-info">
+                        <h3 style="color: var(--color-green);">4.6/5.0</h3>
+                        <p>客户满意度评分</p>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h3>生产效率</h3>
+                    <div class="chart-container">
+                        <canvas id="gauge5"></canvas>
+                    </div>
+                    <div class="gauge-info">
+                        <h3 style="color: var(--color-blue);">92%</h3>
+                        <p>生产效率</p>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h3>库存周转率</h3>
+                    <div class="chart-container">
+                        <canvas id="gauge6"></canvas>
+                    </div>
+                    <div class="gauge-info">
+                        <h3 style="color: var(--color-yellow);">6.8次</h3>
+                        <p>年库存周转率</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>适用场景 - Use Cases</h2>
+        <div class="use-cases-grid">
+            <div class="use-case-card">
+                <h4>销售业绩</h4>
+                <p>销售额完成率、订单达成率</p>
+            </div>
+            <div class="use-case-card">
+                <h4>客户指标</h4>
+                <p>满意度、NPS评分、留存率</p>
+            </div>
+            <div class="use-case-card">
+                <h4>生产效率</h4>
+                <p>设备利用率、产能利用率</p>
+            </div>
+            <div class="use-case-card">
+                <h4>财务指标</h4>
+                <p>毛利率、净利率、ROI</p>
+            </div>
+            <div class="use-case-card">
+                <h4>质量指标</h4>
+                <p>合格率、缺陷率、返工率</p>
+            </div>
+            <div class="use-case-card">
+                <h4>人力资源</h4>
+                <p>员工满意度、出勤率</p>
+            </div>
+        </div>
+
+        <h2>技术实现 - Technical Implementation</h2>
+        <div class="info-box">
+            <h4>核心实现逻辑</h4>
+            <p>使用 Chart.js 环形图（doughnut）配置为半圆形：</p>
+            <ul>
+                <li>type: 'doughnut' - 使用环形图</li>
+                <li>circumference: 180 - 半圆形状</li>
+                <li>rotation: 270 - 从左侧开始</li>
+                <li>cutout: '75%' - 中心孔径大小</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <h4>动态颜色规则</h4>
+            <ul>
+                <li><strong>✅ 达成目标：</strong>绿色（#34c38f）</li>
+                <li><strong>⚠️ 接近目标：</strong>蓝色（#556EE6）</li>
+                <li><strong>❌ 未达标：</strong>橙红色（#F85d42）</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <h4>设计规范 - Design Guidelines</h4>
+            <ul>
+                <li><strong>简洁设计：</strong>每个仪表盘只显示一个核心指标</li>
+                <li><strong>明确目标：</strong>始终显示目标值或基准线</li>
+                <li><strong>颜色语义：</strong>使用一致的颜色表示达成状态</li>
+                <li><strong>数值标注：</strong>在仪表盘下方清晰显示实际数值</li>
+                <li><strong>合理范围：</strong>设置最大值为目标的 1.1-1.2 倍</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>HTML Presentation Beautifier - McKinsey Style Gauge Chart Example</p>
+            <p>基于 Chart.js 环形图配置的半圆形仪表盘</p>
+        </footer>
+    </div>
+
+    <script>
+        const gauges = [
+            { id: 'gauge1', value: 115, target: 100, max: 120, color: '#34c38f' },
+            { id: 'gauge2', value: 85, target: 100, max: 120, color: '#556EE6' },
+            { id: 'gauge3', value: 65, target: 100, max: 120, color: '#F85d42' },
+            { id: 'gauge4', value: 92, target: 100, max: 120, color: '#34c38f' },
+            { id: 'gauge5', value: 92, target: 100, max: 120, color: '#556EE6' },
+            { id: 'gauge6', value: 68, target: 100, max: 120, color: '#f1b44c' }
+        ];
+
+        gauges.forEach(gauge => {
+            new Chart(document.getElementById(gauge.id), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Actual', 'Remaining'],
+                    datasets: [{
+                        data: [gauge.value, gauge.max - gauge.value],
+                        backgroundColor: [gauge.color, '#e0e0e0'],
+                        borderWidth: 0,
+                        circumference: 180,
+                        rotation: 270
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

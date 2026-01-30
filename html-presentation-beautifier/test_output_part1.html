@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简优战略方向梳理 - SchoolReady™</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <style>
+        /* ===== McKinsey/BCG Design System ===== */
+        /* Updated: 2026-01-29 */
+
+        /* Color Variables */
+        :root {
+            --primary-bg: #FFFFFF;
+            --header-bg: #000000;
+            --primary-accent: #F85d42;
+            --secondary-accent: #74788d;
+            --deep-blue: #556EE6;
+            --green: #34c38f;
+            --blue: #50a5f1;
+            --yellow: #f1b44c;
+            --text-primary: #000000;
+            --text-secondary: #333333;
+            --text-muted: #666666;
+            --text-light: #FFFFFF;
+        }
+
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', 
+                         'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-secondary);
+            line-height: 1.7;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* ===== Navigation Bar ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background-color: var(--header-bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn {
+            background-color: var(--primary-accent);
+            color: var(--text-light);
+            border: none;
+            padding: 10px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background-color: #e04a31;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            background-color: var(--secondary-accent);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .slide-counter {
+            color: var(--text-light);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* ===== Slide Header (Content Pages) ===== */
+        .slide-header {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--header-bg);
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .slide-header-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-light);
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        /* Cover slides hide the slide header */
+        .slide.title-slide .slide-header {
+            display: none;
+        }
+
+        /* Content area adjustment for slide header */
+        .slide:not(.title-slide) {
+            padding-top: 140px;
+        }
+
+        /* ===== Presentation Container ===== */
+        .presentation-container {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+        }
+
+        /* ===== Slide Styles ===== */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 80px 100px;
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* ===== Title Slide - McKinsey Standard ===== */
+        .slide.title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: var(--primary-bg);
+        }
+
+        .title-slide .title {
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .title-slide .subtitle {
+            font-size: 32px;
+            font-weight: 400;
+            color: var(--primary-accent);
+            margin-top: 16px;
+        }
+
+        .title-slide .brand {
+            font-size: 24px;
+            color: var(--deep-blue);
+            margin-top: 40px;
+            font-weight: 600;
+        }
+
+        /* ===== Content Slides ===== */
+        .slide-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 32px;
+            line-height: 1.2;
+        }
+
+        .section-tag {
+            display: inline-block;
+            background: var(--deep-blue);
+            color: white;
+            padding: 6px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 16px;
+        }
+
+        /* ===== Text Styles ===== */
+        .text-content {
+            font-size: 20px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin: 16px 0;
+        }
+
+        .key-point {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--primary-accent);
+            margin: 20px 0;
+        }
+
+        /* ===== Lists ===== */
+        .bullet-list {
+            list-style: none;
+            margin: 24px 0;
+            padding: 0;
+        }
+
+        .bullet-list li {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin: 16px 0;
+            padding-left: 40px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .bullet-list li::before {
+            content: "●";
+            color: var(--primary-accent);
+            font-size: 16px;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .numbered-list {
+            list-style: none;
+            counter-reset: item-counter;
+            margin: 24px 0;
+            padding: 0;
+        }
+
+        .numbered-list li {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin: 16px 0;
+            padding-left: 50px;
+            position: relative;
+            counter-increment: item-counter;
+            line-height: 1.6;
+        }
+
+        .numbered-list li::before {
+            content: counter(item-counter);
+            background-color: var(--primary-accent);
+            color: var(--text-light);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        /* ===== Layout Styles ===== */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 24px 0;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== Chart Layouts ===== */
+        .chart-text-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 24px 0;
+        }
+
+        .chart-text-layout.chart-left-55 {
+            grid-template-columns: 1.2fr 1fr;
+        }
+
+        .chart-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .insights-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .insights-column h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--deep-blue);
+            margin-bottom: 20px;
+        }
+
+        .key-insights {
+            list-style: none;
+            padding: 0;
+        }
+
+        .key-insights li {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            padding-left: 28px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .key-insights li::before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: var(--primary-accent);
+            font-weight: bold;
+        }
+
+        /* ===== Chart Container ===== */
+        .chart-container {
+            width: 100% !important;
+            max-width: 100%;
+            min-height: 350px;
+            height: 350px;
+            margin: 24px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+            max-height: 100%;
+        }
+
+        /* ===== Data Cards ===== */
+        .data-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin: 24px 0;
+        }
+
+        .data-card {
+            background: white;
+            padding: 24px;
+            border-left: 4px solid var(--primary-accent);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .data-card .number {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary-accent);
+            margin-bottom: 8px;
+        }
+
+        .data-card .label {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        /* ===== Emphasis Box ===== */
+        .emphasis-box {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: #f8f9fa;
+            padding: 24px 30px;
+            border-left: 4px solid var(--primary-accent);
+            margin: 16px 0;
+        }
+
+        .emphasis-icon {
+            font-size: 32px;
+        }
+
+        .emphasis-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        /* ===== Comparison Table ===== */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-table th {
+            background-color: var(--header-bg);
+            color: var(--text-light);
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .comparison-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        .comparison-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* ===== Fullscreen Button ===== */
+        .fullscreen-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--header-bg);
+            color: var(--text-light);
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .fullscreen-btn:hover {
+            background-color: var(--secondary-accent);
+            transform: translateY(-2px);
+        }
+
+        /* ===== Responsive Design ===== */
+        @media (max-width: 1200px) {
+            .slide {
+                padding: 60px 60px;
+            }
+            
+            .two-column {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .data-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .slide {
+                padding: 40px 30px;
+            }
+            
+            .title-slide .title {
+                font-size: 40px;
+            }
+            
+            .slide-title {
+                font-size: 32px;
+            }
+            
+            .data-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== Print Styles ===== */
+        @media print {
+            .navbar,
+            .fullscreen-btn {
+                display: none;
+            }
+
+            .slide {
+                position: relative;
+                page-break-after: always;
+                display: flex !important;
+                opacity: 1 !important;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .presentation-container {
+                position: relative;
+                top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">← 上一页</button>
+        <span class="slide-counter">第 <span id="currentSlide">1</span> 页 / 共 <span id="totalSlides">26</span> 页</span>
+        <button class="nav-btn" id="nextBtn" onclick="navigate(1)">下一页 →</button>
+    </nav>
+
+    <!-- Presentation Container -->
+    <div class="presentation-container">

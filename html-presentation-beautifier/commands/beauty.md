@@ -1,135 +1,323 @@
 ---
-description: "将文档转化为专业 McKinsey 风格 HTML 演示文稿。严格遵循4步流程：文档分析 → 幻灯片设计 → HTML生成 → 代码审核，确保100%内容保留和McKinsey设计标准。"
+description: "Transform documents into professional McKinsey-style HTML presentations. Strictly follow 4-step workflow: Document Analysis → Slide Design → HTML Generation → Code Review. Ensures 100% content preservation and McKinsey design standards. 将文档转化为专业 McKinsey 风格 HTML 演示文稿。严格遵循4步流程：文档分析 → 幻灯片设计 → HTML生成 → 代码审核，确保100%内容保留和McKinsey设计标准。"
 args:
   - name: document
-    description: "要转换的文档路径（支持 .md, .txt, .json, .html）"
+    description: "Document path to convert (supports .md, .txt, .json, .html) / 要转换的文档路径（支持 .md, .txt, .json, .html）"
     required: true
 ---
 
-# Beauty 命令
+# Beauty 命令 / Beauty Command
 
 将文档、数据、结论等信息转化为通俗连贯、明确清晰的 McKinsey 风格 HTML 演示文稿。
 
-## ⚠️ 核心原则
+Transform documents, data, and conclusions into clear and coherent McKinsey-style HTML presentations.
 
-**必须严格遵循以下4步固定流程，不得跳过任何步骤：**
+## ⚠️ 核心原则 / Core Principles
 
-**🔑 步骤2、步骤3必须读取并参考skill资源：**
-- **步骤2（图文选择）**：必须读 `beauty-html/references/chart-selection-guide.md`、`beauty-html/assets/CHART_EXAMPLES_INDEX.md`、`beauty-html/assets/INSIGHT_VISUALIZATION_GUIDE.md`
-- **步骤3（HTML生成）**：必须读 `beauty-html/references/best-practices.md`、`beauty-html/references/mckinsey-design-system.md`、`beauty-html/assets/presentation-template.html`、`beauty-html/assets/TEMPLATE_USAGE_GUIDE.md`
+**CRITICAL: Must strictly follow this 4-step workflow. No steps can be skipped!**
+**关键：必须严格遵循以下4步固定流程，不得跳过任何步骤！**
 
-**🔑 第4步是关键验收步骤，实行一票否决制：**
-- **内容完整性检验**：必须100%保留原文所有章节、数据、结论，零遗漏
-- **代码质量检验**：必须符合HTML最佳实践，可访问可运行
-- **资源使用检验**：必须验证步骤2和步骤3是否正确读取并使用了skill资源
-- **发现问题立即回退**：返回对应步骤重新执行，绝不将就
+### Step Workflow Enforcement / 步骤流程强制执行
 
-**⚠️ Token限制处理原则（严格执行，不得偷工减料）：**
+**🔑 Steps 2 & 3: Mandatory Resource Reading / 步骤2、3必须读取skill资源**
 
-**🔑 最核心规则（必须严格遵守）：如果数据内容过大，或者token过长，则自动使用'继续'进行'分段'加载数据，绝对不能精简、偷工减料的节省token,严禁为了省token而跳过内容或使用摘要**
-
-**当遇到 token 限制或上下文长度问题时，必须使用"继续"分页方式，绝对禁止：**
-- ❌ 压缩或省略资源读取
-- ❌ 跳过必读资源
-- ❌ 简化执行步骤
-- ❌ 减少生成内容
-- ❌ 使用摘要代替完整内容
-- ❌ 精简数据内容
-- ❌ 偷工减料节省token
-
-**正确处理方式：使用"继续"机制**
-```
-1. 在完成当前可执行的部分后
-2. 明确说明："由于 token 限制，任务未完成，请输入'继续'以获取剩余部分"
-3. 等待用户输入"继续"后
-4. 继续执行剩余步骤
-5. 重复直到任务完全完成
-```
-
-**分段加载原则：**
-- ✅ **完整保留**：每段数据都必须100%保留，无遗漏、无压缩
-- ✅ **分段清晰**：明确标注当前是第几段，共几段
-- ✅ **连续执行**：每段完成后自动提示"继续"，等待用户确认
-- ✅ **质量优先**：宁可多轮对话，不可降低质量
-- ❌ **禁止精简**：绝对不能为了省token而精简数据内容
-- ❌ **禁止偷工**：绝对不能为了省token而偷工减料
-
-**关键规则：**
-- ✅ **质量 > 速度**：宁可多轮对话，不可降低质量
-- ✅ **完整 > 简化**：宁可分多次执行，不可压缩内容
-- ✅ **标准 > 妥协**：宁可触发继续，不可偷工减料
-
----
-
-## 📋 固定4步执行流程
-
-### 步骤 1️⃣：文档内容分析合并
-
-**目标**：完整理解源文档内容，提取关键信息，建立内容结构。
-
-**执行方式**：调用 `beauty-step1` skill
-
-**⚠️ 重要说明**：
-- 此步骤会完整阅读源文档，不做任何修改或删减
-- 如果文档过长，skill会自动使用"继续"机制分批读取
-- **🔑 最核心规则：绝对不能精简、偷工减料节省token**
-- **🔑 核心原则：如果数据内容过大，或者token过长，则自动使用'继续'进行'分段'加载数据，100%保留所有内容,严禁为了省token而跳过内容或使用摘要**
-
-**输出产物**：
-- 内容结构大纲（包含所有章节和要点）
-- 数据点清单（所有可用于可视化的数值）
-- 关键结论列表（必须完整保留）
-
-**验证标准**：
-- [ ] 所有原文内容已提取
-- [ ] 无内容丢失或遗漏
-- [ ] 数据点完整记录
-- [ ] 逻辑结构清晰
-
----
-
-### 步骤 2️⃣：幻灯片内容转换与拆分
-
-**目标**：将文档内容完整转换为结构化的幻灯片页面，确保内容零遗漏、逻辑清晰、页面适量。
-
-**执行方式**：调用 `beauty-step2` skill
-
-**⚠️ 核心原则**：
-- ✅ 100%保留原文所有内容，零遗漏、零压缩、零简化
-- ✅ 每页内容不超过8个要点，超过则分页展示
-- ✅ 遇到内容过多时，使用"继续"机制分批处理
-- ❌ 绝对禁止为了省token而压缩、省略、简化内容
-- **🔑 最核心规则：如果数据内容过大，或者token过长，则自动使用'继续'进行'分段'加载数据，绝对不能精简、偷工减料的节省token,严禁为了省token而跳过内容或使用摘要**
-
-**🔑 必读资源**：
+**Step 2 (Chart Selection / 图文选择)** - MUST read:
 - `beauty-html/references/chart-selection-guide.md`
-- `beauty-html/assets/CHART_EXAMPLES_INDEX.md`
-- `beauty-html/assets/INSIGHT_VISUALIZATION_GUIDE.md`
+- `beauty-html/assets/COMPONENTS_INDEX.md`
+- `beauty-html/assets/LAYOUTS_INDEX.md`
+- `beauty-html/assets/INDEX.md`
 
-**执行流程**（由skill自动执行）：
+**Step 3 (HTML Generation / HTML生成)** - MUST read:
+- `beauty-html/references/best-practices.md`
+- `beauty-html/references/mckinsey-design-system.md`
+- `beauty-html/assets/presentation-template.html`
+- `beauty-html/assets/TEMPLATE_USAGE_GUIDE.md`
+- `beauty-html/assets/COMPONENTS_INDEX.md`
+- `beauty-html/assets/LAYOUTS_INDEX.md`
+- `beauty-html/assets/INDEX.md`
+
+**🔑 Step 4: Critical Validation - One-Vote Veto System / 第4步：关键验收 - 一票否决制**
+
+**Content Integrity Check / 内容完整性检验**:
+- ✅ MUST preserve 100% of original content (chapters, data, conclusions)
+- ✅ 必须100%保留原文所有章节、数据、结论，零遗漏
+
+**Code Quality Check / 代码质量检验**:
+- ✅ MUST follow HTML best practices
+- ✅ MUST be accessible and runnable
+- ✅ 必须符合HTML最佳实践，可访问可运行
+
+**Resource Usage Check / 资源使用检验**:
+- ✅ MUST verify Steps 2 & 3 correctly read and used skill resources
+- ✅ 必须验证步骤2和步骤3是否正确读取并使用了skill资源
+
+**Rollback on Issues / 发现问题立即回退**:
+- ⚠️ If ANY check fails, rollback to the corresponding step and re-execute
+- ⚠️ 返回对应步骤重新执行，绝不将就
+
+**⚠️ Token Limit Handling / Token限制处理原则**
+
+**🔑 CORE RULE (MUST STRICTLY FOLLOW) / 最核心规则（必须严格遵守）**:
+- ✅ If data is too large or token limit reached, automatically use "continue" mechanism for segmented loading
+- ✅ 如果数据内容过大，或者token过长，则自动使用'继续'进行'分段'加载数据
+- ❌ NEVER simplify, cut corners, or save tokens by skipping content
+- ❌ 绝对不能精简、偷工减料的节省token
+- ❌ STRICTLY PROHIBITED: Skipping content or using summaries to save tokens
+- ❌ 严禁为了省token而跳过内容或使用摘要
+
+**When encountering token limits / 当遇到 token 限制时:**
+
+**❌ PROHIBITED Actions / 禁止行为**:
+- ❌ Compress or omit resource reading / 压缩或省略资源读取
+- ❌ Skip mandatory resources / 跳过必读资源
+- ❌ Simplify execution steps / 简化执行步骤
+- ❌ Reduce generated content / 减少生成内容
+- ❌ Use summaries instead of complete content / 使用摘要代替完整内容
+- ❌ Simplify data content / 精简数据内容
+- ❌ Cut corners to save tokens / 偷工减料节省token
+
+**✅ CORRECT Approach: Use "Continue" Mechanism / 正确处理方式：使用"继续"机制**
+
 ```
-步骤2.1：识别文档结构层次
-  ↓
-步骤2.2：规划幻灯片页面类型
-  ↓
-步骤2.3：拆分内容到具体页面
-  ↓
-步骤2.4：验证内容完整性
+1. Complete the current executable portion
+   完成当前可执行的部分后
+   
+2. Explicitly state: "Due to token limit, task incomplete. Please input '继续' to get remaining parts"
+   明确说明："由于 token 限制，任务未完成，请输入'继续'以获取剩余部分"
+   
+3. Wait for user to input "continue" / "继续"
+   等待用户输入"继续"后
+   
+4. Continue with remaining steps
+   继续执行剩余步骤
+   
+5. Repeat until task fully completed
+   重复直到任务完全完成
 ```
 
-**输出产物**：
-- 完整的幻灯片页面清单（从第1页到第N页）
-- 每页的详细内容（100%原文，无压缩）
-- 每页的数据点、图表、表格（如有）
-- 页面总数确认
+**Segmented Loading Principles / 分段加载原则**:
+- ✅ **Complete Preservation / 完整保留**: Every segment MUST preserve 100% of data, no omissions, no compression
+  每段数据都必须100%保留，无遗漏、无压缩
+  
+- ✅ **Clear Segmentation / 分段清晰**: Clearly indicate current segment number and total segments
+  明确标注当前是第几段，共几段
+  
+- ✅ **Continuous Execution / 连续执行**: Auto-prompt "continue" after each segment, wait for user confirmation
+  每段完成后自动提示"继续"，等待用户确认
+  
+- ✅ **Quality Priority / 质量优先**: Better multiple rounds than lower quality
+  宁可多轮对话，不可降低质量
+  
+- ❌ **NO Simplification / 禁止精简**: NEVER simplify data content to save tokens
+  绝对不能为了省token而精简数据内容
+  
+- ❌ **NO Shortcuts / 禁止偷工**: NEVER cut corners to save tokens
+  绝对不能为了省token而偷工减料
 
-**验证标准**：
-- [ ] 所有页面已详细列出
-- [ ] 每页内容完整（100%原文）
-- [ ] 每页要点数≤8个
-- [ ] 数据、图表、表格完整
-- [ ] 页面编号连续
-- [ ] 无内容遗漏
+**Key Rules / 关键规则**:
+- ✅ **Quality > Speed** / **质量 > 速度**: Better multiple rounds than lower quality / 宁可多轮对话，不可降低质量
+- ✅ **Complete > Simplified** / **完整 > 简化**: Better multiple executions than compressed content / 宁可分多次执行，不可压缩内容
+- ✅ **Standard > Compromise** / **标准 > 妥协**: Better trigger continue than cut corners / 宁可触发继续，不可偷工减料
+
+---
+
+## 📋 固定4步执行流程 / 4-Step Workflow
+
+### ⚠️ 执行强制机制 / Execution Enforcement Mechanism
+
+**CRITICAL: This is a MANDATORY 4-step workflow. Step 4 MUST be executed after Step 3, no exceptions!**
+**关键：这是强制性的4步流程。步骤4必须在步骤3之后执行，不得跳过！**
+
+**Before starting ANY step, Claude Code MUST:**
+**在开始任何步骤之前，Claude Code 必须：**
+
+1. **Verify prerequisite completion / 验证前置条件完成**
+   - Check if previous step output exists / 检查上一步输出是否存在
+   - Validate previous step output quality / 验证上一步输出质量
+   
+2. **Invoke the correct skill / 调用正确的skill**
+   - Step 1 → `beauty-step1` skill
+   - Step 2 → `beauty-step2` skill  
+   - Step 3 → `beauty-step3` skill
+   - Step 4 → `beauty-step4` skill
+
+3. **Cannot proceed to next step until / 不能跳到下一步，除非:**
+   - Current step fully completed / 当前步骤完全完成
+   - All verification checks passed / 所有验证检查通过
+   - Output artifacts generated / 输出产物已生成
+   - **For Step 3: Automatically invoke Step 4 after completion / 步骤3：完成后必须自动调用步骤4**
+   - **For Step 4: MUST generate final verification report / 步骤4：必须生成最终验证报告**
+
+### 📊 执行状态跟踪 / Execution State Tracking
+
+**必须记录每个步骤的执行状态：**
+
+```
+执行状态记录 / Execution State Tracking:
+
+步骤 1：文档内容分析合并
+├─ 执行状态：[待执行/执行中/已完成/失败]
+├─ 开始时间：[时间戳]
+├─ 结束时间：[时间戳]
+├─ 验证结果：[通过/失败]
+└─ 输出产物：[产物列表]
+
+步骤 2：幻灯片内容转换与拆分
+├─ 执行状态：[待执行/执行中/已完成/失败]
+├─ 前置依赖：步骤1完成
+├─ 幻灯片页数：[N页]
+└─ 输出产物：[产物列表]
+
+步骤 3：HTML样式布局代码规划与生成
+├─ 执行状态：[待执行/执行中/已完成/失败]
+├─ 前置依赖：步骤2完成
+├─ HTML文件路径：[路径]
+├─ 代码行数：[行数]
+└─ 输出产物：[产物列表]
+
+步骤 4：代码内容审核检验
+├─ 执行状态：[待执行/执行中/已完成/失败]
+├─ 前置依赖：步骤3完成
+├─ 资源使用验证：[通过/失败]
+├─ 内容完整性检查：[通过/失败]
+├─ 代码质量检查：[通过/失败]
+├─ 功能验证：[通过/失败]
+├─ 总体验收：[通过/失败]
+└─ 输出产物：[产物列表]
+```
+
+### ⚠️ 错误恢复机制 / Error Recovery Mechanism
+
+**如果任何步骤失败，必须：**
+```
+1. 记录错误详情
+2. 确定回退目标步骤
+3. 输出回退建议
+4. 等待用户确认
+5. 返回对应步骤重新执行
+6. 重新验证
+7. 通过后继续下一步
+```
+
+### 🔄 自动步骤链 / Automatic Step Chaining
+
+**步骤3完成后，必须自动执行步骤4：**
+```
+步骤3输出："✅ 步骤3完成 - HTML文件已生成
+            文件路径：/path/to/file.html
+            准备进入步骤4：代码内容审核检验"
+
+步骤4输入："继续"（系统自动）
+步骤4执行：自动调用 beauty-step4 skill
+步骤4输出：完整验证报告
+```
+
+**⚠️ 禁止行为 / Prohibited Actions:**
+- ❌ 步骤3完成后不执行步骤4
+- ❌ 跳过任何验证检查
+- ❌ 将就通过有问题的结果
+- ❌ 不记录执行状态
+
+---
+
+### 步骤 1️⃣: Document Content Analysis / 文档内容分析合并
+
+**Goal / 目标**: Fully understand source document, extract key information, establish content structure.
+完整理解源文档内容，提取关键信息，建立内容结构。
+
+**Execution Method / 执行方式**: Invoke `beauty-step1` skill / 调用 `beauty-step1` skill
+
+**⚠️ Important Notes / 重要说明**:
+- Reads entire document without modification or deletion
+  此步骤会完整阅读源文档，不做任何修改或删减
+  
+- If document too long, skill automatically uses "continue" mechanism for batch reading
+  如果文档过长，skill会自动使用"继续"机制分批读取
+  
+- **🔑 CORE RULE**: NEVER simplify or cut corners to save tokens
+  **🔑 最核心规则**：绝对不能精简、偷工减料节省token
+  
+- **🔑 CORE PRINCIPLE**: If data too large or tokens too long, automatically use 'continue' for segmented loading, preserve 100% content, STRICTLY PROHIBITED to skip content or use summaries to save tokens
+  **🔑 核心原则**：如果数据内容过大，或者token过长，则自动使用'继续'进行'分段'加载数据，100%保留所有内容，严禁为了省token而跳过内容或使用摘要
+
+**Output Artifacts / 输出产物**:
+- Content structure outline (includes all chapters and key points)
+  内容结构大纲（包含所有章节和要点）
+  
+- Data point list (all values visualizable)
+  数据点清单（所有可用于可视化的数值）
+  
+- Key conclusions list (must be fully preserved)
+  关键结论列表（必须完整保留）
+
+**Validation Criteria / 验证标准**:
+- [ ] All original content extracted / 所有原文内容已提取
+- [ ] No content loss or omission / 无内容丢失或遗漏
+- [ ] Data points fully recorded / 数据点完整记录
+- [ ] Logical structure clear / 逻辑结构清晰
+
+---
+
+### 步骤 2️⃣: Slide Content Conversion / 幻灯片内容转换与拆分
+
+**Goal / 目标**: Convert document content completely into structured slide pages, ensuring zero omissions, clear logic, appropriate pagination.
+将文档内容完整转换为结构化的幻灯片页面，确保内容零遗漏、逻辑清晰、页面适量。
+
+**Execution Method / 执行方式**: Invoke `beauty-step2` skill / 调用 `beauty-step2` skill
+
+**⚠️ Core Principles / 核心原则**:
+- ✅ Preserve 100% of original content, zero omissions, zero compression, zero simplification
+  100%保留原文所有内容，零遗漏、零压缩、零简化
+  
+- ✅ Each page content ≤ 8 key points, split if exceeds
+  每页内容不超过8个要点，超过则分页展示
+  
+- ✅ When content too much, use "continue" mechanism for batch processing
+  遇到内容过多时，使用"继续"机制分批处理
+  
+- ❌ ABSOLUTELY PROHIBITED to compress, omit, or simplify content to save tokens
+  绝对禁止为了省token而压缩、省略、简化内容
+  
+- **🔑 CORE RULE**: If data too large or tokens too long, automatically use 'continue' for segmented loading, NEVER simplify or cut corners to save tokens, STRICTLY PROHIBITED to skip content or use summaries to save tokens
+  **🔑 最核心规则**：如果数据内容过大，或者token过长，则自动使用'继续'进行'分段'加载数据，绝对不能精简、偷工减料的节省token，严禁为了省token而跳过内容或使用摘要
+
+**🔑 Mandatory Resources / 必读资源**:
+- `beauty-html/references/chart-selection-guide.md`
+- `beauty-html/assets/COMPONENTS_INDEX.md`
+- `beauty-html/assets/LAYOUTS_INDEX.md`
+- `beauty-html/assets/INDEX.md`
+
+**Execution Workflow / 执行流程** (automatically executed by skill / 由skill自动执行):
+```
+Step 2.1: Identify document structure hierarchy / 识别文档结构层次
+  ↓
+Step 2.2: Plan slide page types / 规划幻灯片页面类型
+  ↓
+Step 2.3: Split content to specific pages / 拆分内容到具体页面
+  ↓
+Step 2.4: Verify content integrity / 验证内容完整性
+```
+
+**Output Artifacts / 输出产物**:
+- Complete slide page list (from page 1 to page N)
+  完整的幻灯片页面清单（从第1页到第N页）
+  
+- Detailed content for each page (100% original text, no compression)
+  每页的详细内容（100%原文，无压缩）
+  
+- Data points, charts, tables for each page (if any)
+  每页的数据点、图表、表格（如有）
+  
+- Confirmation of total page count
+  页面总数确认
+
+**Validation Criteria / 验证标准**:
+- [ ] All pages listed in detail / 所有页面已详细列出
+- [ ] Each page content complete (100% original) / 每页内容完整（100%原文）
+- [ ] Each page key points ≤ 8 / 每页要点数≤8个
+- [ ] Data, charts, tables complete / 数据、图表、表格完整
+- [ ] Page numbers consecutive / 页面编号连续
+- [ ] No content omissions / 无内容遗漏
 
 ---
 
@@ -156,11 +344,88 @@ args:
 - ❌ **禁止使用非McKinsey风格的设计元素**（紫色渐变、圆角卡片、通用模板等）
 - **🔑 最核心规则：如果数据内容过大，或者token过长，则自动使用'继续'进行'分段'加载数据，绝对不能精简、偷工减料的节省token,严禁为了省token而跳过内容或使用摘要**
 
+**🔑 完成后自动执行步骤4 / Auto-execute Step 4 after completion:**
+```
+步骤3完成时，必须输出：
+✅ 步骤3：HTML样式布局代码规划与生成 - 100%完成
+✓ HTML文件路径：[文件路径]
+✓ 代码行数：[行数]
+✓ 图表数量：[N个]
+✓ 资源读取：7个必读资源100%完成
+✓ 验证结果：6项验证100%通过
+
+🔄 准备进入步骤4：代码内容审核检验
+请输入"继续"以执行步骤4...
+```
+
+**⚠️ 禁止行为（强制执行）**：
+- ❌ 步骤3完成后不准备步骤4
+- ❌ 不生成HTML文件
+- ❌ 不记录文件路径和行数
+- ❌ 不输出验证结果摘要
+
 **🔑 必读资源（强制执行）**：
 - `beauty-html/references/best-practices.md` - **必须严格遵循所有最佳实践**
 - `beauty-html/references/mckinsey-design-system.md` - **必须严格遵循所有设计规范**
 - `beauty-html/assets/presentation-template.html` - 参考模板结构
 - `beauty-html/assets/TEMPLATE_USAGE_GUIDE.md` - 模板使用指南
+- `beauty-html/assets/COMPONENTS_INDEX.md` - 组件索引和选择指南
+- `beauty-html/assets/LAYOUTS_INDEX.md` - 布局索引和选择指南
+- `beauty-html/assets/INDEX.md` - 资源总索引
+
+**🔑 设计系统强制规范（新增）**：
+- **头部导航栏规范**：
+  - 背景色：黑色 (#000000)
+  - 文字色：白色 (#FFFFFF)
+  - 高度：60px
+  - 定位：position: fixed, z-index: 100
+  - 封面页隐藏：`.cover-slide .slide-header { display: none; }`
+
+- **图表使用规范**：
+  - 图表页面必须使用2列或3列布局，禁止单列布局
+  - 图表+洞察布局：图表左侧55% + 洞察右侧45%（推荐）
+  - 多图表对比布局：每列33%，并排对比
+  - 图表颜色必须使用设计系统配色：#556EE6（深蓝）、#F85d42（橙）、#34c38f（绿）、#50a5f1（蓝）、#f1b44c（黄）
+
+**🔑 新增设计规范强制执行**：
+
+- **背景颜色规范**：
+  - 主背景色：白色 (#FFFFFF)
+  - 标题栏背景：黑色 (#000000)
+  - 主要强调色：橙色 (#F85d42)
+  - 辅助色：灰色 (#74788d)
+  - 辅助色系：
+    - 深蓝色 (#556EE6)
+    - 绿色 (#34c38f)
+    - 蓝色 (#50a5f1)
+    - 黄色 (#f1b44c)
+  - 封面页使用纯色背景（从以下颜色随机选取：#556EE6、#F85d42、#34c38f、#50a5f1、#f1b44c、#000000），白色文字
+  - 章节首页使用纯色背景（从以下颜色随机选取：#556EE6、#F85d42、#34c38f、#50a5f1、#f1b44c、#000000），白色文字
+  - 结束页使用纯色背景（从以下颜色随机选取：#556EE6、#F85d42、#34c38f、#50a5f1、#f1b44c、#000000），白色文字
+  - 图表颜色必须使用设计系统配色：#556EE6（深蓝）、#F85d42（橙）、#34c38f（绿）、#50a5f1（蓝）、#f1b44c（黄）
+  - 强调色块使用橙色 (#F85d42)
+  - 辅助文字使用灰色 (#74788d)
+
+- **章节概览规范**：
+  - 每个章节首页必须包含章节概览列表
+  - 章节概览必须列出当前章节的所有子标题
+  - 章节概览必须包含每个子标题对应的页码
+  - 章节概览必须使用2列网格布局
+  - 章节概览样式必须与整体设计保持一致
+
+- **动态导航规范**：
+  - 内容页头部导航栏标题必须随页面切换实时更新
+  - 每个幻灯片必须有唯一的data-title属性
+  - 封面页导航栏必须隐藏
+  - 章节首页导航栏必须隐藏
+  - 动态导航功能必须使用JavaScript实现
+
+- **图文列表规范**：
+  - 所有文字内容列表必须使用图文格式，禁止使用传统HTML list格式（<ul><li>）
+  - 图文列表必须使用卡片或媒体对象样式
+  - 列表项必须包含图标/数字+标题+描述的完整结构
+  - 图文列表布局必须合理（2列或垂直列表）
+  - 图文列表样式必须与整体设计保持一致
 
 **执行流程**（由skill自动执行）：
 ```
@@ -223,6 +488,18 @@ args:
 - [ ] 图表容器最小高度符合规范（400px）
 - [ ] 所有元素对齐到网格
 - [ ] 视觉平衡良好
+- [ ] **图表页面使用2列或3列布局**（禁止单列）
+- [ ] **图表+洞察布局正确**（图表左侧55% + 洞察右侧45%）
+- [ ] **多图表对比布局正确**（每列33%）
+
+**导航栏规范检查** ⭐ 新增：
+- [ ] 头部导航栏存在：`.slide-header`
+- [ ] 导航栏背景色：黑色 (#000000)
+- [ ] 导航栏文字色：白色 (#FFFFFF)
+- [ ] 导航栏高度：60px
+- [ ] 导航栏固定定位：position: fixed
+- [ ] 导航栏z-index：100
+- [ ] 封面页导航栏隐藏：`.cover-slide .slide-header { display: none; }`
 
 **设计风格检查**：
 - [ ] 整体风格符合McKinsey标准
@@ -238,6 +515,7 @@ args:
 ### 步骤 4️⃣：代码内容审核检验
 
 **⚠️ 最关键步骤！必须严格执行！**
+**CRITICAL: This is the MOST CRITICAL step! MUST be strictly executed!**
 
 **目标**：全面检查生成的 HTML 演示文稿，确保质量和完整性。
 
@@ -248,6 +526,61 @@ args:
 - **代码质量检验**：必须符合HTML最佳实践，可访问可运行
 - **资源使用检验**：必须验证步骤2和步骤3是否正确读取并使用了skill资源
 - **发现问题立即回退**：返回对应步骤重新执行，绝不将就
+
+**🔑 强制验证项目（必须全部通过）：**
+```
+资源使用验证：
+□ 步骤2资源：已读取 chart-selection-guide.md、CHART_EXAMPLES_INDEX.md、INSIGHT_VISUALIZATION_GUIDE.md
+□ 步骤3资源：已读取 best-practices.md、mckinsey-design-system.md、presentation-template.html
+□ 所有资源都已正确使用
+
+内容完整性验证：
+□ 所有章节都已包含
+□ 所有要点都已包含
+□ 所有数据都已包含
+□ 无内容被压缩或省略
+
+代码质量验证：
+□ HTML结构正确
+□ CSS样式正确
+□ JavaScript代码正确
+□ 无语法错误
+
+设计规范验证：
+□ 使用McKinsey标准色板
+□ 未使用紫色渐变
+□ 未使用圆角卡片
+□ 图表使用2列或3列布局
+```
+
+**🔑 完成后必须生成完整报告：**
+```
+✅ 步骤4：代码内容审核检验 - 100%完成
+
+验证摘要：
+- 资源使用验证：✅ 通过（X/Y项）
+- 内容完整性检查：✅ 通过（X/Y项）
+- 代码质量检查：✅ 通过（X/Y项）
+- 功能验证：✅ 通过（X/Y项）
+
+总体验收：✅ 通过（X/Y项）
+
+质量评分：A+（优秀/良好/合格/不合格）
+
+输出产物：
+1. 验证报告
+2. 问题清单（如有）
+3. 修正建议（如有）
+
+🎉 全部4步流程执行完成！
+HTML演示文稿已生成，可直接使用。
+```
+
+**⚠️ 禁止行为（强制执行）**：
+- ❌ 跳过步骤4不执行
+- ❌ 验证走过场
+- ❌ 将就通过有问题的结果
+- ❌ 不生成完整验证报告
 
 **执行流程**（由skill自动执行）：
 ```
@@ -268,14 +601,18 @@ args:
 ```
 步骤2资源：
 □ 已读取：references/chart-selection-guide.md
-□ 已读取：assets/CHART_EXAMPLES_INDEX.md
-□ 已读取：assets/INSIGHT_VISUALIZATION_GUIDE.md
+□ 已读取：assets/COMPONENTS_INDEX.md
+□ 已读取：assets/LAYOUTS_INDEX.md
+□ 已读取：assets/INDEX.md
 
 步骤3资源：
 □ 已读取：references/best-practices.md
 □ 已读取：references/mckinsey-design-system.md
 □ 已读取：assets/presentation-template.html
 □ 已读取：assets/TEMPLATE_USAGE_GUIDE.md
+□ 已读取：assets/COMPONENTS_INDEX.md
+□ 已读取：assets/LAYOUTS_INDEX.md
+□ 已读取：assets/INDEX.md
 ```
 
 #### 内容完整性检查
@@ -331,6 +668,18 @@ args:
 □ 图表容器最小高度符合规范（400px）
 □ 所有元素对齐到网格
 □ 视觉平衡良好
+□ **图表页面使用2列或3列布局**（禁止单列）
+□ **图表+洞察布局正确**（图表左侧55% + 洞察右侧45%）
+□ **多图表对比布局正确**（每列33%）
+
+**导航栏规范验证** ⭐ 新增：
+□ 头部导航栏存在：`.slide-header`
+□ 导航栏背景色：黑色 (#000000)
+□ 导航栏文字色：白色 (#FFFFFF)
+□ 导航栏高度：60px
+□ 导航栏固定定位：position: fixed
+□ 导航栏z-index：100
+□ 封面页导航栏隐藏：`.cover-slide .slide-header { display: none; }`
 
 **设计风格验证**：
 □ 整体风格符合McKinsey标准
@@ -450,6 +799,8 @@ args:
 □ **字体规范不符合**（使用Inter、Roboto、Arial等通用字体）
 □ **布局规范不符合**（使用圆角卡片、通用模板布局）
 □ **设计风格不符合**（装饰性图标、不必要动画、过度阴影等）
+□ **导航栏规范不符合**（背景色非黑色、文字色非白色、高度非60px、未固定定位等）
+□ **图表布局不符合**（使用单列布局、未使用2列/3列布局）
 ```
 
 ### 回退执行流程

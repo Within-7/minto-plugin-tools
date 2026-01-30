@@ -1,47 +1,58 @@
 ---
 name: "beauty-step4"
-description: "代码内容审核检验。在beauty命令的步骤4执行时自动调用，全面检查生成的HTML演示文稿，确保质量和完整性，实行一票否决制。"
+description: "Code content audit and inspection. Automatically invoked during step 4 of the beauty command to comprehensively check the generated HTML presentation, ensure quality and integrity, implement one-vote veto system. 代码内容审核检验。在beauty命令的步骤4执行时自动调用，全面检查生成的HTML演示文稿，确保质量和完整性，实行一票否决制。"
 ---
 
-# Beauty 步骤4：代码内容审核检验
+# Beauty 步骤4：代码内容审核检验 / Beauty Step 4: Code Content Audit and Inspection
 
-## ⚠️ 最关键步骤！必须严格执行！
+## ⚠️ 最关键步骤！必须严格执行！/ MOST CRITICAL STEP! Must be strictly executed!
 
-## 目标
+## 目标 / Goal
 
 全面检查生成的 HTML 演示文稿，确保质量和完整性。
 
-## ⚠️ 核心原则
+Comprehensively check the generated HTML presentation to ensure quality and integrity.
 
-**实行一票否决制：**
-- **内容完整性检验**：必须100%保留原文所有章节、数据、结论，零遗漏
-- **代码质量检验**：必须符合HTML最佳实践，可访问可运行
-- **资源使用检验**：必须验证步骤2和步骤3是否正确读取并使用了skill资源
-- **发现问题立即回退**：返回对应步骤重新执行，绝不将就
+## ⚠️ 核心原则 / Core Principles
 
----
-
-## 📋 执行流程（5个子步骤）
-
-```
-步骤4.1：资源使用验证
-  ↓
-步骤4.2：内容完整性检查
-  ↓
-步骤4.3：代码质量检查
-  ↓
-步骤4.4：功能验证
-  ↓
-步骤4.5：生成最终报告
-```
+**实行一票否决制 / Implement One-Vote Veto System:**
+- **内容完整性检验 / Content Integrity Check**：必须100%保留原文所有章节、数据、结论，零遗漏
+  MUST preserve 100% of all original chapters, data, conclusions, zero omissions
+  
+- **代码质量检验 / Code Quality Check**：必须符合HTML最佳实践，可访问可运行
+  MUST follow HTML best practices, be accessible and runnable
+  
+- **资源使用检验 / Resource Usage Check**：必须验证步骤2和步骤3是否正确读取并使用了skill资源
+  MUST verify Steps 2 & 3 correctly read and used skill resources
+  
+- **发现问题立即回退 / Rollback Immediately on Issues**：返回对应步骤重新执行，绝不将就
+  Return to corresponding step and re-execute, never compromise
 
 ---
 
-## 步骤 4.1：资源使用验证
+## 📋 执行流程（5个子步骤）/ Execution Workflow (5 Sub-steps)
 
-### 目标
+```
+步骤4.1：资源使用验证 / Step 4.1: Resource usage verification
+  ↓
+步骤4.2：内容完整性检查 / Step 4.2: Content integrity check
+  ↓
+步骤4.3：代码质量检查 / Step 4.3: Code quality check
+  ↓
+步骤4.4：功能验证 / Step 4.4: Functionality verification
+  ↓
+步骤4.5：生成最终报告 / Step 4.5: Generate final report
+```
+
+---
+
+## 步骤 4.1：资源使用验证 / Step 4.1: Resource Usage Verification
+
+### 目标 / Goal
 
 验证步骤2和步骤3是否正确读取并使用了skill资源。
+
+Verify that Steps 2 & 3 correctly read and used skill resources.
 
 ### 步骤2资源使用验证
 
@@ -823,34 +834,48 @@ HTML：市场份额从2022年的35%增长到2024年的65%，增长率30个百分
 ```
 ✅ 步骤4：代码内容审核检验 - 100%完成
 
+🎉 全部4步流程执行完成！
+
 验证摘要：
-- 资源使用验证：✅ 通过（7/7项）
-- 内容完整性检查：✅ 通过（7/7项）
-- 代码质量检查：✅ 通过（7/7项）
-- 功能验证：✅ 通过（7/7项）
+├─ 资源使用验证：✅ 通过（X/Y项）
+├─ 内容完整性检查：✅ 通过（X/Y项）
+├─ 代码质量检查：✅ 通过（X/Y项）
+├─ 功能验证：✅ 通过（X/Y项）
+└─ 总体验收：✅ 通过（X/Y项）
 
-总体验收：✅ 通过（28/28项）
+质量评分：A+（优秀/良好/合格/不合格）
 
-质量评分：A+（优秀）
+执行状态跟踪：
+├─ 步骤1：✅ 完成（文档内容分析合并）
+├─ 步骤2：✅ 完成（幻灯片内容转换与拆分）
+├─ 步骤3：✅ 完成（HTML样式布局代码规划与生成）
+└─ 步骤4：✅ 完成（代码内容审核检验）
 
 输出产物：
-1. 资源使用验证报告（已生成）
-2. 内容完整性验证报告（已生成）
-3. 代码质量验证报告（已生成）
-4. 功能验证报告（已生成）
-5. 最终验收报告（已生成）
+1. 资源使用验证报告
+2. 内容完整性验证报告
+3. 代码质量验证报告
+4. 功能验证报告
+5. 最终验收报告
 
 文件信息：
 - 文件名：[文档标题]_McKinsey风格演示文稿.html
-- 文件大小：约60KB
-- 总代码行数：约1200行
-- 加载时间：<1秒（本地）
-- 依赖项：Chart.js CDN（唯一外部依赖）
+- 文件路径：[完整路径]
+- 文件大小：约XXKB
+- 总代码行数：约XXXX行
+- 幻灯片页数：N页
+- 图表数量：M个
 
 建议：
 ✅ 可以直接使用
 ✅ 无需修改
 ✅ 符合McKinsey标准
+
+🎯 下一步操作：
+1. 在浏览器中打开HTML文件查看效果
+2. 使用键盘方向键或按钮进行导航
+3. 点击全屏按钮进入演示模式
+4. 如需修改，请返回对应步骤重新执行
 
 Beauty命令执行完成！
 ```

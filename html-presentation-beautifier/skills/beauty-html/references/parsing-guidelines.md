@@ -2,15 +2,45 @@
 
 ## Purpose
 
-This guide provides detailed instructions for Phase 1: Document Parsing. Follow these guidelines to ensure accurate extraction and understanding of source documents.
+This guide provides detailed instructions for Phase 1: Document Parsing. Follow these guidelines to ensure accurate extraction and understanding of source documents **with 100% content preservation**.
 
-## Core Principles
+**⚠️ CRITICAL: Content Integrity Guarantee (内容完整性保证)**
 
-1. **Preserve Original Content**: Never modify, summarize, or paraphrase the original text
-2. **Maintain Structure**: Respect the original document's hierarchy and organization
-3. **Extract All Data**: Identify and catalog all quantitative data points
-4. **Identify Conclusions**: Locate and extract all conclusions and recommendations
-5. **No Interpretation**: Do not interpret or add meaning to the content
+This parsing process implements a **zero-tolerance policy** for content loss:
+- ✅ **100% Content Preservation**: Every chapter, data point, conclusion, and detail MUST be extracted
+- ✅ **No Simplification**: Content cannot be summarized, compressed, or simplified
+- ✅ **No Omission**: All sections, tables, figures must be fully captured
+- ✅ **Token Limit Handling**: Use "continue" mechanism for large documents instead of truncating
+- ❌ **STRICTLY PROHIBITED**: Any form of content reduction to save tokens
+
+---
+
+## Core Principles (核心原则 - 强制执行)
+
+1. **Preserve Original Content (100%)**: Never modify, summarize, or paraphrase the original text - MANDATORY
+2. **Maintain Structure**: Respect the original document's hierarchy and organization - MANDATORY
+3. **Extract All Data**: Identify and catalog all quantitative data points - MANDATORY
+4. **Identify Conclusions**: Locate and extract all conclusions and recommendations - MANDATORY
+5. **No Interpretation**: Do not interpret or add meaning to the content - MANDATORY
+6. **Segmented Loading**: For large documents (>10KB), use "continue" mechanism - MANDATORY
+
+**⚠️ Token Limit Handling Protocol**:
+```
+IF document size > 10KB OR parsing output > 2000 lines:
+    ├─ Segment 1: Parse first 50% of document
+    ├─ Pause and prompt: "内容较长，已解析前50%，请输入'继续'获取剩余部分"
+    ├─ Wait for user input: "继续"
+    └─ Segment 2: Parse remaining 50% of document
+    
+ELSE:
+    └─ Parse entire document in one pass
+
+CRITICAL RULE:
+    ❌ NEVER reduce content quality or completeness to avoid segmentation
+    ✅ ALWAYS preserve 100% of content through multiple segments if needed
+```
+
+---
 
 ## Document Type Detection
 
@@ -203,19 +233,32 @@ Recommendations:
 3. "Enter new market segments"
 4. "Increase production capacity"
 
-## Common Traps
+## Common Traps (常见陷阱 - 必须避免)
 
-| Trap | Symptom | Solution |
-|------|----------|----------|
-| Modifying content | Content summarized or paraphrased | Preserve exact text from source |
-| Missing data points | Data not extracted correctly | Verify regex pattern and test on samples |
-| Misclassified sections | Wrong category assigned | Check section headers and keywords |
-| Incomplete conclusions | Conclusions truncated or merged | Extract complete sentences separately |
-| Structure loss | Hierarchy flattened | Maintain level indicators and nesting |
+| Trap | Symptom | Solution | Enforcement |
+|------|----------|----------|-------------|
+| Modifying content | Content summarized or paraphrased | Preserve exact text from source | MANDATORY |
+| Missing data points | Data not extracted correctly | Verify regex pattern and test on samples | MANDATORY |
+| Misclassified sections | Wrong category assigned | Check section headers and keywords | MANDATORY |
+| Incomplete conclusions | Conclusions truncated or merged | Extract complete sentences separately | MANDATORY |
+| Structure loss | Hierarchy flattened | Maintain level indicators and nesting | MANDATORY |
+| **Token-based truncation** | **Content cut off to save tokens** | **Use "continue" mechanism for segmented loading** | **CRITICAL** |
+| **Simplified summaries** | **Original text replaced with summaries** | **Never summarize, always preserve 100% original text** | **CRITICAL** |
+| **Omitted sections** | **Entire sections skipped** | **Extract all sections, use segmentation if needed** | **CRITICAL** |
 
-## Verification Checklist
+**⚠️ CRITICAL VIOLATIONS**:
+If any of the following are detected during Step 4 validation, **trigger immediate rollback to Step 1**:
+- ❌ Any original content missing or truncated
+- ❌ Any data points not extracted
+- ❌ Any sections summarized instead of preserved
+- ❌ Any conclusions omitted or compressed
+- ❌ Token limit used as excuse for content reduction
 
-After parsing, verify:
+---
+
+## Verification Checklist (验证清单 - 强制执行)
+
+After parsing, verify **100% content preservation**:
 
 - [ ] Document title extracted correctly
 - [ ] All sections identified and labeled

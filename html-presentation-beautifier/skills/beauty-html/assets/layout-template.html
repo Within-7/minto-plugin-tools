@@ -1,0 +1,416 @@
+<div class="layout-container [layout-type]-layout">
+  <!-- 页面头部（可选） -->
+  <div class="layout-header">
+    <h2 class="layout-title">[页面标题]</h2>
+    <p class="layout-subtitle">[页面副标题]</p>
+  </div>
+  
+  <!-- 单列布局 -->
+  <div class="layout-content single-column">
+    <div class="content-block">
+      <div class="block-header">
+        <h3 class="block-title">[区块标题]</h3>
+      </div>
+      <div class="block-content">
+        <p class="block-text">[区块内容]</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 双列布局 -->
+  <div class="layout-content two-column">
+    <div class="column column-1">
+      <div class="column-content">
+        <h3 class="column-title">[左列标题]</h3>
+        <div class="column-body">
+          <p class="column-text">[左列内容]</p>
+          <!-- 可嵌入组件 -->
+          <div class="embedded-component">
+            <div class="chart-container">
+              <canvas id="chart-left"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column column-2">
+      <div class="column-content">
+        <h3 class="column-title">[右列标题]</h3>
+        <div class="column-body">
+          <p class="column-text">[右列内容]</p>
+          <!-- 可嵌入组件 -->
+          <div class="embedded-component">
+            <div class="key-insights">
+              <h4>关键洞察</h4>
+              <ul>
+                <li>洞察1：[内容]</li>
+                <li>洞察2：[内容]</li>
+                <li>洞察3：[内容]</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 三列布局 -->
+  <div class="layout-content three-column">
+    <div class="column column-1">
+      <div class="column-content">
+        <h3 class="column-title">[列1标题]</h3>
+        <p class="column-text">[列1内容]</p>
+      </div>
+    </div>
+    <div class="column column-2">
+      <div class="column-content">
+        <h3 class="column-title">[列2标题]</h3>
+        <p class="column-text">[列2内容]</p>
+      </div>
+    </div>
+    <div class="column column-3">
+      <div class="column-content">
+        <h3 class="column-title">[列3标题]</h3>
+        <p class="column-text">[列3内容]</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 卡片网格布局 -->
+  <div class="layout-content card-grid">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">[卡片1标题]</h4>
+      </div>
+      <div class="card-body">
+        <p class="card-text">[卡片1内容]</p>
+        <ul class="card-list">
+          <li>要点1</li>
+          <li>要点2</li>
+          <li>要点3</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">[卡片2标题]</h4>
+      </div>
+      <div class="card-body">
+        <p class="card-text">[卡片2内容]</p>
+        <ul class="card-list">
+          <li>要点1</li>
+          <li>要点2</li>
+          <li>要点3</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">[卡片3标题]</h4>
+      </div>
+      <div class="card-body">
+        <p class="card-text">[卡片3内容]</p>
+        <ul class="card-list">
+          <li>要点1</li>
+          <li>要点2</li>
+          <li>要点3</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">[卡片4标题]</h4>
+      </div>
+      <div class="card-body">
+        <p class="card-text">[卡片4内容]</p>
+        <ul class="card-list">
+          <li>要点1</li>
+          <li>要点2</li>
+          <li>要点3</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 页面底部（可选） -->
+  <div class="layout-footer">
+    <div class="footer-note">
+      <p>[底部说明/数据来源]</p>
+    </div>
+  </div>
+</div>
+
+<style>
+/* 布局容器 */
+.layout-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* 布局头部 */
+.layout-header {
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #F85D42;
+}
+
+.layout-title {
+  font-size: 36px;
+  font-weight: bold;
+  color: #000000;
+  margin: 0 0 8px 0;
+}
+
+.layout-subtitle {
+  font-size: 20px;
+  color: #666666;
+  margin: 0;
+}
+
+/* 布局内容区域 */
+.layout-content {
+  margin-bottom: 24px;
+}
+
+/* 单列布局 */
+.single-column {
+  max-width: 800px;
+}
+
+/* 双列布局 */
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.column {
+  min-width: 0;
+}
+
+.column-content {
+  height: 100%;
+}
+
+.column-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #000000;
+  margin: 0 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #F85D42;
+}
+
+.column-text {
+  font-size: 18px;
+  line-height: 1.7;
+  color: #333333;
+  margin: 0 0 16px 0;
+}
+
+/* 三列布局 */
+.three-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 30px;
+}
+
+/* 卡片网格布局 */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.card {
+  background: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  border-radius: 4px;
+  padding: 24px;
+}
+
+.card-header {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #F85D42;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #000000;
+  margin: 0;
+}
+
+.card-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333333;
+  margin: 0 0 12px 0;
+}
+
+.card-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card-list li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #333333;
+}
+
+.card-list li::before {
+  content: "●";
+  position: absolute;
+  left: 0;
+  color: #F85D42;
+  font-size: 10px;
+}
+
+/* 嵌入组件区域 */
+.embedded-component {
+  margin-top: 20px;
+}
+
+/* 关键洞察样式 */
+.key-insights {
+  background: #F8F9FA;
+  border-left: 4px solid #F85D42;
+  padding: 20px;
+}
+
+.key-insights h4 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #000000;
+  margin: 0 0 12px 0;
+}
+
+.key-insights ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.key-insights li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  color: #333333;
+  line-height: 1.5;
+}
+
+.key-insights li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #F85D42;
+  font-weight: bold;
+}
+
+/* 布局底部 */
+.layout-footer {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid #E0E0E0;
+}
+
+.footer-note {
+  font-size: 14px;
+  color: #666666;
+  font-style: italic;
+}
+
+.footer-note p {
+  margin: 0;
+}
+
+/* 图表容器 */
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  background: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  border-radius: 4px;
+  padding: 16px;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+  .two-column {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .three-column {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // 左侧图表
+  const ctxLeft = document.getElementById('chart-left');
+  if (ctxLeft) {
+    new Chart(ctxLeft, {
+      type: 'bar',
+      data: {
+        labels: ['A', 'B', 'C', 'D', 'E'],
+        datasets: [{
+          label: '数据系列',
+          data: [120, 190, 80, 250, 170],
+          backgroundColor: '#003366',
+          borderColor: '#FFFFFF',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top'
+          }
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+            grid: {
+              display: true,
+              color: '#E0E0E0'
+            }
+          },
+          y: {
+            beginAtZero: true,
+            grid: {
+              display: true,
+              color: '#E0E0E0'
+            }
+          }
+        }
+      }
+    });
+  }
+});
+</script>

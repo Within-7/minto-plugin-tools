@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>章节封面页 - McKinsey Standard with Chapter Overview</title>
+    <style>
+        :root {
+            --color-bg: #FFFFFF;
+            --color-text-primary: #000000;
+            --color-text-secondary: #333333;
+            --color-text-tertiary: #74788d;
+            --color-accent-primary: #F85d42;
+            --color-blue: #556EE6;
+            --color-green: #34c38f;
+            --font-family-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", 
+                         "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+            --font-size-chapter-number: 140px;
+            --font-size-chapter-title: 56px;
+            --font-size-chapter-desc: 24px;
+            --font-size-overview-title: 20px;
+            --font-size-overview-item: 18px;
+            --spacing-md: 30px;
+            --spacing-lg: 40px;
+            --spacing-xl: 60px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .slide {
+            max-width: 1200px;
+            width: 100%;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .chapter-slide {
+            background-color: var(--chapter-bg-color, #003366);
+            color: var(--chapter-text-color, #FFFFFF);
+            padding: var(--spacing-xl);
+        }
+
+        .chapter-content {
+            text-align: center;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .chapter-number {
+            font-size: var(--font-size-chapter-number);
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: var(--spacing-md);
+            opacity: 0.85;
+        }
+
+        .decorative-line {
+            width: 80px;
+            height: 4px;
+            background: var(--chapter-text-color, #FFFFFF);
+            margin: var(--spacing-lg) auto;
+            opacity: 0.6;
+        }
+
+        .chapter-title {
+            font-size: var(--font-size-chapter-title);
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
+
+        .chapter-description {
+            font-size: var(--font-size-chapter-desc);
+            opacity: 0.8;
+            max-width: 700px;
+            margin: 0 auto 48px;
+            line-height: 1.6;
+        }
+
+        .chapter-overview {
+            margin-top: 48px;
+            padding-top: 48px;
+            border-top: 2px solid var(--chapter-text-color, #FFFFFF);
+            opacity: 0.9;
+        }
+
+        .overview-title {
+            font-size: var(--font-size-overview-title);
+            font-weight: 600;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.9;
+        }
+
+        .overview-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px 40px;
+            text-align: left;
+        }
+
+        .overview-item {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--chapter-text-color, #FFFFFF);
+            opacity: 0.85;
+        }
+
+        .overview-page-num {
+            font-size: 16px;
+            font-weight: 600;
+            min-width: 40px;
+        }
+
+        .overview-title-text {
+            font-size: var(--font-size-overview-item);
+            font-weight: 500;
+        }
+
+        @media (max-width: 1200px) {
+            .chapter-number {
+                font-size: 100px;
+            }
+            .chapter-title {
+                font-size: 40px;
+            }
+            .chapter-description {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+            .slide {
+                padding: 40px 30px;
+                min-height: 500px;
+            }
+            .chapter-number {
+                font-size: 80px;
+            }
+            .chapter-title {
+                font-size: 32px;
+            }
+            .chapter-description {
+                font-size: 16px;
+            }
+            .overview-list {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chapter-number {
+                font-size: 60px;
+            }
+            .chapter-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide chapter-slide" id="slide-2">
+        <div class="chapter-content">
+            <div class="chapter-number">01</div>
+            <div class="decorative-line"></div>
+            <h1 class="chapter-title">市场现状与趋势分析</h1>
+            <p class="chapter-description">
+                深入分析当前市场环境、竞争格局与未来发展趋势，
+                为战略决策提供数据支撑与洞察
+            </p>
+            <div class="chapter-overview">
+                <h3 class="overview-title">本章内容</h3>
+                <ul class="overview-list">
+                    <li class="overview-item">
+                        <span class="overview-page-num">03</span>
+                        <span class="overview-title-text">市场概况与规模</span>
+                    </li>
+                    <li class="overview-item">
+                        <span class="overview-page-num">04</span>
+                        <span class="overview-title-text">竞争格局分析</span>
+                    </li>
+                    <li class="overview-item">
+                        <span class="overview-page-num">05</span>
+                        <span class="overview-title-text">用户需求洞察</span>
+                    </li>
+                    <li class="overview-item">
+                        <span class="overview-page-num">06</span>
+                        <span class="overview-title-text">发展趋势预测</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

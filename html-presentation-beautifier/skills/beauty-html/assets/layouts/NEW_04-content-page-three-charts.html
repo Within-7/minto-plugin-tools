@@ -1,0 +1,376 @@
+<!--
+================================================================================
+NEW示例 4: 内容页 - 三列图表对比 (Content Page - Three Charts Comparison) - McKinsey Standard Version
+================================================================================
+
+📋 适用场景 / Use Cases:
+- 区域对比分析
+- 产品线对比
+- 时间段对比
+- KPI并排对比
+- 多维度数据展示
+
+🎯 内容特征 / Content Characteristics:
+- 包含3个图表
+- 图表并排显示（三列布局）
+- 每个图表独立展示一个维度
+- 图表下方有简短说明
+- 高数据密度
+
+📊 布局类型 / Layout Type:
+L13 三列图表对比布局（Three-Column Charts Comparison Layout）
+
+✨ 使用条件 / Usage Conditions:
+- 观点数量 / Number of Points: 3个（3个图表）
+- 数据密度 / Data Density: 高
+- 对比关系 / Comparison Type: 并排对比
+- 图表需求 / Chart Required: 是（3个图表）
+
+🎨 设计要点 / Design Key Points:
+- ✅ **CRITICAL**: 标题显示在固定头部导航栏（.slide-header）
+- ✅ **CRITICAL**: 图表使用三列布局（three-column layout）
+- ✅ **CRITICAL**: 每个图表占33%宽度
+- ✅ 图表容器：min-height 350px（三列布局高度略小）
+- ✅ 三列等宽布局（grid-template-columns: repeat(3, 1fr)）
+- ✅ 图表使用McKinsey标准色板
+- ✅ Chart.js配置：responsive: true, maintainAspectRatio: false
+
+🔍 匹配规则 / Matching Rules:
+- IF 页面包含3个图表
+- AND 图表需要并排对比
+- AND 每个图表展示一个独立维度
+- THEN 使用此示例
+
+匹配度权重 / Matching Weight: 95%
+
+⚠️ 设计规范检查清单 / Design Standards Checklist:
+
+**颜色规范 / Color Standards**:
+- [x] 使用McKinsey标准色板（#556EE6, #34c38f, #50a5f1）
+- [x] 未使用紫色渐变背景
+- [x] 对比度≥4.5:1
+
+**字体规范 / Typography Standards**:
+- [x] 使用系统字体
+- [x] 头部标题32px，图表说明14px
+- [x] 行高1.7
+
+**布局规范 / Layout Standards**:
+- [x] Padding 50px
+- [x] Column Gap 35px
+- [x] Chart Min-height 350px
+- [x] 未使用圆角卡片
+- [x] 阴影最小化
+
+**内容页规范 / Content Page Standards**:
+- [x] **CRITICAL**: 标题在固定头部导航栏
+- [x] **CRITICAL**: 图表使用三列布局
+- [x] 内容区域顶部边距padding-top: 100px
+
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内容页 - 三列图表对比示例</title>
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        /* ========================================
+           McKinsey Design System - CSS Variables
+           ======================================== */
+        :root {
+            --color-bg: #FFFFFF;
+            --color-text-primary: #000000;
+            --color-text-secondary: #333333;
+            --color-text-tertiary: #74788d;
+            --color-accent-primary: #F85d42;
+            --color-blue: #556EE6;
+            --color-green: #34c38f;
+            --color-light-blue: #50a5f1;
+
+            --font-size-header-title: 32px;
+            --font-size-caption: 14px;
+
+            --spacing-sm: 20px;
+            --slide-padding: 50px;
+            --column-gap: 35px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", 
+                         "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+            background: #f5f7fa;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ========================================
+           Fixed Header Navigation
+           ======================================== */
+        .slide-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(to right, rgba(255,255,255,0.98), rgba(255,255,255,0.95));
+            border-bottom: 2px solid var(--color-accent-primary);
+            display: flex;
+            align-items: center;
+            padding: 0 100px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .slide-header-title {
+            font-size: var(--font-size-header-title);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        /* ========================================
+           Slide Container
+           ======================================== */
+        .slide {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--color-bg);
+            padding: var(--slide-padding);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            min-height: 100vh;
+        }
+
+        .slide-content {
+            padding-top: 100px;
+        }
+
+        /* ========================================
+           Three-Column Layout
+           ======================================== */
+        .three-column {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--column-gap);
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ========================================
+           Chart Components
+           ======================================== */
+        .chart-container {
+            width: 100%;
+            min-height: 350px;
+            padding: var(--spacing-sm);
+            background: var(--color-bg);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .chart-caption {
+            font-size: var(--font-size-caption);
+            color: var(--color-text-tertiary);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .chart-caption strong {
+            color: var(--color-text-primary);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        /* ========================================
+           Responsive Design
+           ======================================== */
+        @media (max-width: 1200px) {
+            .slide-header {
+                height: 60px;
+                padding: 0 60px;
+            }
+
+            .slide-header-title {
+                font-size: 24px;
+            }
+
+            .slide-content {
+                padding-top: 80px;
+            }
+
+            .three-column {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .chart-container {
+                min-height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --slide-padding: 30px;
+            }
+
+            .slide-header {
+                height: 50px;
+                padding: 0 30px;
+            }
+
+            .slide-header-title {
+                font-size: 18px;
+            }
+
+            .slide-content {
+                padding-top: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 内容页 -->
+    <div class="slide content-slide">
+        <!-- Fixed Header Navigation Bar -->
+        <div class="slide-header">
+            <h2 class="slide-header-title">区域业绩对比分析</h2>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="slide-content">
+            <div class="three-column">
+                <!-- Column 1: Asia Pacific -->
+                <div class="column">
+                    <div class="chart-container">
+                        <canvas id="asiaChart"></canvas>
+                    </div>
+                    <p class="chart-caption"><strong>亚太地区</strong><br>营收增长: +35%</p>
+                </div>
+
+                <!-- Column 2: Europe -->
+                <div class="column">
+                    <div class="chart-container">
+                        <canvas id="europeChart"></canvas>
+                    </div>
+                    <p class="chart-caption"><strong>欧洲地区</strong><br>营收增长: +22%</p>
+                </div>
+
+                <!-- Column 3: Americas -->
+                <div class="column">
+                    <div class="chart-container">
+                        <canvas id="americasChart"></canvas>
+                    </div>
+                    <p class="chart-caption"><strong>美洲地区</strong><br>营收增长: +18%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript - Chart.js Configuration -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 通用图表配置
+            const commonOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 10,
+                        titleFont: { size: 12, weight: 'bold' },
+                        bodyFont: { size: 11 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: { color: '#f0f0f0', drawBorder: false },
+                        ticks: { font: { size: 10 }, color: '#74788d' }
+                    },
+                    x: {
+                        grid: { display: false, drawBorder: false },
+                        ticks: { font: { size: 9 }, color: '#74788d' }
+                    }
+                }
+            };
+
+            // 亚太地区图表
+            const asiaCtx = document.getElementById('asiaChart');
+            if (asiaCtx) {
+                new Chart(asiaCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                        datasets: [{
+                            data: [65, 72, 80, 88],
+                            backgroundColor: '#556EE6',
+                            borderWidth: 0
+                        }]
+                    },
+                    options: commonOptions
+                });
+            }
+
+            // 欧洲地区图表
+            const europeCtx = document.getElementById('europeChart');
+            if (europeCtx) {
+                new Chart(europeCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                        datasets: [{
+                            data: [55, 60, 65, 67],
+                            backgroundColor: '#34c38f',
+                            borderWidth: 0
+                        }]
+                    },
+                    options: commonOptions
+                });
+            }
+
+            // 美洲地区图表
+            const americasCtx = document.getElementById('americasChart');
+            if (americasCtx) {
+                new Chart(americasCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                        datasets: [{
+                            data: [48, 52, 55, 57],
+                            backgroundColor: '#50a5f1',
+                            borderWidth: 0
+                        }]
+                    },
+                    options: commonOptions
+                });
+            }
+        });
+    </script>
+</body>
+</html>

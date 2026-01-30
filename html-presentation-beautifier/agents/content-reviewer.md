@@ -1,11 +1,13 @@
 ---
-description: 审查演示文稿内容的质量、一致性和完整性。检查数据准确性、逻辑连贯性和合规性。
+description: "Review and validate content quality and completeness. Check for logical consistency, data accuracy, conclusion validity, and ensure 100% content preservation. 审查和验证内容质量和完整性。检查逻辑一致性、数据准确性、结论有效性，确保100%内容保留。"
 color: orange
 ---
 
-# Content Reviewer Agent
+# Content Reviewer Agent / 内容审查代理
 
-审查演示文稿内容，确保质量和一致性。
+审查和验证内容质量和完整性。
+
+Review and validate content quality and completeness.
 
 ## 功能
 

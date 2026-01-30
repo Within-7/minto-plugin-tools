@@ -1,0 +1,254 @@
+<div class="component-container [component-name]-container">
+  <div class="[component-name]-header">
+    <h3 class="[component-name]-title">[组件标题]</h3>
+  </div>
+  <div class="[component-name]-content">
+    <!-- 图表容器（如果是图表组件） -->
+    <div class="chart-container">
+      <canvas id="[canvas-id]"></canvas>
+    </div>
+    
+    <!-- 图示内容（如果是图示组件） -->
+    <div class="[diagram-type]-diagram">
+      <div class="diagram-node node-1">
+        <span class="node-label">节点1</span>
+      </div>
+      <div class="diagram-connector connector-1">
+        <span class="connector-line"></span>
+      </div>
+      <div class="diagram-node node-2">
+        <span class="node-label">节点2</span>
+      </div>
+    </div>
+    
+    <!-- 列表内容（如果是列表组件） -->
+    <ul class="[list-type]-list">
+      <li class="list-item item-1">
+        <span class="item-marker">●</span>
+        <span class="item-text">列表项1</span>
+      </li>
+      <li class="list-item item-2">
+        <span class="item-marker">●</span>
+        <span class="item-text">列表项2</span>
+      </li>
+      <li class="list-item item-3">
+        <span class="item-marker">●</span>
+        <span class="item-text">列表项3</span>
+      </li>
+    </ul>
+  </div>
+  <div class="[component-name]-footer">
+    <p class="[component-name]-caption">[组件说明/数据来源]</p>
+  </div>
+</div>
+
+<style>
+.[component-name]-container {
+  background: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  border-radius: 4px;
+  padding: 24px;
+  margin: 16px 0;
+}
+
+.[component-name]-header {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #F85D42;
+}
+
+.[component-name]-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #000000;
+  margin: 0;
+}
+
+.[component-name]-content {
+  min-height: 300px;
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.[diagram-type]-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+}
+
+.diagram-node {
+  background: #FFFFFF;
+  border: 2px solid #003366;
+  border-radius: 4px;
+  padding: 16px 24px;
+  min-width: 200px;
+  text-align: center;
+}
+
+.diagram-node.node-1 {
+  border-color: #003366;
+}
+
+.diagram-node.node-2 {
+  border-color: #F85D42;
+}
+
+.node-label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000000;
+}
+
+.diagram-connector {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.connector-line {
+  width: 2px;
+  height: 30px;
+  background: #666666;
+}
+
+.[list-type]-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px 0;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.item-marker {
+  color: #F85D42;
+  margin-right: 12px;
+  font-size: 12px;
+  line-height: 24px;
+}
+
+.item-text {
+  font-size: 18px;
+  color: #333333;
+  line-height: 24px;
+}
+
+.[component-name]-footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #E0E0E0;
+}
+
+.[component-name]-caption {
+  font-size: 14px;
+  color: #666666;
+  margin: 0;
+  font-style: italic;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const ctx = document.getElementById('[canvas-id]');
+  if (ctx) {
+    new Chart(ctx, {
+      type: '[chart-type]',
+      data: {
+        labels: ['标签1', '标签2', '标签3', '标签4', '标签5'],
+        datasets: [{
+          label: '[数据系列名称]',
+          data: [数据1, 数据2, 数据3, 数据4, 数据5],
+          backgroundColor: [
+            '#003366',
+            '#1a4d8c',
+            '#3366b3',
+            '#4d80cc',
+            '#6699cc'
+          ],
+          borderColor: '#FFFFFF',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              font: {
+                size: 14,
+                family: "'Arial', sans-serif"
+              },
+              color: '#333333'
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            titleFont: {
+              size: 14,
+              weight: 'bold'
+            },
+            bodyFont: {
+              size: 13
+            },
+            padding: 12,
+            cornerRadius: 4
+          }
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+            grid: {
+              display: true,
+              color: '#E0E0E0'
+            },
+            ticks: {
+              font: {
+                size: 12,
+                family: "'Arial', sans-serif"
+              },
+              color: '#666666'
+            }
+          },
+          y: {
+            beginAtZero: true,
+            grid: {
+              display: true,
+              color: '#E0E0E0'
+            },
+            ticks: {
+              font: {
+                size: 12,
+                family: "'Arial', sans-serif"
+              },
+              color: '#666666'
+            }
+          }
+        }
+      }
+    });
+  }
+});
+</script>

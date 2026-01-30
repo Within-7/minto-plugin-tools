@@ -1,91 +1,190 @@
 ---
-description: "将文档转化为专业 McKinsey 风格 HTML 演示文稿（JSON+HTML模式）。严格遵循4步流程：文档分析 → 幻灯片设计 → JSON数据生成 → HTML渲染，确保100%内容保留和McKinsey设计标准。"
+description: "Transform documents into professional McKinsey-style HTML presentations (JSON+HTML mode). Strictly follow 4-step workflow: Document Analysis → Slide Design → JSON Data Generation → HTML Rendering. Ensures 100% content preservation and McKinsey design standards. 将文档转化为专业 McKinsey 风格 HTML 演示文稿（JSON+HTML模式）。严格遵循4步流程：文档分析 → 幻灯片设计 → JSON数据生成 → HTML渲染，确保100%内容保留和McKinsey设计标准。"
 args:
   - name: document
-    description: "要转换的文档路径（支持 .md, .txt, .json, .html）"
+    description: "Document path to convert (supports .md, .txt, .json, .html) / 要转换的文档路径（支持 .md, .txt, .json, .html）"
     required: true
 ---
 
-# Beauty-Normal 命令
+# Beauty-Normal 命令 / Beauty-Normal Command
 
 将文档、数据、结论等信息转化为通俗连贯、明确清晰的 McKinsey 风格 HTML 演示文稿（使用 JSON+HTML 模式生成）。
 
-## ⚠️ 核心原则
+Transform documents, data, and conclusions into clear and coherent McKinsey-style HTML presentations (using JSON+HTML mode generation).
 
-**必须严格遵循以下4步固定流程，不得跳过任何步骤：**
+## ⚠️ 核心原则 / Core Principles
 
-**🔑 步骤2、步骤3必须读取并参考skill资源：**
-- **步骤2（图文选择）**：必须读 `beauty-html/references/chart-selection-guide.md`、`beauty-html/assets/CHART_EXAMPLES_INDEX.md`、`beauty-html/assets/INSIGHT_VISUALIZATION_GUIDE.md`
-- **步骤3（JSON数据生成）**：必须读 `beauty-html/references/best-practices.md`、`beauty-html/references/mckinsey-design-system.md`、`beauty-html/assets/presentation-template.html`、`beauty-html/assets/TEMPLATE_USAGE_GUIDE.md`
+**CRITICAL: Must strictly follow this 4-step workflow. No steps can be skipped!**
+**关键：必须严格遵循以下4步固定流程，不得跳过任何步骤！**
 
-**🔑 第4步是关键验收步骤，实行一票否决制：**
-- **内容完整性检验**：必须100%保留原文所有章节、数据、结论，零遗漏
-- **JSON数据检验**：JSON格式必须正确，数据结构必须完整
-- **HTML渲染检验**：HTML必须能正确渲染JSON数据
-- **资源使用检验**：必须验证步骤2和步骤3是否正确读取并使用了skill资源
-- **发现问题立即回退**：返回对应步骤重新执行，绝不将就
+### Step Workflow Enforcement / 步骤流程强制执行
 
-**⚠️ Token限制处理原则（严格执行，不得偷工减料）：**
+**🔑 Steps 2 & 3: Mandatory Resource Reading / 步骤2、3必须读取skill资源**
 
-**🔑 最核心规则（必须严格遵守）：如果数据内容过大，或者token过长，则自动使用'继续'进行'分段'加载数据，绝对不能精简、偷工减料的节省token,严禁为了省token而跳过内容或使用摘要**
+**Step 2 (Chart Selection / 图文选择)** - MUST read:
+- `beauty-html/references/chart-selection-guide.md`
+- `beauty-html/assets/CHART_EXAMPLES_INDEX.md`
+- `beauty-html/assets/INSIGHT_VISUALIZATION_GUIDE.md`
 
-**当遇到 token 限制或上下文长度问题时，必须使用"继续"分页方式，绝对禁止：**
-- ❌ 压缩或省略资源读取
-- ❌ 跳过必读资源
-- ❌ 简化执行步骤
-- ❌ 减少生成内容
-- ❌ 使用摘要代替完整内容
-- ❌ 精简数据内容
-- ❌ 偷工减料节省token
+**Step 3 (JSON Data Generation / JSON数据生成)** - MUST read:
+- `beauty-html/references/best-practices.md`
+- `beauty-html/references/mckinsey-design-system.md`
+- `beauty-html/assets/presentation-template.html`
+- `beauty-html/assets/TEMPLATE_USAGE_GUIDE.md`
 
-**正确处理方式：使用"继续"机制**
+**🔑 Step 4: Critical Validation - One-Vote Veto System / 第4步：关键验收 - 一票否决制**
+
+**Content Integrity Check / 内容完整性检验**:
+- ✅ MUST preserve 100% of original content (chapters, data, conclusions)
+- ✅ 必须100%保留原文所有章节、数据、结论，零遗漏
+
+**JSON Data Check / JSON数据检验**:
+- ✅ JSON format MUST be correct
+- ✅ Data structure MUST be complete
+- ✅ JSON格式必须正确，数据结构必须完整
+
+**HTML Rendering Check / HTML渲染检验**:
+- ✅ HTML MUST correctly render JSON data
+- ✅ HTML必须能正确渲染JSON数据
+
+**Code Quality Check / 代码质量检验**:
+- ✅ MUST follow HTML best practices
+- ✅ MUST be accessible and runnable
+- ✅ 必须符合HTML最佳实践，可访问可运行
+
+**Resource Usage Check / 资源使用检验**:
+- ✅ MUST verify Steps 2 & 3 correctly read and used skill resources
+- ✅ 必须验证步骤2和步骤3是否正确读取并使用了skill资源
+
+**Rollback on Issues / 发现问题立即回退**:
+- ⚠️ If ANY check fails, rollback to the corresponding step and re-execute
+- ⚠️ 返回对应步骤重新执行，绝不将就
+
+**⚠️ Token Limit Handling / Token限制处理原则**
+
+**🔑 CORE RULE (MUST STRICTLY FOLLOW) / 最核心规则（必须严格遵守）**:
+- ✅ If data is too large or token limit reached, automatically use "continue" mechanism for segmented loading
+- ✅ 如果数据内容过大，或者token过长，则自动使用'继续'进行'分段'加载数据
+- ❌ NEVER simplify, cut corners, or save tokens by skipping content
+- ❌ 绝对不能精简、偷工减料的节省token
+- ❌ STRICTLY PROHIBITED: Skipping content or using summaries to save tokens
+- ❌ 严禁为了省token而跳过内容或使用摘要
+
+**When encountering token limits / 当遇到 token 限制时:**
+
+**❌ PROHIBITED Actions / 禁止行为**:
+- ❌ Compress or omit resource reading / 压缩或省略资源读取
+- ❌ Skip mandatory resources / 跳过必读资源
+- ❌ Simplify execution steps / 简化执行步骤
+- ❌ Reduce generated content / 减少生成内容
+- ❌ Use summaries instead of complete content / 使用摘要代替完整内容
+- ❌ Simplify data content / 精简数据内容
+- ❌ Cut corners to save tokens / 偷工减料节省token
+
+**✅ CORRECT Approach: Use "Continue" Mechanism / 正确处理方式：使用"继续"机制**
+
 ```
-1. 在完成当前可执行的部分后
-2. 明确说明："由于 token 限制，任务未完成，请输入'继续'以获取剩余部分"
-3. 等待用户输入"继续"后
-4. 继续执行剩余步骤
-5. 重复直到任务完全完成
+1. Complete the current executable portion
+   完成当前可执行的部分后
+   
+2. Explicitly state: "Due to token limit, task incomplete. Please input '继续' to get remaining parts"
+   明确说明："由于 token 限制，任务未完成，请输入'继续'以获取剩余部分"
+   
+3. Wait for user to input "continue" / "继续"
+   等待用户输入"继续"后
+   
+4. Continue with remaining steps
+   继续执行剩余步骤
+   
+5. Repeat until task fully completed
+   重复直到任务完全完成
 ```
 
-**分段加载原则：**
-- ✅ **完整保留**：每段数据都必须100%保留，无遗漏、无压缩
-- ✅ **分段清晰**：明确标注当前是第几段，共几段
-- ✅ **连续执行**：每段完成后自动提示"继续"，等待用户确认
-- ✅ **质量优先**：宁可多轮对话，不可降低质量
-- ❌ **禁止精简**：绝对不能为了省token而精简数据内容
-- ❌ **禁止偷工**：绝对不能为了省token而偷工减料
+**Segmented Loading Principles / 分段加载原则**:
+- ✅ **Complete Preservation / 完整保留**: Every segment MUST preserve 100% of data, no omissions, no compression
+  每段数据都必须100%保留，无遗漏、无压缩
+  
+- ✅ **Clear Segmentation / 分段清晰**: Clearly indicate current segment number and total segments
+  明确标注当前是第几段，共几段
+  
+- ✅ **Continuous Execution / 连续执行**: Auto-prompt "continue" after each segment, wait for user confirmation
+  每段完成后自动提示"继续"，等待用户确认
+  
+- ✅ **Quality Priority / 质量优先**: Better multiple rounds than lower quality
+  宁可多轮对话，不可降低质量
+  
+- ❌ **NO Simplification / 禁止精简**: NEVER simplify data content to save tokens
+  绝对不能为了省token而精简数据内容
+  
+- ❌ **NO Shortcuts / 禁止偷工**: NEVER cut corners to save tokens
+  绝对不能为了省token而偷工减料
 
-**关键规则：**
-- ✅ **质量 > 速度**：宁可多轮对话，不可降低质量
-- ✅ **完整 > 简化**：宁可分多次执行，不可压缩内容
-- ✅ **标准 > 妥协**：宁可触发继续，不可偷工减料
+**Key Rules / 关键规则**:
+- ✅ **Quality > Speed** / **质量 > 速度**: Better multiple rounds than lower quality / 宁可多轮对话，不可降低质量
+- ✅ **Complete > Simplified** / **完整 > 简化**: Better multiple executions than compressed content / 宁可分多次执行，不可压缩内容
+- ✅ **Standard > Compromise** / **标准 > 妥协**: Better trigger continue than cut corners / 宁可触发继续，不可偷工减料
 
 ---
 
-## 📋 固定4步执行流程
+## 📋 固定4步执行流程 / 4-Step Workflow
 
-### 步骤 1️⃣：文档内容分析合并
+### ⚠️ Execution Enforcement / 执行强制机制
 
-**目标**：完整理解源文档内容，提取关键信息，建立内容结构。
+**Before starting ANY step, Claude Code MUST:**
+**在开始任何步骤之前，Claude Code 必须：**
 
-**执行方式**：调用 `beauty-step1` skill
+1. **Verify prerequisite completion / 验证前置条件完成**
+   - Check if previous step output exists / 检查上一步输出是否存在
+   - Validate previous step output quality / 验证上一步输出质量
+   
+2. **Invoke the correct skill / 调用正确的skill**
+   - Step 1 → `beauty-step1` skill
+   - Step 2 → `beauty-step2` skill  
+   - Step 3 → `beauty-normal-step3` skill (⚠️ Note: different from beauty command)
+   - Step 4 → `beauty-normal-step4` skill (⚠️ Note: different from beauty command)
 
-**⚠️ 重要说明**：
-- 此步骤会完整阅读源文档，不做任何修改或删减
-- 如果文档过长，skill会自动使用"继续"机制分批读取
-- **🔑 最核心规则：绝对不能精简、偷工减料节省token**
-- **🔑 核心原则：如果数据内容过大，或者token过长，则自动使用'继续'进行'分段'加载数据，100%保留所有内容,严禁为了省token而跳过内容或使用摘要**
+3. **Cannot skip to next step until / 不能跳到下一步，除非:**
+   - Current step fully completed / 当前步骤完全完成
+   - All verification checks passed / 所有验证检查通过
+   - Output artifacts generated / 输出产物已生成
 
-**输出产物**：
-- 内容结构大纲（包含所有章节和要点）
-- 数据点清单（所有可用于可视化的数值）
-- 关键结论列表（必须完整保留）
+---
 
-**验证标准**：
-- [ ] 所有原文内容已提取
-- [ ] 无内容丢失或遗漏
-- [ ] 数据点完整记录
-- [ ] 逻辑结构清晰
+### 步骤 1️⃣: Document Content Analysis / 文档内容分析合并
+
+**Goal / 目标**: Fully understand source document, extract key information, establish content structure.
+完整理解源文档内容，提取关键信息，建立内容结构。
+
+**Execution Method / 执行方式**: Invoke `beauty-step1` skill / 调用 `beauty-step1` skill
+
+**⚠️ Important Notes / 重要说明**:
+- Reads entire document without modification or deletion
+  此步骤会完整阅读源文档，不做任何修改或删减
+  
+- If document too long, skill automatically uses "continue" mechanism for batch reading
+  如果文档过长，skill会自动使用"继续"机制分批读取
+  
+- **🔑 CORE RULE**: NEVER simplify or cut corners to save tokens
+  **🔑 最核心规则**：绝对不能精简、偷工减料节省token
+  
+- **🔑 CORE PRINCIPLE**: If data too large or tokens too long, automatically use 'continue' for segmented loading, preserve 100% content, STRICTLY PROHIBITED to skip content or use summaries to save tokens
+  **🔑 核心原则**：如果数据内容过大，或者token过长，则自动使用'继续'进行'分段'加载数据，100%保留所有内容，严禁为了省token而跳过内容或使用摘要
+
+**Output Artifacts / 输出产物**:
+- Content structure outline (includes all chapters and key points)
+  内容结构大纲（包含所有章节和要点）
+  
+- Data point list (all values visualizable)
+  数据点清单（所有可用于可视化的数值）
+  
+- Key conclusions list (must be fully preserved)
+  关键结论列表（必须完整保留）
+
+**Validation Criteria / 验证标准**:
+- [ ] All original content extracted / 所有原文内容已提取
+- [ ] No content loss or omission / 无内容丢失或遗漏
+- [ ] Data points fully recorded / 数据点完整记录
+- [ ] Logical structure clear / 逻辑结构清晰
 
 ---
 

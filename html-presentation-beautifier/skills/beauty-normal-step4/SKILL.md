@@ -1,15 +1,17 @@
 ---
 name: "beauty-normal-step4"
-description: "代码内容审核检验。在beauty-normal命令的步骤4执行时自动调用，全面检查生成的JSON+HTML演示文稿，确保质量和完整性，实行一票否决制。"
+description: "Code content audit and inspection. Automatically invoked during step 4 of the beauty-normal command to comprehensively check the generated JSON+HTML presentation, ensure quality and integrity, implement one-vote veto system. 代码内容审核检验。在beauty-normal命令的步骤4执行时自动调用，全面检查生成的JSON+HTML演示文稿，确保质量和完整性，实行一票否决制。"
 ---
 
-# Beauty-Normal 步骤4：代码内容审核检验
+# Beauty-Normal 步骤4：代码内容审核检验 / Beauty-Normal Step 4: Code Content Audit and Inspection
 
-## ⚠️ 最关键步骤！必须严格执行！
+## ⚠️ 最关键步骤！必须严格执行！/ MOST CRITICAL STEP! Must be strictly executed!
 
-## 目标
+## 目标 / Goal
 
 全面检查生成的 JSON+HTML 演示文稿，确保质量和完整性。
+
+Comprehensively check the generated JSON+HTML presentation to ensure quality and integrity.
 
 ## ⚠️ 核心原则
 

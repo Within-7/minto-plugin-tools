@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图文列表组件 - McKinsey Standard</title>
+    <style>
+        :root {
+            --color-bg: #FFFFFF;
+            --color-text-primary: #000000;
+            --color-text-secondary: #333333;
+            --color-text-tertiary: #74788d;
+            --color-accent-primary: #F85d42;
+            --color-blue: #556EE6;
+            --color-green: #34c38f;
+            --color-blue-light: #50a5f1;
+            --color-yellow: #f1b44c;
+            --font-family-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", 
+                         "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+            --font-size-title: 20px;
+            --font-size-description: 16px;
+            --font-size-number: 20px;
+            --spacing-sm: 16px;
+            --spacing-md: 24px;
+            --spacing-lg: 32px;
+            --border-radius-sm: 4px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-primary);
+            line-height: 1.6;
+            padding: 40px;
+            background: #f5f7fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-text-primary);
+        }
+
+        /* ==================== 图标+文字列表 ==================== */
+        .icon-text-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .icon-text-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: var(--color-bg);
+            border: 1px solid #E0E0E0;
+            border-left: 4px solid var(--color-accent-primary);
+            border-radius: var(--border-radius-sm);
+        }
+
+        .icon-text-item .graphic-icon {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #F8F9FA;
+            border-radius: 8px;
+        }
+
+        .icon-text-item .graphic-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--color-accent-primary);
+        }
+
+        .icon-text-item .graphic-content {
+            flex: 1;
+        }
+
+        .icon-text-item .graphic-title {
+            font-size: var(--font-size-title);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: 8px;
+        }
+
+        .icon-text-item .graphic-description {
+            font-size: var(--font-size-description);
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ==================== 数字+文字列表 ==================== */
+        .number-text-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .number-text-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            padding: var(--spacing-sm) 0;
+            background: var(--color-bg);
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .number-text-item .graphic-number {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-blue);
+            color: var(--color-bg);
+            font-size: var(--font-size-number);
+            font-weight: 700;
+            border-radius: 50%;
+        }
+
+        .number-text-item .graphic-content {
+            flex: 1;
+            padding-top: 2px;
+        }
+
+        .number-text-item .graphic-title {
+            font-size: var(--font-size-title);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: 4px;
+        }
+
+        .number-text-item .graphic-description {
+            font-size: var(--font-size-description);
+            color: var(--color-text-secondary);
+        }
+
+        /* ==================== 卡片式列表 ==================== */
+        .card-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .graphic-card {
+            background: var(--color-bg);
+            border: 1px solid #E0E0E0;
+            border-radius: var(--border-radius-sm);
+            overflow: hidden;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .graphic-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .card-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--color-accent-primary);
+            color: var(--color-bg);
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: var(--font-size-title);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .card-body {
+            padding: var(--spacing-md);
+        }
+
+        .card-description {
+            font-size: var(--font-size-description);
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .card-footer {
+            padding: 12px var(--spacing-md);
+            background: #F8F9FA;
+            border-top: 1px solid #F0F0F0;
+        }
+
+        .card-meta {
+            font-size: 14px;
+            color: var(--color-text-tertiary);
+        }
+
+        /* ==================== 响应式设计 ==================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+
+            .card-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>图标+文字列表</h2>
+        <div class="icon-text-list">
+            <div class="icon-text-item">
+                <div class="graphic-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                </div>
+                <div class="graphic-content">
+                    <h4 class="graphic-title">市场增长</h4>
+                    <p class="graphic-description">2024年市场规模达到1723亿美元，同比增长15%，预计未来5年将保持10%以上的年复合增长率。</p>
+                </div>
+            </div>
+            <div class="icon-text-item">
+                <div class="graphic-icon">
+                    <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+                </div>
+                <div class="graphic-content">
+                    <h4 class="graphic-title">用户增长</h4>
+                    <p class="graphic-description">月活跃用户突破5000万，同比增长45%，用户留存率达到78%，远高于行业平均水平。</p>
+                </div>
+            </div>
+            <div class="icon-text-item">
+                <div class="graphic-icon">
+                    <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                </div>
+                <div class="graphic-content">
+                    <h4 class="graphic-title">营收增长</h4>
+                    <p class="graphic-description">第四季度营收突破100亿元，同比增长62%，毛利率提升至45%，超出市场预期。</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>数字+文字列表</h2>
+        <div class="number-text-list">
+            <div class="number-text-item">
+                <div class="graphic-number">01</div>
+                <div class="graphic-content">
+                    <h4 class="graphic-title">战略规划阶段</h4>
+                    <p class="graphic-description">明确市场定位和发展目标，制定3-5年战略规划</p>
+                </div>
+            </div>
+            <div class="number-text-item">
+                <div class="graphic-number">02</div>
+                <div class="graphic-content">
+                    <h4 class="graphic-title">产品研发阶段</h4>
+                    <p class="graphic-description">根据战略规划进行产品研发和迭代优化</p>
+                </div>
+            </div>
+            <div class="number-text-item">
+                <div class="graphic-number">03</div>
+                <div class="graphic-content">
+                    <h4 class="graphic-title">市场推广阶段</h4>
+                    <p class="graphic-description">全面开展市场推广活动，提升品牌知名度</p>
+                </div>
+            </div>
+            <div class="number-text-item">
+                <div class="graphic-number">04</div>
+                <div class="graphic-content">
+                    <h4 class="graphic-title">运营优化阶段</h4>
+                    <p class="graphic-description">持续优化运营策略，提升用户体验和留存</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>卡片式列表</h2>
+        <div class="card-list">
+            <div class="graphic-card">
+                <div class="card-header">
+                    <span class="card-badge">核心优势</span>
+                    <h4 class="card-title">技术创新能力</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-description">拥有100+核心技术专利，AI技术领先行业2年，持续研发投入占比15%</p>
+                </div>
+                <div class="card-footer">
+                    <span class="card-meta">2024年度评估</span>
+                </div>
+            </div>
+            <div class="graphic-card">
+                <div class="card-header">
+                    <span class="card-badge">核心优势</span>
+                    <h4 class="card-title">用户规模优势</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-description">累计用户突破2亿，月活5000万，用户粘性行业第一</p>
+                </div>
+                <div class="card-footer">
+                    <span class="card-meta">2024年度评估</span>
+                </div>
+            </div>
+            <div class="graphic-card">
+                <div class="card-header">
+                    <span class="card-badge">核心优势</span>
+                    <h4 class="card-title">品牌影响力</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-description">品牌价值500亿，知名度96%，美誉度行业第一</p>
+                </div>
+                <div class="card-footer">
+                    <span class="card-meta">2024年度评估</span>
+                </div>
+            </div>
+            <div class="graphic-card">
+                <div class="card-header">
+                    <span class="card-badge">核心优势</span>
+                    <h4 class="card-title">渠道覆盖能力</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-description">覆盖全国300+城市，线下网点10万+，线上渠道全布局</p>
+                </div>
+                <div class="card-footer">
+                    <span class="card-meta">2024年度评估</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

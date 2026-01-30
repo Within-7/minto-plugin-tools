@@ -1,0 +1,265 @@
+<!--
+================================================================================
+NEW示例 3: 内容页 - 纯文本 (Content Page - Text Only) - McKinsey Standard Version
+================================================================================
+
+📋 适用场景 / Use Cases:
+- 战略要点展示
+- 行动计划列表
+- 建议总结页面
+- 关键发现页面
+- 结论汇总页面
+
+🎯 内容特征 / Content Characteristics:
+- 包含6-8个要点
+- 纯文本列表，无图表
+- 每个要点包含标题和描述
+- 单列布局，清晰易读
+- 低到中等数据密度
+
+📊 布局类型 / Layout Type:
+L1 单列布局（Single Column Layout - Text Only）
+
+✨ 使用条件 / Usage Conditions:
+- 观点数量 / Number of Points: 6-8个（**CRITICAL: 严格≤8个要点**）
+- 数据密度 / Data Density: 低到中等
+- 对比关系 / Comparison Type: 并列观点
+- 图表需求 / Chart Required: 否
+
+🎨 设计要点 / Design Key Points:
+- ✅ **CRITICAL**: 标题显示在固定头部导航栏（.slide-header）
+- ✅ **CRITICAL**: 每页最多8个要点（本示例6个）
+- ✅ **CRITICAL**: 如果内容>8个要点，必须分页，使用序号标题（一、二、三...）
+- ✅ 要点格式：<strong>标题</strong>: 描述文字（最多150字）
+- ✅ 使用McKinsey红色圆点（#F85d42）
+- ✅ 充足的行间距（margin-bottom: 20px）
+- ✅ 清晰的视觉层次
+
+🔍 匹配规则 / Matching Rules:
+- IF 页面无图表
+- AND 包含6-8个要点
+- AND 每个要点有标题和描述
+- AND 内容为纯文本
+- THEN 使用此示例
+
+匹配度权重 / Matching Weight: 95%
+
+⚠️ 设计规范检查清单 / Design Standards Checklist:
+
+**颜色规范 / Color Standards**:
+- [x] 使用McKinsey标准色板
+- [x] 圆点使用#F85d42
+- [x] 文本使用#000000和#333333
+- [x] 对比度≥4.5:1
+
+**字体规范 / Typography Standards**:
+- [x] 使用系统字体
+- [x] 未使用Inter、Roboto作为主字体
+- [x] 头部标题32px，要点文本20px
+- [x] 行高1.7
+
+**布局规范 / Layout Standards**:
+- [x] Padding 50px
+- [x] Element Spacing 20px（li margin-bottom）
+- [x] 未使用圆角卡片
+- [x] 阴影最小化
+- [x] 充足的白空间
+
+**内容页规范 / Content Page Standards**:
+- [x] **CRITICAL**: 标题在固定头部导航栏
+- [x] **CRITICAL**: 要点数量=6个（≤8个标准）
+- [x] **CRITICAL**: 无图表（单列布局）
+- [x] 内容区域顶部边距padding-top: 100px
+
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内容页 - 纯文本示例</title>
+    
+    <style>
+        /* ========================================
+           McKinsey Design System - CSS Variables
+           ======================================== */
+        :root {
+            --color-bg: #FFFFFF;
+            --color-text-primary: #000000;
+            --color-text-secondary: #333333;
+            --color-text-tertiary: #74788d;
+            --color-accent-primary: #F85d42;
+
+            --font-size-header-title: 32px;
+            --font-size-body: 20px;
+
+            --spacing-sm: 20px;
+            --spacing-lg: 40px;
+            --slide-padding: 50px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", 
+                         "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+            background: #f5f7fa;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ========================================
+           Fixed Header Navigation
+           ======================================== */
+        .slide-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(to right, rgba(255,255,255,0.98), rgba(255,255,255,0.95));
+            border-bottom: 2px solid var(--color-accent-primary);
+            display: flex;
+            align-items: center;
+            padding: 0 100px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .slide-header-title {
+            font-size: var(--font-size-header-title);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        /* ========================================
+           Slide Container
+           ======================================== */
+        .slide {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--color-bg);
+            padding: var(--slide-padding);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            min-height: 100vh;
+        }
+
+        .slide-content {
+            padding-top: 100px;
+        }
+
+        /* ========================================
+           List Components
+           ======================================== */
+        .bullet-list {
+            list-style: none;
+            padding-left: 0;
+            max-width: 900px;
+        }
+
+        .bullet-list li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-size-body);
+            line-height: 1.7;
+        }
+
+        .bullet-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--color-accent-primary);
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        .bullet-list li strong {
+            color: var(--color-text-primary);
+            font-weight: 600;
+        }
+
+        /* ========================================
+           Responsive Design
+           ======================================== */
+        @media (max-width: 1200px) {
+            .slide-header {
+                height: 60px;
+                padding: 0 60px;
+            }
+
+            .slide-header-title {
+                font-size: 24px;
+            }
+
+            .slide-content {
+                padding-top: 80px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --slide-padding: 30px;
+            }
+
+            .slide-header {
+                height: 50px;
+                padding: 0 30px;
+            }
+
+            .slide-header-title {
+                font-size: 18px;
+            }
+
+            .slide-content {
+                padding-top: 70px;
+            }
+
+            .bullet-list li {
+                font-size: 18px;
+                padding-left: 25px;
+            }
+
+            .bullet-list li::before {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 内容页 -->
+    <div class="slide content-slide">
+        <!-- Fixed Header Navigation Bar -->
+        <div class="slide-header">
+            <h2 class="slide-header-title">战略优先级与行动计划</h2>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="slide-content">
+            <ul class="bullet-list">
+                <li><strong>优先级1：市场份额扩张</strong>：聚焦核心产品线，通过渠道优化和营销投入提升市场占有率，目标在18个月内将市场份额从15%提升至20%，预计需要投入2000万元营销预算</li>
+                
+                <li><strong>优先级2：产品创新加速</strong>：建立快速迭代机制，缩短产品开发周期至6个月以内，同时加强用户反馈循环，确保新产品符合市场需求，计划推出3-5款新产品</li>
+                
+                <li><strong>优先级3：数字化转型</strong>：实施全面的数字化战略，包括客户管理系统升级、自动化流程优化、数据分析能力建设，预计投资5000万元，实现运营效率提升30%</li>
+                
+                <li><strong>优先级4：人才队伍建设</strong>：引进关键岗位高端人才50人，建立完善的培训体系，提升员工技能水平，同时优化激励机制，确保核心团队稳定性</li>
+                
+                <li><strong>优先级5：供应链优化</strong>：建立多元化供应商体系，降低供应链风险，同时通过集中采购和长期合同锁定成本，目标降低采购成本15%，提升交付及时率至98%</li>
+                
+                <li><strong>优先级6：客户体验提升</strong>：全面优化客户接触点，包括线上平台改造、售后服务升级、客户反馈机制完善，目标将客户满意度从85分提升至92分以上</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

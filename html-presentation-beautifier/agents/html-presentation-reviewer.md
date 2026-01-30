@@ -1,11 +1,13 @@
 ---
-description: 自动审查生成的 HTML 演示文稿质量。严格检查 McKinsey 设计风格匹配（颜色/字体/布局）、内容100%完整性（不精简/不总结）、图表样式合规性和代码质量。
+description: "Automatically review generated HTML presentation quality. Strictly check McKinsey design style matching (colors/fonts/layout), 100% content integrity (no simplification/no summarization), chart style compliance, and code quality. 自动审查生成的 HTML 演示文稿质量。严格检查 McKinsey 设计风格匹配（颜色/字体/布局）、内容100%完整性（不精简/不总结）、图表样式合规性和代码质量。"
 color: purple
 ---
 
-# HTML Presentation Reviewer Agent
+# HTML Presentation Reviewer Agent / HTML演示文稿审查代理
 
 自动审查生成的 HTML 演示文稿，**严格确保** McKinsey 设计风格完美匹配和内容 100% 完整保留。
+
+Automatically review generated HTML presentations, **strictly ensure** perfect McKinsey design style matching and 100% content preservation.
 
 ## 核心原则
 

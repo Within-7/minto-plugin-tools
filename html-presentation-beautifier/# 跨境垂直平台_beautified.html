@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跨境垂直平台战略分析</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-bg: #FFFFFF;
+            --color-text-primary: #000000;
+            --color-text-secondary: #333333;
+            --color-accent-primary: #F85d42;
+            --color-accent-secondary: #74788d;
+            --color-blue: #556EE6;
+            --color-green: #34c38f;
+            --color-light-blue: #50a5f1;
+            --color-yellow: #f1b44c;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--color-text-primary);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .navbar h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            background: var(--color-accent-primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #e04d32;
+            transform: translateY(-2px);
+        }
+
+        .slide-counter {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-accent-primary);
+        }
+
+        /* Presentation Container */
+        .presentation-container {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            min-height: calc(100vh - 80px);
+            padding: 60px 80px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Title Slide */
+        .title-slide {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 120px 80px;
+        }
+
+        .title-slide .title {
+            font-size: 72px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .title-slide .subtitle {
+            font-size: 36px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 40px;
+        }
+
+        .title-slide .meta {
+            font-size: 20px;
+            color: rgba(255,255,255,0.8);
+            margin-top: 60px;
+        }
+
+        /* Section Slide */
+        .section-slide {
+            background: linear-gradient(135deg, var(--color-accent-primary) 0%, #ff7e5f 100%);
+            color: white;
+            text-align: center;
+            padding: 100px 80px;
+        }
+
+        .section-slide .title {
+            font-size: 64px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .section-slide .subtitle {
+            font-size: 28px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.9);
+            margin-top: 20px;
+        }
+
+        /* Content Slide */
+        .slide-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid var(--color-accent-primary);
+        }
+
+        .slide-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Bullet List */
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bullet-list li {
+            font-size: 24px;
+            color: var(--color-text-secondary);
+            margin-bottom: 20px;
+            padding-left: 40px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .bullet-list li:before {
+            content: "●";
+            position: absolute;
+            left: 0;
+            color: var(--color-accent-primary);
+            font-size: 20px;
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .comparison-table thead {
+            background: var(--color-text-primary);
+            color: white;
+        }
+
+        .comparison-table th {
+            padding: 20px;
+            text-align: left;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 18px;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: #f5f5f5;
+        }
+
+        .comparison-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Two Column Layout */
+        .two-column-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin: 40px 0;
+        }
+
+        .column {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 4px solid var(--color-accent-primary);
+        }
+
+        .column h3 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 20px;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 500px;
+            margin: 40px 0;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .chart-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Emphasis Box */
+        .emphasis-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 40px;
+            border-radius: 12px;
+            margin: 40px 0;
+            border-left: 6px solid var(--color-accent-primary);
+        }
+
+        .emphasis-box h3 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 20px;
+        }
+
+        .emphasis-box p {
+            font-size: 22px;
+            color: var(--color-text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Highlight Card */
+        .highlight-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .highlight-card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-top: 4px solid var(--color-accent-primary);
+        }
+
+        .highlight-card h4 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 15px;
+        }
+
+        .highlight-card .number {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--color-accent-primary);
+            margin: 20px 0;
+        }
+
+        .highlight-card p {
+            font-size: 18px;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Fullscreen Button */
+        .fullscreen-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--color-accent-primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .fullscreen-btn:hover {
+            background: #e04d32;
+            transform: scale(1.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .slide {
+                padding: 40px 30px;
+            }
+
+            .title-slide .title {
+                font-size: 48px;
+            }
+
+            .title-slide .subtitle {
+                font-size: 28px;
+            }
+
+            .slide-title {
+                font-size: 36px;
+            }
+
+            .two-column-layout {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <h1>跨境垂直平台战略分析</h1>
+        <div class="nav-controls">
+            <button class="nav-btn" onclick="previousSlide()">← 上一页</button>
+            <span class="slide-counter">
+                <span id="currentSlide">1</span> / <span id="totalSlides">15</span>
+            </span>
+            <button class="nav-btn" onclick="nextSlide()">下一页 →</button>
+        </div>
+    </nav>
+
+    <!-- Slides Container -->
+    <div class="presentation-container">
+
+        <!-- Slide 1: Title -->
+        <div class="slide title-slide active">
+            <h1 class="title">跨境垂直平台</h1>
+            <p class="subtitle">平台模式 vs 个人IP 深度战略对比分析</p>
+            <div class="meta">
+                商业价值 · 变现模式 · 时间投入 · 退出机制
+            </div>
+        </div>
+
+        <!-- Slide 2: Section - 战略对比 -->
+        <div class="slide section-slide">
+            <h1 class="title">第一章：战略对比概述</h1>
+            <p class="subtitle">平台模式与个人IP的核心差异</p>
+        </div>
+
+        <!-- Slide 3: Strategic Comparison Table -->
+        <div class="slide">
+            <h2 class="slide-title">战略定位对比</h2>
+            <div class="slide-content">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>维度</th>
+                            <th>跨境垂直平台</th>
+                            <th>个人IP (KOL)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>定位</strong></td>
+                            <td>平台/工具</td>
+                            <td>个人IP/KOL</td>
+                        </tr>
+                        <tr>
+                            <td><strong>核心资产</strong></td>
+                            <td>用户+数据+系统</td>
+                            <td>粉丝+影响力</td>
+                        </tr>
+                        <tr>
+                            <td><strong>增长方式</strong></td>
+                            <td>网络效应</td>
+                            <td>内容爆款</td>
+                        </tr>
+                        <tr>
+                            <td><strong>变现模式</strong></td>
+                            <td>多元化</td>
+                            <td>单一化</td>
+                        </tr>
+                        <tr>
+                            <td><strong>天花板</strong></td>
+                            <td>极高（百亿级）</td>
+                            <td>有限（亿级）</td>
+                        </tr>
+                        <tr>
+                            <td><strong>风险</strong></td>
+                            <td>分散</td>
+                            <td>集中</td>
+                        </tr>
+                        <tr>
+                            <td><strong>可传承性</strong></td>
+                            <td>可传承</td>
+                            <td>不可传承</td>
+                        </tr>
+                        <tr>
+                            <td><strong>退出机制</strong></td>
+                            <td>可并购/上市</td>
+                            <td>难退出</td>
+                        </tr>
+                        <tr>
+                            <td><strong>团队依赖</strong></td>
+                            <td>依赖系统</td>
+                            <td>依赖个人</td>
+                        </tr>
+                        <tr>
+                            <td><strong>时间投入</strong></td>
+                            <td>前期大后期小</td>
+                            <td>持续高强度</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 4: Section - 商业价值 -->
+        <div class="slide section-slide">
+            <h1 class="title">第二章：商业价值对比</h1>
+            <p class="subtitle">估值模型与融资能力分析</p>
+        </div>
+
+        <!-- Slide 5: Valuation Comparison -->
+        <div class="slide">
+            <h2 class="slide-title">估值模型对比（3年后）</h2>
+            <div class="slide-content">
+                <div class="chart-container">
+                    <canvas id="valuationChart"></canvas>
+                </div>
+                <div class="two-column-layout">
+                    <div class="column">
+                        <h3>平台估值逻辑</h3>
+                        <ul class="bullet-list">
+                            <li>注册用户：50万</li>
+                            <li>月活用户：20万（40%）</li>
+                            <li>ARPU：200元/年</li>
+                            <li>年收入：1.4亿</li>
+                            <li>市盈率：10-15倍</li>
+                            <li><strong>估值：14-21亿元</strong></li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>个人IP估值逻辑</h3>
+                        <ul class="bullet-list">
+                            <li>粉丝：100万</li>
+                            <li>年收入：2800万</li>
+                            <li>课程：500万</li>
+                            <li>咨询：2000万</li>
+                            <li>广告：300万</li>
+                            <li><strong>估值：8400万-1.4亿</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Financing Capability -->
+        <div class="slide">
+            <h2 class="slide-title">融资能力对比</h2>
+            <div class="slide-content">
+                <div class="two-column-layout">
+                    <div class="column">
+                        <h3>✓ 平台模式</h3>
+                        <ul class="bullet-list">
+                            <li>投资人看重用户规模（可验证）</li>
+                            <li>增长速度可预测</li>
+                            <li>商业模式可复制</li>
+                            <li>市场空间够大</li>
+                            <li>竞争壁垒够深</li>
+                        </ul>
+                        <div class="emphasis-box">
+                            <h3>融资路径</h3>
+                            <p>
+                            天使轮：500-1000万（估值5000万）<br>
+                            A轮：3000-5000万（估值3-5亿）<br>
+                            B轮：1-2亿（估值10-20亿）<br>
+                            C轮：战略投资或上市
+                            </p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h3>✗ 个人IP模式</h3>
+                        <ul class="bullet-list">
+                            <li>人即公司，风险太集中</li>
+                            <li>难以规模化，个人精力有限</li>
+                            <li>不可传承，创始人离开价值归零</li>
+                            <li>投资人无法退出</li>
+                        </ul>
+                        <div class="emphasis-box" style="background: linear-gradient(135deg, #fee 0%, #fdd 100%); border-left-color: #dc3545;">
+                            <h3>融资困境</h3>
+                            <p>
+                            个人IP项目很难拿到机构投资<br>
+                            除非已有巨大影响力（如罗振宇）<br>
+                            或转型平台化（如樊登读书）
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Exit Mechanisms -->
+        <div class="slide">
+            <h2 class="slide-title">退出机制对比</h2>
+            <div class="slide-content">
+                <div class="two-column-layout">
+                    <div class="column">
+                        <h3>✓ 平台退出方式</h3>
+                        <ul class="bullet-list">
+                            <li><strong>并购：</strong>被阿里、腾讯、字节等大平台收购，估值10-50亿</li>
+                            <li><strong>上市：</strong>A股/港股/美股，市值50-100亿+</li>
+                            <li><strong>持续经营：</strong>长期分红，家族企业</li>
+                        </ul>
+                        <div class="highlight-cards">
+                            <div class="highlight-card">
+                                <h4>成功案例</h4>
+                                <p>BOSS直聘上市（市值300亿）</p>
+                                <p>知乎上市（市值30亿）</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h3>✗ 个人IP困境</h3>
+                        <ul class="bullet-list">
+                            <li><strong>无法并购：</strong>买方买的是什么？人不干了怎么办？</li>
+                            <li><strong>无法上市：</strong>个人IP不符合上市条件</li>
+                            <li><strong>无法传承：</strong>子女不一定能继承影响力</li>
+                        </ul>
+                        <div class="emphasis-box" style="background: linear-gradient(135deg, #fee 0%, #fdd 100%); border-left-color: #dc3545;">
+                            <h3>唯一出路</h3>
+                            <p>转型平台化<br>
+                            罗振宇 → 得到APP<br>
+                            樊登 → 樊登读书APP<br>
+                            吴晓波 → 890新商学</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Section - 变现模式 -->
+        <div class="slide section-slide">
+            <h1 class="title">第三章：变现模式对比</h1>
+            <p class="subtitle">收入结构与盈利能力分析</p>
+        </div>
+
+        <!-- Slide 9: Revenue Structure -->
+        <div class="slide">
+            <h2 class="slide-title">收入结构对比（成熟期）</h2>
+            <div class="slide-content">
+                <div class="chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Revenue Advantages -->
+        <div class="slide">
+            <h2 class="slide-title">变现优势与劣势对比</h2>
+            <div class="slide-content">
+                <div class="two-column-layout">
+                    <div class="column">
+                        <h3>✓ 平台变现优势</h3>
+                        <ul class="bullet-list">
+                            <li><strong>收入稳定：</strong>会员续费率>60%，咨询复购率>40%</li>
+                            <li><strong>客单价高：</strong>企业会员3万/年，咨询30-50万/单</li>
+                            <li><strong>边际成本低：</strong>增加会员成本几乎为0</li>
+                            <li><strong>抗风险能力强：</strong>收入来源多元，不会一夜归零</li>
+                            <li><strong>可持续性强：</strong>不依赖个人，系统自动运转</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>✗ 个人IP变现劣势</h3>
+                        <ul class="bullet-list">
+                            <li><strong>收入不稳定：</strong>依赖爆款内容和个人状态</li>
+                            <li><strong>客单价低：</strong>课程99-9999元，大部分是小额交易</li>
+                            <li><strong>边际成本高：</strong>每多服务一个人，时间成本增加</li>
+                            <li><strong>抗风险能力弱：</strong>个人出问题收入归零</li>
+                            <li><strong>可持续性差：</strong>持续输出压力大，容易枯竭</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Section - 时间投入 -->
+        <div class="slide section-slide">
+            <h1 class="title">第四章：时间投入对比</h1>
+            <p class="subtitle">时间曲线与可替代性分析</p>
+        </div>
+
+        <!-- Slide 12: Time Investment -->
+        <div class="slide">
+            <h2 class="slide-title">时间投入曲线对比</h2>
+            <div class="slide-content">
+                <div class="chart-container">
+                    <canvas id="timeChart"></canvas>
+                </div>
+                <div class="two-column-layout">
+                    <div class="column">
+                        <h3>平台时间投入</h3>
+                        <ul class="bullet-list">
+                            <li><strong>前期（1-2年）：</strong>80-100小时/周，创始人亲力亲为</li>
+                            <li><strong>中期（3-5年）：</strong>50-60小时/周，CEO管理为主</li>
+                            <li><strong>后期（5年+）：</strong>30-40小时/周，董事长宏观把控</li>
+                        </ul>
+                        <div class="emphasis-box">
+                            <h3>关键</h3>
+                            <p>越往后越轻松<br>系统自动运转<br>可以授权</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h3>个人IP时间投入</h3>
+                        <ul class="bullet-list">
+                            <li><strong>前期（1-2年）：</strong>80-100小时/周，内容创作者</li>
+                            <li><strong>中期（3-5年）：</strong>80-100小时/周，还是内容创作者</li>
+                            <li><strong>后期（5年+）：</strong>80-100小时/周，还是内容创作者</li>
+                        </ul>
+                        <div class="emphasis-box" style="background: linear-gradient(135deg, #fee 0%, #fdd 100%); border-left-color: #dc3545;">
+                            <h3>问题</h3>
+                            <p>时间投入不会减少<br>反而可能增加<br>一直高强度</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Section - 六大平台 -->
+        <div class="slide section-slide">
+            <h1 class="title">第五章：六大平台横向对比</h1>
+            <p class="subtitle">行业标杆数据与启示</p>
+        </div>
+
+        <!-- Slide 14: Platform Comparison -->
+        <div class="slide">
+            <h2 class="slide-title">六大平台核心数据对比（2023年）</h2>
+            <div class="slide-content">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>平台</th>
+                            <th>收入（亿）</th>
+                            <th>估值（亿）</th>
+                            <th>利润率</th>
+                            <th>用户数（万）</th>
+                            <th>付费用户（万）</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>得到</strong></td>
+                            <td>10</td>
+                            <td>100-120</td>
+                            <td>15%</td>
+                            <td>6000</td>
+                            <td>500</td>
+                        </tr>
+                        <tr>
+                            <td><strong>樊登读书</strong></td>
+                            <td>18</td>
+                            <td>50-80</td>
+                            <td>10%</td>
+                            <td>5000</td>
+                            <td>600</td>
+                        </tr>
+                        <tr>
+                            <td><strong>混沌大学</strong></td>
+                            <td>11</td>
+                            <td>30-50</td>
+                            <td>5%</td>
+                            <td>300</td>
+                            <td>5</td>
+                        </tr>
+                        <tr>
+                            <td><strong>吴晓波频道</strong></td>
+                            <td>7</td>
+                            <td>20-30</td>
+                            <td>15%</td>
+                            <td>500</td>
+                            <td>3.5</td>
+                        </tr>
+                        <tr>
+                            <td><strong>虎嗅</strong></td>
+                            <td>3.6</td>
+                            <td>10-15</td>
+                            <td>10%</td>
+                            <td>2000</td>
+                            <td>20</td>
+                        </tr>
+                        <tr>
+                            <td><strong>36氪</strong></td>
+                            <td>6</td>
+                            <td>7-10</td>
+                            <td>0%</td>
+                            <td>3000</td>
+                            <td>5000企业</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 15: Final Summary -->
+        <div class="slide">
+            <h2 class="slide-title">最终建议与行动路径</h2>
+            <div class="slide-content">
+                <div class="emphasis-box">
+                    <h3>💡 强烈推荐：平台路线</h3>
+                    <p>
+                    <strong>如果你的目标是：</strong><br>
+                    ✓ 打造长期事业<br>
+                    ✓ 创造巨大价值<br>
+                    ✓ 实现财富自由<br>
+                    ✓ 可以退出享受<br>
+                    ✓ 可以传承子女<br><br>
+                    <strong style="font-size: 28px;">选择：产品矩阵（平台）+ 辅助：个人IP（引流）</strong>
+                    </p>
+                </div>
+
+                <div class="two-column-layout">
+                    <div class="column">
+                        <h3>3年目标</h3>
+                        <ul class="bullet-list">
+                            <li>IP积累50万粉丝</li>
+                            <li>平台15万用户</li>
+                            <li>收入5000-8000万</li>
+                            <li>准备融资</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>5年目标</h3>
+                        <ul class="bullet-list">
+                            <li>IP维持即可</li>
+                            <li>平台50-100万用户</li>
+                            <li>收入1.5-2亿</li>
+                            <li>估值10-50亿，并购或上市</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-cards">
+                    <div class="highlight-card">
+                        <h4>关键成功要素</h4>
+                        <p>战略定力：不被短期利益诱惑，坚持做平台</p>
+                        <p>资源分配：70%给平台，30%给IP</p>
+                        <p>时间耐心：相信复利，不急于求成</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Fullscreen Button -->
+    <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶</button>
+
+    <!-- Scripts -->
+    <script>
+        // Navigation
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(n) {
+            if (n >= totalSlides) currentSlide = 0;
+            if (n < 0) currentSlide = totalSlides - 1;
+
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide].classList.add('active');
+            document.getElementById('currentSlide').textContent = currentSlide + 1;
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+
+        function previousSlide() {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousSlide();
+            } else if (e.key === 'Escape') {
+                if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                }
+            }
+        });
+
+        // Fullscreen toggle
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Chart.js Configuration
+        Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        Chart.defaults.color = '#333333';
+
+        // Valuation Comparison Chart
+        const valuationCtx = document.getElementById('valuationChart');
+        if (valuationCtx) {
+            new Chart(valuationCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['平台模式', '个人IP'],
+                    datasets: [{
+                        label: '估值（亿元）',
+                        data: [17.5, 1.12],
+                        backgroundColor: ['#F85d42', '#74788d'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: '估值对比：10-20倍差距',
+                            font: { size: 20, weight: 'bold' },
+                            color: '#000000',
+                            padding: 20
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#333333',
+                                font: { size: 14 }
+                            },
+                            grid: {
+                                color: '#e0e0e0'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#333333',
+                                font: { size: 16 }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Revenue Structure Chart
+        const revenueCtx = document.getElementById('revenueChart');
+        if (revenueCtx) {
+            new Chart(revenueCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['平台模式', '个人IP'],
+                    datasets: [
+                        {
+                            label: '会员订阅',
+                            data: [45, 18],
+                            backgroundColor: '#F85d42'
+                        },
+                        {
+                            label: '咨询/课程',
+                            data: [75, 12],
+                            backgroundColor: '#556EE6'
+                        },
+                        {
+                            label: '其他',
+                            data: [30, 0],
+                            backgroundColor: '#34c38f'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: { size: 14 }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: '年收入对比：平台1.5亿 vs 个人IP 0.3亿',
+                            font: { size: 20, weight: 'bold' },
+                            color: '#000000',
+                            padding: 20
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            ticks: {
+                                color: '#333333',
+                                font: { size: 16 }
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#333333',
+                                font: { size: 14 }
+                            },
+                            grid: {
+                                color: '#e0e0e0'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Time Investment Chart
+        const timeCtx = document.getElementById('timeChart');
+        if (timeCtx) {
+            new Chart(timeCtx, {
+                type: 'line',
+                data: {
+                    labels: ['第1年', '第2年', '第3年', '第4年', '第5年'],
+                    datasets: [
+                        {
+                            label: '平台模式',
+                            data: [90, 90, 55, 45, 35],
+                            borderColor: '#F85d42',
+                            backgroundColor: 'rgba(248, 93, 66, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: '个人IP',
+                            data: [90, 90, 90, 90, 90],
+                            borderColor: '#74788d',
+                            backgroundColor: 'rgba(116, 120, 141, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: { size: 14 }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: '周工作时间对比（小时）',
+                            font: { size: 20, weight: 'bold' },
+                            color: '#000000',
+                            padding: 20
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                color: '#333333',
+                                font: { size: 14 }
+                            },
+                            grid: {
+                                color: '#e0e0e0'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#333333',
+                                font: { size: 14 }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            showSlide(0);
+        });
+    </script>
+</body>
+</html>

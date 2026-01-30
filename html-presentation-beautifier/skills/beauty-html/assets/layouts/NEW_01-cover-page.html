@@ -1,0 +1,305 @@
+<!--
+================================================================================
+NEW示例 1: 封面页 (Cover Page) - McKinsey Standard Version
+================================================================================
+
+📋 适用场景 / Use Cases:
+- 演示文稿封面页
+- 报告封面页
+- 章节封面页
+- 标题页
+
+🎯 内容特征 / Content Characteristics:
+- 1个主标题（必需）
+- 1个副标题（可选）
+- 元信息：作者/日期/部门等（可选）
+- 无数据图表
+- 中心对齐，简洁醒目
+
+📊 布局类型 / Layout Type:
+L1 单列布局（Single Column Layout）
+
+✨ 使用条件 / Usage Conditions:
+- 观点数量 / Number of Points: 1个（主标题）
+- 数据密度 / Data Density: 无
+- 对比关系 / Comparison Type: 无
+- 图表需求 / Chart Required: 否
+
+🎨 设计要点 / Design Key Points:
+- ✅ 主标题：64px，粗体，黑色 (#000000)，居中
+- ✅ 副标题：36px，粗体，McKinsey红色 (#F85d42)，居中
+- ✅ 元信息：16px，灰色 (#74788d)，居中
+- ✅ 垂直居中布局
+- ✅ 充足的白空间
+- ✅ 简洁、专业
+
+🔍 匹配规则 / Matching Rules:
+- IF 页面是演示文稿的第一页
+- OR 页面是章节的首页
+- AND 只有1个主标题
+- AND 无数据内容
+- AND 无要点列表
+- THEN 使用此示例
+
+匹配度权重 / Matching Weight: 100%
+
+⚠️ 设计规范检查清单 / Design Standards Checklist:
+
+**颜色规范 / Color Standards**:
+- [x] 使用McKinsey标准色板 (#FFFFFF, #000000, #F85d42, #74788d)
+- [x] 未使用紫色渐变背景
+- [x] 未使用AI生成的色板
+- [x] 对比度≥4.5:1（黑色文本#000000 + 白色背景#FFFFFF = 21:1）
+
+**字体规范 / Typography Standards**:
+- [x] 使用系统字体（-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"）
+- [x] 未使用Inter、Roboto作为主字体
+- [x] 主标题64px，副标题36px，元信息16px
+- [x] 行高1.7
+
+**布局规范 / Layout Standards**:
+- [x] Padding 50px（符合40-60px标准）
+- [x] 居中对齐，垂直居中
+- [x] 未使用圆角卡片（border-radius = 0）
+- [x] 阴影使用最小化（box-shadow: 0 1px 3px）
+- [x] 充足的白空间
+
+**内容页规范 / Content Page Standards**:
+- [x] 不适用（封面页无需固定头部导航栏）
+- [x] 不适用（封面页无要点列表）
+- [x] 不适用（封面页无图表）
+
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>封面页示例 - McKinsey Standard</title>
+    
+    <style>
+        /* ========================================
+           McKinsey Design System - CSS Variables
+           McKinsey设计系统 - CSS变量
+           ======================================== */
+        :root {
+            /* 配色方案 / Color Palette */
+            --color-bg: #FFFFFF;
+            --color-text-primary: #000000;
+            --color-text-secondary: #333333;
+            --color-text-tertiary: #74788d;
+            --color-accent-primary: #F85d42;
+            --color-blue: #556EE6;
+
+            /* 字体大小 / Font Sizes */
+            --font-size-title-main: 64px;
+            --font-size-subtitle: 36px;
+            --font-size-meta: 16px;
+
+            /* 间距 / Spacing */
+            --spacing-sm: 20px;
+            --spacing-md: 30px;
+            --spacing-lg: 40px;
+            --spacing-xl: 60px;
+        }
+
+        /* ========================================
+           Base Styles
+           基础样式
+           ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", 
+                         "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+            background: #f5f7fa;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        /* ========================================
+           Slide Container
+           幻灯片容器
+           ======================================== */
+        .slide {
+            max-width: 1200px;
+            width: 100%;
+            background: var(--color-bg);
+            padding: var(--spacing-xl);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ========================================
+           Cover Content
+           封面内容
+           ======================================== */
+        .cover-content {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* 主标题 */
+        .main-title {
+            font-size: var(--font-size-title-main);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
+
+        /* 副标题 */
+        .subtitle {
+            font-size: var(--font-size-subtitle);
+            font-weight: 600;
+            color: var(--color-accent-primary);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.3;
+        }
+
+        /* 装饰线 */
+        .decorative-line {
+            width: 120px;
+            height: 4px;
+            background: var(--color-accent-primary);
+            margin: var(--spacing-lg) auto;
+        }
+
+        /* 元信息容器 */
+        .meta-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-xl);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .meta-label {
+            font-size: var(--font-size-meta);
+            color: var(--color-text-tertiary);
+            font-weight: 500;
+        }
+
+        .meta-value {
+            font-size: var(--font-size-meta);
+            color: var(--color-text-secondary);
+            font-weight: 600;
+        }
+
+        /* ========================================
+           Responsive Design
+           响应式设计
+           ======================================== */
+        @media (max-width: 1200px) {
+            .main-title {
+                font-size: 52px;
+            }
+
+            .subtitle {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .slide {
+                padding: 40px 30px;
+                min-height: 500px;
+            }
+
+            .main-title {
+                font-size: 40px;
+                letter-spacing: -0.5px;
+            }
+
+            .subtitle {
+                font-size: 24px;
+            }
+
+            .meta-item {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .decorative-line {
+                width: 80px;
+                height: 3px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 32px;
+            }
+
+            .subtitle {
+                font-size: 20px;
+            }
+
+            .meta-label,
+            .meta-value {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ========================================
+         封面页内容
+         Cover Page Content
+         ======================================== -->
+    <div class="slide cover-slide">
+        <div class="cover-content">
+            <!-- 主标题 / Main Title -->
+            <h1 class="main-title">战略规划报告</h1>
+            
+            <!-- 装饰线 / Decorative Line -->
+            <div class="decorative-line"></div>
+            
+            <!-- 副标题 / Subtitle -->
+            <p class="subtitle">2024年度市场分析与增长策略</p>
+            
+            <!-- 元信息 / Meta Information -->
+            <div class="meta-info">
+                <div class="meta-item">
+                    <span class="meta-label">汇报人：</span>
+                    <span class="meta-value">战略规划部</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">日期：</span>
+                    <span class="meta-value">2024年1月</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">版本：</span>
+                    <span class="meta-value">V1.0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

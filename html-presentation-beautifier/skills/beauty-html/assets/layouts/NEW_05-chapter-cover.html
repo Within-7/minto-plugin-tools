@@ -1,0 +1,280 @@
+<!--
+================================================================================
+NEW示例 5: 章节封面页 (Chapter Cover Page) - McKinsey Standard Version
+================================================================================
+
+📋 适用场景 / Use Cases:
+- 演示文稿章节分隔页
+- 多章节报告的章节首页
+- 内容区块划分页
+- 主题转换页
+
+🎯 内容特征 / Content Characteristics:
+- 章节编号（可选）
+- 章节标题（必需）
+- 章节简短描述（可选）
+- 视觉上简洁醒目
+- 起到内容分隔作用
+
+📊 布局类型 / Layout Type:
+L14 章节封面布局（Chapter Cover Layout）
+
+✨ 使用条件 / Usage Conditions:
+- 观点数量 / Number of Points: 1个（章节标题）
+- 数据密度 / Data Density: 无
+- 对比关系 / Comparison Type: 无
+- 图表需求 / Chart Required: 否
+
+🎨 设计要点 / Design Key Points:
+- ✅ 章节编号：120px，粗体，McKinsey蓝色 (#556EE6)
+- ✅ 章节标题：48px，粗体，黑色 (#000000)
+- ✅ 章节描述：20px，常规，灰色 (#74788d)
+- ✅ 居中对齐，垂直居中
+- ✅ 简洁的视觉设计
+- ✅ 与封面页风格统一但有区分
+
+🔍 匹配规则 / Matching Rules:
+- IF 页面是章节的首页
+- AND 标记新章节的开始
+- AND 只有章节标题和简短描述
+- AND 无数据内容
+- THEN 使用此示例
+
+匹配度权重 / Matching Weight: 100%
+
+⚠️ 设计规范检查清单 / Design Standards Checklist:
+
+**颜色规范 / Color Standards**:
+- [x] 使用McKinsey标准色板 (#FFFFFF, #000000, #556EE6, #74788d)
+- [x] 未使用紫色渐变背景
+- [x] 未使用AI生成的色板
+- [x] 对比度≥4.5:1
+
+**字体规范 / Typography Standards**:
+- [x] 使用系统字体
+- [x] 未使用Inter、Roboto作为主字体
+- [x] 章节编号120px，章节标题48px，描述20px
+- [x] 行高1.7
+
+**布局规范 / Layout Standards**:
+- [x] Padding 50px
+- [x] 居中对齐，垂直居中
+- [x] 未使用圆角卡片
+- [x] 阴影使用最小化
+- [x] 充足的白空间
+
+**内容页规范 / Content Page Standards**:
+- [x] 不适用（章节封面页无需固定头部导航栏）
+- [x] 不适用（章节封面页无要点列表）
+- [x] 不适用（章节封面页无图表）
+
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>章节封面页示例 - McKinsey Standard</title>
+    
+    <style>
+        /* ========================================
+           McKinsey Design System - CSS Variables
+           McKinsey设计系统 - CSS变量
+           ======================================== */
+        :root {
+            /* 配色方案 / Color Palette */
+            --color-bg: #FFFFFF;
+            --color-text-primary: #000000;
+            --color-text-secondary: #333333;
+            --color-text-tertiary: #74788d;
+            --color-blue: #556EE6;
+            --color-accent-primary: #F85d42;
+
+            /* 字体大小 / Font Sizes */
+            --font-size-chapter-number: 120px;
+            --font-size-chapter-title: 48px;
+            --font-size-chapter-desc: 20px;
+
+            /* 间距 / Spacing */
+            --spacing-md: 30px;
+            --spacing-lg: 40px;
+            --spacing-xl: 60px;
+        }
+
+        /* ========================================
+           Base Styles
+           基础样式
+           ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", 
+                         "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+            background: #f5f7fa;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        /* ========================================
+           Slide Container
+           幻灯片容器
+           ======================================== */
+        .slide {
+            max-width: 1200px;
+            width: 100%;
+            background: var(--color-bg);
+            padding: var(--spacing-xl);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ========================================
+           Chapter Cover Content
+           章节封面内容
+           ======================================== */
+        .chapter-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* 章节编号 */
+        .chapter-number {
+            font-size: var(--font-size-chapter-number);
+            font-weight: 900;
+            color: var(--color-blue);
+            line-height: 1;
+            margin-bottom: var(--spacing-md);
+            letter-spacing: -2px;
+            opacity: 0.9;
+        }
+
+        /* 装饰线 */
+        .decorative-line {
+            width: 80px;
+            height: 4px;
+            background: var(--color-blue);
+            margin: var(--spacing-lg) auto;
+        }
+
+        /* 章节标题 */
+        .chapter-title {
+            font-size: var(--font-size-chapter-title);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.3;
+            letter-spacing: -1px;
+        }
+
+        /* 章节描述 */
+        .chapter-description {
+            font-size: var(--font-size-chapter-desc);
+            color: var(--color-text-tertiary);
+            line-height: 1.7;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ========================================
+           Responsive Design
+           响应式设计
+           ======================================== */
+        @media (max-width: 1200px) {
+            .chapter-number {
+                font-size: 100px;
+            }
+
+            .chapter-title {
+                font-size: 40px;
+            }
+
+            .chapter-description {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .slide {
+                padding: 40px 30px;
+                min-height: 500px;
+            }
+
+            .chapter-number {
+                font-size: 80px;
+                letter-spacing: -1px;
+            }
+
+            .chapter-title {
+                font-size: 32px;
+                letter-spacing: -0.5px;
+            }
+
+            .chapter-description {
+                font-size: 16px;
+            }
+
+            .decorative-line {
+                width: 60px;
+                height: 3px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chapter-number {
+                font-size: 60px;
+            }
+
+            .chapter-title {
+                font-size: 28px;
+            }
+
+            .chapter-description {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ========================================
+         章节封面页内容
+         Chapter Cover Page Content
+         ======================================== -->
+    <div class="slide chapter-slide">
+        <div class="chapter-content">
+            <!-- 章节编号 / Chapter Number -->
+            <div class="chapter-number">01</div>
+            
+            <!-- 装饰线 / Decorative Line -->
+            <div class="decorative-line"></div>
+            
+            <!-- 章节标题 / Chapter Title -->
+            <h1 class="chapter-title">市场现状与趋势分析</h1>
+            
+            <!-- 章节描述 / Chapter Description -->
+            <p class="chapter-description">
+                深入分析当前市场环境、竞争格局与未来发展趋势，
+                为战略决策提供数据支撑与洞察
+            </p>
+        </div>
+    </div>
+</body>
+</html>

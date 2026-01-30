@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帕累托图示例 - McKinsey Style</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --color-bg: #FFFFFF;
+            --color-text-primary: #000000;
+            --color-text-secondary: #333333;
+            --color-text-tertiary: #74788d;
+            --color-accent-primary: #F85d42;
+            --color-blue: #556EE6;
+            --color-green: #34c38f;
+            --color-light-blue: #50a5f1;
+            --color-yellow: #f1b44c;
+            --font-size-title-main: 48px;
+            --font-size-title-section: 32px;
+            --font-size-body: 18px;
+            --font-size-caption: 14px;
+            --spacing-sm: 20px;
+            --spacing-md: 30px;
+            --spacing-lg: 40px;
+            --spacing-xl: 60px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "Microsoft YaHei", sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text-secondary);
+            padding: var(--spacing-lg);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: var(--font-size-title-main);
+            font-weight: bold;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        h2 {
+            font-size: var(--font-size-title-section);
+            font-weight: bold;
+            color: var(--color-text-primary);
+            margin: var(--spacing-xl) 0 var(--spacing-md) 0;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--color-blue);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .description {
+            color: var(--color-text-tertiary);
+            font-size: var(--font-size-body);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.6;
+        }
+
+        .chart-section {
+            margin-bottom: var(--spacing-xl);
+            width: 100%;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-lg);
+            margin: var(--spacing-md) 0;
+            width: 100%;
+        }
+
+        .chart-card {
+            background: white;
+            padding: var(--spacing-md);
+            border: 1px solid #e0e0e0;
+            border-left: 4px solid var(--color-accent-primary);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            width: 100%;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin: var(--spacing-sm) 0;
+        }
+
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid var(--color-blue);
+            padding: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+        }
+
+        .info-box h4 {
+            color: var(--color-blue);
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+        }
+
+        .use-case-card {
+            background: white;
+            padding: var(--spacing-md);
+            border: 1px solid #e0e0e0;
+            border-left: 4px solid var(--color-accent-primary);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .use-case-card h4 {
+            color: var(--color-accent-primary);
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .use-case-card p {
+            color: var(--color-text-secondary);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        footer {
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+            color: var(--color-text-tertiary);
+            font-size: var(--font-size-caption);
+        }
+
+        @media (max-width: 768px) {
+            .chart-grid,
+            .use-cases-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>帕累托图示例 - Pareto Chart Examples</h1>
+        <p class="description">
+            McKinsey 风格80/20法则可视化，双Y轴组合图。适用于问题优先级、质量分析、资源分配等场景。
+        </p>
+
+        <div class="chart-section">
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <h3>质量问题分析</h3>
+                    <div class="chart-container">
+                        <canvas id="pareto1"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h3>客户投诉分析</h3>
+                    <div class="chart-container">
+                        <canvas id="pareto2"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h4>80/20法则应用</h4>
+            <ul>
+                <li><strong>柱状图：</strong>展示各类别问题的数量</li>
+                <li><strong>折线图：</strong>展示累计百分比，识别80%的临界点</li>
+                <li><strong>关键发现：</strong>少数问题（20%）导致大部分损失（80%）</li>
+                <li><strong>决策依据：</strong>优先解决高影响的问题</li>
+            </ul>
+        </div>
+
+        <h2>适用场景 - Use Cases</h2>
+        <div class="use-cases-grid">
+            <div class="use-case-card">
+                <h4>质量控制</h4>
+                <p>缺陷分析、质量改进优先级</p>
+            </div>
+            <div class="use-case-card">
+                <h4>客户服务</h4>
+                <p>投诉分类、问题根因分析</p>
+            </div>
+            <div class="use-case-card">
+                <h4>库存管理</h4>
+                <p>ABC分类、重点产品管理</p>
+            </div>
+            <div class="use-case-card">
+                <h4>成本优化</h4>
+                <p>费用分析、成本削减优先级</p>
+            </div>
+            <div class="use-case-card">
+                <h4>销售分析</h4>
+                <p>客户价值、产品贡献度</p>
+            </div>
+            <div class="use-case-card">
+                <h4>流程改进</h4>
+                <p>瓶颈识别、效率提升</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>HTML Presentation Beautifier - McKinsey Style Pareto Chart Example</p>
+            <p>基于 Chart.js 的帕累托图实现</p>
+        </footer>
+    </div>
+
+    <script>
+        const paretoData1 = {
+            categories: ['尺寸不符', '外观瑕疵', '功能故障', '包装破损', '其他'],
+            values: [45, 28, 15, 8, 4],
+            cumulative: [45, 73, 88, 96, 100]
+        };
+
+        const paretoData2 = {
+            categories: ['配送延迟', '产品损坏', '尺寸错误', '客服态度', '其他'],
+            values: [52, 31, 12, 3, 2],
+            cumulative: [52, 83, 95, 98, 100]
+        };
+
+        [
+            { id: 'pareto1', data: paretoData1 },
+            { id: 'pareto2', data: paretoData2 }
+        ].forEach(pareto => {
+            new Chart(document.getElementById(pareto.id), {
+                type: 'bar',
+                data: {
+                    labels: pareto.data.categories,
+                    datasets: [{
+                        label: '问题数量',
+                        data: pareto.data.values,
+                        backgroundColor: '#556EE6',
+                        borderWidth: 0,
+                        yAxisID: 'y'
+                    }, {
+                        label: '累计百分比',
+                        data: pareto.data.cumulative,
+                        type: 'line',
+                        borderColor: '#F85d42',
+                        backgroundColor: '#F85d42',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#F85d42',
+                        fill: false,
+                        yAxisID: 'y1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '问题数量',
+                                font: { size: 14, weight: 'bold' }
+                            },
+                            grid: {
+                                color: '#e0e0e0'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: '累计百分比 (%)',
+                                font: { size: 14, weight: 'bold' }
+                            },
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

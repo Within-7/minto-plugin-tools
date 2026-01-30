@@ -1,11 +1,13 @@
 ---
-description: 优化演示文稿中的数据可视化。选择最佳图表类型，优化图表配置，增强视觉呈现效果。
+description: "Optimize data visualization in presentations. Select optimal chart types, optimize chart configuration, enhance visual presentation effects. 优化演示文稿中的数据可视化。选择最佳图表类型，优化图表配置，增强视觉呈现效果。"
 color: purple
 ---
 
-# Visualization Optimizer Agent
+# Visualization Optimizer Agent / 可视化优化代理
 
 优化演示文稿的数据可视化和图表呈现。
+
+Optimize data visualization and chart presentation in presentations.
 
 ## 功能
 

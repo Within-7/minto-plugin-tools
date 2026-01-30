@@ -174,34 +174,244 @@ This guide provides best practices for creating professional McKinsey-style HTML
 - Bold key metrics or numbers
 - Clear, concise statements
 
-### Data Slide
+### Data Slide (Chart + Insights)
 
 **Purpose**: Present quantitative data with analysis
 
-**Pattern**:
+**⚠️ CRITICAL RULE**: Charts MUST use two-column or three-column layout, NEVER single column
+
+**⚠️ Content Page Layout Rules**:
+- **Slide Header**: Title must be displayed in the fixed header navigation bar at the top left
+- **Slide Content**: Main content area starts below the header (with padding-top to avoid overlap)
+- **Content Limit**: Maximum 8 bullet points per page; if more, split into multiple pages with numbered titles (一、二、三...)
+
+**Pattern 1: Two-Column Layout (Chart + Insights)**:
 ```html
-<div class="slide-content two-column">
-  <div class="column chart-container">
-    <canvas id="chart1"></canvas>
-    <p class="chart-caption">Chart Description</p>
+<!-- Content Page with Header Navigation -->
+<div class="slide content-slide">
+  <!-- Fixed Header Navigation Bar (Title Display) -->
+  <div class="slide-header">
+    <h2 class="slide-header-title">一、Market Analysis</h2>
+  </div>
+
+  <!-- Main Content Area (NO Title Here) -->
+  <div class="slide-content">
+    <div class="two-column">
+      <div class="column">
+        <div class="chart-container">
+          <canvas id="chart1"></canvas>
+        </div>
+        <p class="chart-caption">Chart Description</p>
+      </div>
+      <div class="column">
+        <h3 class="section-heading">Key Insights</h3>
+        <ul class="bullet-list">
+          <li>Insight 1</li>
+          <li>Insight 2</li>
+          <li>Insight 3</li>
+          <li>Insight 4</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+**Pattern 2: Two-Column Layout (Chart + Data Summary)**:
+```html
+<div class="slide content-slide">
+  <div class="slide-header">
+    <h2 class="slide-header-title">二、Data Overview</h2>
+  </div>
+
+  <div class="slide-content">
+    <div class="two-column">
+      <div class="column">
+        <div class="chart-container">
+          <canvas id="chart1"></canvas>
+        </div>
+        <p class="chart-caption">Data Source: XXX</p>
+      </div>
+      <div class="column">
+        <div class="emphasis-container">
+          <div class="emphasis-box">
+            <div class="emphasis-title">Key Metric 1</div>
+            <div class="emphasis-text">Value and description</div>
+          </div>
+          <div class="emphasis-box">
+            <div class="emphasis-title">Key Metric 2</div>
+            <div class="emphasis-text">Value and description</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+        <div class="emphasis-text">Value and description</div>
+      </div>
+      <div class="emphasis-box">
+        <div class="emphasis-title">Key Metric 2</div>
+        <div class="emphasis-text">Value and description</div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+**Pattern 3: Three-Column Layout (Multiple Charts Comparison)**:
+```html
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin: 20px 0;">
+  <div class="column">
+    <div class="chart-container" style="height: 350px;">
+      <canvas id="chart1"></canvas>
+    </div>
+    <p class="chart-caption">Chart 1 Title</p>
   </div>
   <div class="column">
-    <h3 class="section-header">Key Insights</h3>
-    <ul class="bullet-points">
-      <li>Insight 1</li>
-      <li>Insight 2</li>
-      <li>Insight 3</li>
-    </ul>
+    <div class="chart-container" style="height: 350px;">
+      <canvas id="chart2"></canvas>
+    </div>
+    <p class="chart-caption">Chart 2 Title</p>
+  </div>
+  <div class="column">
+    <div class="chart-container" style="height: 350px;">
+      <canvas id="chart3"></canvas>
+    </div>
+    <p class="chart-caption">Chart 3 Title</p>
   </div>
 </div>
 ```
 
 **Best Practices**:
-- Chart on left (60%), insights on right (40%)
-- 3-5 insights maximum
-- Relate insights directly to chart data
-- Clear chart caption
-- Simple, readable chart design
+- ✅ ALWAYS use two-column or three-column layout for charts
+- ✅ Chart on left (50-60%), insights on right (40-50%)
+- ✅ 3-5 insights maximum per chart
+- ✅ Relate insights directly to chart data
+- ✅ Clear chart caption with data source
+- ✅ Simple, readable chart design
+- ✅ **Content page title in fixed header navigation bar**
+- ✅ **Maximum 8 bullet points per page**
+- ✅ **Use numbered titles (一、二、三...) for multi-page content**
+- ❌ NEVER use single-column layout for charts alone
+- ❌ NEVER center-align chart without context
+- ❌ NEVER put more than 8 bullet points on one page
+- ❌ NEVER display title in content area for content pages
+
+### Content Page (Text-Only)
+
+**Purpose**: Present information with bullet points or numbered lists
+
+**⚠️ CRITICAL RULES**:
+- **Maximum 8 bullet points per page** - strictly enforced
+- **Multi-page splitting**: If content exceeds 8 points, split into multiple pages with numbered titles
+- **Title location**: Display in fixed header navigation bar, NOT in content area
+- **Layout first**: Choose layout before distributing content
+
+**Pattern 1: Single Column (≤8 Points)**:
+```html
+<div class="slide content-slide">
+  <div class="slide-header">
+    <h2 class="slide-header-title">Strategic Overview</h2>
+  </div>
+
+  <div class="slide-content">
+    <ul class="bullet-list">
+      <li><strong>Point 1:</strong> Description</li>
+      <li><strong>Point 2:</strong> Description</li>
+      <li><strong>Point 3:</strong> Description</li>
+      <li><strong>Point 4:</strong> Description</li>
+      <li><strong>Point 5:</strong> Description</li>
+      <li><strong>Point 6:</strong> Description</li>
+    </ul>
+  </div>
+</div>
+```
+
+**Pattern 2: Multi-Page Split (>8 Points)**:
+```html
+<!-- Page 1 of 2 -->
+<div class="slide content-slide">
+  <div class="slide-header">
+    <h2 class="slide-header-title">一、Strategic Overview</h2>
+  </div>
+
+  <div class="slide-content">
+    <ul class="bullet-list">
+      <li><strong>Point 1:</strong> Description</li>
+      <li><strong>Point 2:</strong> Description</li>
+      <li><strong>Point 3:</strong> Description</li>
+      <li><strong>Point 4:</strong> Description</li>
+      <li><strong>Point 5:</strong> Description</li>
+      <li><strong>Point 6:</strong> Description</li>
+      <li><strong>Point 7:</strong> Description</li>
+      <li><strong>Point 8:</strong> Description</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Page 2 of 2 -->
+<div class="slide content-slide">
+  <div class="slide-header">
+    <h2 class="slide-header-title">二、Strategic Overview</h2>
+  </div>
+
+  <div class="slide-content">
+    <ul class="bullet-list">
+      <li><strong>Point 9:</strong> Description</li>
+      <li><strong>Point 10:</strong> Description</li>
+      <li><strong>Point 11:</strong> Description</li>
+      <li><strong>Point 12:</strong> Description</li>
+    </ul>
+  </div>
+</div>
+```
+
+**Pattern 3: Two-Column Layout (≤8 Points Total)**:
+```html
+<div class="slide content-slide">
+  <div class="slide-header">
+    <h2 class="slide-header-title">Comparative Analysis</h2>
+  </div>
+
+  <div class="slide-content">
+    <div class="two-column">
+      <div class="column">
+        <h3 class="section-heading">Category A</h3>
+        <ul class="bullet-list">
+          <li>Point 1</li>
+          <li>Point 2</li>
+          <li>Point 3</li>
+          <li>Point 4</li>
+        </ul>
+      </div>
+      <div class="column">
+        <h3 class="section-heading">Category B</h3>
+        <ul class="bullet-list">
+          <li>Point 1</li>
+          <li>Point 2</li>
+          <li>Point 3</li>
+          <li>Point 4</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+**Best Practices**:
+- ✅ **Strictly limit to 8 points per page**
+- ✅ **Choose layout first, then distribute content**
+- ✅ **Use numbered titles (一、二、三...) for multi-page content**
+- ✅ **Display title in fixed header, not content area**
+- ✅ Bold key terms at start of each point
+- ✅ Keep points concise and parallel
+- ✅ Use hierarchy (primary/secondary points)
+- ✅ Group related points together
+- ❌ NEVER exceed 8 points per page
+- ❌ NEVER compress content to fit on one page
+- ❌ NEVER display title in content area for content pages
+- ❌ NEVER split content arbitrarily without considering logical grouping
 
 ### Detailed Findings
 

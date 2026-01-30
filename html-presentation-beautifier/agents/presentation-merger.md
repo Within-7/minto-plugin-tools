@@ -1,11 +1,13 @@
 ---
-description: 合并多个演示文稿为一个统一的 HTML 演示文件。处理幻灯片去重、排序和格式统一。
-color: blue
+description: "Merge multiple presentation fragments into a unified presentation. Maintain consistent style, eliminate duplicates, optimize structure. 将多个演示文稿片段合并为统一的演示文稿。保持风格一致，消除重复，优化结构。"
+color: cyan
 ---
 
-# Presentation Merger Agent
+# Presentation Merger Agent / 演示文稿合并代理
 
-合并多个 HTML 演示文稿为一个统一的演示文件。
+将多个演示文稿片段合并为统一的完整演示文稿。
+
+Merge multiple presentation fragments into a unified complete presentation.
 
 ## 功能
 
