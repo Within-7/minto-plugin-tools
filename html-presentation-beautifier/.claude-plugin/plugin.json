@@ -1,6 +1,5 @@
 {
   "name": "html-presentation-beautifier",
-  "displayName": "HTML Presentation Beautifier",
   "version": "1.0.0",
   "description": "Transform documents, reports, and data into professional McKinsey-style HTML presentations with intelligent chart selection and interactive navigation. Preserves 100% of original content while applying professional design. 将文档、数据、结论转化为通俗连贯的HTML幻灯片，使用McKinsey风格设计系统，通过图表可视化展示结论。",
   "author": {
@@ -24,12 +23,6 @@
     "图表",
     "美化",
     "mckinsey-style"
-  ],
-  "categories": [
-    "productivity",
-    "presentation",
-    "visualization",
-    "documents"
   ],
   "commands": [
     "./commands/beauty.md"
