@@ -597,15 +597,25 @@ if __name__ == "__main__":
     # 配置飞书应用凭证
     APP_ID = "cli_a9e4652af5f89cca"
     APP_SECRET = "4OazKFCmZTT4cjlwK0ecAhr3eAaJ7dhH"
-    
+
+    # 配置：使用已有表格（留空则创建新表格）
+    # 从链接中提取：https://lcnu3mb3p4gr.feishu.cn/base/QDPubwnN9aeJTqsRlsEcbaQinVe
+    EXISTING_APP_TOKEN = "QDPubwnN9aeJTqsRlsEcbaQinVe"  # 已有表格的app_token
+
     print("=" * 80)
     print("飞书采购订单多维表格创建工具（完整版）")
     print("=" * 80)
-    
+
     client = FeishuPurchaseOrderClient(APP_ID, APP_SECRET)
-    
-    # 创建多维表格
-    app_token = client.create_bitable("采购订单管理系统")
+
+    # 使用已有表格或创建新表格
+    if EXISTING_APP_TOKEN:
+        print(f"\n使用已有表格: {EXISTING_APP_TOKEN}")
+        client.app_token = EXISTING_APP_TOKEN
+        app_token = EXISTING_APP_TOKEN
+    else:
+        # 创建多维表格
+        app_token = client.create_bitable("采购订单管理系统")
     
     if app_token:
         # 获取默认数据表

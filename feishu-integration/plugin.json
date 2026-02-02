@@ -1,0 +1,14 @@
+{
+  "name": "feishu-integration",
+  "version": "1.0.0",
+  "description": "A comprehensive Feishu (Lark) integration toolkit for creating apps, bitables, managing permissions, and generating reports. Includes automation scripts for common Feishu operations.",
+  "author": "Feishu Integration",
+  "homepage": "https://github.com/Within-7/minto-plugin-tools",
+  "repository": "https://github.com/Within-7/minto-plugin-tools",
+  "commands": [
+    "./commands/feishu-integration.md"
+  ],
+  "skills": [
+    "./SKILL.md"
+  ]
+}
