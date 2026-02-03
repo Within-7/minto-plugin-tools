@@ -9,7 +9,8 @@ class FeishuClient:
     """Client for interacting with Feishu API."""
 
     def __init__(self, base_url: str = None, table_token: str = None, table_id: str = None, hook_url: str = None):
-        # Support environment variables for configuration
+        # 支持环境变量配置，提供默认值用于内部测试
+        # ⚠️  生产环境必须通过环境变量覆盖这些默认值
         self.base_url = base_url or os.getenv("FEISHU_API_URL", "http://3.144.97.122")
         self.table_token = table_token or os.getenv("FEISHU_TABLE_TOKEN", "bascn92h2DxjIZom4hsB1U9irLc")
         self.table_id = table_id or os.getenv("FEISHU_TABLE_ID", "tblBBtyYcEtpS7h2")

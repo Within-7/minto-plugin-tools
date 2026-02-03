@@ -1,8 +1,24 @@
 {
   "name": "pyspider-order",
   "displayName": "PySpider爬虫任务下单",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "让分析师通过自然语言下单PySpider爬虫任务。支持社交媒体抓取(Reddit/Instagram/TikTok/Twitter/Facebook)、电商平台数据(Amazon/卖家精灵)、SEO工具数据(SEMrush)等。通过飞书API创建任务、启动爬虫、更新状态、发送通知。",
+  "author": "within-7",
+  "capabilities": [
+    "web-scraping",
+    "task-management",
+    "feishu-integration",
+    "natural-language-processing",
+    "data-validation",
+    "error-handling"
+  ],
+  "categories": [
+    "data-collection",
+    "automation",
+    "integration",
+    "enterprise"
+  ],
+  "skills": ["skills/SKILL.md"],
   "keywords": [
     "pycrawler",
     "scraping",
@@ -10,6 +26,31 @@
     "web-scraping",
     "data-collection",
     "爬虫",
-    "数据抓取"
-  ]
+    "数据抓取",
+    "pyspider",
+    "task-automation"
+  ],
+  "minMintoVersion": "1.0.0",
+  "dependencies": {
+    "python": ">=3.8",
+    "packages": [
+      "requests>=2.31.0",
+      "pymongo>=4.0.0"
+    ]
+  },
+  "environmentVariables": [
+    "MONGODB_URL",
+    "FEISHU_API_URL",
+    "FEISHU_TABLE_TOKEN",
+    "FEISHU_TABLE_ID",
+    "FEISHU_WEBHOOK",
+    "PYSPIDER_BASE_URL",
+    "PYSPIDER_SESSION_COOKIE",
+    "CRAWLER_ENGINEER_USER_ID"
+  ],
+  "configuration": {
+    "requiresEnvFile": true,
+    "envExample": ".env.example",
+    "configurable": true
+  }
 }

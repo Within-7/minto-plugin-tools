@@ -7,20 +7,24 @@ class PySpiderDispatcher:
     """Client for sending tasks to PySpider dispatcher."""
 
     def __init__(self, base_url: str = None, session_cookie: str = None):
-        # 支持环境变量配置
-        self.base_url = base_url or os.getenv(
-            "PYSPIDER_BASE_URL",
-            "https://pyspider-dev.within-7.com"
-        )
-        default_session = os.getenv(
-            "PYSPIDER_SESSION_COOKIE",
-            "eyJfaWQiOiIyNGZmYTllMGI0MTI3OTI1MmY3NTk3MTc1ZGZlODMxYSJ9.ZK_V8A.1zmA_Fxinqi0VHcQRYH_FAKdzIY"
-        )
+        # 支持环境变量配置，提供默认值用于内部测试
+        # ⚠️  生产环境必须通过环境变量覆盖
+        self.base_url = base_url or os.getenv("PYSPIDER_BASE_URL", "https://pyspider-dev.within-7.com")
+        session_cookie = session_cookie or os.getenv("PYSPIDER_SESSION_COOKIE", "eyJfaWQiOiIyNGZmYTllMGI0MTI3OTI1MmY3NTk3MTc1ZGZlODMxYSJ9.ZK_V8A.1zmA_Fxinqi0VHcQRYH_FAKdzIY")
+        
         self.headers = {
             'accept': '*/*',
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            'cookie': f'session={session_cookie or default_session}',
+            'cookie': f'session={session_cookie}',
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
+        }
+        
+        self.headers = {
+            'accept': '*/*',
+            'accept-language': 'zh-CN,zh;q=0.9',
+            'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'cookie': f'session={session_cookie}',
             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
         }
     
