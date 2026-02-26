@@ -1,0 +1,20 @@
+{
+  "name": "business-plan-generator",
+  "version": "1.0.0",
+  "description": "通用商业计划书生成插件,支持任何行业。通过大纲确认+数据输入,快速生成专业商业计划书。",
+  "author": "within-7",
+  "homepage": "https://github.com/within-7/minto-plugins",
+  "repository": "https://github.com/within-7/minto-plugins",
+  "keywords": ["business-plan", "商业计划", "创业", "行业分析", "市场分析"],
+  "commands": [
+    "./commands/create-outline.md",
+    "./commands/add-data.md",
+    "./commands/generate-plan.md"
+  ],
+  "agents": [
+    "./agents/business-plan-writer.md"
+  ],
+  "skills": [
+    "./skills/business-plan-templates.md"
+  ]
+}
