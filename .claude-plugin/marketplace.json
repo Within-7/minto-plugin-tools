@@ -16,6 +16,12 @@
       "category": "productivity"
     },
     {
+      "name": "business-plan-generator",
+      "description": "通用商业计划书生成插件，支持任何行业。通过大纲确认+数据输入，快速生成专业商业计划书。支持宠物、电商、SaaS、餐饮、教育等多个行业",
+      "source": "./business-plan-generator",
+      "category": "productivity"
+    },
+    {
       "name": "skill-creator",
       "description": "专用skills创建工具",
       "source": "./skill-creator",
