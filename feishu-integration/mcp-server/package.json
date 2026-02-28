@@ -1,0 +1,26 @@
+{
+  "name": "feishu-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for Feishu/Lark API integration",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "feishu-mcp-server": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "keywords": [
+    "mcp",
+    "feishu",
+    "lark",
+    "model-context-protocol"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "axios": "^1.7.9"
+  }
+}

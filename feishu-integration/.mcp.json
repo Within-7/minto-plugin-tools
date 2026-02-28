@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "feishu": {
+      "command": "python3",
+      "args": [
+        "/Users/mac/Desktop/test/feishu-integration/mcp-server/index.py"
+      ],
+      "env": {
+        "FEISHU_APP_ID": "cli_a9e4652af5f89cca",
+        "FEISHU_APP_SECRET": "4OazKFCmZTT4cjlwK0ecAhr3eAaJ7dhH"
+      }
+    }
+  }
+}
