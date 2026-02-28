@@ -152,6 +152,12 @@
       "description": "飞书（Feishu/Lark）API集成工具。用于创建多维表格、文档、添加协作者、管理权限等。支持采购订单管理系统、数据可视化、文档权限管理等企业级应用场景",
       "source": "./feishu-integration",
       "category": "productivity"
+    },
+    {
+      "name": "brand-research",
+      "description": "竞品品牌研究插件 - AI网络搜索分析品牌成长历程、融资、财务、用户心智、产品定价等",
+      "source": "./brand-research",
+      "category": "productivity"
     }
   ]
 }

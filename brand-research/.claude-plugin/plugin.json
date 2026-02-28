@@ -1,0 +1,10 @@
+{
+  "name": "brand-research",
+  "version": "1.0.0",
+  "description": "竞品品牌研究插件 - AI网络搜索分析品牌成长历程、融资、财务、用户心智、产品定价等",
+  "author": "Claude Code",
+  "commands": [
+    "./commands/brand-analyze.md"
+  ],
+  "skills": ["./skills/brand-research"]
+}
