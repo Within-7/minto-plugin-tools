@@ -1,0 +1,59 @@
+{
+  "STRATEGY_A": {
+    "desc": "顶级反爬/第三方解锁服务 (BrightData/DCA)",
+    "sub_types": {
+      "Type_1_V3": {
+        "reference": ["ScrapingTiktokByKeywordsFromBD.py", "ScrapingAmazonStoreReviewsByBD.py", "ScrapingTikTokUserProfileProject.py"],
+        "features": ["v3/trigger", "v3/snapshot", "MarketplaceID_Support", "Exception_Driven_FAILED_Status"]
+      },
+      "Type_1_DCA": {
+        "reference": ["ScrapingWebSiteInfoVisit.py", "ScrapingFacebookUserDetailByBright.py"],
+        "features": ["trigger_immediate", "get_result", "polling_202_status"]
+      },
+      "Type_13": {
+        "reference": ["ScrapingTikTokUserProfileProject.py"],
+        "features": ["pure_api_xhr"]
+      }
+    }
+  },
+  "STRATEGY_B": {
+    "desc": "强账号绑定/Cookie池 (Facebook/Reddit/Mjjl)",
+    "sub_types": {
+      "Type_4_5_12": {
+        "reference": ["ScrapingRedditByKeyword_api.py", "ScrapingMjjlList.py", "ScrapingFacebookAdsByPageId.py"],
+        "features": ["forced_cookies_inheritance", "cookie_pool_random", "login_wall_check"]
+      }
+    }
+  },
+  "STRATEGY_C": {
+    "desc": "代理突破/SSR/DOM混合 (Youtube/Amazon/Twitter)",
+    "sub_types": {
+      "Type_2": {
+        "reference": ["ScrapingYoutubeVideoDetailsByVideoId.py", "ScrapingTwitterPostsByTags.py"],
+        "features": ["re.search('ytInitialData')", "serpProxy_us_"]
+      },
+      "Type_8_9": {
+        "reference": ["ScrapingAmazonListByKeywords.py", "ScrapingFacebookGroupsByGoogleUrl.py"],
+        "features": ["residentialProxy_us_", "dom_parsing", "ssr_json_mix"]
+      }
+    }
+  },
+  "STRATEGY_D": {
+    "desc": "纯净接口/内部API/AI转发",
+    "sub_types": {
+      "Type_6_7": {
+        "reference": ["BackLinkToDify.py", "ScrapingMjjlDispatcherByBrandAllStation.py"],
+        "features": ["uuid_taskid_bypass", "dify_status_polling", "mongo_integration"]
+      }
+    }
+  },
+  "STRATEGY_E": {
+    "desc": "调度与分发 (Dispatcher/JobTrigger)",
+    "sub_types": {
+      "Type_3_10": {
+        "reference": ["ScrapingMjjlDispatcherByBrand.py", "ScrapingGoogleIndexTemp.py"],
+        "features": ["on_message_fanout", "send_message_task_routing"]
+      }
+    }
+  }
+}

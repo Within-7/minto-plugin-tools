@@ -29,7 +29,7 @@
     },
     {
       "name": "pyspider-dev",
-      "description": "PySpider开发爬虫",
+      "description": "Production-ready PySpider web crawler development toolkit. Covers GET/POST requests, proxy management, header rotation, error handling, pagination, and enterprise-grade crawling patterns. Includes production SOP with dual-mode workflows, strategy patterns (A-E), and automation scripts. Supports BrightData V3, Cookie pools, SSR parsing, API forwarding, and dispatchers",
       "source": "./pyspider-dev",
       "category": "productivity"
     },

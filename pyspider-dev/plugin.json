@@ -2,12 +2,24 @@
   "name": "pyspider-dev",
   "displayName": "PySpider Development",
   "version": "1.0.0",
-  "description": "Production-ready PySpider web crawler development toolkit. Covers GET/POST requests, proxy management, header rotation, error handling, pagination, and enterprise-grade crawling patterns. Use when: (1) Creating new PySpider crawlers, (2) Implementing web scraping tasks, (3) Handling complex crawling scenarios with proxies and retries",
+  "description": "Production-ready PySpider web crawler development toolkit. Covers GET/POST requests, proxy management, header rotation, error handling, pagination, and enterprise-grade crawling patterns. Includes production SOP with dual-mode workflows, strategy patterns (A-E), and automation scripts. Use when: (1) Creating new PySpider crawlers, (2) Implementing web scraping tasks, (3) Handling complex crawling scenarios with proxies and retries, (4) Refactoring production crawlers",
   "keywords": [
     "pyspider",
     "web-crawler",
     "scraping",
     "proxy",
-    "enterprise"
+    "enterprise",
+    "sop",
+    "production"
+  ],
+  "commands": [
+    "./commands/new-crawler.md",
+    "./commands/strategy-crawler.md",
+    "./commands/register-db.md",
+    "./commands/delete-project.md"
+  ],
+  "skills": [
+    "./skills/pyspider-dev",
+    "./skills/production-sop"
   ]
 }

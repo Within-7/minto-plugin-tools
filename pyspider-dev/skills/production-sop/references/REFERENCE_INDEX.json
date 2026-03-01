@@ -1,0 +1,8 @@
+{
+  "A_V3_Dataset": ["ScrapingTiktokByKeywordsFromBD.py", "ScrapingAmazonStoreReviewsByBD.py"],
+  "B_Cookie_Pool": ["ScrapingMjjlList.py", "ScrapingFacebookAdsByPageId.py"],
+  "C_SSR_Regex": ["ScrapingYoutubeVideoDetailsByVideoId.py", "ScrapingTwitterPostsByTags.py"],
+  "D_API_Forward": ["BackLinkToDify.py", "ScrapingMjjlDispatcherByBrandAllStation.py"],
+  "E_Dispatcher": ["ScrapingJobTrigger_145.py", "ScrapingMainDispatch.py"],
+  "F_Mobile_API": ["MercadoLibre_Reviews_Mobile_API_Smart_V11.py"]
+}
