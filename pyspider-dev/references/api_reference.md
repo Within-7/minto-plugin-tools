@@ -91,14 +91,15 @@ def on_start(self):
 
 ### on_result(self, result)
 
-Optional - processes all callback returns.
+⚠️ **DEPRECATED / NOT SUPPORTED** - This method is not supported in PySpider. Use `on_message` instead for data storage and inter-project communication.
 
+**Correct approach** - Use `on_message`:
 ```python
-def on_result(self, result):
-    if not result:
-        return
+def on_message(self, project, message):
+    if project == self.project_name:
+        return message
     # Save to database
-    # self.RESULTDB.save(self.DB_NAME, result)
+    # self.RESULTDB.save(self.DB_NAME, message)
 ```
 
 ### on_error(self, exception, response)

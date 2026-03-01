@@ -51,7 +51,29 @@ Load [`api_reference.md`](references/api_reference.md) for advanced patterns:
 - **Data deduplication**: Avoid duplicate items
 - **Authentication**: Cookie-based or token-based
 
-### Step 4: Test and Deploy
+### Step 4: Sync to Repository (MANDATORY)
+
+**After generating code, you MUST call sync-spider skill to persist the script:**
+
+```python
+# Call sync-spider with generated code
+sync_spider(
+    project_name="CrawlerName",
+    script_content=generated_code,
+    commit_message="feat: CrawlerName crawler"
+)
+```
+
+**This will:**
+1. Save code to `/Users/mac/Desktop/spiders-x/{project_name}.py`
+2. Git commit and push to remote repository
+3. Trigger webhook → PySpider webui auto-loads the script
+
+**Skip this step only if:**
+- User explicitly says "don't sync" or "just show me the code"
+- User wants to review code before syncing
+
+### Step 5: Test and Deploy
 
 Test locally with small data, then scale to production.
 
@@ -133,12 +155,6 @@ response.cookies          # Response cookies
 
 ## Loading Triggers
 
-### MANDATORY - Loading Rules
-
-**MANDATORY - READ ENTIRE FILE**: Before proceeding, you MUST read
-[`api_reference.md`](references/api_reference.md) (~733 lines) completely.
-**NEVER set range limits when reading this file.**
-
 ### Conditional Loading
 
 | Task Type | Must Load | Do NOT Load |
@@ -162,29 +178,6 @@ response.cookies          # Response cookies
 - Creating basic crawler templates
 - Understanding core architecture
 - Quick reference for common patterns
-
-## Progress Report Format
-
-When working on PySpider tasks, report progress as:
-
-```
-✅ Template created: [template_name]
-⏳ Implementing: [feature_name]
-❌ Error: [error_description] - [solution]
-📊 Stats: [pages crawled] / [total pages]
-```
-
-## Request Input Format
-
-When requesting PySpider development, provide:
-
-```
-Target URL: [URL]
-Data to extract: [list of fields]
-Authentication: [method if any]
-Pagination: [type if any]
-Special requirements: [proxies, rate limiting, etc.]
-```
 
 ## Common Patterns Summary
 

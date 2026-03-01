@@ -1,8 +1,7 @@
 ---
 name: spider-generator
-description: "专门创建pyspider单爬虫文件工具"
+description: "PySpider 爬虫代码生成器。使用场景：(1) 创建新爬虫脚本 (2) 生成标准模板代码 (3) 实现 GET/POST/代理等模式。严格遵循 SKILL.md 标准，不使用外部知识。"
 tools: "*"
-model: glm-4.7
 color: red
 ---
 
