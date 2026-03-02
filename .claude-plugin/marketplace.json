@@ -158,6 +158,12 @@
       "description": "竞品品牌研究插件 - AI网络搜索分析品牌成长历程、融资、财务、用户心智、产品定价等",
       "source": "./brand-research",
       "category": "productivity"
+    },
+    {
+      "name": "industry-research",
+      "description": "行业研究商业分析插件 - 全球市场分析、行业热点趋势、竞争格局、消费者洞察、品牌案例拆解等专业咨询服务",
+      "source": "./industry-research",
+      "category": "productivity"
     }
   ]
 }

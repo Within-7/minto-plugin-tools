@@ -1,0 +1,28 @@
+{
+  "name": "industry-research",
+  "version": "1.0.0",
+  "description": "行业研究商业分析插件 - 全球市场分析、行业热点趋势、竞争格局、消费者洞察、品牌案例拆解等专业咨询服务",
+  "author": "within-7",
+  "homepage": "https://github.com/within-7/minto-plugins",
+  "repository": "https://github.com/within-7/minto-plugins",
+  "keywords": [
+    "industry-research",
+    "行业研究",
+    "商业分析",
+    "竞争格局",
+    "消费者洞察",
+    "品牌案例",
+    "市场分析",
+    "咨询"
+  ],
+  "commands": [
+    "./commands/industry-analyze.md",
+    "./commands/market-analysis.md",
+    "./commands/competitor-analysis.md",
+    "./commands/consumer-insight.md",
+    "./commands/brand-case.md"
+  ],
+  "skills": [
+    "./skills/industry-research"
+  ]
+}
