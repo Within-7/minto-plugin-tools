@@ -20,9 +20,13 @@
     "./commands/market-analysis.md",
     "./commands/competitor-analysis.md",
     "./commands/consumer-insight.md",
-    "./commands/brand-case.md"
+    "./commands/brand-case.md",
+    "./commands/generate-chart.md",
+    "./commands/growth-trend-chart.md"
   ],
   "skills": [
-    "./skills/industry-research"
+    "./skills/industry-research",
+    "./skills/echarts-chart",
+    "./skills/growth-chart"
   ]
 }

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>市场规模及增速分析</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f7fa;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    #chart {
+      width: 100%;
+      height: 500px;
+    }
+    .source {
+      text-align: center;
+      color: #999;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="chart"></div>
+    <p class="source">数据来源：行业研究报告</p>
+  </div>
+
+  <script>
+    const chart = echarts.init(document.getElementById('chart'));
+
+    const option = {
+      title: {
+        text: '市场规模及增速趋势',
+        subtext: '2015-2024E',
+        left: 'center',
+        textStyle: {
+          fontSize: 18,
+          fontWeight: 'bold',
+          color: '#333'
+        },
+        subtextStyle: {
+          fontSize: 12,
+          color: '#999'
+        }
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          crossStyle: {
+            color: '#999'
+          }
+        },
+        formatter: function(params) {
+          let result = params[0].axisValue + '<br/>';
+          params.forEach(item => {
+            if (item.seriesName === '金额(百万)') {
+              result += item.marker + item.seriesName + ': ' + item.value + '<br/>';
+            } else {
+              result += item.marker + item.seriesName + ': ' + item.value + '%';
+            }
+          });
+          return result;
+        }
+      },
+      legend: {
+        data: ['金额(百万)', '增速(%)'],
+        bottom: 10,
+        itemGap: 30
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '12%',
+        top: '15%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024E'],
+        axisPointer: {
+          type: 'shadow'
+        },
+        axisLabel: {
+          interval: 0,
+          color: '#666'
+        },
+        axisLine: {
+          lineStyle: {
+            color: '#ddd'
+          }
+        }
+      },
+      yAxis: [
+        {
+          type: 'value',
+          name: '金额(百万)',
+          position: 'left',
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#5470c6'
+            }
+          },
+          axisLabel: {
+            formatter: '{value}',
+            color: '#666'
+          },
+          splitLine: {
+            lineStyle: {
+              type: 'dashed',
+              color: '#eee'
+            }
+          }
+        },
+        {
+          type: 'value',
+          name: '增速(%)',
+          position: 'right',
+          min: 0,
+          max: 100,
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#ee6666'
+            }
+          },
+          axisLabel: {
+            formatter: '{value}%',
+            color: '#666'
+          },
+          splitLine: {
+            show: false
+          }
+        }
+      ],
+      series: [
+        {
+          name: '金额(百万)',
+          type: 'bar',
+          barWidth: '40%',
+          data: [578.31, 773.13, 1118.42, 1401.06, 1596.11, 1801.92, 2108.99, 2834.17, 4167.44, 7185.38],
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: '#83bff6' },
+              { offset: 0.5, color: '#5470c6' },
+              { offset: 1, color: '#3a5a8c' }
+            ]),
+            borderRadius: [4, 4, 0, 0]
+          },
+          label: {
+            show: true,
+            position: 'top',
+            fontSize: 10,
+            color: '#5470c6',
+            formatter: function(params) {
+              return params.value.toFixed(0);
+            }
+          }
+        },
+        {
+          name: '增速(%)',
+          type: 'line',
+          yAxisIndex: 1,
+          data: [57.8, 33.7, 44.7, 25.3, 13.9, 12.9, 17.0, 34.4, 47.0, 72.4],
+          symbol: 'circle',
+          symbolSize: 8,
+          lineStyle: {
+            width: 3,
+            color: '#ee6666'
+          },
+          itemStyle: {
+            color: '#ee6666',
+            borderWidth: 2,
+            borderColor: '#fff'
+          },
+          label: {
+            show: true,
+            position: 'top',
+            formatter: '{c}%',
+            fontSize: 10,
+            color: '#ee6666'
+          },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: 'rgba(238, 102, 102, 0.3)' },
+              { offset: 1, color: 'rgba(238, 102, 102, 0.05)' }
+            ])
+          }
+        }
+      ]
+    };
+
+    chart.setOption(option);
+
+    // 响应式
+    window.addEventListener('resize', function() {
+      chart.resize();
+    });
+  </script>
+</body>
+</html>

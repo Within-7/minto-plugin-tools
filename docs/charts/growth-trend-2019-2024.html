@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>增长趋势分析</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f7fa;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    #chart {
+      width: 100%;
+      height: 500px;
+    }
+    .source {
+      text-align: center;
+      color: #999;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="chart"></div>
+    <p class="source">数据来源：行业研究报告</p>
+  </div>
+
+  <script>
+    const chart = echarts.init(document.getElementById('chart'));
+
+    // 数据配置
+    const categories = ['2019', '2020', '2021', '2022', '2023', '2024'];
+    const valueData = [100, 150, 220, 310, 450, 650];
+    const growthData = [20, 50, 47, 41, 45, 44];
+
+    const option = {
+      title: {
+        text: '增长趋势及增速分析',
+        subtext: '2019-2024',
+        left: 'center',
+        textStyle: {
+          fontSize: 18,
+          fontWeight: 'bold',
+          color: '#333'
+        },
+        subtextStyle: {
+          fontSize: 12,
+          color: '#999'
+        }
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          crossStyle: {
+            color: '#999'
+          }
+        },
+        formatter: function(params) {
+          let result = '<strong>' + params[0].axisValue + '</strong><br/>';
+          params.forEach(item => {
+            if (item.seriesName === '金额') {
+              result += item.marker + item.seriesName + ': ' + item.value + '<br/>';
+            } else {
+              result += item.marker + item.seriesName + ': ' + item.value + '%';
+            }
+          });
+          return result;
+        }
+      },
+      legend: {
+        data: ['金额', '增速(%)'],
+        bottom: 10,
+        itemGap: 30
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '12%',
+        top: '18%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: categories,
+        axisPointer: {
+          type: 'shadow'
+        },
+        axisLabel: {
+          interval: 0,
+          color: '#666',
+          fontSize: 12
+        },
+        axisLine: {
+          lineStyle: {
+            color: '#ddd'
+          }
+        }
+      },
+      yAxis: [
+        {
+          type: 'value',
+          name: '金额',
+          position: 'left',
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#5470c6'
+            }
+          },
+          axisLabel: {
+            formatter: '{value}',
+            color: '#666'
+          },
+          splitLine: {
+            lineStyle: {
+              type: 'dashed',
+              color: '#eee'
+            }
+          }
+        },
+        {
+          type: 'value',
+          name: '增速(%)',
+          position: 'right',
+          min: 0,
+          max: 60,
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#ee6666'
+            }
+          },
+          axisLabel: {
+            formatter: '{value}%',
+            color: '#666'
+          },
+          splitLine: {
+            show: false
+          }
+        }
+      ],
+      series: [
+        {
+          name: '金额',
+          type: 'bar',
+          barWidth: '35%',
+          data: valueData,
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: '#83bff6' },
+              { offset: 0.5, color: '#5470c6' },
+              { offset: 1, color: '#3a5a8c' }
+            ]),
+            borderRadius: [4, 4, 0, 0]
+          },
+          label: {
+            show: true,
+            position: 'top',
+            fontSize: 11,
+            color: '#5470c6',
+            fontWeight: 'bold',
+            formatter: '{c}'
+          }
+        },
+        {
+          name: '增速(%)',
+          type: 'line',
+          yAxisIndex: 1,
+          data: growthData,
+          symbol: 'circle',
+          symbolSize: 8,
+          lineStyle: {
+            width: 3,
+            color: '#ee6666'
+          },
+          itemStyle: {
+            color: '#ee6666',
+            borderWidth: 2,
+            borderColor: '#fff'
+          },
+          label: {
+            show: true,
+            position: 'top',
+            formatter: '{c}%',
+            fontSize: 11,
+            color: '#ee6666',
+            fontWeight: 'bold'
+          },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: 'rgba(238, 102, 102, 0.25)' },
+              { offset: 1, color: 'rgba(238, 102, 102, 0.02)' }
+            ])
+          }
+        }
+      ]
+    };
+
+    chart.setOption(option);
+
+    // 响应式
+    window.addEventListener('resize', function() {
+      chart.resize();
+    });
+  </script>
+</body>
+</html>
