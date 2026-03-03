@@ -1,0 +1,10 @@
+{
+  "name": "user-attention-analysis",
+  "version": "1.0.0",
+  "description": "消费者洞察页面生成器 - 生成用户关注度散点图和优选用户展示页面（第24-29页）",
+  "author": {
+    "name": "minto"
+  },
+  "license": "MIT",
+  "keywords": ["consumer insight", "scatter chart", "user profile", "instagram", "presentation"]
+}

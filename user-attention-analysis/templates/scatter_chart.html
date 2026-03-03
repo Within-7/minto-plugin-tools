@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{subsection}} - {{topic}}</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1920px;
+            height: 1080px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            position: relative;
+            padding: 60px 80px;
+        }
+
+        /* 顶部标题栏 */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #2c3e50;
+            margin-bottom: 40px;
+        }
+
+        .header-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .header-title .section {
+            color: #3498db;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-image {
+            height: 50px;
+            width: auto;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            display: flex;
+            gap: 40px;
+            height: calc(100% - 120px);
+        }
+
+        /* 左侧图表区 */
+        .chart-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-wrapper {
+            flex: 1;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            padding: 30px;
+            position: relative;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 图例 */
+        .custom-legend {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 30px;
+            background: rgba(255,255,255,0.95);
+            padding: 12px 30px;
+            border-radius: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* 右侧信息区 */
+        .info-area {
+            width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        .info-card.highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+        }
+
+        .info-card.highlight .card-title {
+            color: #ffffff;
+            border-bottom-color: rgba(255,255,255,0.3);
+        }
+
+        .info-card.highlight .card-content {
+            color: rgba(255,255,255,0.95);
+        }
+
+        .info-card.highlight .card-content li {
+            color: rgba(255,255,255,0.95);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #3498db;
+            border-radius: 2px;
+        }
+
+        .info-card.highlight .card-title::before {
+            background: #ffffff;
+        }
+
+        .card-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .card-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card-content li {
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .card-content li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #3498db;
+        }
+
+        .info-card.highlight .card-content li::before {
+            color: #ffffff;
+        }
+
+        .summary-card {
+            flex: 1;
+        }
+
+        .source-card {
+            flex: 0 0 auto;
+        }
+
+        .source-text {
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+            padding-top: 10px;
+            border-top: 1px dashed #ddd;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- 顶部标题 -->
+        <div class="header">
+            <div class="header-title">
+                <span class="section">{{section}}</span>
+                <span>　　{{subsection}}</span>
+            </div>
+            <div class="header-logo">
+                <img src="{{logoPath}}" alt="Logo" class="logo-image">
+            </div>
+        </div>
+
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <!-- 左侧图表 -->
+            <div class="chart-area">
+                <div class="chart-wrapper">
+                    <div id="scatterChart" class="chart-container"></div>
+                    <div class="custom-legend" id="legendContainer">
+                        <!-- 动态生成图例 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧信息区 -->
+            <div class="info-area">
+                <!-- 数据总结 -->
+                <div class="info-card highlight summary-card">
+                    <div class="card-title">数据总结</div>
+                    <div class="card-content">
+                        <ul>
+                            <li>高市场得分人群：<strong>{{highMarketGroups}}</strong></li>
+                            <li>高需求得分人群：<strong>{{highDemandGroups}}</strong></li>
+                            <li>{{summaryDescription}}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 图表释义 -->
+                <div class="info-card">
+                    <div class="card-title">图表释义</div>
+                    <div class="card-content">
+                        <ul>
+                            <li><strong>纵坐标市场分：</strong>{{marketScoreDesc}}</li>
+                            <li><strong>横坐标需求分：</strong>{{demandScoreDesc}}</li>
+                            <li><strong>气泡大小：</strong>反映该人群的综合影响力</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 数据来源 -->
+                <div class="info-card source-card">
+                    <div class="card-title">数据来源</div>
+                    <div class="card-content source-text">
+                        {{dataSource}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var chartDom = document.getElementById('scatterChart');
+        var myChart = echarts.init(chartDom);
+
+        // ========== 图表配置数据 ==========
+        var chartConfig = {{chartConfigJson}};
+
+        // ========== 渲染图例 ==========
+        var legendContainer = document.getElementById('legendContainer');
+        for (var dimension in chartConfig.dimensions) {
+            var item = document.createElement('div');
+            item.className = 'legend-item';
+            item.innerHTML = '<div class="legend-dot" style="background: ' + chartConfig.dimensions[dimension].color + ';"></div><span>' + dimension + '</span>';
+            legendContainer.appendChild(item);
+        }
+
+        // ========== 构建ECharts Series ==========
+        var series = [];
+        for (var dimension in chartConfig.dimensions) {
+            var dimData = chartConfig.dimensions[dimension];
+            var seriesData = dimData.data.map(function(item) {
+                return {
+                    name: item.name,
+                    value: [item.demandScore, item.marketScore],
+                    symbolSize: item.symbolSize || Math.sqrt(item.marketScore * item.demandScore) * 3 + 8
+                };
+            });
+
+            series.push({
+                name: dimension,
+                type: 'scatter',
+                data: seriesData,
+                itemStyle: {
+                    color: dimData.color,
+                    shadowBlur: 10,
+                    shadowColor: dimData.color + '4D'
+                },
+                label: {
+                    show: true,
+                    formatter: '{b}',
+                    position: 'top',
+                    fontSize: 10,
+                    color: '#333'
+                },
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 20,
+                        shadowColor: dimData.color + '80'
+                    }
+                }
+            });
+        }
+
+        // ========== 计算坐标轴范围 ==========
+        var allDemandScores = [];
+        var allMarketScores = [];
+        for (var dimension in chartConfig.dimensions) {
+            chartConfig.dimensions[dimension].data.forEach(function(item) {
+                allDemandScores.push(item.demandScore);
+                allMarketScores.push(item.marketScore);
+            });
+        }
+        var maxDemand = Math.ceil(Math.max(...allDemandScores) * 1.1);
+        var maxMarket = Math.ceil(Math.max(...allMarketScores) * 1.1);
+
+        // ========== ECharts 配置 ==========
+        var option = {
+            grid: {
+                left: '12%',
+                right: '8%',
+                bottom: '15%',
+                top: '10%'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: function(params) {
+                    return '<strong>' + params.data.name + '</strong><br/>' +
+                           '维度: ' + params.seriesName + '<br/>' +
+                           '需求分: ' + params.data.value[0] + '<br/>' +
+                           '市场分: ' + params.data.value[1];
+                },
+                backgroundColor: 'rgba(255,255,255,0.95)',
+                borderColor: '#ddd',
+                borderWidth: 1,
+                textStyle: {
+                    color: '#333'
+                }
+            },
+            xAxis: {
+                type: 'value',
+                name: '需求分',
+                nameLocation: 'middle',
+                nameGap: 40,
+                nameTextStyle: {
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    color: '#2c3e50'
+                },
+                min: 0,
+                max: maxDemand,
+                splitLine: {
+                    lineStyle: {
+                        color: '#e0e0e0',
+                        type: 'dashed'
+                    }
+                },
+                axisLabel: {
+                    color: '#666'
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            yAxis: {
+                type: 'value',
+                name: '市场分',
+                nameLocation: 'middle',
+                nameGap: 50,
+                nameTextStyle: {
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    color: '#2c3e50'
+                },
+                min: 0,
+                max: maxMarket,
+                splitLine: {
+                    lineStyle: {
+                        color: '#e0e0e0',
+                        type: 'dashed'
+                    }
+                },
+                axisLabel: {
+                    color: '#666'
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            series: series
+        };
+
+        myChart.setOption(option);
+
+        window.addEventListener('resize', function() {
+            myChart.resize();
+        });
+    </script>
+</body>
+</html>

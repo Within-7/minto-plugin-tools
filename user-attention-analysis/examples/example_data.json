@@ -1,0 +1,81 @@
+{
+    "title": {
+        "section": "第七部分：消费者洞察",
+        "subsection": "7.1 用户关注度"
+    },
+    "topic": "婚庆美甲产品",
+    "logoPath": "20260303-151138.png",
+    "dataSource": "任小姐出海战略咨询自研心智洞察引擎系统",
+    "marketScoreDesc": "该人群在婚庆美甲产品市场中的讨论声量与规模",
+    "demandScoreDesc": "该人群对婚庆美甲产品的刚需程度",
+    "dimensions": {
+        "职业": {
+            "color": "#e74c3c",
+            "data": [
+                { "name": "licensed cosmetologist", "demandScore": 10.00, "marketScore": 1.33 },
+                { "name": "fashion writer", "demandScore": 9.34, "marketScore": 1.13 },
+                { "name": "licensed nail tech", "demandScore": 9.19, "marketScore": 0.52 },
+                { "name": "nail educator", "demandScore": 7.68, "marketScore": 0.24 },
+                { "name": "beauty therapist", "demandScore": 7.05, "marketScore": 1.84 },
+                { "name": "nail specialist", "demandScore": 6.90, "marketScore": 0.49 },
+                { "name": "manicurist", "demandScore": 5.60, "marketScore": 1.57 },
+                { "name": "nail technician", "demandScore": 4.46, "marketScore": 1.43 },
+                { "name": "hairdresser", "demandScore": 4.39, "marketScore": 2.75 },
+                { "name": "cosmetologist", "demandScore": 3.99, "marketScore": 1.93 },
+                { "name": "dermatologist", "demandScore": 2.69, "marketScore": 2.52 },
+                { "name": "makeup artist", "demandScore": 1.25, "marketScore": 1.40 }
+            ]
+        },
+        "爱好/运动": {
+            "color": "#3498db",
+            "data": [
+                { "name": "tennis", "demandScore": 3.30, "marketScore": 10.00 },
+                { "name": "yoga", "demandScore": 3.27, "marketScore": 10.00 },
+                { "name": "travel", "demandScore": 1.35, "marketScore": 10.00 },
+                { "name": "fitness", "demandScore": 1.69, "marketScore": 9.14 },
+                { "name": "baseball", "demandScore": 2.32, "marketScore": 7.23 },
+                { "name": "rugby", "demandScore": 3.64, "marketScore": 7.21 },
+                { "name": "DIY", "demandScore": 1.26, "marketScore": 7.16 },
+                { "name": "football", "demandScore": 1.77, "marketScore": 7.77 },
+                { "name": "hiking", "demandScore": 3.07, "marketScore": 6.75 },
+                { "name": "camping", "demandScore": 2.27, "marketScore": 6.64 },
+                { "name": "hockey", "demandScore": 2.66, "marketScore": 6.54 },
+                { "name": "climbing", "demandScore": 3.09, "marketScore": 6.23 },
+                { "name": "swimming", "demandScore": 0.77, "marketScore": 6.67 }
+            ]
+        },
+        "身体状况": {
+            "color": "#9b59b6",
+            "data": [
+                { "name": "onycholysis", "demandScore": 10.00, "marketScore": 1.40 },
+                { "name": "paronychia", "demandScore": 8.17, "marketScore": 1.31 },
+                { "name": "skin cancer", "demandScore": 2.56, "marketScore": 2.60 }
+            ]
+        },
+        "身份特征": {
+            "color": "#f39c12",
+            "data": [
+                { "name": "working mother", "demandScore": 8.22, "marketScore": 1.82 },
+                { "name": "children", "demandScore": 1.22, "marketScore": 9.75 },
+                { "name": "kids", "demandScore": 1.12, "marketScore": 9.48 },
+                { "name": "pansexuality", "demandScore": 10.00, "marketScore": 0.92 },
+                { "name": "single mother", "demandScore": 3.61, "marketScore": 1.97 },
+                { "name": "homosexuality", "demandScore": 3.84, "marketScore": 3.06 }
+            ]
+        },
+        "生活方式": {
+            "color": "#1abc9c",
+            "data": [
+                { "name": "vegetarian", "demandScore": 1.42, "marketScore": 3.80 },
+                { "name": "vegan", "demandScore": 1.01, "marketScore": 3.53 },
+                { "name": "smoker", "demandScore": 2.54, "marketScore": 3.08 },
+                { "name": "meditation", "demandScore": 1.63, "marketScore": 4.02 }
+            ]
+        }
+    },
+    "summary": {
+        "highMarket": ["tennis", "yoga", "travel", "children", "kids", "fitness"],
+        "highDemand": ["onycholysis", "licensed cosmetologist", "pansexuality", "fashion writer", "licensed nail tech"],
+        "description": "该图展示婚庆美甲产品市场中关注度较高的用户画像（含职业、爱好、身体状况、身份特征等多维度）"
+    }
+}
