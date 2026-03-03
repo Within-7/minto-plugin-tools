@@ -22,11 +22,13 @@
     "./commands/consumer-insight.md",
     "./commands/brand-case.md",
     "./commands/generate-chart.md",
-    "./commands/growth-trend-chart.md"
+    "./commands/growth-trend-chart.md",
+    "./commands/print-layout.md"
   ],
   "skills": [
     "./skills/industry-research",
     "./skills/echarts-chart",
-    "./skills/growth-chart"
+    "./skills/growth-chart",
+    "./skills/print-layout"
   ]
 }
