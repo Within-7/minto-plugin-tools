@@ -1,11 +1,11 @@
 ---
 name: minto-slides
-description: 演示文稿页面生成器。支持生成消费者洞察散点图(第24页)、用户画像(第25-29页)、行业结论卡片(第49-50页)。关键词：演示文稿、幻灯片、散点图、用户画像、行业结论、消费者洞察。
+description: 演示文稿页面生成器。支持生成消费者洞察散点图(第24页)、用户画像(第25-29页)、品牌目录(第30页)、行业结论卡片(第49-50页)。关键词：演示文稿、幻灯片、散点图、用户画像、品牌目录、行业结论、消费者洞察。
 ---
 
 # Minto Slides Skill
 
-演示文稿页面生成器，支持生成第24-29页（消费者洞察）和第49-50页（行业结论）。
+演示文稿页面生成器，支持生成第24-29页（消费者洞察）、第30页（品牌目录）和第49-50页（行业结论）。
 
 ## 依赖安装
 
@@ -26,16 +26,24 @@ python -m playwright install chromium
 当前项目目录/
 ├── assets/
 │   ├── logo.png                     # Logo文件（必需）
-│   └── profiles/                    # 25-29页用户画像截图
-│       ├── 水上活动.png
-│       ├── 自然探索.png
-│       ├── 极端探险.png
-│       ├── 长途旅行.png
-│       └── 家庭旅行.png
+│   ├── profiles/                    # 25-29页用户画像截图
+│   │   ├── 水上活动.png
+│   │   ├── 自然探索.png
+│   │   ├── 极端探险.png
+│   │   ├── 长途旅行.png
+│   │   └── 家庭旅行.png
+│   └── brands/                      # 30页品牌目录图片
+│       ├── spot.png
+│       ├── biolite.png
+│       ├── helinox.png
+│       ├── big_agnes.png
+│       ├── front_runner.png
+│       └── rumpl.png
 ├── slides/                          # 生成的HTML文件
 │   ├── 24_user_attention.html
 │   ├── 25_user_profile_1.html
 │   ├── ...
+│   ├── 30_brand_catalog.html
 │   ├── 49_industry_conclusion_1.html
 │   └── 50_industry_conclusion_2.html
 └── .minto-state.json                # 状态文件（自动生成）
@@ -49,6 +57,7 @@ python -m playwright install chromium
 |------|------|------|------|
 | 消费者洞察 | 24 | 散点图 | 用户关注度分析（市场分 vs 需求分） |
 | 消费者洞察 | 25-29 | 用户画像 | 优选用户展示（文字 + 截图） |
+| 品牌案例 | 30 | 品牌目录 | 6个品牌索引（图片宫格 + 列表） |
 | 行业结论 | 49-50 | 卡片布局 | 12个行业结论卡片，每页6个 |
 
 ---
@@ -59,6 +68,9 @@ python -m playwright install chromium
 # 消费者洞察模块
 第24页：单次调用生成
 第25-29页：单次调用批量生成5页（需提前准备截图）
+
+# 品牌案例模块
+第30页：单次调用生成（需提前准备品牌图片）
 
 # 行业结论模块
 第49-50页：单次调用批量生成2页
@@ -74,7 +86,7 @@ python -m playwright install chromium
 2. 如果不存在：
    - 从插件目录复制默认logo：`/Users/mac/Desktop/minto-plugin-tools/minto-slides/assets/logo.png`
    - 复制到：`{当前项目目录}/assets/logo.png`
-3. HTML中的logo路径统一使用：`assets/logo.png`
+3. HTML中的logo路径统一使用：`../assets/logo.png`（因为HTML文件在 slides/ 目录下）
 
 ---
 
@@ -130,7 +142,7 @@ licensed cosmetologist,1.33,10
 
 **Step 5: 模板渲染**
 - 使用 `templates/scatter_chart.html` 模板
-- Logo路径：`assets/logo.png`
+- Logo路径：`../assets/logo.png`（HTML在 slides/ 目录，需返回上级）
 
 **Step 6: 输出**
 - 文件：`slides/24_user_attention.html`
@@ -214,11 +226,11 @@ licensed cosmetologist,1.33,10
 
 | 输出文件 | 人群 | 图片路径 |
 |---------|------|---------|
-| `slides/25_user_profile_1.html` | 第1个人群 | `assets/profiles/{人群名}.png` |
-| `slides/26_user_profile_2.html` | 第2个人群 | `assets/profiles/{人群名}.png` |
-| `slides/27_user_profile_3.html` | 第3个人群 | `assets/profiles/{人群名}.png` |
-| `slides/28_user_profile_4.html` | 第4个人群 | `assets/profiles/{人群名}.png` |
-| `slides/29_user_profile_5.html` | 第5个人群 | `assets/profiles/{人群名}.png` |
+| `slides/25_user_profile_1.html` | 第1个人群 | `../assets/profiles/{人群名}.png` |
+| `slides/26_user_profile_2.html` | 第2个人群 | `../assets/profiles/{人群名}.png` |
+| `slides/27_user_profile_3.html` | 第3个人群 | `../assets/profiles/{人群名}.png` |
+| `slides/28_user_profile_4.html` | 第4个人群 | `../assets/profiles/{人群名}.png` |
+| `slides/29_user_profile_5.html` | 第5个人群 | `../assets/profiles/{人群名}.png` |
 
 **Step 6: 输出确认**
 
@@ -242,8 +254,117 @@ licensed cosmetologist,1.33,10
 | `{{populationContent}}` | 人群规模内容 |
 | `{{ageContent}}` | 年龄水平内容 |
 | `{{consumptionContent}}` | 消费习惯内容 |
-| `{{logoPath}}` | logo路径：`assets/logo.png` |
-| `{{profileImagePath}}` | 截图路径：`assets/profiles/{人群名}.png` |
+| `{{logoPath}}` | logo路径：`../assets/logo.png` |
+| `{{profileImagePath}}` | 截图路径：`../assets/profiles/{人群名}.png` |
+
+---
+
+## SOP - 第30页：品牌目录生成
+
+### 前置条件检查
+
+**Step 1: 检查图片文件**
+
+生成前必须检查 `assets/brands/` 目录：
+
+```
+需要6张品牌图片，按文件名字母顺序排序后分配序号01-06
+```
+
+**如果图片缺失**：
+
+1. 输出提示信息：
+```
+⚠️ 检测到以下图片缺失：
+- assets/brands/xxx.png
+
+请先上传图片，格式要求：
+- 尺寸：448px × 224px（固定）
+- 格式：PNG 或 JPG
+- 存放位置：assets/brands/
+- 文件命名：{品牌名}.png（如：spot.png, big_agnes.png）
+- 命名规则：小写字母，单词间用下划线分隔
+
+上传完成后回复"继续"。
+```
+
+2. 等待用户确认后再继续
+
+### 图片格式要求
+
+| 项目 | 要求 |
+|------|------|
+| 宽度 | 448px（固定） |
+| 高度 | 224px（固定） |
+| 格式 | PNG 或 JPG |
+| 命名 | `{品牌名}.png`（如：spot.png, big_agnes.png） |
+| 命名规则 | 小写字母，单词间用下划线分隔 |
+| 位置 | `assets/brands/` |
+
+### 处理流程
+
+**Step 2: Logo检查与复制**
+- 确保 `assets/logo.png` 存在
+
+**Step 3: 扫描并排序图片**
+
+- 扫描 `assets/brands/` 目录下所有图片
+- 按文件名字母顺序排序
+- 取前6张图片（如不足6张则报错）
+
+**Step 4: 文字处理**
+
+从文件名提取品牌名：
+1. 去掉扩展名（`.png`, `.jpg` 等）
+2. 下划线转空格（`big_agnes` → `big agnes`）
+3. 转为大写（`big agnes` → `BIG AGNES`）
+
+**示例**：
+| 文件名 | 提取结果 |
+|--------|---------|
+| `spot.png` | `SPOT` |
+| `big_agnes.png` | `BIG AGNES` |
+| `front_runner.png` | `FRONT RUNNER` |
+
+**Step 5: 颜色分配**
+
+6种颜色按顺序固定分配：
+
+| 序号 | 颜色类 | HEX值 | 用途 |
+|------|--------|-------|------|
+| 01 | bg-01 | #2196F3 | 第1个品牌 |
+| 02 | bg-02 | #FF5722 | 第2个品牌 |
+| 03 | bg-03 | #FFC107 | 第3个品牌 |
+| 04 | bg-04 | #0D47A1 | 第4个品牌 |
+| 05 | bg-05 | #607D8B | 第5个品牌 |
+| 06 | bg-06 | #E91E63 | 第6个品牌 |
+
+**Step 6: 模板渲染**
+
+使用 `templates/brand_catalog.html` 模板：
+
+| 变量 | 说明 |
+|------|------|
+| `{{sectionTitle}}` | 部分标题（如：第八部分：品牌案例拆解与学习） |
+| `{{subtitle}}` | 副标题（如：品牌案例拆解目录） |
+| `{{logoPath}}` | logo路径：`../assets/logo.png` |
+| `{{brand1.imagePath}}` | 图片路径：`../assets/brands/xxx.png` |
+| `{{brand1.name}}` | 品牌名：`SPOT` |
+| `{{brand1.number}}` | 序号：`01` |
+
+**Step 7: 输出**
+
+```
+✅ slides/30_brand_catalog.html
+
+品牌顺序（按文件名排序）：
+01 - SPOT
+02 - BIG AGNES
+03 - BIOLITE
+04 - FRONT RUNNER
+05 - HELINOX
+06 - RUMPL
+```
 
 ---
 
@@ -334,6 +455,7 @@ minto-slides/
 ├── templates/
 │   ├── scatter_chart.html
 │   ├── user_profile.html
+│   ├── brand_catalog.html       # 第30页品牌目录模板
 │   └── industry_conclusion.html
 ├── assets/
 │   └── logo.png              # 默认Logo
@@ -351,16 +473,18 @@ minto-slides/
 ## 注意事项
 
 1. **Logo必须存在**：每次生成前检查并复制logo到项目目录
-2. **图片前置检查**：25-29页生成前必须检查截图是否存在
+2. **图片前置检查**：25-29页和30页生成前必须检查图片是否存在
 3. **批量生成**：25-29页一次生成5页，49-50页一次生成2页
 4. **数据一致性**：25-29页的人群从24页数据中选取
 5. **文字充实**：用户画像页面的文字要足够详细
-6. **路径规范**：HTML中的路径统一使用相对路径
+6. **路径规范**：HTML文件存放在 slides/ 目录，图片路径需使用 `../assets/` 相对路径
+7. **品牌图片命名**：30页品牌图片需按规则命名（小写+下划线），文件名决定显示顺序和文字
 
 ---
 
 ## 版本
 
+- v2.2.0 - 新增第30页品牌目录生成功能
 - v2.1.0 - 优化目录结构，支持批量生成，添加前置检查
 - v2.0.0 - 重命名为 minto-slides，新增第49-50页行业结论生成
 - v1.0.0 - 初始版本

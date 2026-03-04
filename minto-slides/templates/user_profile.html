@@ -13,10 +13,20 @@
 
         body {
             font-family: 'Microsoft YaHei', Arial, sans-serif;
-            background-color: #ffffff;
+            background-color: #1a1a1a;
             margin: 0;
             padding: 0;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* viewport包裹层 - 方便调试，无scale不影响打印 */
+        .viewport {
+            width: 1920px;
+            height: 1080px;
         }
 
         .slide-container {
@@ -144,50 +154,52 @@
     </style>
 </head>
 <body>
-    <div class="slide-container">
-        <!-- 顶部标题 -->
-        <div class="header">
-            <div class="header-title">
-                <span class="section">{{section}}</span>
-                <span>　　{{subsection}}</span>
-            </div>
-            <div class="header-logo">
-                <img src="{{logoPath}}" alt="Logo" class="logo-image">
-            </div>
-        </div>
-
-        <!-- 主内容区 -->
-        <div class="main-content">
-            <!-- 左侧文字分析区 -->
-            <div class="analysis-area">
-                <div class="user-type-title">{{userTypeTitle}}</div>
-
-                <div class="section-block">
-                    <div class="section-title">人群规模</div>
-                    <div class="section-content">
-                        {{populationContent}}
-                    </div>
+    <div class="viewport">
+        <div class="slide-container">
+            <!-- 顶部标题 -->
+            <div class="header">
+                <div class="header-title">
+                    <span class="section">{{section}}</span>
+                    <span>　　{{subsection}}</span>
                 </div>
-
-                <div class="section-block">
-                    <div class="section-title">人群年龄水平</div>
-                    <div class="section-content">
-                        {{ageContent}}
-                    </div>
-                </div>
-
-                <div class="section-block">
-                    <div class="section-title">人群消费水平和习惯</div>
-                    <div class="section-content">
-                        {{consumptionContent}}
-                    </div>
+                <div class="header-logo">
+                    <img src="{{logoPath}}" alt="Logo" class="logo-image">
                 </div>
             </div>
 
-            <!-- 右侧Instagram截图区 -->
-            <div class="instagram-area">
-                <div class="instagram-card">
-                    <img src="{{profileImagePath}}" alt="用户画像截图" class="instagram-image">
+            <!-- 主内容区 -->
+            <div class="main-content">
+                <!-- 左侧文字分析区 -->
+                <div class="analysis-area">
+                    <div class="user-type-title">{{userTypeTitle}}</div>
+
+                    <div class="section-block">
+                        <div class="section-title">人群规模</div>
+                        <div class="section-content">
+                            {{populationContent}}
+                        </div>
+                    </div>
+
+                    <div class="section-block">
+                        <div class="section-title">人群年龄水平</div>
+                        <div class="section-content">
+                            {{ageContent}}
+                        </div>
+                    </div>
+
+                    <div class="section-block">
+                        <div class="section-title">人群消费水平和习惯</div>
+                        <div class="section-content">
+                            {{consumptionContent}}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧Instagram截图区 -->
+                <div class="instagram-area">
+                    <div class="instagram-card">
+                        <img src="{{profileImagePath}}" alt="用户画像截图" class="instagram-image">
+                    </div>
                 </div>
             </div>
         </div>

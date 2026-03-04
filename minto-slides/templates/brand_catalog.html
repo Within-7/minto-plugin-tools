@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>品牌案例拆解目录</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Microsoft YaHei', Arial, sans-serif; }
+
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* viewport包裹层 - 方便调试，无scale不影响打印 */
+        .viewport {
+            width: 1920px;
+            height: 1080px;
+        }
+
+        .slide-container {
+            width: 1920px;
+            height: 1080px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 标题区 */
+        .header {
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 20px;
+            margin-bottom: 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .header h1 { font-size: 36px; font-weight: bold; color: #2c3e50; }
+        .header h1 span { color: #3498db; }
+        .logo img { height: 50px; width: auto; }
+
+        /* 主布局区 */
+        .main-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex: 1;
+        }
+
+        /* --- 左侧区域 --- */
+        .left-column { width: 900px; }
+        .subtitle { font-size: 18px; color: #666; margin-bottom: 20px; height: 30px; }
+
+        /* 核心：定义宫格高度 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 224px);
+            gap: 3px;
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        }
+        .grid-item {
+            position: relative;
+            overflow: hidden;
+        }
+        .brand-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .item-overlay {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 16px;
+        }
+        .item-overlay b { font-weight: 600; }
+
+        /* --- 右侧区域 --- */
+        .right-column {
+            width: 720px;
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            height: 678px;
+            justify-content: space-between;
+        }
+
+        .brand-item {
+            height: 85px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            border: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .brand-item:hover {
+            transform: translateX(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .number-tag {
+            width: 75px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 26px;
+            font-weight: bold;
+            border-radius: 12px 0 0 12px;
+        }
+        .brand-name { font-size: 24px; font-weight: 600; padding-left: 32px; color: #333; }
+
+        /* 颜色类 */
+        .bg-01 { background: #2196F3; }
+        .bg-02 { background: #FF5722; }
+        .bg-03 { background: #FFC107; color: #333; }
+        .bg-04 { background: #0D47A1; }
+        .bg-05 { background: #607D8B; }
+        .bg-06 { background: #E91E63; }
+    </style>
+</head>
+<body>
+    <div class="viewport">
+        <div class="slide-container">
+            <!-- 标题区 -->
+            <div class="header">
+                <h1><span>{{sectionTitle}}</span></h1>
+                <div class="logo"><img src="{{logoPath}}" alt="Logo"></div>
+            </div>
+
+            <!-- 主布局区 -->
+            <div class="main-content">
+                <!-- 左侧宫格 -->
+                <div class="left-column">
+                    <div class="subtitle">{{subtitle}}</div>
+                    <div class="grid-container">
+                        <!-- 品牌图片1 -->
+                        <div class="grid-item">
+                            <img src="{{brand1.imagePath}}" alt="{{brand1.name}}" class="brand-image">
+                            <div class="item-overlay"><b>{{brand1.name}}</b></div>
+                        </div>
+                        <!-- 品牌图片2 -->
+                        <div class="grid-item">
+                            <img src="{{brand2.imagePath}}" alt="{{brand2.name}}" class="brand-image">
+                            <div class="item-overlay"><b>{{brand2.name}}</b></div>
+                        </div>
+                        <!-- 品牌图片3 -->
+                        <div class="grid-item">
+                            <img src="{{brand3.imagePath}}" alt="{{brand3.name}}" class="brand-image">
+                            <div class="item-overlay"><b>{{brand3.name}}</b></div>
+                        </div>
+                        <!-- 品牌图片4 -->
+                        <div class="grid-item">
+                            <img src="{{brand4.imagePath}}" alt="{{brand4.name}}" class="brand-image">
+                            <div class="item-overlay"><b>{{brand4.name}}</b></div>
+                        </div>
+                        <!-- 品牌图片5 -->
+                        <div class="grid-item">
+                            <img src="{{brand5.imagePath}}" alt="{{brand5.name}}" class="brand-image">
+                            <div class="item-overlay"><b>{{brand5.name}}</b></div>
+                        </div>
+                        <!-- 品牌图片6 -->
+                        <div class="grid-item">
+                            <img src="{{brand6.imagePath}}" alt="{{brand6.name}}" class="brand-image">
+                            <div class="item-overlay"><b>{{brand6.name}}</b></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧列表 -->
+                <div class="right-column">
+                    <div class="brand-item">
+                        <div class="number-tag bg-01">{{brand1.number}}</div>
+                        <div class="brand-name">{{brand1.name}}</div>
+                    </div>
+                    <div class="brand-item">
+                        <div class="number-tag bg-02">{{brand2.number}}</div>
+                        <div class="brand-name">{{brand2.name}}</div>
+                    </div>
+                    <div class="brand-item">
+                        <div class="number-tag bg-03">{{brand3.number}}</div>
+                        <div class="brand-name">{{brand3.name}}</div>
+                    </div>
+                    <div class="brand-item">
+                        <div class="number-tag bg-04">{{brand4.number}}</div>
+                        <div class="brand-name">{{brand4.name}}</div>
+                    </div>
+                    <div class="brand-item">
+                        <div class="number-tag bg-05">{{brand5.number}}</div>
+                        <div class="brand-name">{{brand5.name}}</div>
+                    </div>
+                    <div class="brand-item">
+                        <div class="number-tag bg-06">{{brand6.number}}</div>
+                        <div class="brand-name">{{brand6.name}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
