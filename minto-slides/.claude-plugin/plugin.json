@@ -1,0 +1,10 @@
+{
+  "name": "minto-slides",
+  "version": "2.0.0",
+  "description": "演示文稿页面生成器 - 支持消费者洞察散点图(第24页)、用户画像(第25-29页)、行业结论卡片(第49-50页)",
+  "author": {
+    "name": "minto"
+  },
+  "license": "MIT",
+  "keywords": ["presentation", "slides", "scatter chart", "user profile", "industry conclusion", "minto"]
+}

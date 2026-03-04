@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{sectionTitle}}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', Arial, sans-serif;
+            background-color: #FFFFFF;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1920px;
+            height: 1080px;
+            position: relative;
+            margin: 0 auto;
+            background: #FFFFFF;
+        }
+
+        /* 顶部标题栏 */
+        .header {
+            position: absolute;
+            top: 50px;
+            left: 80px;
+            right: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #2c3e50;
+            z-index: 10;
+        }
+
+        .header-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .header-title .section {
+            color: #3498db;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-image {
+            height: 50px;
+            width: auto;
+        }
+
+        /* 中轴线 */
+        .center-axis {
+            position: absolute;
+            left: 50%;
+            top: 180px;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 780px;
+            border-left: 2px dashed #bdc3c7;
+            z-index: 1;
+        }
+
+        /* 中轴线上的圆点 */
+        .axis-dots {
+            position: absolute;
+            left: 50%;
+            top: 180px;
+            transform: translateX(-50%);
+            height: 780px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .axis-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .axis-dot.blue { background: #1E88E5; }
+        .axis-dot.orange { background: #FF7043; }
+        .axis-dot.yellow { background: #FBC02D; }
+        .axis-dot.gold { background: #F9A825; }
+        .axis-dot.red { background: #FF5252; }
+        .axis-dot.cyan { background: #03A9F4; }
+
+        /* 卡片通用样式 */
+        .card {
+            position: absolute;
+            width: 680px;
+            min-height: 140px;
+            border-radius: 50px;
+            padding: 30px 40px 30px 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        /* 卡片数字圆圈 - 挂载在中轴线侧 */
+        .card-number {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        /* 左侧卡片 - 数字在右边 */
+        .card.left {
+            left: 150px;
+        }
+
+        .card.left .card-number {
+            right: -24px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .card.left .card-content-wrapper {
+            margin-right: 30px;
+        }
+
+        /* 右侧卡片 - 数字在左边 */
+        .card.right {
+            right: 150px;
+            padding: 30px 50px 30px 40px;
+        }
+
+        .card.right .card-number {
+            left: -24px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .card.right .card-content-wrapper {
+            margin-left: 30px;
+        }
+
+        /* 卡片标题 */
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        /* 卡片正文 */
+        .card-content {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #555;
+            text-align: justify;
+        }
+
+        .card-content strong {
+            font-weight: 600;
+        }
+
+        /* 颜色主题 - 6种颜色循环 */
+        .theme-blue { background: rgba(227, 242, 253, 0.9); }
+        .theme-blue .card-number { background: #1E88E5; }
+        .theme-blue .card-title { color: #1E88E5; }
+
+        .theme-orange { background: rgba(255, 235, 238, 0.9); }
+        .theme-orange .card-number { background: #FF7043; }
+        .theme-orange .card-title { color: #FF7043; }
+
+        .theme-yellow { background: rgba(255, 253, 231, 0.9); }
+        .theme-yellow .card-number { background: #FBC02D; }
+        .theme-yellow .card-title { color: #FBC02D; }
+
+        .theme-gold { background: rgba(255, 249, 196, 0.9); }
+        .theme-gold .card-number { background: #F9A825; }
+        .theme-gold .card-title { color: #F9A825; }
+
+        .theme-red { background: rgba(255, 235, 238, 0.9); }
+        .theme-red .card-number { background: #FF5252; }
+        .theme-red .card-title { color: #FF5252; }
+
+        .theme-cyan { background: rgba(225, 245, 254, 0.9); }
+        .theme-cyan .card-number { background: #03A9F4; }
+        .theme-cyan .card-title { color: #03A9F4; }
+
+        /* 卡片位置 - 左侧 */
+        .card-pos-1 { top: 230px; }
+        .card-pos-3 { top: 440px; }
+        .card-pos-5 { top: 650px; }
+
+        /* 卡片位置 - 右侧 */
+        .card-pos-2 { top: 260px; }
+        .card-pos-4 { top: 470px; }
+        .card-pos-6 { top: 680px; }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- 顶部标题栏 -->
+        <div class="header">
+            <div class="header-title">
+                <span class="section">{{sectionTitle}}</span>
+            </div>
+            <div class="header-logo">
+                <img src="{{logoPath}}" alt="Logo" class="logo-image">
+            </div>
+        </div>
+
+        <!-- 中轴线 -->
+        <div class="center-axis"></div>
+
+        <!-- 中轴线圆点 -->
+        <div class="axis-dots">
+            <div class="axis-dot blue"></div>
+            <div class="axis-dot orange"></div>
+            <div class="axis-dot yellow"></div>
+            <div class="axis-dot gold"></div>
+            <div class="axis-dot red"></div>
+            <div class="axis-dot cyan"></div>
+        </div>
+
+        <!-- 卡片1 -->
+        <div class="card left card-pos-1 theme-{{card1.theme}}">
+            <div class="card-number">{{card1.number}}</div>
+            <div class="card-content-wrapper">
+                <div class="card-title">{{card1.title}}</div>
+                <div class="card-content">{{card1.content}}</div>
+            </div>
+        </div>
+
+        <!-- 卡片2 -->
+        <div class="card right card-pos-2 theme-{{card2.theme}}">
+            <div class="card-number">{{card2.number}}</div>
+            <div class="card-content-wrapper">
+                <div class="card-title">{{card2.title}}</div>
+                <div class="card-content">{{card2.content}}</div>
+            </div>
+        </div>
+
+        <!-- 卡片3 -->
+        <div class="card left card-pos-3 theme-{{card3.theme}}">
+            <div class="card-number">{{card3.number}}</div>
+            <div class="card-content-wrapper">
+                <div class="card-title">{{card3.title}}</div>
+                <div class="card-content">{{card3.content}}</div>
+            </div>
+        </div>
+
+        <!-- 卡片4 -->
+        <div class="card right card-pos-4 theme-{{card4.theme}}">
+            <div class="card-number">{{card4.number}}</div>
+            <div class="card-content-wrapper">
+                <div class="card-title">{{card4.title}}</div>
+                <div class="card-content">{{card4.content}}</div>
+            </div>
+        </div>
+
+        <!-- 卡片5 -->
+        <div class="card left card-pos-5 theme-{{card5.theme}}">
+            <div class="card-number">{{card5.number}}</div>
+            <div class="card-content-wrapper">
+                <div class="card-title">{{card5.title}}</div>
+                <div class="card-content">{{card5.content}}</div>
+            </div>
+        </div>
+
+        <!-- 卡片6 -->
+        <div class="card right card-pos-6 theme-{{card6.theme}}">
+            <div class="card-number">{{card6.number}}</div>
+            <div class="card-content-wrapper">
+                <div class="card-title">{{card6.title}}</div>
+                <div class="card-content">{{card6.content}}</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

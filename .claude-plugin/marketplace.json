@@ -166,9 +166,9 @@
       "category": "productivity"
     },
     {
-      "name": "user-attention-analysis",
-      "description": "消费者洞察页面生成器 - 生成用户关注度散点图和优选用户展示页面（第24-29页）",
-      "source": "./user-attention-analysis",
+      "name": "minto-slides",
+      "description": "演示文稿页面生成器 - 支持消费者洞察散点图(第24页)、用户画像(第25-29页)、行业结论卡片(第49-50页)",
+      "source": "./minto-slides",
       "category": "productivity"
     }
   ]

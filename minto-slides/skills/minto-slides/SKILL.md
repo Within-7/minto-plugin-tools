@@ -1,11 +1,11 @@
 ---
-name: user-attention-analysis
-description: 消费者洞察页面生成器。当用户需要生成用户关注度分析、人群画像、散点图、消费者洞察页面时使用。支持生成第24页（散点图）和第25-29页（用户画像）。关键词：散点图、用户画像、市场得分、需求得分、Instagram截图、消费者洞察。
+name: minto-slides
+description: 演示文稿页面生成器。支持生成消费者洞察散点图(第24页)、用户画像(第25-29页)、行业结论卡片(第49-50页)。关键词：演示文稿、幻灯片、散点图、用户画像、行业结论、消费者洞察。
 ---
 
-# User Attention Analysis Skill
+# Minto Slides Skill
 
-消费者洞察页面生成器，支持生成第24-29页内容。
+演示文稿页面生成器，支持生成第24-29页（消费者洞察）和第49-50页（行业结论）。
 
 ## 依赖安装
 
@@ -20,17 +20,30 @@ python -m playwright install chromium
 
 ---
 
+## 功能模块
+
+| 模块 | 页码 | 类型 | 说明 |
+|------|------|------|------|
+| 消费者洞察 | 24 | 散点图 | 用户关注度分析（市场分 vs 需求分） |
+| 消费者洞察 | 25-29 | 用户画像 | 优选用户展示（文字 + Instagram截图） |
+| 行业结论 | 49-50 | 卡片布局 | 12个行业结论卡片，每页6个 |
+
+---
+
 ## 执行机制
 
 **重要：每次调用只生成一页，需要再次调用才继续下一页**
 
 ```
+# 消费者洞察模块
 第1次调用 → 生成第24页（散点图）
 第2次调用 → 生成第25页（用户画像1）
-第3次调用 → 生成第26页（用户画像2）
-第4次调用 → 生成第27页（用户画像3）
-第5次调用 → 生成第28页（用户画像4）
+...
 第6次调用 → 生成第29页（用户画像5）
+
+# 行业结论模块
+第1次调用 → 生成第49页（卡片1-6）
+第2次调用 → 生成第50页（卡片7-12）
 ```
 
 ---
@@ -84,55 +97,9 @@ licensed cosmetologist,1.33,10
 **Step 4: 模板渲染**
 使用 `templates/scatter_chart.html` 模板
 
-模板变量：
-| 变量 | 说明 |
-|------|------|
-| `{{section}}` | 部分标题，如"第七部分：消费者洞察" |
-| `{{subsection}}` | 小节标题，如"7.1 用户关注度" |
-| `{{topic}}` | 主题名称，如"户外露营装备" |
-| `{{chartConfigJson}}` | 图表配置JSON对象 |
-| `{{logoPath}}` | logo文件路径 |
-| `{{highMarketGroups}}` | 高市场得分人群列表 |
-| `{{highDemandGroups}}` | 高需求得分人群列表 |
-| `{{summaryDescription}}` | 数据总结描述 |
-| `{{dataSource}}` | 数据来源 |
-
 **Step 5: 输出**
 - 文件：`output/24_user_attention.html`
 - 同时生成数据状态文件供后续页面使用
-
-### 图表配置JSON示例
-
-```javascript
-var chartConfig = {
-    title: {
-        section: "第七部分：消费者洞察",
-        subsection: "7.1 用户关注度"
-    },
-    topic: "户外露营装备",
-    dataSource: "任小姐出海战略咨询自研心智洞察引擎系统",
-    dimensions: {
-        "职业": {
-            color: "#e74c3c",
-            data: [
-                {name: "摄影师", demandScore: 75, marketScore: 88, symbolSize: 28},
-                {name: "记者", demandScore: 68, marketScore: 85, symbolSize: 26}
-            ]
-        },
-        "爱好/运动": {
-            color: "#3498db",
-            data: [
-                {name: "tennis", demandScore: 3.3, marketScore: 10, symbolSize: 32}
-            ]
-        }
-    },
-    summary: {
-        highMarket: ["tennis", "yoga", "travel"],
-        highDemand: ["licensed cosmetologist", "fashion writer"],
-        description: "该图展示户外露营装备市场中关注度较高的用户画像"
-    }
-};
-```
 
 ---
 
@@ -145,11 +112,7 @@ var chartConfig = {
 ### 处理流程
 
 **Step 1: 选择目标人群**
-从第24页数据中选择高得分人群：
-- 优先选择高市场得分人群
-- 其次选择高需求得分人群
-- 确保每页展示不同人群
-- 记录当前进度，下次继续
+从第24页数据中选择高得分人群，记录当前进度
 
 **Step 2: 生成文字分析**
 
@@ -161,11 +124,6 @@ var chartConfig = {
 | 人群年龄水平 | 年龄分层、各年龄段占比、性别特征、不同活动差异 | 400-600字 |
 | 人群消费水平和习惯 | 年均消费、购买渠道占比、决策因素、消费特征、趋势 | 400-600字 |
 
-**文字要求：**
-- 数据要具体，包含百分比、金额等
-- 关键数据用 `<strong>` 标签加粗
-- 内容要详实，不能过于简略
-
 **Step 3: Instagram截图**
 
 调用截图脚本：
@@ -173,29 +131,106 @@ var chartConfig = {
 python3 scripts/instagram_screenshot.py "人群名称"
 ```
 
-脚本流程：
-1. 转换中文→英文hashtag
-2. 打开Instagram搜索该tag
-3. 等待9秒让用户点击一个KOL用户
-4. 弹出截图工具，用户点击窗口完成截图
-
 **Step 4: 模板渲染**
 使用 `templates/user_profile.html` 模板
-
-模板变量：
-| 变量 | 说明 |
-|------|------|
-| `{{section}}` | 部分标题 |
-| `{{subsection}}` | 小节标题，如"7.2 优选用户展示（1）" |
-| `{{userTypeTitle}}` | 人群类型标题 |
-| `{{populationContent}}` | 人群规模内容 |
-| `{{ageContent}}` | 年龄水平内容 |
-| `{{consumptionContent}}` | 消费习惯内容 |
-| `{{logoPath}}` | logo路径 |
 
 **Step 5: 输出**
 - HTML：`output/25_user_profile_1.html`
 - 截图：`output/instagram_人群名称.png`
+
+---
+
+## SOP - 第49-50页：行业结论生成
+
+### 输入格式
+
+**自由文本格式**（AI自动解析和扩展）
+
+用户可提供：
+- 行业描述段落
+- 关键点列表
+- 部分主题 + 部分内容
+- 甚至只是几个关键词
+
+示例：
+```
+户外露营装备行业是一个专注于露营相关装备的研发、制造和销售的行业。
+核心产品包括帐篷、睡袋、照明设备、炊具等。
+行业发展从军用转民用开始，经历了专业化、大众化和智能化三个阶段。
+2024年全球市场规模约为968亿美元...
+```
+
+### 处理流程
+
+**Step 1: 文本分析**
+- 读取用户提供的自由文本
+- 识别关键主题和内容要点
+- 分析内容结构和逻辑关系
+
+**Step 2: 主题提取/生成**
+
+根据文本内容，AI自动提取或生成12个主题卡片：
+
+| 卡片编号 | 建议主题方向 |
+|---------|-------------|
+| 01-02 | 行业定义、发展历程 |
+| 03-04 | 市场规模、区域分布 |
+| 05-06 | 产品分布、重点产品 |
+| 07-08 | 驱动因素、限制因素 |
+| 09-10 | 热点趋势、竞争格局 |
+| 11-12 | 品牌关注、用户关注 |
+
+**Step 3: 内容扩展**
+
+如果用户提供的内容不足12个卡片，LLM自动扩展：
+- 根据行业知识补充缺失内容
+- 确保每个卡片有100-150字的内容
+- 关键数据用 `<strong>` 标签加粗
+
+**Step 4: 颜色分配**
+
+6种颜色主题循环分配：
+
+| 主题色 | HEX值 | 卡片编号 |
+|--------|-------|---------|
+| blue | #1E88E5 | 01, 07 |
+| orange | #FF7043 | 02, 08 |
+| yellow | #FBC02D | 03, 09 |
+| gold | #F9A825 | 04, 10 |
+| red | #FF5252 | 05, 11 |
+| cyan | #03A9F4 | 06, 12 |
+
+**Step 5: 模板渲染**
+使用 `templates/industry_conclusion.html` 模板
+
+模板变量：
+| 变量 | 说明 |
+|------|------|
+| `{{sectionTitle}}` | 部分标题，如"第九部分：行业结论" |
+| `{{logoPath}}` | logo文件路径 |
+| `{{card1.number}}` | 卡片编号（01-06 或 07-12） |
+| `{{card1.title}}` | 卡片标题 |
+| `{{card1.content}}` | 卡片内容（可含HTML标签） |
+| `{{card1.theme}}` | 颜色主题（blue/orange/yellow/gold/red/cyan） |
+
+**Step 6: 输出**
+- 第49页：`output/49_industry_conclusion_1.html`（卡片1-6）
+- 第50页：`output/50_industry_conclusion_2.html`（卡片7-12）
+
+### 调用示例
+
+```
+用户：/minto-slides 生成行业结论页面，主题是户外露营装备，内容如下：
+[自由文本...]
+
+→ AI分析文本 → 提取/生成12个主题 → 扩展内容 → 分配颜色
+→ 输出：output/49_industry_conclusion_1.html
+
+用户：/minto-slides 继续生成第50页
+
+→ 使用已生成的卡片7-12数据 → 渲染模板
+→ 输出：output/50_industry_conclusion_2.html
+```
 
 ---
 
@@ -248,49 +283,25 @@ KEYWORD_MAPPING = {
 ## 文件结构
 
 ```
-user-attention-analysis/
+minto-slides/
 ├── .claude-plugin/
 │   └── plugin.json                # 插件清单
 ├── skills/
-│   └── user-attention-analysis/
+│   └── minto-slides/
 │       └── SKILL.md               # 本文件
 ├── templates/
-│   ├── scatter_chart.html         # 第24页模板
-│   └── user_profile.html          # 第25-29页模板
+│   ├── scatter_chart.html         # 第24页模板（散点图）
+│   ├── user_profile.html          # 第25-29页模板（用户画像）
+│   └── industry_conclusion.html   # 第49-50页模板（行业结论）
 ├── assets/
 │   └── logo.png                   # 默认Logo
 ├── scripts/
 │   └── instagram_screenshot.py    # Instagram截图脚本
 ├── examples/
-│   └── example_data.json          # 示例数据
+│   ├── example_scatter.json       # 散点图示例数据
+│   └── example_conclusion.txt     # 行业结论文本示例
 ├── requirements.txt               # Python依赖
 └── README.md                      # 使用说明
-```
-
----
-
-## 调用示例
-
-```
-用户：/user-attention-analysis 生成第24页，主题是户外露营装备，数据如下：
-人群特征,市场得分,需求得分
-摄影师,75,88
-tennis,10,3.3
-...
-
-→ 解析数据 → 识别维度 → 生成散点图
-→ 输出：output/24_user_attention.html
-
-用户：/user-attention-analysis 继续生成第25页
-
-→ 从24页数据选高得分人群（如：水上活动）
-→ 生成文字分析
-→ 调用截图脚本（等待用户手动操作）
-→ 输出：output/25_user_profile_1.html + instagram_水上活动.png
-
-用户：/user-attention-analysis 继续生成第26页
-
-→ 选下一个高得分人群 → ...
 ```
 
 ---
@@ -313,9 +324,11 @@ tennis,10,3.3
 3. **数据一致性**：25-29页的人群需从24页数据中选取
 4. **文字充实**：用户画像页面的文字要足够详细，撑满左侧区域
 5. **进度记录**：记录当前生成到第几页，下次继续
+6. **AI扩展**：行业结论页面支持AI自动扩展内容到12个卡片
 
 ---
 
 ## 版本
 
+- v2.0.0 - 重命名为 minto-slides，新增第49-50页行业结论生成
 - v1.0.0 - 初始版本，支持第24-29页生成
