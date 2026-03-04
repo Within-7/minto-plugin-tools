@@ -14,9 +14,32 @@ pip install playwright pillow
 python -m playwright install chromium
 ```
 
-## 输出目录
+**注意**：如果不需要自动截图功能，可以跳过 playwright 安装。
 
-默认输出到当前工作目录下的 `output/` 文件夹，用户可自定义。
+---
+
+## 项目目录结构
+
+**重要**：在当前项目目录下创建以下结构：
+
+```
+当前项目目录/
+├── assets/
+│   ├── logo.png                     # Logo文件（必需）
+│   └── profiles/                    # 25-29页用户画像截图
+│       ├── 水上活动.png
+│       ├── 自然探索.png
+│       ├── 极端探险.png
+│       ├── 长途旅行.png
+│       └── 家庭旅行.png
+├── slides/                          # 生成的HTML文件
+│   ├── 24_user_attention.html
+│   ├── 25_user_profile_1.html
+│   ├── ...
+│   ├── 49_industry_conclusion_1.html
+│   └── 50_industry_conclusion_2.html
+└── .minto-state.json                # 状态文件（自动生成）
+```
 
 ---
 
@@ -25,26 +48,33 @@ python -m playwright install chromium
 | 模块 | 页码 | 类型 | 说明 |
 |------|------|------|------|
 | 消费者洞察 | 24 | 散点图 | 用户关注度分析（市场分 vs 需求分） |
-| 消费者洞察 | 25-29 | 用户画像 | 优选用户展示（文字 + Instagram截图） |
+| 消费者洞察 | 25-29 | 用户画像 | 优选用户展示（文字 + 截图） |
 | 行业结论 | 49-50 | 卡片布局 | 12个行业结论卡片，每页6个 |
 
 ---
 
 ## 执行机制
 
-**重要：每次调用只生成一页，需要再次调用才继续下一页**
-
 ```
 # 消费者洞察模块
-第1次调用 → 生成第24页（散点图）
-第2次调用 → 生成第25页（用户画像1）
-...
-第6次调用 → 生成第29页（用户画像5）
+第24页：单次调用生成
+第25-29页：单次调用批量生成5页（需提前准备截图）
 
 # 行业结论模块
-第1次调用 → 生成第49页（卡片1-6）
-第2次调用 → 生成第50页（卡片7-12）
+第49-50页：单次调用批量生成2页
 ```
+
+---
+
+## 通用步骤：Logo处理
+
+**每次生成HTML前必须执行**：
+
+1. 检查当前项目目录是否存在 `assets/logo.png`
+2. 如果不存在：
+   - 从插件目录复制默认logo：`/Users/mac/Desktop/minto-plugin-tools/minto-slides/assets/logo.png`
+   - 复制到：`{当前项目目录}/assets/logo.png`
+3. HTML中的logo路径统一使用：`assets/logo.png`
 
 ---
 
@@ -70,12 +100,16 @@ licensed cosmetologist,1.33,10
 
 ### 处理流程
 
-**Step 1: 数据解析**
+**Step 1: Logo检查与复制**
+- 检查 `assets/logo.png` 是否存在
+- 不存在则从插件目录复制
+
+**Step 2: 数据解析**
 - 读取人群数据
 - 验证必需字段：人群名称、市场得分、需求得分
 - 归一化分数到0-100范围
 
-**Step 2: 维度自动识别**
+**Step 3: 维度自动识别**
 
 根据人群名称自动分类：
 
@@ -88,59 +122,132 @@ licensed cosmetologist,1.33,10
 | 生活方式 | vegetarian, vegan, smoker, meditation, fitness | #1abc9c |
 | 其他 | 未匹配到的 | #95a5a6 |
 
-**Step 3: 数据分析**
+**Step 4: 数据分析**
 - 高市场得分人群（TOP 5-10）
 - 高需求得分人群（TOP 5-10）
 - 各维度分布统计
 - 生成数据总结
 
-**Step 4: 模板渲染**
-使用 `templates/scatter_chart.html` 模板
+**Step 5: 模板渲染**
+- 使用 `templates/scatter_chart.html` 模板
+- Logo路径：`assets/logo.png`
 
-**Step 5: 输出**
-- 文件：`output/24_user_attention.html`
-- 同时生成数据状态文件供后续页面使用
+**Step 6: 输出**
+- 文件：`slides/24_user_attention.html`
+- 状态文件：`.minto-state.json`（记录人群数据供后续使用）
 
 ---
 
-## SOP - 第25-29页：用户画像生成
+## SOP - 第25-29页：用户画像批量生成
 
-### 前置条件
-- 第24页已生成
-- 存在高得分人群数据
+### 前置条件检查
+
+**Step 1: 检查图片文件**
+
+生成前必须检查 `assets/profiles/` 目录：
+
+```
+需要检查的图片（根据24页数据选取的人群）：
+- assets/profiles/水上活动.png
+- assets/profiles/自然探索.png
+- assets/profiles/极端探险.png
+- assets/profiles/长途旅行.png
+- assets/profiles/家庭旅行.png
+```
+
+**如果图片缺失**：
+
+1. 输出提示信息：
+```
+⚠️ 检测到以下图片缺失：
+- assets/profiles/xxx.png
+- assets/profiles/xxx.png
+
+请先上传图片，格式要求：
+- 尺寸：480px × 850-900px（推荐）
+- 格式：PNG 或 JPG
+- 存放位置：assets/profiles/
+- 文件命名：{人群名称}.png
+
+上传完成后回复"继续"。
+```
+
+2. 等待用户确认后再继续
+
+### 图片格式要求
+
+| 项目 | 要求 |
+|------|------|
+| 宽度 | 480px（固定） |
+| 高度 | 850-900px（推荐） |
+| 格式 | PNG 或 JPG |
+| 命名 | `{人群名称}.png`（如：水上活动.png） |
+| 位置 | `assets/profiles/` |
 
 ### 处理流程
 
-**Step 1: 选择目标人群**
-从第24页数据中选择高得分人群，记录当前进度
+**Step 2: Logo检查与复制**
+- 确保 `assets/logo.png` 存在
 
-**Step 2: 生成文字分析**
+**Step 3: 选择目标人群**
+- 从第24页数据（`.minto-state.json`）中选取5个高得分人群
+- 优先选择高市场得分人群
 
-使用大模型生成三类内容，**要求文字充实撑满左侧区域**：
+**Step 4: 批量生成文字分析**
+
+为每个选中的5个人群生成三类内容：
 
 | 模块 | 内容要求 | 字数要求 |
 |------|---------|---------|
-| 人群规模 | 全球人数、占比、细分群体、地区分布、增长率、预测 | 400-600字 |
-| 人群年龄水平 | 年龄分层、各年龄段占比、性别特征、不同活动差异 | 400-600字 |
-| 人群消费水平和习惯 | 年均消费、购买渠道占比、决策因素、消费特征、趋势 | 400-600字 |
+| 人群规模 | 全球人数、占比、细分群体、地区分布、增长率、预测 | 200-300字 |
+| 人群年龄水平 | 年龄分层、各年龄段占比、性别特征、不同活动差异 | 200-300字 |
+| 人群消费水平和习惯 | 年均消费、购买渠道占比、决策因素、消费特征、趋势 | 200-300字 |
 
-**Step 3: Instagram截图**
+**文字要求**：
+- 数据要具体，包含百分比、金额等
+- 关键数据用 `<strong>` 标签加粗
+- 内容要详实，不能过于简略
 
-调用截图脚本：
-```bash
-python3 scripts/instagram_screenshot.py "人群名称"
+**Step 5: 批量渲染模板**
+
+使用 `templates/user_profile.html` 模板，一次性生成5页：
+
+| 输出文件 | 人群 | 图片路径 |
+|---------|------|---------|
+| `slides/25_user_profile_1.html` | 第1个人群 | `assets/profiles/{人群名}.png` |
+| `slides/26_user_profile_2.html` | 第2个人群 | `assets/profiles/{人群名}.png` |
+| `slides/27_user_profile_3.html` | 第3个人群 | `assets/profiles/{人群名}.png` |
+| `slides/28_user_profile_4.html` | 第4个人群 | `assets/profiles/{人群名}.png` |
+| `slides/29_user_profile_5.html` | 第5个人群 | `assets/profiles/{人群名}.png` |
+
+**Step 6: 输出确认**
+
+```
+✅ slides/25_user_profile_1.html（水上活动）
+✅ slides/26_user_profile_2.html（自然探索）
+✅ slides/27_user_profile_3.html（极端探险）
+✅ slides/28_user_profile_4.html（长途旅行）
+✅ slides/29_user_profile_5.html（家庭旅行）
+
+批量生成完成！
 ```
 
-**Step 4: 模板渲染**
-使用 `templates/user_profile.html` 模板
+### 模板变量
 
-**Step 5: 输出**
-- HTML：`output/25_user_profile_1.html`
-- 截图：`output/instagram_人群名称.png`
+| 变量 | 说明 |
+|------|------|
+| `{{section}}` | 部分标题 |
+| `{{subsection}}` | 小节标题，如"7.2 优选用户展示（1）" |
+| `{{userTypeTitle}}` | 人群类型标题 |
+| `{{populationContent}}` | 人群规模内容 |
+| `{{ageContent}}` | 年龄水平内容 |
+| `{{consumptionContent}}` | 消费习惯内容 |
+| `{{logoPath}}` | logo路径：`assets/logo.png` |
+| `{{profileImagePath}}` | 截图路径：`assets/profiles/{人群名}.png` |
 
 ---
 
-## SOP - 第49-50页：行业结论生成
+## SOP - 第49-50页：行业结论批量生成
 
 ### 输入格式
 
@@ -152,24 +259,18 @@ python3 scripts/instagram_screenshot.py "人群名称"
 - 部分主题 + 部分内容
 - 甚至只是几个关键词
 
-示例：
-```
-户外露营装备行业是一个专注于露营相关装备的研发、制造和销售的行业。
-核心产品包括帐篷、睡袋、照明设备、炊具等。
-行业发展从军用转民用开始，经历了专业化、大众化和智能化三个阶段。
-2024年全球市场规模约为968亿美元...
-```
-
 ### 处理流程
 
-**Step 1: 文本分析**
+**Step 1: Logo检查与复制**
+- 确保 `assets/logo.png` 存在
+
+**Step 2: 文本分析**
 - 读取用户提供的自由文本
 - 识别关键主题和内容要点
-- 分析内容结构和逻辑关系
 
-**Step 2: 主题提取/生成**
+**Step 3: 主题提取/生成**
 
-根据文本内容，AI自动提取或生成12个主题卡片：
+AI自动提取或生成12个主题卡片：
 
 | 卡片编号 | 建议主题方向 |
 |---------|-------------|
@@ -180,155 +281,86 @@ python3 scripts/instagram_screenshot.py "人群名称"
 | 09-10 | 热点趋势、竞争格局 |
 | 11-12 | 品牌关注、用户关注 |
 
-**Step 3: 内容扩展**
+**Step 4: 内容扩展**
 
-如果用户提供的内容不足12个卡片，LLM自动扩展：
-- 根据行业知识补充缺失内容
 - 确保每个卡片有100-150字的内容
 - 关键数据用 `<strong>` 标签加粗
 
-**Step 4: 颜色分配**
+**Step 5: 颜色分配**
 
 6种颜色主题循环分配：
 
-| 主题色 | HEX值 | 卡片编号 |
-|--------|-------|---------|
-| blue | #1E88E5 | 01, 07 |
-| orange | #FF7043 | 02, 08 |
-| yellow | #FBC02D | 03, 09 |
-| gold | #F9A825 | 04, 10 |
-| red | #FF5252 | 05, 11 |
-| cyan | #03A9F4 | 06, 12 |
+| 主题色 | 卡片编号 |
+|--------|---------|
+| blue | 01, 07 |
+| orange | 02, 08 |
+| yellow | 03, 09 |
+| gold | 04, 10 |
+| red | 05, 11 |
+| cyan | 06, 12 |
 
-**Step 5: 模板渲染**
-使用 `templates/industry_conclusion.html` 模板
-
-模板变量：
-| 变量 | 说明 |
-|------|------|
-| `{{sectionTitle}}` | 部分标题，如"第九部分：行业结论" |
-| `{{logoPath}}` | logo文件路径 |
-| `{{card1.number}}` | 卡片编号（01-06 或 07-12） |
-| `{{card1.title}}` | 卡片标题 |
-| `{{card1.content}}` | 卡片内容（可含HTML标签） |
-| `{{card1.theme}}` | 颜色主题（blue/orange/yellow/gold/red/cyan） |
-
-**Step 6: 输出**
-- 第49页：`output/49_industry_conclusion_1.html`（卡片1-6）
-- 第50页：`output/50_industry_conclusion_2.html`（卡片7-12）
-
-### 调用示例
-
-```
-用户：/minto-slides 生成行业结论页面，主题是户外露营装备，内容如下：
-[自由文本...]
-
-→ AI分析文本 → 提取/生成12个主题 → 扩展内容 → 分配颜色
-→ 输出：output/49_industry_conclusion_1.html
-
-用户：/minto-slides 继续生成第50页
-
-→ 使用已生成的卡片7-12数据 → 渲染模板
-→ 输出：output/50_industry_conclusion_2.html
-```
+**Step 6: 批量输出**
+- `slides/49_industry_conclusion_1.html`（卡片1-6）
+- `slides/50_industry_conclusion_2.html`（卡片7-12）
 
 ---
 
-## 中文→英文Hashtag完整映射
+## 中文→英文Hashtag映射（可选工具）
+
+**注意**：`scripts/instagram_screenshot.py` 为可选工具，如需自动截图可使用。
 
 ```python
 KEYWORD_MAPPING = {
-    # 水上活动
     "水上活动": "watersports",
-    "水上/水边活动爱好者": "watersports",
-    "潜水": "diving",
-    "冲浪": "surfing",
-    "钓鱼": "fishing",
-    "皮划艇": "kayaking",
-    "游泳": "swimming",
-
-    # 自然探索
     "自然探索": "naturelover",
-    "自然探索爱好者": "naturelover",
-    "徒步": "hiking",
-    "露营": "camping",
-    "登山": "mountaineering",
-    "野生动物观察": "wildlife",
-
-    # 极端探险
     "极端探险": "extremesports",
-    "极端探险爱好者": "extremesports",
-    "攀岩": "rockclimbing",
-    "溪降": "canyoning",
-
-    # 旅行
     "长途旅行": "traveler",
-    "长途/四季旅行爱好者": "traveler",
-    "冬季露营": "wintercamping",
-    "滑雪": "skiing",
-
-    # 家庭
     "家庭旅行": "familytravel",
-    "团体/家庭旅行爱好者": "familytravel",
-    "带宠人士": "petfriendly",
-
-    # 美妆
-    "美甲": "nailart",
-    "婚庆美甲": "bridalnails",
+    # ...完整映射见脚本
 }
 ```
 
 ---
 
-## 文件结构
+## 插件目录结构
 
 ```
 minto-slides/
 ├── .claude-plugin/
-│   └── plugin.json                # 插件清单
+│   └── plugin.json
 ├── skills/
 │   └── minto-slides/
-│       └── SKILL.md               # 本文件
+│       └── SKILL.md
 ├── templates/
-│   ├── scatter_chart.html         # 第24页模板（散点图）
-│   ├── user_profile.html          # 第25-29页模板（用户画像）
-│   └── industry_conclusion.html   # 第49-50页模板（行业结论）
+│   ├── scatter_chart.html
+│   ├── user_profile.html
+│   └── industry_conclusion.html
 ├── assets/
-│   └── logo.png                   # 默认Logo
+│   └── logo.png              # 默认Logo
 ├── scripts/
-│   └── instagram_screenshot.py    # Instagram截图脚本
+│   └── instagram_screenshot.py  # 可选工具
 ├── examples/
-│   ├── example_scatter.json       # 散点图示例数据
-│   └── example_conclusion.txt     # 行业结论文本示例
-├── requirements.txt               # Python依赖
-└── README.md                      # 使用说明
-```
-
----
-
-## Logo配置
-
-默认使用 `assets/logo.png`
-
-调用时可指定其他logo：
-```
-用户：生成第24页，logo用 /path/to/my-logo.png
+│   ├── example_scatter.json
+│   └── example_conclusion.txt
+├── requirements.txt
+└── README.md
 ```
 
 ---
 
 ## 注意事项
 
-1. **分页执行**：每次只生成一页，避免一次性生成过多
-2. **手动配合**：截图需要用户手动点击Instagram用户和选择截图窗口
-3. **数据一致性**：25-29页的人群需从24页数据中选取
-4. **文字充实**：用户画像页面的文字要足够详细，撑满左侧区域
-5. **进度记录**：记录当前生成到第几页，下次继续
-6. **AI扩展**：行业结论页面支持AI自动扩展内容到12个卡片
+1. **Logo必须存在**：每次生成前检查并复制logo到项目目录
+2. **图片前置检查**：25-29页生成前必须检查截图是否存在
+3. **批量生成**：25-29页一次生成5页，49-50页一次生成2页
+4. **数据一致性**：25-29页的人群从24页数据中选取
+5. **文字充实**：用户画像页面的文字要足够详细
+6. **路径规范**：HTML中的路径统一使用相对路径
 
 ---
 
 ## 版本
 
+- v2.1.0 - 优化目录结构，支持批量生成，添加前置检查
 - v2.0.0 - 重命名为 minto-slides，新增第49-50页行业结论生成
-- v1.0.0 - 初始版本，支持第24-29页生成
+- v1.0.0 - 初始版本

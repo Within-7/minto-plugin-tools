@@ -7,7 +7,7 @@
 | 模块 | 页码 | 类型 | 说明 |
 |------|------|------|------|
 | 消费者洞察 | 24 | 散点图 | 用户关注度分析（市场分 vs 需求分） |
-| 消费者洞察 | 25-29 | 用户画像 | 优选用户展示（文字 + Instagram截图） |
+| 消费者洞察 | 25-29 | 用户画像 | 优选用户展示（文字 + 截图） |
 | 行业结论 | 49-50 | 卡片布局 | 12个行业结论卡片，每页6个 |
 
 ## 安装
@@ -16,8 +16,9 @@
 
 ```bash
 pip install -r requirements.txt
-python -m playwright install chromium
 ```
+
+**注意**：如果不需要自动截图功能，可以跳过 playwright 安装。
 
 ### 2. 安装Plugin
 
@@ -27,6 +28,25 @@ cp -r minto-slides ~/.claude/plugins/
 
 # 方式2：从仓库安装
 /plugin add your-repo/minto-plugin-tools
+```
+
+## 项目目录结构
+
+在当前项目目录下创建以下结构：
+
+```
+当前项目目录/
+├── assets/
+│   ├── logo.png                     # Logo文件（必需）
+│   └── profiles/                    # 25-29页用户画像截图
+│       ├── 水上活动.png
+│       ├── 自然探索.png
+│       └── ...
+├── slides/                          # 生成的HTML文件
+│   ├── 24_user_attention.html
+│   ├── 25_user_profile_1.html
+│   └── ...
+└── .minto-state.json                # 状态文件（自动生成）
 ```
 
 ## 使用方法
@@ -44,11 +64,20 @@ tennis,10,3.3
 
 ### 生成第25-29页（用户画像）
 
+**Step 1：准备截图**
+
+将截图放入 `assets/profiles/` 目录：
+- 尺寸：480px × 850-900px
+- 格式：PNG 或 JPG
+- 命名：`{人群名称}.png`
+
+**Step 2：调用生成**
+
 ```
-/minto-slides 继续生成第25页
+/minto-slides 生成25-29页
 ```
 
-每次调用生成一页，需要再次调用继续下一页。
+如果图片缺失，会提示你上传。上传完成后回复"继续"即可批量生成5页。
 
 ### 生成第49-50页（行业结论）
 
@@ -58,34 +87,25 @@ tennis,10,3.3
 [自由文本，AI会自动解析并扩展到12个卡片]
 ```
 
-AI会自动：
-1. 分析文本，提取/生成12个主题
-2. 扩展每个卡片的内容
-3. 分配颜色主题
-4. 生成两页HTML（49页卡片1-6，50页卡片7-12）
+一次调用生成49-50页全部2页。
 
-## 目录结构
+## 截图格式要求
 
+| 项目 | 要求 |
+|------|------|
+| 宽度 | 480px |
+| 高度 | 850-900px（推荐） |
+| 格式 | PNG 或 JPG |
+| 命名 | `{人群名称}.png` |
+| 位置 | `assets/profiles/` |
+
+**示例**：
 ```
-minto-slides/
-├── .claude-plugin/
-│   └── plugin.json                # 插件清单
-├── skills/
-│   └── minto-slides/
-│       └── SKILL.md               # 完整SOP
-├── templates/
-│   ├── scatter_chart.html         # 散点图模板（第24页）
-│   ├── user_profile.html          # 用户画像模板（第25-29页）
-│   └── industry_conclusion.html   # 行业结论模板（第49-50页）
-├── assets/
-│   └── logo.png                   # 默认Logo
-├── scripts/
-│   └── instagram_screenshot.py    # Instagram截图脚本
-├── examples/
-│   ├── example_scatter.json       # 散点图示例数据
-│   └── example_conclusion.txt     # 行业结论文本示例
-├── requirements.txt               # Python依赖
-└── README.md                      # 本文件
+assets/profiles/水上活动.png
+assets/profiles/自然探索.png
+assets/profiles/极端探险.png
+assets/profiles/长途旅行.png
+assets/profiles/家庭旅行.png
 ```
 
 ## 输入数据格式
@@ -102,64 +122,55 @@ tennis,10,3.3
 **JSON格式**
 ```json
 [
-  {"name": "摄影师", "marketScore": 75, "demandScore": 88},
-  {"name": "tennis", "marketScore": 10, "demandScore": 3.3}
+  {"name": "摄影师", "marketScore": 75, "demandScore": 88}
 ]
 ```
 
 ### 行业结论文本（第49-50页）
 
-**自由文本格式** - AI会自动解析和扩展
+自由文本格式，AI会自动解析和扩展：
 
 ```
-户外露营装备行业是一个专注于露营相关装备的研发、制造和销售的行业。
-核心产品包括帐篷、睡袋、照明设备、炊具等。
-行业发展从军用转民用开始...
+户外露营装备行业是一个专注于露营相关装备的行业。
+核心产品包括帐篷、睡袋、照明设备等。
+2024年全球市场规模约为968亿美元...
 ```
 
-## 输出
-
-所有文件输出到 `output/` 目录：
-
-### 消费者洞察
-- `24_user_attention.html` - 第24页（散点图）
-- `25_user_profile_1.html` - 第25页（用户画像1）
-- `26_user_profile_2.html` - 第26页（用户画像2）
-- ...
-- `instagram_*.png` - Instagram截图
-
-### 行业结论
-- `49_industry_conclusion_1.html` - 第49页（卡片1-6）
-- `50_industry_conclusion_2.html` - 第50页（卡片7-12）
-
-## Instagram截图说明
-
-生成第25-29页时，会调用截图脚本：
-1. 自动打开Instagram搜索对应hashtag
-2. 等待9秒让您点击一个KOL用户
-3. 弹出截图工具，点击窗口完成截图
-
-**注意**：截图需要手动配合操作。
-
-## 自定义Logo
-
-默认使用 `assets/logo.png`，可在调用时指定：
+## 插件目录结构
 
 ```
-/minto-slides 生成第24页，logo用 /path/to/my-logo.png
+minto-slides/
+├── .claude-plugin/
+│   └── plugin.json
+├── skills/
+│   └── minto-slides/
+│       └── SKILL.md
+├── templates/
+│   ├── scatter_chart.html
+│   ├── user_profile.html
+│   └── industry_conclusion.html
+├── assets/
+│   └── logo.png
+├── scripts/
+│   └── instagram_screenshot.py  # 可选工具
+├── examples/
+│   ├── example_scatter.json
+│   └── example_conclusion.txt
+├── requirements.txt
+└── README.md
 ```
 
 ## 注意事项
 
-1. 每次只生成一页，需再次调用继续
-2. 截图需要手动配合
-3. 文字内容会尽量充实
-4. 25-29页的人群从24页数据中选取
-5. 49-50页支持AI自动扩展内容
+1. **Logo**：首次使用会自动复制默认logo到项目目录
+2. **截图前置检查**：25-29页生成前会检查图片是否存在
+3. **批量生成**：一次调用生成多页
+4. **文字充实**：用户画像页面文字会自动扩展
 
 ## 版本
 
-- v2.0.0 - 重命名为 minto-slides，新增第49-50页行业结论生成
+- v2.1.0 - 优化目录结构，支持批量生成，添加前置检查
+- v2.0.0 - 重命名为 minto-slides，新增第49-50页
 - v1.0.0 - 初始版本
 
 ## License
