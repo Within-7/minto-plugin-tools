@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>品牌分析详情</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .viewport {
+            width: 1920px;
+            height: 1080px;
+        }
+
+        .slide-container {
+            width: 1920px;
+            height: 1080px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 50px 60px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== 标题栏 ===== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #2c3e50;
+            margin-bottom: 25px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand-badge {
+            background: #3498db;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .header-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .header-title .section {
+            color: #3498db;
+        }
+
+        .logo-image {
+            height: 50px;
+            width: auto;
+        }
+
+        /* ===== 主内容区 - 2行3列网格 ===== */
+        .main-content {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 1fr 1fr;
+            gap: 25px;
+        }
+
+        /* ===== 卡片通用样式 ===== */
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title::before {
+            content: '';
+            width: 4px;
+            height: 18px;
+            background: #3498db;
+            border-radius: 2px;
+        }
+
+        /* ===== 1. 用户定位 - 圆环图 ===== */
+        .donut-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .donut-container {
+            width: 260px;
+            height: 260px;
+            position: relative;
+        }
+
+        .donut-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .donut-center-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: #2c3e50;
+        }
+
+        .donut-center-label {
+            font-size: 13px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .donut-legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 15px;
+            margin-top: 18px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .legend-value {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* ===== 2. 用户需求 - 文字 ===== */
+        .text-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .text-block {
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 3px solid #3498db;
+        }
+
+        .text-block-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .text-block-content {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* ===== 3. 用户画像 - 双图并列 ===== */
+        .dual-image-area {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .image-box {
+            background: #f8f9fa;
+            border: 2px dashed #cbd5e1;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 13px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ===== 4. 流量模型 - 流程图 ===== */
+        .flow-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flow-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .flow-node {
+            padding: 14px 22px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            min-width: 90px;
+        }
+
+        .flow-node .sub {
+            font-size: 11px;
+            color: #666;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        .flow-source { background: #e3f2fd; color: #1565c0; }
+        .flow-channel { background: #fff3e0; color: #e65100; }
+        .flow-target { background: #e8f5e9; color: #2e7d32; }
+
+        .flow-arrow {
+            font-size: 20px;
+            color: #94a3b8;
+        }
+
+        /* ===== 5. 基石流量 ===== */
+        .traffic-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .traffic-text {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.7;
+        }
+
+        .traffic-text strong {
+            color: #2c3e50;
+        }
+
+        .traffic-table-box {
+            flex: 1;
+            background: #f8f9fa;
+            border: 2px dashed #cbd5e1;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 13px;
+            text-align: center;
+            min-height: 120px;
+            overflow: hidden;
+        }
+
+        .traffic-table-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* ===== 6. 外链分析 - 左右布局 ===== */
+        .backlink-content {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            align-items: center;
+        }
+
+        /* 左侧：饼图 */
+        .pie-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pie-container {
+            width: 200px;
+            height: 200px;
+            position: relative;
+        }
+
+        .pie-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .pie-center-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: #2c3e50;
+        }
+
+        .pie-center-label {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .pie-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 12px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .pie-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: #555;
+        }
+
+        /* 右侧：条形图 */
+        .bar-area {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .bar-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bar-label {
+            width: 100px;
+            font-size: 12px;
+            color: #555;
+            text-align: right;
+            flex-shrink: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .bar-track {
+            flex: 1;
+            height: 26px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+        }
+
+        .bar-value {
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .bar-1 .bar-fill { background: linear-gradient(90deg, #4f46e5, #6366f1); }
+        .bar-2 .bar-fill { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .bar-3 .bar-fill { background: linear-gradient(90deg, #10b981, #34d399); }
+        .bar-4 .bar-fill { background: linear-gradient(90deg, #ef4444, #f87171); }
+        .bar-5 .bar-fill { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+        .bar-6 .bar-fill { background: linear-gradient(90deg, #06b6d4, #22d3ee); }
+    </style>
+</head>
+<body>
+    <div class="viewport">
+        <div class="slide-container">
+            <!-- 标题栏 -->
+            <div class="header">
+                <div class="header-left">
+                    <div class="brand-badge">No.{{brandNumber}}</div>
+                    <div class="header-title">
+                        <span class="section">{{brandName}}</span>　　品牌分析详情
+                    </div>
+                </div>
+                <div class="header-logo">
+                    <img src="{{logoPath}}" alt="Logo" class="logo-image">
+                </div>
+            </div>
+
+            <!-- 主内容区 - 2行3列 -->
+            <div class="main-content">
+                <!-- 1. 用户定位 -->
+                <div class="card">
+                    <div class="card-title">用户定位</div>
+                    <div class="donut-area">
+                        <div>
+                            <div class="donut-container">
+                                <svg viewBox="0 0 200 200">
+                                    {{userPosition.svgCircles}}
+                                </svg>
+                                <div class="donut-center">
+                                    <div class="donut-center-value">{{userPosition.corePercent}}</div>
+                                    <div class="donut-center-label">{{userPosition.coreLabel}}</div>
+                                </div>
+                            </div>
+                            <div class="donut-legend">
+                                {{#each userPosition.legends}}
+                                <div class="legend-item"><div class="legend-dot" style="background:{{color}}"></div>{{label}} <span class="legend-value">{{percent}}</span></div>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. 用户需求 -->
+                <div class="card">
+                    <div class="card-title">用户需求</div>
+                    <div class="text-content">
+                        <div class="text-block">
+                            <div class="text-block-title">核心诉求</div>
+                            <div class="text-block-content">{{userNeeds.coreNeeds}}</div>
+                        </div>
+                        <div class="text-block">
+                            <div class="text-block-title">使用场景</div>
+                            <div class="text-block-content">{{userNeeds.scenarios}}</div>
+                        </div>
+                        <div class="text-block">
+                            <div class="text-block-title">决策因素</div>
+                            <div class="text-block-content">{{userNeeds.decisionFactors}}</div>
+                        </div>
+                        <div class="text-block">
+                            <div class="text-block-title">购买渠道</div>
+                            <div class="text-block-content">{{userNeeds.channels}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. 用户画像 -->
+                <div class="card">
+                    <div class="card-title">用户画像</div>
+                    <div class="dual-image-area">
+                        <div class="image-box">
+                            <img src="{{personaImage1Path}}" alt="用户画像1">
+                        </div>
+                        <div class="image-box">
+                            <img src="{{personaImage2Path}}" alt="用户画像2">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. 流量模型 -->
+                <div class="card">
+                    <div class="card-title">流量模型</div>
+                    <div class="flow-area">
+                        <div class="flow-container">
+                            {{#each flowModel.nodes}}
+                            {{#if @index}}<div class="flow-arrow">→</div>{{/if}}
+                            <div class="flow-node {{type}}">
+                                <div>{{title}}</div>
+                                <div class="sub">{{subtitle}}</div>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. 基石流量 -->
+                <div class="card">
+                    <div class="card-title">基石流量（SEO 关键词）</div>
+                    <div class="traffic-content">
+                        <div class="traffic-text">{{{seoTraffic.text}}}</div>
+                        <div class="traffic-table-box">
+                            <img src="{{seoTraffic.tableImagePath}}" alt="SEO关键词表格">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. 外链分析 -->
+                <div class="card">
+                    <div class="card-title">外链分析</div>
+                    <div class="backlink-content">
+                        <!-- 左侧：饼图 -->
+                        <div class="pie-area">
+                            <div class="pie-container">
+                                <svg viewBox="0 0 200 200">
+                                    {{backlinkAnalysis.svgCircles}}
+                                </svg>
+                                <div class="pie-center">
+                                    <div class="pie-center-value">{{backlinkAnalysis.totalCount}}</div>
+                                    <div class="pie-center-label">{{backlinkAnalysis.totalLabel}}</div>
+                                </div>
+                            </div>
+                            <div class="pie-legend">
+                                {{#each backlinkAnalysis.pieLegends}}
+                                <div class="pie-legend-item"><div class="legend-dot" style="background:{{color}}"></div>{{label}} {{percent}}</div>
+                                {{/each}}
+                            </div>
+                        </div>
+                        <!-- 右侧：条形图 -->
+                        <div class="bar-area">
+                            {{#each backlinkAnalysis.keywordBars}}
+                            <div class="bar-row bar-{{@index}}">
+                                <div class="bar-label">{{keyword}}</div>
+                                <div class="bar-track">
+                                    <div class="bar-fill" style="width:{{width}}%"><span class="bar-value">{{value}}</span></div>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
