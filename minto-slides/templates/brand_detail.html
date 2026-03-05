@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>品牌深度拆解</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .viewport {
+            width: 1920px;
+            height: 1080px;
+        }
+
+        .slide-container {
+            width: 1920px;
+            height: 1080px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 50px 60px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== 标题栏 ===== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand-badge {
+            background: #3498db;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .header-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .header-title .section {
+            color: #3498db;
+        }
+
+        .logo-image {
+            height: 50px;
+            width: auto;
+        }
+
+        /* ===== 主内容区 - 三列 + 水平对齐 ===== */
+        .main-content {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 560px 500px 1fr;
+            grid-template-rows: 400px 25px 1fr;
+            gap: 0 25px;
+        }
+
+        /* ===== 左列上半：品牌信息 ===== */
+        .left-column {
+            grid-row: 1 / 2;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title::before {
+            content: '';
+            width: 4px;
+            height: 18px;
+            background: #3498db;
+            border-radius: 2px;
+        }
+
+        .info-list {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-row {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .info-label {
+            width: 90px;
+            height: 36px;
+            flex-shrink: 0;
+            background: #f0f4f8;
+            color: #2c3e50;
+            padding: 0 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+
+        .info-value {
+            flex: 1;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            overflow: hidden;
+        }
+
+        /* ===== 左列下半：Logo区域 ===== */
+        .left-column-bottom {
+            grid-row: 3 / 4;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-box {
+            flex: 1;
+            background: #f8f9fa;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .brand-logo-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* ===== 中列上半：产品图 ===== */
+        .middle-column {
+            grid-row: 1 / 2;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-image-box {
+            flex: 1;
+            background: #f8f9fa;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* ===== 中列下半：产品信息 ===== */
+        .middle-column-bottom {
+            grid-row: 3 / 4;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 26px;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 18px;
+        }
+
+        .feature-list {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .feature-item {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .feature-item::before {
+            content: "●";
+            color: #3498db;
+            font-size: 8px;
+            position: absolute;
+            left: 0;
+            top: 4px;
+        }
+
+        /* ===== 右列上半：流量分布 ===== */
+        .right-top {
+            grid-row: 1 / 2;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bar-list {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .bar-row {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bar-label {
+            width: 70px;
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+            text-align: right;
+        }
+
+        .bar-track {
+            flex: 1;
+            height: 24px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+        }
+
+        .bar-value {
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .bar-1 .bar-fill { background: #4f46e5; }
+        .bar-2 .bar-fill { background: #f59e0b; }
+        .bar-3 .bar-fill { background: #10b981; }
+        .bar-4 .bar-fill { background: #ef4444; }
+        .bar-5 .bar-fill { background: #8b5cf6; }
+
+        /* ===== 右列下半：KPI ===== */
+        .right-bottom {
+            grid-row: 3 / 4;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .kpi-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .kpi-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .kpi-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: #2c3e50;
+        }
+
+        .kpi-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="viewport">
+        <div class="slide-container">
+            <!-- 标题栏 -->
+            <div class="header">
+                <div class="header-left">
+                    <div class="brand-badge">{{brandNumber}}</div>
+                    <div class="header-title">
+                        <span class="section">{{brandName}}</span>　　品牌深度拆解
+                    </div>
+                </div>
+                <div class="header-logo">
+                    <img src="{{logoPath}}" alt="Logo" class="logo-image">
+                </div>
+            </div>
+
+            <!-- 主内容区 -->
+            <div class="main-content">
+                <!-- 左列上半：品牌信息 -->
+                <div class="left-column">
+                    <div class="card-title">品牌背景与定位</div>
+                    <div class="info-list">
+                        <div class="info-row">
+                            <div class="info-label">基本信息</div>
+                            <div class="info-value">{{basicInfo}}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">用户画像</div>
+                            <div class="info-value">{{userProfile}}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">品牌使命</div>
+                            <div class="info-value">{{brandMission}}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">竞争优势</div>
+                            <div class="info-value">{{competitiveAdvantage}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 中列上半：产品图 -->
+                <div class="middle-column">
+                    <div class="card-title">独立站爆款产品</div>
+                    <div class="product-image-box">
+                        <img src="{{productImagePath}}" alt="{{productName}}" class="product-image">
+                    </div>
+                </div>
+
+                <!-- 右列上半：流量分布 -->
+                <div class="right-top">
+                    <div class="card-title">独立站流量来源分布</div>
+                    <div class="bar-list">
+                        <div class="bar-row bar-1">
+                            <div class="bar-label">Direct</div>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width: {{traffic.direct}}%;"><span class="bar-value">{{traffic.direct}}%</span></div>
+                            </div>
+                        </div>
+                        <div class="bar-row bar-2">
+                            <div class="bar-label">Search</div>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width: {{traffic.search}}%;"><span class="bar-value">{{traffic.search}}%</span></div>
+                            </div>
+                        </div>
+                        <div class="bar-row bar-3">
+                            <div class="bar-label">Social</div>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width: {{traffic.social}}%;"><span class="bar-value">{{traffic.social}}%</span></div>
+                            </div>
+                        </div>
+                        <div class="bar-row bar-4">
+                            <div class="bar-label">Referrals</div>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width: {{traffic.referrals}}%;"><span class="bar-value">{{traffic.referrals}}%</span></div>
+                            </div>
+                        </div>
+                        <div class="bar-row bar-5">
+                            <div class="bar-label">Mail</div>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width: {{traffic.mail}}%;"><span class="bar-value">{{traffic.mail}}%</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 水平对齐占位 -->
+                <div></div>
+
+                <!-- 左列下半：Logo -->
+                <div class="left-column-bottom">
+                    <div class="card-title">品牌视觉标识</div>
+                    <div class="logo-box">
+                        <img src="{{brandLogoPath}}" alt="{{brandName}} Logo" class="brand-logo-image">
+                    </div>
+                </div>
+
+                <!-- 中列下半：产品信息 -->
+                <div class="middle-column-bottom">
+                    <div class="product-name">{{productName}}</div>
+                    <div class="product-price">{{productPrice}}</div>
+                    <div class="feature-list">
+                        <div class="feature-item">{{feature1}}</div>
+                        <div class="feature-item">{{feature2}}</div>
+                        <div class="feature-item">{{feature3}}</div>
+                        <div class="feature-item">{{feature4}}</div>
+                        <div class="feature-item">{{feature5}}</div>
+                        <div class="feature-item">{{feature6}}</div>
+                        <div class="feature-item">{{feature7}}</div>
+                    </div>
+                </div>
+
+                <!-- 右列下半：KPI -->
+                <div class="right-bottom">
+                    <div class="card-title">网站核心运营指标</div>
+                    <div class="kpi-grid">
+                        <div class="kpi-item">
+                            <div class="kpi-value">{{kpi.dau}}</div>
+                            <div class="kpi-label">日均活跃用户</div>
+                        </div>
+                        <div class="kpi-item">
+                            <div class="kpi-value">{{kpi.duration}}</div>
+                            <div class="kpi-label">平均停留时长</div>
+                        </div>
+                        <div class="kpi-item">
+                            <div class="kpi-value">{{kpi.pages}}</div>
+                            <div class="kpi-label">人均访问页面</div>
+                        </div>
+                        <div class="kpi-item">
+                            <div class="kpi-value">{{kpi.bounceRate}}</div>
+                            <div class="kpi-label">用户跳出率</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

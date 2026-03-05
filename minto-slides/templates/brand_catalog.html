@@ -84,8 +84,12 @@
             padding: 10px 20px;
             color: #fff;
             font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .item-overlay b { font-weight: 600; }
+        .item-overlay b { font-weight: 600; white-space: nowrap; }
+        .item-overlay .cn-desc { font-size: 14px; color: rgba(255,255,255,0.85); white-space: nowrap; }
 
         /* --- 右侧区域 --- */
         .right-column {
@@ -153,32 +157,50 @@
                         <!-- 品牌图片1 -->
                         <div class="grid-item">
                             <img src="{{brand1.imagePath}}" alt="{{brand1.name}}" class="brand-image">
-                            <div class="item-overlay"><b>{{brand1.name}}</b></div>
+                            <div class="item-overlay">
+                                <b>{{brand1.name}}</b>
+                                <span class="cn-desc">{{brand1.cnDesc}}</span>
+                            </div>
                         </div>
                         <!-- 品牌图片2 -->
                         <div class="grid-item">
                             <img src="{{brand2.imagePath}}" alt="{{brand2.name}}" class="brand-image">
-                            <div class="item-overlay"><b>{{brand2.name}}</b></div>
+                            <div class="item-overlay">
+                                <b>{{brand2.name}}</b>
+                                <span class="cn-desc">{{brand2.cnDesc}}</span>
+                            </div>
                         </div>
                         <!-- 品牌图片3 -->
                         <div class="grid-item">
                             <img src="{{brand3.imagePath}}" alt="{{brand3.name}}" class="brand-image">
-                            <div class="item-overlay"><b>{{brand3.name}}</b></div>
+                            <div class="item-overlay">
+                                <b>{{brand3.name}}</b>
+                                <span class="cn-desc">{{brand3.cnDesc}}</span>
+                            </div>
                         </div>
                         <!-- 品牌图片4 -->
                         <div class="grid-item">
                             <img src="{{brand4.imagePath}}" alt="{{brand4.name}}" class="brand-image">
-                            <div class="item-overlay"><b>{{brand4.name}}</b></div>
+                            <div class="item-overlay">
+                                <b>{{brand4.name}}</b>
+                                <span class="cn-desc">{{brand4.cnDesc}}</span>
+                            </div>
                         </div>
                         <!-- 品牌图片5 -->
                         <div class="grid-item">
                             <img src="{{brand5.imagePath}}" alt="{{brand5.name}}" class="brand-image">
-                            <div class="item-overlay"><b>{{brand5.name}}</b></div>
+                            <div class="item-overlay">
+                                <b>{{brand5.name}}</b>
+                                <span class="cn-desc">{{brand5.cnDesc}}</span>
+                            </div>
                         </div>
                         <!-- 品牌图片6 -->
                         <div class="grid-item">
                             <img src="{{brand6.imagePath}}" alt="{{brand6.name}}" class="brand-image">
-                            <div class="item-overlay"><b>{{brand6.name}}</b></div>
+                            <div class="item-overlay">
+                                <b>{{brand6.name}}</b>
+                                <span class="cn-desc">{{brand6.cnDesc}}</span>
+                            </div>
                         </div>
                     </div>
                 </div>

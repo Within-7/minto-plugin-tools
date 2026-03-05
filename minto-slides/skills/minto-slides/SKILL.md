@@ -1,11 +1,12 @@
 ---
 name: minto-slides
-description: 演示文稿页面生成器。支持生成消费者洞察散点图(第24页)、用户画像(第25-29页)、品牌目录(第30页)、行业结论卡片(第49-50页)。关键词：演示文稿、幻灯片、散点图、用户画像、品牌目录、行业结论、消费者洞察。
+description: 演示文稿页面生成器。支持生成消费者洞察散点图(第24页)、用户画像(第25-29页)、品牌目录(第30页)、品牌详情(第31页)、行业结论卡片(第49-50页)。关键词：演示文稿、幻灯片、散点图、用户画像、品牌目录、品牌详情、行业结论、消费者洞察。
 ---
 
 # Minto Slides Skill
 
-演示文稿页面生成器，支持生成第24-29页（消费者洞察）、第30页（品牌目录）和第49-50页（行业结论）。
+演示文稿页面生成器，支持生成第24-29页（消费者洞察）、第30页（品牌目录）、第31页（品牌详情）和第49-50页（行业结论）。
+
 
 ## 依赖安装
 
@@ -32,18 +33,25 @@ python -m playwright install chromium
 │   │   ├── 极端探险.png
 │   │   ├── 长途旅行.png
 │   │   └── 家庭旅行.png
-│   └── brands/                      # 30页品牌目录图片
-│       ├── spot.png
-│       ├── biolite.png
-│       ├── helinox.png
-│       ├── big_agnes.png
-│       ├── front_runner.png
-│       └── rumpl.png
+│   ├── brands/                      # 30页品牌目录图片
+│   │   ├── spot.png
+│   │   ├── biolite.png
+│   │   ├── helinox.png
+│   │   ├── big_agnes.png
+│   │   ├── front_runner.png
+│   │   └── rumpl.png
+│   └── brand_details/               # 31页品牌详情图片
+│       ├── spot_product.png         # 产品图 450×300px
+│       ├── spot_logo.png            # 品牌Logo 510×350px
+│       └── ...
+├── data/                           # 数据文件
+│   └── brand_spot.md                # 31页品牌详情数据
 ├── slides/                          # 生成的HTML文件
 │   ├── 24_user_attention.html
 │   ├── 25_user_profile_1.html
 │   ├── ...
 │   ├── 30_brand_catalog.html
+│   ├── 31_brand_detail.html
 │   ├── 49_industry_conclusion_1.html
 │   └── 50_industry_conclusion_2.html
 └── .minto-state.json                # 状态文件（自动生成）
@@ -58,6 +66,7 @@ python -m playwright install chromium
 | 消费者洞察 | 24 | 散点图 | 用户关注度分析（市场分 vs 需求分） |
 | 消费者洞察 | 25-29 | 用户画像 | 优选用户展示（文字 + 截图） |
 | 品牌案例 | 30 | 品牌目录 | 6个品牌索引（图片宫格 + 列表） |
+| 品牌案例 | 31 | 品牌详情 | 单品牌深度拆解（背景+产品+数据+KPI） |
 | 行业结论 | 49-50 | 卡片布局 | 12个行业结论卡片，每页6个 |
 
 ---
@@ -70,7 +79,8 @@ python -m playwright install chromium
 第25-29页：单次调用批量生成5页（需提前准备截图）
 
 # 品牌案例模块
-第30页：单次调用生成（需提前准备品牌图片）
+第30页：单次调用生成（需提前准备品牌目录图片）
+第31页：单次调用生成（需提前准备品牌详情图片 + Markdown数据）
 
 # 行业结论模块
 第49-50页：单次调用批量生成2页
@@ -326,7 +336,30 @@ licensed cosmetologist,1.33,10
 | `big_agnes.png` | `BIG AGNES` |
 | `front_runner.png` | `FRONT RUNNER` |
 
-**Step 5: 颜色分配**
+**Step 5: 中文介绍生成与确认**
+
+为每个品牌生成简短中文介绍：
+
+1. AI根据品牌名称自动生成中文介绍（5-10字，基于猜测）
+2. 输出给用户确认：
+```
+品牌中文介绍预览：
+01 - FRONT RUNNER：南非越野装备品牌
+02 - SPOT：户外运动装备
+03 - BIG AGNES：露营装备专家
+...
+
+如需修改请告知，确认后回复"继续"。
+```
+3. 用户可修改任意品牌的中文介绍
+4. 确认后再进入下一步
+
+**注意事项**：
+- 中文介绍控制在5-10字，过长会超出overlay条
+- 对于知名品牌AI可准确描述，小众品牌可能需要用户修正
+- 中文介绍在overlay条中右对齐显示
+
+**Step 6: 颜色分配**
 
 6种颜色按顺序固定分配：
 
@@ -339,7 +372,7 @@ licensed cosmetologist,1.33,10
 | 05 | bg-05 | #607D8B | 第5个品牌 |
 | 06 | bg-06 | #E91E63 | 第6个品牌 |
 
-**Step 6: 模板渲染**
+**Step 7: 模板渲染**
 
 使用 `templates/brand_catalog.html` 模板：
 
@@ -351,8 +384,9 @@ licensed cosmetologist,1.33,10
 | `{{brand1.imagePath}}` | 图片路径：`../assets/brands/xxx.png` |
 | `{{brand1.name}}` | 品牌名：`SPOT` |
 | `{{brand1.number}}` | 序号：`01` |
+| `{{brand1.cnDesc}}` | 中文介绍：`户外运动装备`（5-10字，右对齐显示） |
 
-**Step 7: 输出**
+**Step 8: 输出**
 
 ```
 ✅ slides/30_brand_catalog.html
@@ -364,6 +398,161 @@ licensed cosmetologist,1.33,10
 04 - FRONT RUNNER
 05 - HELINOX
 06 - RUMPL
+```
+
+---
+
+## SOP - 第31页：品牌详情生成
+
+### 前置条件检查
+
+**Step 1: 检查图片文件**
+
+生成前必须检查 `assets/brand_details/` 目录：
+
+```
+需要2张品牌图片：
+- {品牌名}_product.png  # 产品图 450×300px
+- {品牌名}_logo.png     # 品牌Logo 510×350px
+```
+
+**如果图片缺失**：
+
+1. 输出提示信息：
+```
+⚠️ 检测到以下图片缺失：
+- assets/brand_details/{品牌名}_product.png
+- assets/brand_details/{品牌名}_logo.png
+
+请先上传图片，格式要求：
+- 产品图：450px × 300px（宽×高），PNG格式，透明底
+- 品牌Logo：510px × 350px（宽×高），PNG格式，透明底
+- 存放位置：assets/brand_details/
+- 文件命名：{品牌名}_product.png、{品牌名}_logo.png（如：spot_product.png, spot_logo.png）
+- 命名规则：小写字母，单词间用下划线分隔
+
+上传完成后回复"继续"。
+```
+
+2. 等待用户确认后再继续
+
+### 图片格式要求
+
+| 图片类型 | 宽度 | 高度 | 格式 | 命名规则 |
+|---------|------|------|------|---------|
+| 产品图 | 450px | 300px | PNG（透明底） | `{品牌名}_product.png` |
+| 品牌Logo | 510px | 350px | PNG（透明底） | `{品牌名}_logo.png` |
+| 存放位置 | `assets/brand_details/` |
+
+### 数据输入方式
+
+**方式一：Markdown 文件（推荐）**
+
+用户上传 Markdown 文件到 `data/` 目录，格式如下：
+
+**方式二：对话中直接提供**
+
+用户在对话中直接提供品牌信息数据。
+
+### Markdown 文件格式示例
+
+```markdown
+# 品牌详情：SPOT
+品牌序号：01
+
+## 品牌背景与定位
+- 基本信息：创立于2007年，美国路易斯安那州，母公司 Globalstar（2023年营收 1.24亿美元）
+- 用户画像：核心用户：重度户外运动玩家、极地探险者、野外科研工作者
+- 品牌使命："无论身处何处，卫星通信技术始终保障您的生命安全"
+- 竞争优势：全球卫星网络覆盖、专业级SOS救援服务、军工级产品品质
+
+## 爆款产品
+- 产品名称：SPOT X 卫星通讯仪
+- 产品价格：$249.99 USD
+- 产品特点（7条，每条40-60字）：
+  1. 内置 QWERTY 全键盘，支持独立发送短信和邮件，无需依赖手机即可完成通讯
+  2. 24/7 全球 SOS 求救响应服务，一键触发紧急救援，覆盖全球无盲区
+  3. IP67 级军工标准防尘防水，可在极端天气和恶劣环境下稳定工作
+  4. 蓝牙连接智能手机 App，实现位置追踪、消息同步和设备远程控制
+  5. 超长续航设计，单次充电可连续使用长达 10 天，适合长途户外探险
+  6. 支持 GPS/GLONASS 双模定位，定位精度可达 2.5 米，实时轨迹记录
+  7. 轻量化机身设计，整机仅重 198g，便于携带，不增加户外负重负担
+
+## 流量来源分布
+| 来源 | 占比 |
+|-----|-----|
+| Direct | 65 |
+| Search | 48 |
+| Social | 15 |
+| Referrals | 12 |
+| Mail | 8 |
+
+## 核心运营指标
+| 指标 | 数值 |
+|-----|-----|
+| 日均活跃用户 | 10.6K |
+| 平均停留时长 | 02:45 |
+| 人均访问页面 | 3.54 |
+| 用户跳出率 | 45% |
+
+## 图片文件
+- 产品图：spot_product.png
+- 品牌Logo：spot_logo.png
+```
+
+### 处理流程
+
+**Step 2: Logo检查与复制**
+- 确保 `assets/logo.png` 存在
+
+**Step 3: 读取数据**
+- 如果用户上传了 Markdown 文件，读取并解析
+- 如果用户在对话中提供，直接使用
+
+**Step 4: 数据验证**
+
+必需字段：
+- `品牌名称` `品牌序号`
+- `基本信息` `用户画像` `品牌使命` `竞争优势`
+- `产品名称` `产品价格` `产品特点（7条）`
+- `流量来源`（5个）
+- `KPI指标`（4个）
+
+**Step 5: 模板渲染**
+
+使用 `templates/brand_detail.html` 模板：
+
+| 变量 | 说明 |
+|------|------|
+| `{{brandNumber}}` | 品牌序号：`01` |
+| `{{brandName}}` | 品牌名称：`SPOT` |
+| `{{logoPath}}` | 页面Logo：`../assets/logo.png` |
+| `{{basicInfo}}` | 基本信息 |
+| `{{userProfile}}` | 用户画像 |
+| `{{brandMission}}` | 品牌使命 |
+| `{{competitiveAdvantage}}` | 竞争优势 |
+| `{{productImagePath}}` | 产品图路径：`../assets/brand_details/{品牌名}_product.png` |
+| `{{brandLogoPath}}` | 品牌Logo路径：`../assets/brand_details/{品牌名}_logo.png` |
+| `{{productName}}` | 产品名称 |
+| `{{productPrice}}` | 产品价格 |
+| `{{feature1}}` ~ `{{feature7}}` | 产品特点（7条） |
+| `{{traffic.direct}}` | Direct流量占比 |
+| `{{traffic.search}}` | Search流量占比 |
+| `{{traffic.social}}` | Social流量占比 |
+| `{{traffic.referrals}}` | Referrals流量占比 |
+| `{{traffic.mail}}` | Mail流量占比 |
+| `{{kpi.dau}}` | 日均活跃用户 |
+| `{{kpi.duration}}` | 平均停留时长 |
+| `{{kpi.pages}}` | 人均访问页面 |
+| `{{kpi.bounceRate}}` | 用户跳出率 |
+
+**Step 6: 输出**
+
+```
+✅ slides/31_brand_detail.html
+
+品牌：SPOT（No.01）
+产品：SPOT X 卫星通讯仪
 ```
 
 ---
@@ -456,6 +645,7 @@ minto-slides/
 │   ├── scatter_chart.html
 │   ├── user_profile.html
 │   ├── brand_catalog.html       # 第30页品牌目录模板
+│   ├── brand_detail.html        # 第31页品牌详情模板
 │   └── industry_conclusion.html
 ├── assets/
 │   └── logo.png              # 默认Logo
@@ -463,7 +653,8 @@ minto-slides/
 │   └── instagram_screenshot.py  # 可选工具
 ├── examples/
 │   ├── example_scatter.json
-│   └── example_conclusion.txt
+│   ├── example_conclusion.txt
+│   └── example_brand_detail.md  # 第31页示例数据
 ├── requirements.txt
 └── README.md
 ```
@@ -473,17 +664,20 @@ minto-slides/
 ## 注意事项
 
 1. **Logo必须存在**：每次生成前检查并复制logo到项目目录
-2. **图片前置检查**：25-29页和30页生成前必须检查图片是否存在
+2. **图片前置检查**：25-29页、30页、31页生成前必须检查图片是否存在
 3. **批量生成**：25-29页一次生成5页，49-50页一次生成2页
 4. **数据一致性**：25-29页的人群从24页数据中选取
-5. **文字充实**：用户画像页面的文字要足够详细
+5. **文字充实**：用户画像页面、品牌详情页面的文字要足够详细
 6. **路径规范**：HTML文件存放在 slides/ 目录，图片路径需使用 `../assets/` 相对路径
 7. **品牌图片命名**：30页品牌图片需按规则命名（小写+下划线），文件名决定显示顺序和文字
+8. **品牌详情数据**：31页需要用户提供 Markdown 数据文件或对话中直接提供数据
 
 ---
 
 ## 版本
 
+- v2.4.0 - 新增第31页品牌详情生成功能（模板+示例+图片规格）
+- v2.3.0 - 第30页品牌目录新增中文介绍功能（右对齐显示，用户可确认修改）
 - v2.2.0 - 新增第30页品牌目录生成功能
 - v2.1.0 - 优化目录结构，支持批量生成，添加前置检查
 - v2.0.0 - 重命名为 minto-slides，新增第49-50页行业结论生成
