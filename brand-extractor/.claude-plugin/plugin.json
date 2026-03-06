@@ -2,7 +2,9 @@
   "name": "brand-extractor",
   "version": "1.0.0",
   "description": "PPT品牌信息提取器 - 从品牌案例PPT中提取品牌目录、详情、分析、社媒数据，支持四种提取模式",
-  "author": "within-7",
+  "author": {
+    "name": "within-7"
+  },
   "commands": [
     "./commands/extract-catalog.md",
     "./commands/extract-detail.md",
