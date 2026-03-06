@@ -1,93 +1,41 @@
 {
   "brandNumber": "01",
-  "brandName": "SPOT",
+  "brandName": "CHEWY",
   "logoPath": "../assets/logo.png",
 
   "kolStats": {
-    "items": [
-      {"label": "合作KOL总数", "value": "186位", "highlight": true},
-      {"label": "头部KOL (>100万粉丝)", "value": "32位", "highlight": false},
-      {"label": "腰部KOL (10-100万)", "value": "78位", "highlight": false},
-      {"label": "素人博主 (<10万)", "value": "76位", "highlight": false},
-      {"label": "平均互动率", "value": "4.8%", "highlight": true}
-    ],
-    "chartBars": [
-      {"value": "32", "label": "头部", "height": 140},
-      {"value": "45", "label": "探险", "height": 120},
-      {"value": "38", "label": "户外", "height": 100},
-      {"value": "28", "label": "科技", "height": 80},
-      {"value": "43", "label": "其他", "height": 60}
-    ]
-  },
-
-  "socialMediaData": {
-    "platforms": [
-      {
-        "name": "Instagram",
-        "icon": "ig",
-        "iconLabel": "IG",
-        "followers": "156K",
-        "monthlyPosts": "28条",
-        "engagementRate": "5.2%",
-        "growthRate": "+12.3%"
-      },
-      {
-        "name": "Facebook",
-        "icon": "fb",
-        "iconLabel": "FB",
-        "followers": "89K",
-        "monthlyPosts": "18条",
-        "engagementRate": "3.8%",
-        "growthRate": "+8.5%"
-      },
-      {
-        "name": "YouTube",
-        "icon": "yt",
-        "iconLabel": "YT",
-        "followers": "42K",
-        "monthlyPosts": "6条",
-        "engagementRate": "6.1%",
-        "growthRate": "+15.2%"
-      }
+    "summary": "Chewy在3个社媒渠道的合作数据中，<strong>Instagram 的合作数量最多，发帖量也最多</strong>，且 <strong>INS 人均发帖达到 1.66 篇</strong>。统计口径为最近 1 年活跃数据，覆盖 KOL 与 KOC。",
+    "imagePath": "../assets/brand_social/chewy_kol_chart.png",
+    "points": [
+      "合作重心明显集中在 Instagram",
+      "短视频平台参与度有增长空间",
+      "整体达人协作更偏长期稳定运营"
     ]
   },
 
   "socialStyle": {
     "items": [
-      {"title": "产品推荐", "imagePath": "../assets/brand_social/spot_style_1.png"},
-      {"title": "应用场景", "imagePath": "../assets/brand_social/spot_style_2.png"},
-      {"title": "救援活动", "imagePath": "../assets/brand_social/spot_style_3.png"}
+      {"title": "宠物知识介绍", "imagePath": "../assets/brand_social/chewy_style_1.png"},
+      {"title": "结合可爱宠物图片宣传品牌", "imagePath": "../assets/brand_social/chewy_style_2.png"},
+      {"title": "宠物福祉宣传", "imagePath": "../assets/brand_social/chewy_style_3.png"}
     ]
   },
 
   "activity1": {
-    "title": "救援活动",
-    "description": "<strong>SPOT Rescue Stories</strong> 是品牌核心营销活动，收集并分享用户使用 SPOT 设备成功获救的真实故事。通过<span class=\"activity-highlight\">情感共鸣</span>建立品牌信任，强化产品"生命守护者"的定位。",
-    "stats": [
-      {"value": "2,400+", "label": "获救故事"},
-      {"value": "89%", "label": "品牌好感度"},
-      {"value": "3.2M", "label": "话题曝光"}
-    ]
+    "title": "动物画像赠送 Pet Portraits",
+    "description": "在一些如品牌周年、节假日、顾客生日等 KEM 或在诸如顾客退货后的特殊情境下，品牌会为部分被选中的顾客提供宠物照片的艺术画像，以增强用户情感连接与品牌记忆点。",
+    "imagePath": "../assets/brand_social/chewy_activity_1.png"
   },
 
   "activity2": {
-    "title": "合作赞助",
-    "description": "赞助全球顶级探险赛事和科研考察项目，包括<span class=\"activity-highlight\">巴塔哥尼亚探险赛</span>、<span class=\"activity-highlight\">北极科研站</span>等。通过高难度场景验证产品可靠性，建立专业背书。",
-    "stats": [
-      {"value": "45场", "label": "赞助赛事"},
-      {"value": "12个", "label": "科研项目"},
-      {"value": "$2.8M", "label": "赞助投入"}
-    ]
+    "title": "动物福利特色网页 GIVES BACK",
+    "description": "在官网首页导航栏可参与 "GIVES BACK" 活动。用户可为自己选择的动物救助机构购买所需物品，也可直接进入领养路径，体现品牌的公益导向与社会责任感。",
+    "imagePath": "../assets/brand_social/chewy_activity_2.png"
   },
 
-  "ambassador": {
-    "title": "品牌大使",
-    "description": "邀请户外探险家、极限运动员、救援专家担任品牌大使，通过<span class=\"activity-highlight\">真实使用</span>和<span class=\"activity-highlight\">内容共创</span>传递品牌价值。",
-    "list": [
-      {"name": "Bear Grylls", "role": "探险家 / TV主持人"},
-      {"name": "Alex Honnold", "role": "攀岩运动员"},
-      {"name": "Dr. Emily Davis", "role": "极地研究员"}
-    ],
-    "imagePath": "../assets/brand_social/spot_ambassador.png"
+  "activity3": {
+    "title": "官方博客 be chewy",
+    "description": "官方博客覆盖宠物饲养注意事项、宠物用品介绍、动物福利议题与宠物知识等内容，共分为宠物品种、新手事项、宠物健康、宠物居家等多个板块，形成持续内容运营阵地。",
+    "imagePath": "../assets/brand_social/chewy_activity_3.png"
   }
 }

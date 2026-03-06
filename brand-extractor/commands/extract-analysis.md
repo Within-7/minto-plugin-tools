@@ -60,18 +60,34 @@ unzip "{ppt_path}" -d ./workspace/unpacked
 {
   "brandNumber": "01",
   "brandName": "BRAND",
+  "logoPath": "../assets/logo.png",
+
+  "userPositionImagePath": "../assets/brand_analysis/brand_user_position.png",
+
   "userNeeds": {
     "coreNeeds": "核心诉求",
     "scenarios": "使用场景",
     "decisionFactors": "决策因素",
     "channels": "购买渠道"
   },
+
+  "personaImage1Path": "../assets/brand_analysis/brand_persona_1.png",
+  "personaImage2Path": "../assets/brand_analysis/brand_persona_2.png",
+
+  "flowModelImagePath": "../assets/brand_analysis/brand_flow_model.png",
+
   "seoTraffic": {
-    "text": "SEO说明文字",
-    "keywords": [{"rank": 1, "keyword": "xxx", "traffic": 1000}]
+    "text": "SEO说明文字（支持<strong>HTML</strong>）",
+    "keywords": [
+      {"rank": 1, "keyword": "dog food", "type": "狗粮", "traffic": "33,480"},
+      {"rank": 2, "keyword": "cat tree", "type": "猫爬架", "traffic": "22,444"}
+    ]
   },
+
   "backlinkTypes": "外链合作网站类型说明",
-  "backlinkKeywords": "外链热门关键词说明"
+  "backlinkKeywords": "外链热门关键词说明",
+  "backlinkPieImagePath": "../assets/brand_analysis/brand_backlink_pie.png",
+  "backlinkBarImagePath": "../assets/brand_analysis/brand_backlink_bar.png"
 }
 ```
 

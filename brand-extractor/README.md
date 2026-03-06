@@ -99,6 +99,8 @@ cp -r skills/brand-extractor /path/to/your-project/.claude/skills/
 
 ## 版本历史
 
+- v1.3.0 - 新增完整示例文档、图片识别精确规则、自检清单；添加slide_analyzer.py脚本
+- v1.2.0 - 统一图片命名规范（`traffic_model`替代`flow_model`）；添加错误处理指南；同步plugin.json版本号
 - v1.1.0 - 新增图片识别SOP：必须先绘制布局结构再定位图片；添加品牌Logo专用识别规则
 - v1.0.0 - 初始版本，支持四种提取模式
 

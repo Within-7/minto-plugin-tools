@@ -9,6 +9,49 @@ description: 演示文稿页面生成器。支持生成消费者洞察散点图(
 
 ---
 
+## 🚀 快速开始
+
+### 触发方式
+
+在 Claude Code 中直接描述你要生成的内容，例如：
+
+```
+# 生成散点图（第24页）
+"请生成用户关注度散点图，数据如下：[人群数据]"
+
+# 生成用户画像（第25-29页）
+"请生成5个用户画像页面，图片在 assets/profiles/ 目录"
+
+# 生成品牌目录（第30页）
+"请生成品牌目录页，品牌有：SPOT、BIOLITE、HELINOX..."
+
+# 生成品牌详情（第31页）
+"请生成 SPOT 品牌详情页，数据如下：[Markdown数据]"
+
+# 生成品牌分析（第32页）
+"请生成品牌分析页，数据文件在 data/brand_spot_analysis.json"
+
+# 生成社媒营销（第33页）
+"请生成社媒营销页，数据文件在 data/brand_spot_social.json"
+
+# 生成行业结论（第49-50页）
+"请生成行业结论页面，以下是12个结论主题：[主题列表]"
+```
+
+### 最小可用输入
+
+| 页面 | 最小输入 | 示例 |
+|------|---------|------|
+| 24页 | 人群名称 + 市场分 + 需求分 | `摄影师,75,88` |
+| 25-29页 | 5张截图 + 人群名称 | `assets/profiles/*.png` |
+| 30页 | 品牌列表 | `SPOT,BIOLITE,HELINOX` |
+| 31页 | Markdown格式品牌数据 | 见 `example_brand_detail.md` |
+| 32页 | JSON格式分析数据 | 见 `example_brand_analysis.json` |
+| 33页 | JSON格式社媒数据 | 见 `example_brand_social.json` |
+| 49-50页 | 12个主题 + 内容 | 自由文本即可 |
+
+---
+
 ## 项目目录结构
 
 **重要**：在当前项目目录下创建以下结构：
@@ -659,9 +702,7 @@ licensed cosmetologist,1.33,10
   "brandName": "CHEWY",
   "logoPath": "../assets/logo.png",
 
-  "userPosition": {
-    "imagePath": "../assets/brand_analysis/chewy_user_position.png"
-  },
+  "userPositionImagePath": "../assets/brand_analysis/chewy_user_position.png",
 
   "userNeeds": {
     "coreNeeds": "一站式购物体验、价格实惠、可靠配送...",
@@ -670,14 +711,10 @@ licensed cosmetologist,1.33,10
     "channels": "官网购买、移动APP、Autoship订阅服务..."
   },
 
-  "userPersona": {
-    "imagePath1": "../assets/brand_analysis/chewy_persona_1.png",
-    "imagePath2": "../assets/brand_analysis/chewy_persona_2.png"
-  },
+  "personaImage1Path": "../assets/brand_analysis/chewy_persona_1.png",
+  "personaImage2Path": "../assets/brand_analysis/chewy_persona_2.png",
 
-  "flowModel": {
-    "imagePath": "../assets/brand_analysis/chewy_flow_model.png"
-  },
+  "flowModelImagePath": "../assets/brand_analysis/chewy_flow_model.png",
 
   "seoTraffic": {
     "text": "品牌<strong>基石流量</strong>主要来自SEO自然搜索，关键词集中在...",
@@ -687,12 +724,10 @@ licensed cosmetologist,1.33,10
     ]
   },
 
-  "backlink": {
-    "types": "1. 宠物福利与领养网站；2. 宠物网站与宠物产品电商...",
-    "keywords": "宠物知识介绍与产品测评、宠物虫病防治...",
-    "pieImagePath": "../assets/brand_analysis/chewy_backlink_pie.png",
-    "barImagePath": "../assets/brand_analysis/chewy_backlink_bar.png"
-  }
+  "backlinkTypes": "1. 宠物福利与领养网站；2. 宠物网站与宠物产品电商...",
+  "backlinkKeywords": "宠物知识介绍与产品测评、宠物虫病防治...",
+  "backlinkPieImagePath": "../assets/brand_analysis/chewy_backlink_pie.png",
+  "backlinkBarImagePath": "../assets/brand_analysis/chewy_backlink_bar.png"
 }
 ```
 
@@ -709,12 +744,15 @@ licensed cosmetologist,1.33,10
 
 必需字段：
 - `brandNumber` `brandName` `logoPath`
-- `userPosition.imagePath` - 用户定位图片路径
+- `userPositionImagePath` - 用户定位图片路径
 - `userNeeds` - 用户需求（4个文本块：核心诉求、使用场景、决策因素、购买渠道）
-- `userPersona.imagePath1/2` - 用户画像图片路径
-- `flowModel.imagePath` - 流量模型图片路径
-- `seoTraffic` - 基石流量（文字+关键词数组，渲染为HTML表格）
-- `backlink` - 外链分析（types+keywords+pieImagePath+barImagePath）
+- `personaImage1Path` `personaImage2Path` - 用户画像图片路径
+- `flowModelImagePath` - 流量模型图片路径
+- `seoTraffic` - 基石流量（text + keywords数组）
+- `backlinkTypes` - 外链类型文字
+- `backlinkKeywords` - 外链关键词文字
+- `backlinkPieImagePath` - 外链饼图路径
+- `backlinkBarImagePath` - 外链柱状图路径
 
 **Step 5: 模板渲染**
 
@@ -736,20 +774,20 @@ licensed cosmetologist,1.33,10
 | `{{brandNumber}}` | brandNumber | 品牌序号 |
 | `{{brandName}}` | brandName | 品牌名称 |
 | `{{logoPath}}` | logoPath | Logo路径 |
-| `{{userPosition.imagePath}}` | userPosition.imagePath | 用户定位图 |
+| `{{userPositionImagePath}}` | userPositionImagePath | 用户定位图 |
 | `{{userNeeds.coreNeeds}}` | userNeeds.coreNeeds | 核心诉求 |
 | `{{userNeeds.scenarios}}` | userNeeds.scenarios | 使用场景 |
 | `{{userNeeds.decisionFactors}}` | userNeeds.decisionFactors | 决策因素 |
 | `{{userNeeds.channels}}` | userNeeds.channels | 购买渠道 |
-| `{{userPersona.imagePath1}}` | userPersona.imagePath1 | 用户画像1 |
-| `{{userPersona.imagePath2}}` | userPersona.imagePath2 | 用户画像2 |
-| `{{flowModel.imagePath}}` | flowModel.imagePath | 流量模型图 |
+| `{{personaImage1Path}}` | personaImage1Path | 用户画像1 |
+| `{{personaImage2Path}}` | personaImage2Path | 用户画像2 |
+| `{{flowModelImagePath}}` | flowModelImagePath | 流量模型图 |
 | `{{{seoTraffic.text}}}` | seoTraffic.text | SEO说明文字（HTML） |
 | `{{#each seoTraffic.keywords}}` | seoTraffic.keywords | 关键词数组 |
-| `{{backlink.types}}` | backlink.types | 外链类型文字 |
-| `{{backlink.keywords}}` | backlink.keywords | 外链关键词 |
-| `{{backlink.pieImagePath}}` | backlink.pieImagePath | 饼图路径 |
-| `{{backlink.barImagePath}}` | backlink.barImagePath | 柱状图路径 |
+| `{{backlinkTypes}}` | backlinkTypes | 外链类型文字 |
+| `{{backlinkKeywords}}` | backlinkKeywords | 外链关键词 |
+| `{{backlinkPieImagePath}}` | backlinkPieImagePath | 饼图路径 |
+| `{{backlinkBarImagePath}}` | backlinkBarImagePath | 柱状图路径 |
 
 **Step 6: 输出**
 
@@ -1109,6 +1147,67 @@ minto-slides/
 7. **路径规范**：HTML文件存放在 slides/ 目录，图片路径需使用 `../assets/` 相对路径
 8. **品牌图片命名**：30页品牌图片需按规则命名（小写+下划线），文件名决定显示顺序和文字
 9. **数据格式**：31页使用Markdown，32-33页使用JSON格式
+
+---
+
+## 边界情况处理
+
+### 品牌数量不足6个
+
+**场景**：30页品牌目录只有少于6个品牌
+
+| 品牌数量 | 处理方式 |
+|---------|---------|
+| 1-2个 | 正常生成，宫格空位显示"待添加"占位符 |
+| 3-5个 | 正常生成，空位显示占位符 |
+| 6个 | 完整布局，无占位符 |
+| >6个 | **只取前6个**，其余忽略（并在输出中提示） |
+
+**31-48页处理**：按实际品牌数量生成，不足6组时只生成相应页数
+
+### 图片缺失处理
+
+```
+检测到图片缺失时：
+1. 立即停止生成
+2. 输出缺失清单（文件名 + 尺寸要求）
+3. 提示用户上传后回复"继续"
+4. 等待用户确认后再继续
+```
+
+### 图片尺寸异常
+
+| 情况 | 处理方式 |
+|-----|---------|
+| 尺寸略小 | 正常使用，CSS会自动适应 |
+| 尺寸过大 | 正常使用，CSS会自动缩放 |
+| 比例异常 | **提醒用户**，但仍然使用（可能显示效果不佳） |
+| 格式错误 | **拒绝使用**，提示需要PNG/JPG格式 |
+
+### JSON格式错误
+
+```json
+// 常见错误示例
+{
+  "brandNumber": 1,        // ❌ 应为字符串 "01"
+  "seoTraffic": {
+    "keywords": [
+      {"rank": 1, "keyword": "xxx"}  // ❌ 缺少 type 和 traffic 字段
+    ]
+  }
+}
+```
+
+**错误处理**：
+1. 检测到格式错误时，输出具体字段问题
+2. 提供正确格式示例
+3. 等待用户修正后再处理
+
+### Mustache变量缺失
+
+如果JSON中缺少某个可选字段：
+- `kolStats.points` - 可选，缺失时不显示要点列表
+- 其他必需字段缺失 - **报错并停止**，提示用户补充
 
 ---
 

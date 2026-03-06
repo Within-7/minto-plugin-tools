@@ -1,65 +1,40 @@
 {
   "brandNumber": "01",
-  "brandName": "SPOT",
+  "brandName": "CHEWY",
   "logoPath": "../assets/logo.png",
 
-  "userPosition": {
-    "corePercent": "35%",
-    "coreLabel": "核心用户",
-    "svgCircles": "<circle cx=\"100\" cy=\"100\" r=\"70\" fill=\"transparent\" stroke=\"#4f46e5\" stroke-width=\"28\" stroke-dasharray=\"153.94 502.65\" stroke-dashoffset=\"0\" transform=\"rotate(-90 100 100)\"/><circle cx=\"100\" cy=\"100\" r=\"70\" fill=\"transparent\" stroke=\"#f59e0b\" stroke-width=\"28\" stroke-dasharray=\"109.96 502.65\" stroke-dashoffset=\"-153.94\" transform=\"rotate(-90 100 100)\"/><circle cx=\"100\" cy=\"100\" r=\"70\" fill=\"transparent\" stroke=\"#10b981\" stroke-width=\"28\" stroke-dasharray=\"87.96 502.65\" stroke-dashoffset=\"-263.89\" transform=\"rotate(-90 100 100)\"/><circle cx=\"100\" cy=\"100\" r=\"70\" fill=\"transparent\" stroke=\"#ef4444\" stroke-width=\"28\" stroke-dasharray=\"54.98 502.65\" stroke-dashoffset=\"-351.86\" transform=\"rotate(-90 100 100)\"/><circle cx=\"100\" cy=\"100\" r=\"70\" fill=\"transparent\" stroke=\"#8b5cf6\" stroke-width=\"28\" stroke-dasharray=\"54.98 502.65\" stroke-dashoffset=\"-406.84\" transform=\"rotate(-90 100 100)\"/><circle cx=\"100\" cy=\"100\" r=\"70\" fill=\"transparent\" stroke=\"#94a3b8\" stroke-width=\"28\" stroke-dasharray=\"40.83 502.65\" stroke-dashoffset=\"-461.82\" transform=\"rotate(-90 100 100)\"/>",
-    "legends": [
-      {"label": "户外探险", "percent": "35%", "color": "#4f46e5"},
-      {"label": "科研考察", "percent": "22%", "color": "#f59e0b"},
-      {"label": "极限运动", "percent": "17.5%", "color": "#10b981"},
-      {"label": "应急救援", "percent": "11%", "color": "#ef4444"},
-      {"label": "野外摄影", "percent": "11%", "color": "#8b5cf6"},
-      {"label": "其他", "percent": "8.5%", "color": "#94a3b8"}
-    ]
-  },
+  "userPositionImagePath": "../assets/brand_analysis/chewy_user_position.png",
 
   "userNeeds": {
-    "coreNeeds": "在无手机信号区域保持通讯能力，确保人身安全，紧急情况下一键触发 SOS 求救",
-    "scenarios": "徒步露营、极地探险、野外科研、海上航行、沙漠穿越、山地救援",
-    "decisionFactors": "信号覆盖范围（35%）、设备可靠性（28%）、续航时间（20%）、SOS响应速度（12%）、价格（5%）",
-    "channels": "官网直购 45%、亚马逊 30%、户外装备店 15%、REI/专业渠道 10%"
+    "coreNeeds": "一站式购物体验、价格实惠、可靠配送、全品类宠物用品及医疗服务、产品订阅制服务",
+    "scenarios": "日常采购、定期补货（订阅服务）、紧急购买、动物救助用品采购、宠物医疗服务需求",
+    "decisionFactors": "价格优惠（订阅折扣35%）、配送速度（订单$49以上免运费）、产品质量、24小时客服支持、品牌关怀与同理心服务",
+    "channels": "官网购买、移动APP、Autoship订阅服务、Pharmacy药店服务"
   },
 
-  "personaImage1Path": "../assets/brand_analysis/spot_persona_1.png",
-  "personaImage2Path": "../assets/brand_analysis/spot_persona_2.png",
+  "personaImage1Path": "../assets/brand_analysis/chewy_persona_1.png",
+  "personaImage2Path": "../assets/brand_analysis/chewy_persona_2.png",
 
-  "flowModel": {
-    "nodes": [
-      {"title": "搜索引擎", "subtitle": "SEO/SEM", "type": "flow-source"},
-      {"title": "官网落地页", "subtitle": "产品详情", "type": "flow-channel"},
-      {"title": "加购/注册", "subtitle": "转化漏斗", "type": "flow-channel"},
-      {"title": "完成购买", "subtitle": "转化率 3.2%", "type": "flow-target"}
-    ]
-  },
+  "flowModelImagePath": "../assets/brand_analysis/chewy_flow_model.png",
 
   "seoTraffic": {
-    "text": "自然搜索流量占比 <strong>48%</strong>，主要来自品牌词和产品功能词。核心关键词月搜索量：satellite messenger（18.2K）、gps tracker（14.8K）、emergency beacon（9.5K）。长尾词策略覆盖"户外通讯设备"、"野外安全装备"等场景词。",
-    "tableImagePath": "../assets/brand_analysis/spot_seo_table.png"
+    "text": "品牌<strong>基石流量</strong>主要来自SEO自然搜索，关键词集中在狗、猫、宠物用品和宠物品种、收养等内容。其中，猫狗宠物用品指向品牌站具体产品销售页面，而其他宠物相关内容则指向品牌官方博客及特色页面。",
+    "keywords": [
+      {"rank": 1, "keyword": "dog food", "type": "狗粮", "traffic": "33,480"},
+      {"rank": 2, "keyword": "cat tree", "type": "猫爬架", "traffic": "22,444"},
+      {"rank": 3, "keyword": "great pyrenees", "type": "大比利牛斯山犬", "traffic": "10,535"},
+      {"rank": 4, "keyword": "cat toys", "type": "猫玩具", "traffic": "10,044"},
+      {"rank": 5, "keyword": "cane corso", "type": "卡斯罗犬", "traffic": "9,782"},
+      {"rank": 6, "keyword": "dog breeds", "type": "狗的品种", "traffic": "9,000"},
+      {"rank": 7, "keyword": "pet store", "type": "宠物商店", "traffic": "8,832"},
+      {"rank": 8, "keyword": "pet food", "type": "宠物粮食", "traffic": "8,775"},
+      {"rank": 9, "keyword": "cat litter", "type": "猫砂", "traffic": "7,986"},
+      {"rank": 10, "keyword": "english bulldog", "type": "英国斗牛犬", "traffic": "7,920"}
+    ]
   },
 
-  "backlinkAnalysis": {
-    "totalCount": "2.4K",
-    "totalLabel": "外链总数",
-    "svgCircles": "<circle cx=\"100\" cy=\"100\" r=\"70\" fill=\"transparent\" stroke=\"#4f46e5\" stroke-width=\"28\" stroke-dasharray=\"153.94 502.65\" stroke-dashoffset=\"0\" transform=\"rotate(-90 100 100)\"/><circle cx=\"100\" cy=\"100\" r=\"70\" fill=\"transparent\" stroke=\"#f59e0b\" stroke-width=\"28\" stroke-dasharray=\"98.96 502.65\" stroke-dashoffset=\"-153.94\" transform=\"rotate(-90 100 100)\"/><circle cx=\"100\" cy=\"100\" r=\"70\" fill=\"transparent\" stroke=\"#10b981\" stroke-width=\"28\" stroke-dasharray=\"76.97 502.65\" stroke-dashoffset=\"-252.9\" transform=\"rotate(-90 100 100)\"/><circle cx=\"100\" cy=\"100\" r=\"70\" fill=\"transparent\" stroke=\"#ef4444\" stroke-width=\"28\" stroke-dasharray=\"54.98 502.65\" stroke-dashoffset=\"-329.87\" transform=\"rotate(-90 100 100)\"/><circle cx=\"100\" cy=\"100\" r=\"70\" fill=\"transparent\" stroke=\"#8b5cf6\" stroke-width=\"28\" stroke-dasharray=\"32.99 502.65\" stroke-dashoffset=\"-384.85\" transform=\"rotate(-90 100 100)\"/><circle cx=\"100\" cy=\"100\" r=\"70\" fill=\"transparent\" stroke=\"#94a3b8\" stroke-width=\"28\" stroke-dasharray=\"21.99 502.65\" stroke-dashoffset=\"-417.83\" transform=\"rotate(-90 100 100)\"/>",
-    "pieLegends": [
-      {"label": "装备评测", "percent": "35%", "color": "#4f46e5"},
-      {"label": "旅行博客", "percent": "22%", "color": "#f59e0b"},
-      {"label": "电商平台", "percent": "17%", "color": "#10b981"},
-      {"label": "新闻媒体", "percent": "11%", "color": "#ef4444"},
-      {"label": "社交论坛", "percent": "7%", "color": "#8b5cf6"},
-      {"label": "其他", "percent": "8%", "color": "#94a3b8"}
-    ],
-    "keywordBars": [
-      {"keyword": "satellite msg", "value": "18.2K", "width": 95},
-      {"keyword": "gps tracker", "value": "14.8K", "width": 82},
-      {"keyword": "spot device", "value": "12.1K", "width": 68},
-      {"keyword": "emergency", "value": "9.5K", "width": 55},
-      {"keyword": "outdoor comm", "value": "7.2K", "width": 45},
-      {"keyword": "hiking gps", "value": "6.1K", "width": 38}
-    ]
-  }
+  "backlinkTypes": "1. 宠物福利与领养网站；2. 宠物网站与宠物产品电商；3. 维基百科动物相关条目；4. 新闻、杂志、测评类网站。",
+  "backlinkKeywords": "宠物知识介绍与产品测评、宠物虫病防治相关内容（如症状、治疗等）、动物福利相关内容（如照顾、救助、领养等）、狗粮测评与评级、宠物狗肥胖相关内容",
+  "backlinkPieImagePath": "../assets/brand_analysis/chewy_backlink_pie.png",
+  "backlinkBarImagePath": "../assets/brand_analysis/chewy_backlink_bar.png"
 }

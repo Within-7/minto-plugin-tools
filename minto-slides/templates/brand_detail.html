@@ -39,6 +39,7 @@
             padding-bottom: 20px;
             border-bottom: 3px solid #2c3e50;
             margin-bottom: 30px;
+            flex-shrink: 0;
         }
 
         .header-left {
@@ -78,6 +79,7 @@
             grid-template-columns: 560px 500px 1fr;
             grid-template-rows: 400px 25px 1fr;
             gap: 0 25px;
+            min-height: 0;
         }
 
         /* ===== 左列上半：品牌信息 ===== */
@@ -328,7 +330,7 @@
             <!-- 标题栏 -->
             <div class="header">
                 <div class="header-left">
-                    <div class="brand-badge">{{brandNumber}}</div>
+                    <div class="brand-badge">No.{{brandNumber}}</div>
                     <div class="header-title">
                         <span class="section">{{brandName}}</span>　　品牌深度拆解
                     </div>

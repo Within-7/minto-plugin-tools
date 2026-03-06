@@ -143,7 +143,7 @@
 | 1 | `{brand}_user_position.png` | 用户定位分布 | 饼图 |
 | 2 | `{brand}_persona_1.png` | 用户画像1 | 截图 |
 | 3 | `{brand}_persona_2.png` | 用户画像2 | 截图 |
-| 4 | `{brand}_flow_model.png` | 流量模型流程图 | 流程图 |
+| 4 | `{brand}_traffic_model.png` | 流量模型流程图 | 流程图 |
 | 5 | `{brand}_backlink_pie.png` | 外链来源分布 | **饼图** |
 | 6 | `{brand}_backlink_bar.png` | 外链热门关键词 | **横向柱状图** |
 
