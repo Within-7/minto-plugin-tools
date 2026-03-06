@@ -577,6 +577,22 @@ licensed cosmetologist,1.33,10
 
 ## SOP - 第32页：品牌分析生成
 
+### 布局结构
+
+```
++-------------------------------------------+
+| 标题栏                                     |
++-------------------------------------------+
+| 用户定位        | 用户需求      | 用户画像  |
+| （图片）        | （4个文本块） | （双图）  |
++-------------------------------------------+
+| 流量模型        | 基石流量      | 外链分析  |
+| （图片）        | （表格+文字） | （双图+） |
++-------------------------------------------+
+```
+
+**布局特点**：3×2 Grid，第一行400px固定高度，间隙25px，第二行弹性填充。
+
 ### 前置条件检查
 
 **Step 1: 检查图片文件**
@@ -643,23 +659,40 @@ licensed cosmetologist,1.33,10
   "brandName": "CHEWY",
   "logoPath": "../assets/logo.png",
 
+  "userPosition": {
+    "imagePath": "../assets/brand_analysis/chewy_user_position.png"
+  },
+
   "userNeeds": {
-    "coreNeeds": "核心诉求文字",
-    "scenarios": "使用场景文字",
-    "decisionFactors": "决策因素文字",
-    "channels": "购买渠道文字"
+    "coreNeeds": "一站式购物体验、价格实惠、可靠配送...",
+    "scenarios": "日常采购、定期补货（订阅服务）、紧急购买...",
+    "decisionFactors": "价格优惠（订阅折扣35%）、配送速度...",
+    "channels": "官网购买、移动APP、Autoship订阅服务..."
+  },
+
+  "userPersona": {
+    "imagePath1": "../assets/brand_analysis/chewy_persona_1.png",
+    "imagePath2": "../assets/brand_analysis/chewy_persona_2.png"
+  },
+
+  "flowModel": {
+    "imagePath": "../assets/brand_analysis/chewy_flow_model.png"
   },
 
   "seoTraffic": {
-    "text": "品牌基石流量说明文字，关键词集中在...",
+    "text": "品牌<strong>基石流量</strong>主要来自SEO自然搜索，关键词集中在...",
     "keywords": [
-      {"rank": 1, "keyword": "dog food", "type": "狗粮", "traffic": 33480},
-      {"rank": 2, "keyword": "cat tree", "type": "猫爬架", "traffic": 22444}
+      {"rank": 1, "keyword": "dog food", "type": "狗粮", "traffic": "33,480"},
+      {"rank": 2, "keyword": "cat tree", "type": "猫爬架", "traffic": "22,444"}
     ]
   },
 
-  "backlinkTypes": "1. 宠物福利与领养网站；2. 宠物网站与宠物产品电商；...",
-  "backlinkKeywords": "外链文章热门关键词描述"
+  "backlink": {
+    "types": "1. 宠物福利与领养网站；2. 宠物网站与宠物产品电商...",
+    "keywords": "宠物知识介绍与产品测评、宠物虫病防治...",
+    "pieImagePath": "../assets/brand_analysis/chewy_backlink_pie.png",
+    "barImagePath": "../assets/brand_analysis/chewy_backlink_bar.png"
+  }
 }
 ```
 
@@ -676,23 +709,47 @@ licensed cosmetologist,1.33,10
 
 必需字段：
 - `brandNumber` `brandName` `logoPath`
+- `userPosition.imagePath` - 用户定位图片路径
 - `userNeeds` - 用户需求（4个文本块：核心诉求、使用场景、决策因素、购买渠道）
+- `userPersona.imagePath1/2` - 用户画像图片路径
+- `flowModel.imagePath` - 流量模型图片路径
 - `seoTraffic` - 基石流量（文字+关键词数组，渲染为HTML表格）
-- `backlinkTypes` - 外链合作网站类型（文字，显示在饼图上方）
-- `backlinkKeywords` - 外链文章热门关键词
+- `backlink` - 外链分析（types+keywords+pieImagePath+barImagePath）
 
 **Step 5: 模板渲染**
 
 使用 `templates/brand_analysis.html` 模板，页面包含6个卡片：
 
-| 卡片 | 内容类型 | 说明 |
-|-----|---------|-----|
-| 用户定位 | 图片 | 用户定位图 |
-| 用户需求 | 文字 | 核心诉求、使用场景、决策因素、购买渠道（4个文本块） |
-| 用户画像 | 双图并列 | 2张用户画像图 |
-| 流量模型 | 图片 | 流量模型图 |
-| 基石流量 | 文字+HTML表格 | SEO关键词分析（用表格渲染keywords数组） |
-| 外链分析 | 文字+饼图+柱状图 | 外链类型文字+饼图+关键词文字+柱状图 |
+| 卡片 | 位置 | 内容类型 | 说明 |
+|-----|------|---------|-----|
+| 用户定位 | 左上 | 图片 | 用户定位图 |
+| 用户需求 | 中上 | 文字 | 核心诉求、使用场景、决策因素、购买渠道（4个文本块） |
+| 用户画像 | 右上 | 双图并列 | 2张用户画像图 |
+| 流量模型 | 左下 | 图片 | 流量模型图 |
+| 基石流量 | 中下 | 文字+HTML表格 | SEO关键词分析（用表格渲染keywords数组） |
+| 外链分析 | 右下 | 文字+饼图+柱状图 | 外链类型文字+饼图+关键词文字+柱状图 |
+
+**模板变量映射**：
+
+| 模板变量 | 数据来源 | 说明 |
+|---------|---------|-----|
+| `{{brandNumber}}` | brandNumber | 品牌序号 |
+| `{{brandName}}` | brandName | 品牌名称 |
+| `{{logoPath}}` | logoPath | Logo路径 |
+| `{{userPosition.imagePath}}` | userPosition.imagePath | 用户定位图 |
+| `{{userNeeds.coreNeeds}}` | userNeeds.coreNeeds | 核心诉求 |
+| `{{userNeeds.scenarios}}` | userNeeds.scenarios | 使用场景 |
+| `{{userNeeds.decisionFactors}}` | userNeeds.decisionFactors | 决策因素 |
+| `{{userNeeds.channels}}` | userNeeds.channels | 购买渠道 |
+| `{{userPersona.imagePath1}}` | userPersona.imagePath1 | 用户画像1 |
+| `{{userPersona.imagePath2}}` | userPersona.imagePath2 | 用户画像2 |
+| `{{flowModel.imagePath}}` | flowModel.imagePath | 流量模型图 |
+| `{{{seoTraffic.text}}}` | seoTraffic.text | SEO说明文字（HTML） |
+| `{{#each seoTraffic.keywords}}` | seoTraffic.keywords | 关键词数组 |
+| `{{backlink.types}}` | backlink.types | 外链类型文字 |
+| `{{backlink.keywords}}` | backlink.keywords | 外链关键词 |
+| `{{backlink.pieImagePath}}` | backlink.pieImagePath | 饼图路径 |
+| `{{backlink.barImagePath}}` | backlink.barImagePath | 柱状图路径 |
 
 **Step 6: 输出**
 
@@ -724,10 +781,11 @@ licensed cosmetologist,1.33,10
 +-------------------------------------------+
 ```
 
-**核心要点**：
-- **风格展示是页面焦点**，3张图并排，固定大高度
-- **KOL区域**：左图右文，紧凑
-- **右列3个活动**：均分高度，各左文右图
+**布局特点**：
+- **左列**：card-top (45%) + card-bottom (55%)
+- **右列**：3个card-equal均分
+- **风格展示是页面焦点**，3张图并排
+- **KOL区域**：左图右文，比例1.18:0.82
 
 ### 前置条件检查
 
@@ -858,11 +916,30 @@ licensed cosmetologist,1.33,10
 
 | 位置 | 卡片 | 内容类型 | 说明 |
 |-----|-----|---------|-----|
-| 左上 | KOL合作数量 | 左图右文 | KOL数据图 + 文字说明 |
-| 左下 | 官方社媒风格展示 | 3张图并排 | 产品推荐/应用场景/救援活动（**页面焦点**） |
+| 左上(45%) | KOL合作数量 | 左图右文 | KOL数据图 + 文字说明 + 可选要点列表 |
+| 左下(55%) | 官方社媒风格展示 | 3张图并排 | 产品推荐/应用场景/救援活动（**页面焦点**） |
 | 右上 | 活动一 | 左文右图 | 营销活动1 |
 | 右中 | 活动二 | 左文右图 | 营销活动2 |
 | 右下 | 活动三 | 左文右图 | 营销活动3 |
+
+**模板变量映射**：
+
+| 模板变量 | 数据来源 | 说明 |
+|---------|---------|-----|
+| `{{brandNumber}}` | brandNumber | 品牌序号 |
+| `{{brandName}}` | brandName | 品牌名称 |
+| `{{logoPath}}` | logoPath | Logo路径 |
+| `{{kolStats.imagePath}}` | kolStats.imagePath | KOL数据图 |
+| `{{{kolStats.summary}}}` | kolStats.summary | KOL总结文字（HTML） |
+| `{{#each kolStats.points}}` | kolStats.points | 要点列表（可选） |
+| `{{#each socialStyle.items}}` | socialStyle.items | 风格展示数组 |
+| `{{imagePath}}` | socialStyle.items[].imagePath | 风格图片路径 |
+| `{{title}}` | socialStyle.items[].title | 风格图片标题 |
+| `{{activity1.title}}` | activity1.title | 活动一标题 |
+| `{{{activity1.description}}}` | activity1.description | 活动一描述（HTML） |
+| `{{activity1.imagePath}}` | activity1.imagePath | 活动一图片 |
+| `{{activity2.*}}` | activity2.* | 活动二同上 |
+| `{{activity3.*}}` | activity3.* | 活动三同上 |
 
 **Step 6: 输出**
 
@@ -1037,6 +1114,7 @@ minto-slides/
 
 ## 版本
 
+- v2.8.0 - 重构32/33页模板：简化数据结构、优化布局、统一变量命名
 - v2.7.0 - 技术规范更新：图片容器透明背景、溢出防护规则、32页SEO改HTML表格、外链饼图加类型文字
 - v2.6.0 - 优化模板：流量分布改图片、产品名称/价格颜色调换、清理无用依赖
 - v2.5.0 - 新增第32页品牌分析、第33页社媒营销生成功能
