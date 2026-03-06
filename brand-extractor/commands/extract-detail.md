@@ -124,7 +124,7 @@ def analyze_slide_layout(slide_num, unpacked_dir):
 |--------|------|--------|
 | `{brand}_logo.png` | 品牌Logo | 小图标 |
 | `{brand}_product.png` | 产品展示图 | 大图 |
-| `{brand}_traffic_distribution.png` | 独立站流量分布 | **柱状图** |
+| `{brand}_traffic.png` | 独立站流量分布 | **柱状图** |
 
 ### Step 7: 生成Markdown数据
 
@@ -146,7 +146,7 @@ def analyze_slide_layout(slide_num, unpacked_dir):
   ...
 
 ## 流量来源分布
-![流量分布图](../assets/brand_details/{brand}_traffic_distribution.png)
+![流量分布图](../assets/brand_details/{brand}_traffic.png)
 
 ## 核心运营指标
 | 指标 | 数值 |

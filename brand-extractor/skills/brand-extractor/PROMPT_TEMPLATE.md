@@ -71,7 +71,7 @@ PPT文件：{ppt_path}
 需要提取：
 1. 品牌Logo → assets/brand_details/{brand}_logo.png
 2. 产品展示图 → assets/brand_details/{brand}_product.png
-3. 流量分布柱状图 → assets/brand_details/{brand}_traffic_distribution.png
+3. 流量分布柱状图 → assets/brand_details/{brand}_traffic.png
 4. Markdown数据 → data/brand_{brand}_detail.md
 
 Markdown格式：
@@ -92,7 +92,7 @@ Markdown格式：
   ...
 
 ## 流量来源分布
-![流量分布图](../assets/brand_details/{brand}_traffic_distribution.png)
+![流量分布图](../assets/brand_details/{brand}_traffic.png)
 
 ## 核心运营指标
 | 指标 | 数值 |

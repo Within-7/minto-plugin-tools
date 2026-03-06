@@ -87,7 +87,7 @@ unzip "{ppt_path}" -d ./workspace/unpacked
 | 项目 | 品牌详情 | 品牌分析 |
 |------|----------|----------|
 | 流量图类型 | **柱状图**（独立站流量） | **饼图**（外链来源） |
-| 流量图文件 | `_traffic_distribution.png` | `_backlink_pie.png` |
+| 流量图文件 | `_traffic.png` | `_backlink_pie.png` |
 
 **不要搞混！**
 

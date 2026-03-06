@@ -82,7 +82,7 @@
 |------|--------|------|--------|
 | 1 | `{brand}_logo.png` | 品牌Logo | 小图标 |
 | 2 | `{brand}_product.png` | 产品展示图 | 大图 |
-| 3 | `{brand}_traffic_distribution.png` | 独立站流量分布 | **柱状图** |
+| 3 | `{brand}_traffic.png` | 独立站流量分布 | **柱状图** |
 
 ### Markdown结构
 ```markdown
@@ -101,7 +101,7 @@
 - 产品特点（7条）：...
 
 ## 流量来源分布
-![流量分布图](../assets/brand_details/{brand}_traffic_distribution.png)
+![流量分布图](../assets/brand_details/{brand}_traffic.png)
 
 ## 核心运营指标
 | 指标 | 数值 |
@@ -119,7 +119,7 @@
 │   └── brand_details/
 │       ├── {brand}_logo.png
 │       ├── {brand}_product.png
-│       └── {brand}_traffic_distribution.png
+│       └── {brand}_traffic.png
 └── data/
     └── brand_{brand}_detail.md
 ```
@@ -280,7 +280,7 @@
 | 项目 | 品牌详情 | 品牌分析 |
 |------|----------|----------|
 | 流量图类型 | **柱状图**（独立站流量） | **饼图**（外链来源） |
-| 流量图文件 | `_traffic_distribution.png` | `_backlink_pie.png` |
+| 流量图文件 | `_traffic.png` | `_backlink_pie.png` |
 | 来源页面 | "独立站流量来源分布" | "外链（冷流量）" |
 
 **不要搞混！**
