@@ -1,0 +1,21 @@
+{
+  "name": "brand-extractor",
+  "version": "1.0.0",
+  "description": "PPT品牌信息提取器 - 从品牌案例PPT中提取品牌目录、详情、分析、社媒数据，支持四种提取模式",
+  "author": "within-7",
+  "homepage": "https://github.com/within-7/minto-plugins",
+  "repository": "https://github.com/within-7/minto-plugins",
+  "keywords": ["brand-extractor", "PPT提取", "品牌信息", "品牌分析", "社媒数据", "KOL分析"],
+  "commands": [
+    "./commands/extract-catalog.md",
+    "./commands/extract-detail.md",
+    "./commands/extract-analysis.md",
+    "./commands/extract-social.md"
+  ],
+  "skills": [
+    "./skills/brand-extractor"
+  ],
+  "scripts": [
+    "./scripts/extract_brand.py"
+  ]
+}

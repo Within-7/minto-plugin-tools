@@ -39,6 +39,7 @@
             padding-bottom: 20px;
             border-bottom: 3px solid #2c3e50;
             margin-bottom: 25px;
+            flex-shrink: 0;
         }
 
         .header-left {
@@ -71,19 +72,21 @@
             width: auto;
         }
 
-        /* ===== 主内容区 - 两列布局 ===== */
+        /* ===== 主内容区 - 双列布局 ===== */
         .main-content {
             flex: 1;
             display: grid;
             grid-template-columns: 1.2fr 1fr;
-            gap: 30px;
-            overflow: hidden;
+            gap: 20px 30px;
+            min-height: 0;
         }
 
         .column {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
+            min-height: 0;
+            overflow: hidden;
         }
 
         /* ===== 卡片通用样式 ===== */
@@ -91,10 +94,19 @@
             background: #ffffff;
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-            padding: 25px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
         }
+
+        /* ===== 左列卡片高度分配 ===== */
+        .card-fixed { flex: 0 0 auto; }
+        .card-flex { flex: 1; }
+
+        /* ===== 右列卡片平均分配 ===== */
+        .card-equal { flex: 1; min-height: 0; }
 
         .card-title {
             font-size: 18px;
@@ -104,6 +116,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-shrink: 0;
         }
 
         .card-title::before {
@@ -114,88 +127,64 @@
             border-radius: 2px;
         }
 
-        /* ===== 1. KOL合作数量 ===== */
-        .kol-content {
+        /* ===== 通用左右布局 ===== */
+        .left-right-layout {
             flex: 1;
-            display: grid;
-            grid-template-columns: 1fr 1.3fr;
+            display: flex;
             gap: 20px;
+            min-height: 0;
+            overflow: hidden;
         }
 
-        .kol-stats {
+        .left-text {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
+            min-height: 0;
+            overflow: hidden;
         }
 
-        .kol-stat-item {
+        .right-image {
+            flex: 1.2;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
+            min-height: 0;
         }
 
-        .kol-stat-label {
+        .image-box {
+            flex: 1;
+            width: 100%;
+            background: transparent;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .image-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* ===== KOL总结文字 ===== */
+        .kol-summary {
             font-size: 13px;
             color: #555;
+            line-height: 1.8;
         }
 
-        .kol-stat-value {
-            font-size: 15px;
-            font-weight: 700;
+        .kol-summary strong {
             color: #2c3e50;
         }
 
-        .kol-stat-value.highlight {
+        .kol-highlight {
             color: #3498db;
+            font-weight: 600;
         }
 
-        /* 柱状图 */
-        .bar-chart {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            height: 100%;
-            padding: 10px 0;
-        }
-
-        .bar-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .bar {
-            width: 50px;
-            border-radius: 6px 6px 0 0;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding-top: 8px;
-        }
-
-        .bar-value {
-            font-size: 12px;
-            font-weight: 700;
-            color: white;
-        }
-
-        .bar-label {
-            font-size: 11px;
-            color: #666;
-            text-align: center;
-        }
-
-        .bar-1 { background: linear-gradient(180deg, #4f46e5, #6366f1); }
-        .bar-2 { background: linear-gradient(180deg, #f59e0b, #fbbf24); }
-        .bar-3 { background: linear-gradient(180deg, #10b981, #34d399); }
-        .bar-4 { background: linear-gradient(180deg, #ef4444, #f87171); }
-        .bar-5 { background: linear-gradient(180deg, #8b5cf6, #a78bfa); }
-
-        /* ===== 2. 官方社媒数据表格 ===== */
+        /* ===== 官方社媒数据表格 ===== */
         .social-table {
             width: 100%;
             border-collapse: collapse;
@@ -248,84 +237,57 @@
 
         .growth-up { color: #10b981; font-weight: 600; }
 
-        /* ===== 3. 官方社媒风格展示 ===== */
+        /* ===== 官方社媒风格展示 ===== */
         .style-content {
             flex: 1;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
-
-        .style-item {
-            background: #f8f9fa;
-            border: 2px dashed #cbd5e1;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-size: 13px;
-            text-align: center;
-            padding: 15px;
+            gap: 12px;
+            min-height: 0;
             overflow: hidden;
         }
 
-        .style-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .style-item {
+            background: transparent;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .style-item-title {
-            font-weight: 600;
-            color: #64748b;
-            margin-bottom: 8px;
+        .style-item img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
 
         /* ===== 活动卡片 ===== */
-        .activity-card { height: 200px; }
-
-        .activity-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
         .activity-text {
             font-size: 13px;
             color: #555;
             line-height: 1.7;
+            flex-shrink: 0;
         }
 
         .activity-text strong { color: #2c3e50; }
 
-        .activity-highlight {
-            display: inline-block;
-            background: #e3f2fd;
-            color: #1565c0;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
         .activity-stats {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             margin-top: auto;
+            flex-shrink: 0;
         }
 
         .stat-box {
             background: #f8f9fa;
-            padding: 8px 15px;
+            padding: 8px 12px;
             border-radius: 8px;
             text-align: center;
         }
 
         .stat-box-value {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: #3498db;
         }
@@ -336,63 +298,34 @@
             margin-top: 2px;
         }
 
-        /* ===== 品牌大使 ===== */
-        .ambassador-content {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .ambassador-info {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
+        /* ===== 品牌大使列表 ===== */
         .ambassador-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 5px;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
         }
 
         .ambassador-item {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 8px 12px;
+            padding: 6px 10px;
             background: #f8f9fa;
-            border-radius: 8px;
+            border-radius: 6px;
         }
 
         .ambassador-name {
             font-weight: 600;
             color: #2c3e50;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .ambassador-role {
-            font-size: 12px;
+            font-size: 11px;
             color: #888;
-        }
-
-        .ambassador-image {
-            background: #f8f9fa;
-            border: 2px dashed #cbd5e1;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-size: 13px;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        .ambassador-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
     </style>
 </head>
@@ -416,33 +349,23 @@
             <div class="main-content">
                 <!-- 左列 -->
                 <div class="column">
-                    <!-- 1. KOL合作数量 -->
-                    <div class="card" style="flex: 0 0 auto;">
+                    <!-- 1. KOL合作数量 - 左文右图 -->
+                    <div class="card card-fixed">
                         <div class="card-title">KOL合作数量</div>
-                        <div class="kol-content">
-                            <div class="kol-stats">
-                                {{#each kolStats.items}}
-                                <div class="kol-stat-item">
-                                    <span class="kol-stat-label">{{label}}</span>
-                                    <span class="kol-stat-value {{#if highlight}}highlight{{/if}}">{{value}}</span>
-                                </div>
-                                {{/each}}
+                        <div class="left-right-layout">
+                            <div class="left-text">
+                                <div class="kol-summary">{{{kolStats.summary}}}</div>
                             </div>
-                            <div class="bar-chart">
-                                {{#each kolStats.chartBars}}
-                                <div class="bar-item">
-                                    <div class="bar bar-{{@index}}" style="height: {{height}}px;">
-                                        <span class="bar-value">{{value}}</span>
-                                    </div>
-                                    <span class="bar-label">{{label}}</span>
+                            <div class="right-image">
+                                <div class="image-box">
+                                    <img src="{{kolStats.imagePath}}" alt="KOL合作数据">
                                 </div>
-                                {{/each}}
                             </div>
                         </div>
                     </div>
 
                     <!-- 2. 官方社媒数据 -->
-                    <div class="card" style="flex: 0 0 auto;">
+                    <div class="card card-fixed">
                         <div class="card-title">官方社媒数据</div>
                         <table class="social-table">
                             <thead>
@@ -474,7 +397,7 @@
                     </div>
 
                     <!-- 3. 官方社媒风格展示 -->
-                    <div class="card" style="flex: 1;">
+                    <div class="card card-flex">
                         <div class="card-title">官方社媒风格展示</div>
                         <div class="style-content">
                             {{#each socialStyle.items}}
@@ -488,43 +411,57 @@
 
                 <!-- 右列 -->
                 <div class="column">
-                    <!-- 活动一 -->
-                    <div class="card activity-card">
+                    <!-- 活动一 - 左文右图 -->
+                    <div class="card card-equal">
                         <div class="card-title">活动一：{{activity1.title}}</div>
-                        <div class="activity-content">
-                            <div class="activity-text">{{{activity1.description}}}</div>
-                            <div class="activity-stats">
-                                {{#each activity1.stats}}
-                                <div class="stat-box">
-                                    <div class="stat-box-value">{{value}}</div>
-                                    <div class="stat-box-label">{{label}}</div>
+                        <div class="left-right-layout">
+                            <div class="left-text">
+                                <div class="activity-text">{{{activity1.description}}}</div>
+                                <div class="activity-stats">
+                                    {{#each activity1.stats}}
+                                    <div class="stat-box">
+                                        <div class="stat-box-value">{{value}}</div>
+                                        <div class="stat-box-label">{{label}}</div>
+                                    </div>
+                                    {{/each}}
                                 </div>
-                                {{/each}}
+                            </div>
+                            <div class="right-image">
+                                <div class="image-box">
+                                    <img src="{{activity1.imagePath}}" alt="活动一">
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 活动二 -->
-                    <div class="card activity-card">
+                    <!-- 活动二 - 左文右图 -->
+                    <div class="card card-equal">
                         <div class="card-title">活动二：{{activity2.title}}</div>
-                        <div class="activity-content">
-                            <div class="activity-text">{{{activity2.description}}}</div>
-                            <div class="activity-stats">
-                                {{#each activity2.stats}}
-                                <div class="stat-box">
-                                    <div class="stat-box-value">{{value}}</div>
-                                    <div class="stat-box-label">{{label}}</div>
+                        <div class="left-right-layout">
+                            <div class="left-text">
+                                <div class="activity-text">{{{activity2.description}}}</div>
+                                <div class="activity-stats">
+                                    {{#each activity2.stats}}
+                                    <div class="stat-box">
+                                        <div class="stat-box-value">{{value}}</div>
+                                        <div class="stat-box-label">{{label}}</div>
+                                    </div>
+                                    {{/each}}
                                 </div>
-                                {{/each}}
+                            </div>
+                            <div class="right-image">
+                                <div class="image-box">
+                                    <img src="{{activity2.imagePath}}" alt="活动二">
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 活动三：品牌大使 -->
-                    <div class="card" style="flex: 1;">
+                    <!-- 活动三：品牌大使 - 左文右图 -->
+                    <div class="card card-equal">
                         <div class="card-title">活动三：{{ambassador.title}}</div>
-                        <div class="ambassador-content">
-                            <div class="ambassador-info">
+                        <div class="left-right-layout">
+                            <div class="left-text">
                                 <div class="activity-text">{{{ambassador.description}}}</div>
                                 <div class="ambassador-list">
                                     {{#each ambassador.list}}
@@ -535,8 +472,10 @@
                                     {{/each}}
                                 </div>
                             </div>
-                            <div class="ambassador-image">
-                                <img src="{{ambassador.imagePath}}" alt="品牌大使">
+                            <div class="right-image">
+                                <div class="image-box">
+                                    <img src="{{ambassador.imagePath}}" alt="品牌大使">
+                                </div>
                             </div>
                         </div>
                     </div>

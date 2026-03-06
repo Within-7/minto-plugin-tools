@@ -160,7 +160,7 @@
 
         .logo-box {
             flex: 1;
-            background: #f8f9fa;
+            background: transparent;
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -187,7 +187,7 @@
 
         .product-image-box {
             flex: 1;
-            background: #f8f9fa;
+            background: transparent;
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -212,17 +212,19 @@
             flex-direction: column;
         }
 
+        /* 产品名称 - 蓝色 */
         .product-name {
             font-size: 22px;
             font-weight: bold;
-            color: #2c3e50;
+            color: #3498db;
             margin-bottom: 10px;
         }
 
+        /* 产品价格 - 黑色 */
         .product-price {
             font-size: 26px;
             font-weight: bold;
-            color: #3498db;
+            color: #2c3e50;
             margin-bottom: 18px;
         }
 
@@ -250,7 +252,7 @@
             top: 4px;
         }
 
-        /* ===== 右列上半：流量分布 ===== */
+        /* ===== 右列上半：流量分布（图片） ===== */
         .right-top {
             grid-row: 1 / 2;
             background: #ffffff;
@@ -261,56 +263,21 @@
             flex-direction: column;
         }
 
-        .bar-list {
+        .traffic-image-box {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .bar-row {
-            flex: 1;
+            background: transparent;
+            border-radius: 12px;
             display: flex;
             align-items: center;
-            gap: 12px;
-        }
-
-        .bar-label {
-            width: 70px;
-            font-size: 13px;
-            color: #666;
-            font-weight: 500;
-            text-align: right;
-        }
-
-        .bar-track {
-            flex: 1;
-            height: 24px;
-            background: #f1f5f9;
-            border-radius: 6px;
+            justify-content: center;
             overflow: hidden;
         }
 
-        .bar-fill {
-            height: 100%;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 10px;
+        .traffic-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
-
-        .bar-value {
-            font-size: 12px;
-            font-weight: bold;
-            color: white;
-        }
-
-        .bar-1 .bar-fill { background: #4f46e5; }
-        .bar-2 .bar-fill { background: #f59e0b; }
-        .bar-3 .bar-fill { background: #10b981; }
-        .bar-4 .bar-fill { background: #ef4444; }
-        .bar-5 .bar-fill { background: #8b5cf6; }
 
         /* ===== 右列下半：KPI ===== */
         .right-bottom {
@@ -404,40 +371,11 @@
                     </div>
                 </div>
 
-                <!-- 右列上半：流量分布 -->
+                <!-- 右列上半：流量分布（图片） -->
                 <div class="right-top">
                     <div class="card-title">独立站流量来源分布</div>
-                    <div class="bar-list">
-                        <div class="bar-row bar-1">
-                            <div class="bar-label">Direct</div>
-                            <div class="bar-track">
-                                <div class="bar-fill" style="width: {{traffic.direct}}%;"><span class="bar-value">{{traffic.direct}}%</span></div>
-                            </div>
-                        </div>
-                        <div class="bar-row bar-2">
-                            <div class="bar-label">Search</div>
-                            <div class="bar-track">
-                                <div class="bar-fill" style="width: {{traffic.search}}%;"><span class="bar-value">{{traffic.search}}%</span></div>
-                            </div>
-                        </div>
-                        <div class="bar-row bar-3">
-                            <div class="bar-label">Social</div>
-                            <div class="bar-track">
-                                <div class="bar-fill" style="width: {{traffic.social}}%;"><span class="bar-value">{{traffic.social}}%</span></div>
-                            </div>
-                        </div>
-                        <div class="bar-row bar-4">
-                            <div class="bar-label">Referrals</div>
-                            <div class="bar-track">
-                                <div class="bar-fill" style="width: {{traffic.referrals}}%;"><span class="bar-value">{{traffic.referrals}}%</span></div>
-                            </div>
-                        </div>
-                        <div class="bar-row bar-5">
-                            <div class="bar-label">Mail</div>
-                            <div class="bar-track">
-                                <div class="bar-fill" style="width: {{traffic.mail}}%;"><span class="bar-value">{{traffic.mail}}%</span></div>
-                            </div>
-                        </div>
+                    <div class="traffic-image-box">
+                        <img src="{{trafficImagePath}}" alt="流量分布" class="traffic-image">
                     </div>
                 </div>
 

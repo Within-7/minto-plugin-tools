@@ -1,0 +1,6 @@
+{
+  "name": "brand-extractor",
+  "description": "PPT品牌信息提取器 - 从品牌案例PPT中提取品牌目录、详情、分析、社媒数据",
+  "source": "./brand-extractor",
+  "category": "productivity"
+}

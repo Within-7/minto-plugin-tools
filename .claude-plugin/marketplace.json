@@ -160,6 +160,12 @@
       "category": "productivity"
     },
     {
+      "name": "brand-extractor",
+      "description": "PPT品牌信息提取器 - 从品牌案例PPT中提取品牌目录、详情、分析、社媒数据，支持四种提取模式",
+      "source": "./brand-extractor",
+      "category": "productivity"
+    },
+    {
       "name": "industry-research",
       "description": "行业研究商业分析插件 - 全球市场分析、行业热点趋势、竞争格局、消费者洞察、品牌案例拆解等专业咨询服务",
       "source": "./industry-research",

@@ -7,16 +7,6 @@ description: 演示文稿页面生成器。支持生成消费者洞察散点图(
 
 演示文稿页面生成器，支持生成第24-29页（消费者洞察）、第30页（品牌目录）、第31-33页（品牌案例深度分析）和第49-50页（行业结论）。
 
-
-## 依赖安装
-
-```bash
-pip install playwright pillow
-python -m playwright install chromium
-```
-
-**注意**：如果不需要自动截图功能，可以跳过 playwright 安装。
-
 ---
 
 ## 项目目录结构
@@ -438,9 +428,10 @@ licensed cosmetologist,1.33,10
 生成前必须检查 `assets/brand_details/` 目录：
 
 ```
-需要2张品牌图片：
-- {品牌名}_product.png  # 产品图 450×300px
-- {品牌名}_logo.png     # 品牌Logo 510×350px
+需要3张品牌图片：
+- {品牌名}_product.png   # 产品图 450×300px
+- {品牌名}_logo.png      # 品牌Logo 510×350px
+- {品牌名}_traffic.png   # 流量分布图 ~500×350px
 ```
 
 **如果图片缺失**：
@@ -450,12 +441,14 @@ licensed cosmetologist,1.33,10
 ⚠️ 检测到以下图片缺失：
 - assets/brand_details/{品牌名}_product.png
 - assets/brand_details/{品牌名}_logo.png
+- assets/brand_details/{品牌名}_traffic.png
 
 请先上传图片，格式要求：
 - 产品图：450px × 300px（宽×高），PNG格式，透明底
 - 品牌Logo：510px × 350px（宽×高），PNG格式，透明底
+- 流量分布图：约500px × 350px，PNG/JPG格式
 - 存放位置：assets/brand_details/
-- 文件命名：{品牌名}_product.png、{品牌名}_logo.png（如：spot_product.png, spot_logo.png）
+- 文件命名：{品牌名}_product.png、{品牌名}_logo.png、{品牌名}_traffic.png
 - 命名规则：小写字母，单词间用下划线分隔
 
 上传完成后回复"继续"。
@@ -469,6 +462,7 @@ licensed cosmetologist,1.33,10
 |---------|------|------|------|---------|
 | 产品图 | 450px | 300px | PNG（透明底） | `{品牌名}_product.png` |
 | 品牌Logo | 510px | 350px | PNG（透明底） | `{品牌名}_logo.png` |
+| 流量分布图 | ~500px | ~350px | PNG/JPG | `{品牌名}_traffic.png` |
 | 存放位置 | `assets/brand_details/` |
 
 ### 数据输入方式
@@ -525,6 +519,7 @@ licensed cosmetologist,1.33,10
 ## 图片文件
 - 产品图：spot_product.png
 - 品牌Logo：spot_logo.png
+- 流量分布图：spot_traffic.png
 ```
 
 ### 处理流程
@@ -560,14 +555,10 @@ licensed cosmetologist,1.33,10
 | `{{competitiveAdvantage}}` | 竞争优势 |
 | `{{productImagePath}}` | 产品图路径：`../assets/brand_details/{品牌名}_product.png` |
 | `{{brandLogoPath}}` | 品牌Logo路径：`../assets/brand_details/{品牌名}_logo.png` |
-| `{{productName}}` | 产品名称 |
-| `{{productPrice}}` | 产品价格 |
+| `{{trafficImagePath}}` | 流量分布图路径：`../assets/brand_details/{品牌名}_traffic.png` |
+| `{{productName}}` | 产品名称（蓝色显示） |
+| `{{productPrice}}` | 产品价格（黑色显示） |
 | `{{feature1}}` ~ `{{feature7}}` | 产品特点（7条） |
-| `{{traffic.direct}}` | Direct流量占比 |
-| `{{traffic.search}}` | Search流量占比 |
-| `{{traffic.social}}` | Social流量占比 |
-| `{{traffic.referrals}}` | Referrals流量占比 |
-| `{{traffic.mail}}` | Mail流量占比 |
 | `{{kpi.dau}}` | 日均活跃用户 |
 | `{{kpi.duration}}` | 平均停留时长 |
 | `{{kpi.pages}}` | 人均访问页面 |
@@ -593,27 +584,35 @@ licensed cosmetologist,1.33,10
 生成前必须检查 `assets/brand_analysis/` 目录：
 
 ```
-需要3张图片：
-- {品牌名}_persona_1.png   # 用户画像1 ~400×300px
-- {品牌名}_persona_2.png   # 用户画像2 ~400×300px
-- {品牌名}_seo_table.png   # SEO关键词表格 ~500×200px
+需要6张图片：
+- {品牌名}_user_position.png   # 用户定位图 ~400×300px
+- {品牌名}_persona_1.png       # 用户画像1 ~400×300px
+- {品牌名}_persona_2.png       # 用户画像2 ~400×300px
+- {品牌名}_flow_model.png      # 流量模型图 ~400×300px
+- {品牌名}_backlink_pie.png    # 外链饼图 ~250×200px
+- {品牌名}_backlink_bar.png    # 外链柱状图 ~350×200px
 ```
+
+**注意**：SEO关键词表格使用HTML表格渲染，不需要图片。
 
 **如果图片缺失**：
 
 1. 输出提示信息：
 ```
 ⚠️ 检测到以下图片缺失：
+- assets/brand_analysis/{品牌名}_user_position.png
 - assets/brand_analysis/{品牌名}_persona_1.png
-- assets/brand_analysis/{品牌名}_persona_2.png
-- assets/brand_analysis/{品牌名}_seo_table.png
+- ...
 
 请先上传图片，格式要求：
+- 用户定位图：约400px × 300px（宽×高）
 - 用户画像图：约400px × 300px（宽×高）
-- SEO表格图：约500px × 200px（宽×高）
-- 格式：PNG 或 JPG
+- 流量模型图：约400px × 300px（宽×高）
+- 外链饼图：约250px × 200px（宽×高）
+- 外链柱状图：约350px × 200px（宽×高）
+- 格式：PNG（推荐透明底）
 - 存放位置：assets/brand_analysis/
-- 文件命名：{品牌名}_{类型}.png（如：spot_persona_1.png）
+- 文件命名：{品牌名}_{类型}.png
 
 上传完成后回复"继续"。
 ```
@@ -624,16 +623,45 @@ licensed cosmetologist,1.33,10
 
 | 图片类型 | 宽度 | 高度 | 格式 | 命名规则 |
 |---------|------|------|------|---------|
-| 用户画像1 | ~400px | ~300px | PNG/JPG | `{品牌名}_persona_1.png` |
-| 用户画像2 | ~400px | ~300px | PNG/JPG | `{品牌名}_persona_2.png` |
-| SEO表格 | ~500px | ~200px | PNG/JPG | `{品牌名}_seo_table.png` |
+| 用户定位图 | ~400px | ~300px | PNG | `{品牌名}_user_position.png` |
+| 用户画像1 | ~400px | ~300px | PNG | `{品牌名}_persona_1.png` |
+| 用户画像2 | ~400px | ~300px | PNG | `{品牌名}_persona_2.png` |
+| 流量模型图 | ~400px | ~300px | PNG | `{品牌名}_flow_model.png` |
+| 外链饼图 | ~250px | ~200px | PNG | `{品牌名}_backlink_pie.png` |
+| 外链柱状图 | ~350px | ~200px | PNG | `{品牌名}_backlink_bar.png` |
 | 存放位置 | `assets/brand_analysis/` |
 
 ### 数据输入方式
 
 **JSON 文件格式**
 
-用户上传 JSON 文件到 `data/` 目录，格式参考 `examples/example_brand_analysis.json`
+用户上传 JSON 文件到 `data/` 目录，格式如下：
+
+```json
+{
+  "brandNumber": "01",
+  "brandName": "CHEWY",
+  "logoPath": "../assets/logo.png",
+
+  "userNeeds": {
+    "coreNeeds": "核心诉求文字",
+    "scenarios": "使用场景文字",
+    "decisionFactors": "决策因素文字",
+    "channels": "购买渠道文字"
+  },
+
+  "seoTraffic": {
+    "text": "品牌基石流量说明文字，关键词集中在...",
+    "keywords": [
+      {"rank": 1, "keyword": "dog food", "type": "狗粮", "traffic": 33480},
+      {"rank": 2, "keyword": "cat tree", "type": "猫爬架", "traffic": 22444}
+    ]
+  },
+
+  "backlinkTypes": "1. 宠物福利与领养网站；2. 宠物网站与宠物产品电商；...",
+  "backlinkKeywords": "外链文章热门关键词描述"
+}
+```
 
 ### 处理流程
 
@@ -641,18 +669,17 @@ licensed cosmetologist,1.33,10
 - 确保 `assets/logo.png` 存在
 
 **Step 3: 读取数据**
-- 读取 `data/{品牌名}_analysis.json` 文件
+- 读取 `data/brand_{品牌名}_analysis.json` 文件
 - 或用户在对话中直接提供数据
 
 **Step 4: 数据验证**
 
 必需字段：
 - `brandNumber` `brandName` `logoPath`
-- `userPosition` - 用户定位（圆环图数据）
-- `userNeeds` - 用户需求（4个文本块）
-- `flowModel` - 流量模型（流程节点）
-- `seoTraffic` - 基石流量（文字+表格图片）
-- `backlinkAnalysis` - 外链分析（饼图+条形图）
+- `userNeeds` - 用户需求（4个文本块：核心诉求、使用场景、决策因素、购买渠道）
+- `seoTraffic` - 基石流量（文字+关键词数组，渲染为HTML表格）
+- `backlinkTypes` - 外链合作网站类型（文字，显示在饼图上方）
+- `backlinkKeywords` - 外链文章热门关键词
 
 **Step 5: 模板渲染**
 
@@ -660,12 +687,12 @@ licensed cosmetologist,1.33,10
 
 | 卡片 | 内容类型 | 说明 |
 |-----|---------|-----|
-| 用户定位 | 圆环图 | 展示用户群体分布 |
-| 用户需求 | 文字 | 核心诉求、使用场景、决策因素、购买渠道 |
-| 用户画像 | 双图 | INS截图展示 |
-| 流量模型 | 流程图 | 搜索→落地页→转化→购买 |
-| 基石流量 | 文字+图 | SEO关键词分析 |
-| 外链分析 | 饼图+条形图 | 外链来源+热门关键词 |
+| 用户定位 | 图片 | 用户定位图 |
+| 用户需求 | 文字 | 核心诉求、使用场景、决策因素、购买渠道（4个文本块） |
+| 用户画像 | 双图并列 | 2张用户画像图 |
+| 流量模型 | 图片 | 流量模型图 |
+| 基石流量 | 文字+HTML表格 | SEO关键词分析（用表格渲染keywords数组） |
+| 外链分析 | 文字+饼图+柱状图 | 外链类型文字+饼图+关键词文字+柱状图 |
 
 **Step 6: 输出**
 
@@ -679,6 +706,29 @@ licensed cosmetologist,1.33,10
 
 ## SOP - 第33页：社媒营销生成
 
+### 布局结构
+
+```
++-------------------------------------------+
+| 标题栏                                     |
++-------------------------------------------+
+| 左列(1.08fr)         |    右列(0.92fr)    |
+| KOL合作数量           |    活动一          |
+| （左图右文）          |    （左文右图）     |
++----------------------+--------------------+
+| 官方社媒风格展示      |    活动二          |
+| （3张图并排，大图）   |    （左文右图）     |
++----------------------+--------------------+
+|                      |    活动三          |
+|                      |    （左文右图）     |
++-------------------------------------------+
+```
+
+**核心要点**：
+- **风格展示是页面焦点**，3张图并排，固定大高度
+- **KOL区域**：左图右文，紧凑
+- **右列3个活动**：均分高度，各左文右图
+
 ### 前置条件检查
 
 **Step 1: 检查图片文件**
@@ -686,11 +736,14 @@ licensed cosmetologist,1.33,10
 生成前必须检查 `assets/brand_social/` 目录：
 
 ```
-需要4张图片：
-- {品牌名}_style_1.png      # 社媒风格展示1 ~300×250px
-- {品牌名}_style_2.png      # 社媒风格展示2 ~300×250px
-- {品牌名}_style_3.png      # 社媒风格展示3 ~300×250px
-- {品牌名}_ambassador.png   # 品牌大使图片 ~400×350px
+需要7张图片：
+- {品牌名}_kol_chart.png      # KOL合作数据图 ~400×300px
+- {品牌名}_style_1.png        # 社媒风格展示1 ~300×250px
+- {品牌名}_style_2.png        # 社媒风格展示2 ~300×250px
+- {品牌名}_style_3.png        # 社媒风格展示3 ~300×250px
+- {品牌名}_activity_1.png     # 活动一图片 ~350×300px
+- {品牌名}_activity_2.png     # 活动二图片 ~350×300px
+- {品牌名}_activity_3.png     # 活动三图片 ~350×300px
 ```
 
 **如果图片缺失**：
@@ -698,15 +751,19 @@ licensed cosmetologist,1.33,10
 1. 输出提示信息：
 ```
 ⚠️ 检测到以下图片缺失：
+- assets/brand_social/{品牌名}_kol_chart.png
 - assets/brand_social/{品牌名}_style_1.png
 - assets/brand_social/{品牌名}_style_2.png
 - assets/brand_social/{品牌名}_style_3.png
-- assets/brand_social/{品牌名}_ambassador.png
+- assets/brand_social/{品牌名}_activity_1.png
+- assets/brand_social/{品牌名}_activity_2.png
+- assets/brand_social/{品牌名}_activity_3.png
 
 请先上传图片，格式要求：
+- KOL数据图：约400px × 300px（宽×高）
 - 社媒风格图：约300px × 250px（宽×高）
-- 品牌大使图：约400px × 350px（宽×高）
-- 格式：PNG 或 JPG
+- 活动图片：约350px × 300px（宽×高）
+- 格式：PNG（推荐透明底）
 - 存放位置：assets/brand_social/
 - 文件命名：{品牌名}_{类型}.png
 
@@ -719,17 +776,64 @@ licensed cosmetologist,1.33,10
 
 | 图片类型 | 宽度 | 高度 | 格式 | 命名规则 |
 |---------|------|------|------|---------|
-| 社媒风格1 | ~300px | ~250px | PNG/JPG | `{品牌名}_style_1.png` |
-| 社媒风格2 | ~300px | ~250px | PNG/JPG | `{品牌名}_style_2.png` |
-| 社媒风格3 | ~300px | ~250px | PNG/JPG | `{品牌名}_style_3.png` |
-| 品牌大使 | ~400px | ~350px | PNG/JPG | `{品牌名}_ambassador.png` |
+| KOL数据图 | ~400px | ~300px | PNG | `{品牌名}_kol_chart.png` |
+| 社媒风格1 | ~300px | ~250px | PNG | `{品牌名}_style_1.png` |
+| 社媒风格2 | ~300px | ~250px | PNG | `{品牌名}_style_2.png` |
+| 社媒风格3 | ~300px | ~250px | PNG | `{品牌名}_style_3.png` |
+| 活动一 | ~350px | ~300px | PNG | `{品牌名}_activity_1.png` |
+| 活动二 | ~350px | ~300px | PNG | `{品牌名}_activity_2.png` |
+| 活动三 | ~350px | ~300px | PNG | `{品牌名}_activity_3.png` |
 | 存放位置 | `assets/brand_social/` |
 
 ### 数据输入方式
 
 **JSON 文件格式**
 
-用户上传 JSON 文件到 `data/` 目录，格式参考 `examples/example_brand_social.json`
+用户上传 JSON 文件到 `data/` 目录，格式如下：
+
+```json
+{
+  "brandNumber": "01",
+  "brandName": "CHEWY",
+  "logoPath": "../assets/logo.png",
+
+  "kolStats": {
+    "summary": "Chewy在3个社媒渠道的合作数据中，<strong>Instagram的合作数量最多</strong>，发帖量也最多，INS人均发帖达到1.66篇。数据统计最近1年活跃数据，包含所有KOL和KOC。",
+    "imagePath": "../assets/brand_social/chewy_kol_chart.png",
+    "points": [
+      "合作重心明显集中在 Instagram",
+      "短视频平台参与度有增长空间",
+      "整体达人协作更偏长期稳定运营"
+    ]
+  },
+
+  "socialStyle": {
+    "items": [
+      {"title": "宠物知识介绍", "imagePath": "../assets/brand_social/chewy_style_1.png"},
+      {"title": "结合可爱宠物图片宣传品牌", "imagePath": "../assets/brand_social/chewy_style_2.png"},
+      {"title": "宠物福祉宣传", "imagePath": "../assets/brand_social/chewy_style_3.png"}
+    ]
+  },
+
+  "activity1": {
+    "title": "动物画像赠送 Pet Portraits",
+    "description": "在一些如品牌周年、节假日、顾客生日等KEM或在诸如顾客退货后的特殊情况下，品牌会为部分被选中的顾客提供宠物照片的艺术画像，以增强用户情感连接与品牌记忆点。",
+    "imagePath": "../assets/brand_social/chewy_activity_1.png"
+  },
+
+  "activity2": {
+    "title": "动物福利特色网页 GIVES BACK",
+    "description": "在官网首页导航栏可参与"GIVES BACK"活动。用户可为自己选择的动物救助机构购买所需物品，也可直接进入领养路径，体现品牌的公益导向与社会责任感。",
+    "imagePath": "../assets/brand_social/chewy_activity_2.png"
+  },
+
+  "activity3": {
+    "title": "官方博客 be chewy",
+    "description": "官方博客覆盖宠物饲养注意事项、宠物用品介绍、动物福利议题与宠物知识等内容，共分为宠物品种、新手事项、宠物健康、宠物居家等多个板块，形成持续内容运营阵地。",
+    "imagePath": "../assets/brand_social/chewy_activity_3.png"
+  }
+}
+```
 
 ### 处理流程
 
@@ -737,32 +841,28 @@ licensed cosmetologist,1.33,10
 - 确保 `assets/logo.png` 存在
 
 **Step 3: 读取数据**
-- 读取 `data/{品牌名}_social.json` 文件
+- 读取 `data/brand_{品牌名}_social.json` 文件
 - 或用户在对话中直接提供数据
 
 **Step 4: 数据验证**
 
 必需字段：
 - `brandNumber` `brandName` `logoPath`
-- `kolStats` - KOL合作数量（统计+柱状图）
-- `socialMediaData` - 官方社媒数据（IG/FB/YT表格）
-- `socialStyle` - 社媒风格展示（3张图片）
-- `activity1` - 活动一（救援活动）
-- `activity2` - 活动二（合作赞助）
-- `ambassador` - 品牌大使（列表+图片）
+- `kolStats` - KOL合作数据（summary + imagePath + points可选）
+- `socialStyle.items` - 社媒风格展示（3张图片）
+- `activity1/2/3` - 三个活动（各含title + description + imagePath）
 
 **Step 5: 模板渲染**
 
-使用 `templates/brand_social.html` 模板，页面包含6个卡片：
+使用 `templates/brand_social.html` 模板，页面包含5个卡片：
 
-| 卡片 | 内容类型 | 说明 |
-|-----|---------|-----|
-| KOL合作数量 | 统计+柱状图 | KOL分层统计 |
-| 官方社媒数据 | 表格 | IG/FB/YT数据 |
-| 社媒风格展示 | 三图 | 产品推荐/应用场景/救援活动 |
-| 活动一 | 文字+统计 | 救援活动营销 |
-| 活动二 | 文字+统计 | 合作赞助活动 |
-| 品牌大使 | 列表+图 | 大使介绍+合影 |
+| 位置 | 卡片 | 内容类型 | 说明 |
+|-----|-----|---------|-----|
+| 左上 | KOL合作数量 | 左图右文 | KOL数据图 + 文字说明 |
+| 左下 | 官方社媒风格展示 | 3张图并排 | 产品推荐/应用场景/救援活动（**页面焦点**） |
+| 右上 | 活动一 | 左文右图 | 营销活动1 |
+| 右中 | 活动二 | 左文右图 | 营销活动2 |
+| 右下 | 活动三 | 左文右图 | 营销活动3 |
 
 **Step 6: 输出**
 
@@ -832,23 +932,6 @@ AI自动提取或生成12个主题卡片：
 
 ---
 
-## 中文→英文Hashtag映射（可选工具）
-
-**注意**：`scripts/instagram_screenshot.py` 为可选工具，如需自动截图可使用。
-
-```python
-KEYWORD_MAPPING = {
-    "水上活动": "watersports",
-    "自然探索": "naturelover",
-    "极端探险": "extremesports",
-    "长途旅行": "traveler",
-    "家庭旅行": "familytravel",
-    # ...完整映射见脚本
-}
-```
-
----
-
 ## 插件目录结构
 
 ```
@@ -863,22 +946,78 @@ minto-slides/
 │   ├── user_profile.html
 │   ├── brand_catalog.html       # 第30页品牌目录模板
 │   ├── brand_detail.html        # 第31页品牌详情模板
-│   ├── brand_analysis.html      # 第32页品牌分析模板（新增）
-│   ├── brand_social.html        # 第33页社媒营销模板（新增）
+│   ├── brand_analysis.html      # 第32页品牌分析模板
+│   ├── brand_social.html        # 第33页社媒营销模板
 │   └── industry_conclusion.html
 ├── assets/
 │   └── logo.png              # 默认Logo
-├── scripts/
-│   └── instagram_screenshot.py  # 可选工具
 ├── examples/
 │   ├── example_scatter.json
 │   ├── example_conclusion.txt
-│   ├── example_brand_detail.md     # 第31页示例数据
-│   ├── example_brand_analysis.json # 第32页示例数据（新增）
-│   └── example_brand_social.json   # 第33页示例数据（新增）
-├── requirements.txt
+│   ├── example_brand_detail.md
+│   ├── example_brand_analysis.json
+│   └── example_brand_social.json
 └── README.md
 ```
+
+---
+
+## 模板技术规范
+
+### 图片容器规范
+
+**所有图片容器必须使用透明背景**，避免图片白底与容器灰色背景不匹配：
+
+```css
+.image-box {
+    background: transparent;  /* 不使用 #f8f9fa */
+}
+```
+
+**适用模板**：
+- `brand_detail.html` - `.logo-box`, `.product-image-box`, `.traffic-image-box`
+- `brand_analysis.html` - `.image-box`
+- `brand_social.html` - `.image-box`, `.style-item`
+
+### Flex/Grid 溢出防护
+
+**问题**：卡片内容可能超出1920×1080视口范围
+
+**解决方案**：
+
+1. **Grid 布局使用固定行高**（不要用 `1fr` 全弹性）：
+```css
+.main-content {
+    grid-template-rows: 400px 25px 1fr;  /* 固定+间隙+弹性 */
+}
+```
+
+2. **所有 Flex 容器必须添加**：
+```css
+.container {
+    min-height: 0;      /* 关键！允许flex子项收缩 */
+    overflow: hidden;   /* 防止内容溢出 */
+}
+```
+
+3. **图片自适应**：
+```css
+.image-box img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;  /* 保持比例，不裁剪 */
+}
+```
+
+### 路径规范
+
+| 位置 | 路径格式 |
+|------|---------|
+| HTML文件 | `slides/xx_page.html` |
+| Logo | `../assets/logo.png` |
+| 品牌详情图 | `../assets/brand_details/{品牌名}_{类型}.png` |
+| 品牌分析图 | `../assets/brand_analysis/{品牌名}_{类型}.png` |
+| 社媒营销图 | `../assets/brand_social/{品牌名}_{类型}.png` |
 
 ---
 
@@ -898,10 +1037,9 @@ minto-slides/
 
 ## 版本
 
-- v2.5.0 - 新增第32页品牌分析、第33页社媒营销生成功能（模板+示例+JSON数据格式）
-- v2.4.0 - 新增第31页品牌详情生成功能（模板+示例+图片规格）
-- v2.3.0 - 第30页品牌目录新增中文介绍功能（右对齐显示，用户可确认修改）
-- v2.2.0 - 新增第30页品牌目录生成功能
-- v2.1.0 - 优化目录结构，支持批量生成，添加前置检查
-- v2.0.0 - 重命名为 minto-slides，新增第49-50页行业结论生成
-- v1.0.0 - 初始版本
+- v2.7.0 - 技术规范更新：图片容器透明背景、溢出防护规则、32页SEO改HTML表格、外链饼图加类型文字
+- v2.6.0 - 优化模板：流量分布改图片、产品名称/价格颜色调换、清理无用依赖
+- v2.5.0 - 新增第32页品牌分析、第33页社媒营销生成功能
+- v2.4.0 - 新增第31页品牌详情生成功能
+- v2.3.0 - 第30页品牌目录新增中文介绍功能
+

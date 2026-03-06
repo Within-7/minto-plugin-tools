@@ -39,6 +39,7 @@
             padding-bottom: 20px;
             border-bottom: 3px solid #2c3e50;
             margin-bottom: 25px;
+            flex-shrink: 0;
         }
 
         .header-left {
@@ -71,13 +72,14 @@
             width: auto;
         }
 
-        /* ===== 主内容区 - 2行3列网格 ===== */
+        /* ===== 主内容区 ===== */
         .main-content {
             flex: 1;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: 1fr 1fr;
-            gap: 25px;
+            grid-template-rows: 400px 25px 1fr;
+            gap: 0 25px;
+            min-height: 0;
         }
 
         /* ===== 卡片通用样式 ===== */
@@ -88,6 +90,8 @@
             padding: 25px;
             display: flex;
             flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
         }
 
         .card-title {
@@ -98,6 +102,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-shrink: 0;
         }
 
         .card-title::before {
@@ -108,77 +113,46 @@
             border-radius: 2px;
         }
 
-        /* ===== 1. 用户定位 - 圆环图 ===== */
-        .donut-area {
+        /* ===== 第一行卡片 ===== */
+        .row1-col1 { grid-row: 1 / 2; grid-column: 1 / 2; }
+        .row1-col2 { grid-row: 1 / 2; grid-column: 2 / 3; }
+        .row1-col3 { grid-row: 1 / 2; grid-column: 3 / 4; }
+
+        /* ===== 第二行卡片 ===== */
+        .row2-col1 { grid-row: 3 / 4; grid-column: 1 / 2; }
+        .row2-col2 { grid-row: 3 / 4; grid-column: 2 / 3; }
+        .row2-col3 { grid-row: 3 / 4; grid-column: 3 / 4; }
+
+        /* ===== 图片容器通用 ===== */
+        .image-box {
             flex: 1;
+            background: transparent;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+            min-height: 0;
         }
 
-        .donut-container {
-            width: 260px;
-            height: 260px;
-            position: relative;
+        .image-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
 
-        .donut-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-
-        .donut-center-value {
-            font-size: 36px;
-            font-weight: 800;
-            color: #2c3e50;
-        }
-
-        .donut-center-label {
-            font-size: 13px;
-            color: #666;
-            margin-top: 2px;
-        }
-
-        .donut-legend {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px 15px;
-            margin-top: 18px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            color: #555;
-        }
-
-        .legend-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .legend-value {
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        /* ===== 2. 用户需求 - 文字 ===== */
+        /* ===== 文字内容 ===== */
         .text-content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
+            overflow: hidden;
+            min-height: 0;
         }
 
         .text-block {
-            padding: 12px 15px;
+            padding: 10px 14px;
             background: #f8f9fa;
             border-radius: 8px;
             border-left: 3px solid #3498db;
@@ -188,233 +162,141 @@
             font-size: 13px;
             font-weight: 600;
             color: #2c3e50;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .text-block-content {
-            font-size: 13px;
+            font-size: 12px;
             color: #555;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
-        /* ===== 3. 用户画像 - 双图并列 ===== */
+        /* ===== 双图并列 ===== */
         .dual-image-area {
             flex: 1;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
+            min-height: 0;
         }
 
-        .image-box {
-            background: #f8f9fa;
-            border: 2px dashed #cbd5e1;
-            border-radius: 10px;
+        /* ===== SEO内容 ===== */
+        .seo-content {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-size: 13px;
-            text-align: center;
+            gap: 10px;
             overflow: hidden;
+            min-height: 0;
         }
 
-        .image-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* ===== 4. 流量模型 - 流程图 ===== */
-        .flow-area {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .flow-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .flow-node {
-            padding: 14px 22px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            text-align: center;
-            min-width: 90px;
-        }
-
-        .flow-node .sub {
-            font-size: 11px;
-            color: #666;
-            margin-top: 4px;
-            font-weight: 400;
-        }
-
-        .flow-source { background: #e3f2fd; color: #1565c0; }
-        .flow-channel { background: #fff3e0; color: #e65100; }
-        .flow-target { background: #e8f5e9; color: #2e7d32; }
-
-        .flow-arrow {
-            font-size: 20px;
-            color: #94a3b8;
-        }
-
-        /* ===== 5. 基石流量 ===== */
-        .traffic-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .traffic-text {
-            font-size: 13px;
+        .seo-text {
+            font-size: 12px;
             color: #555;
-            line-height: 1.7;
+            line-height: 1.6;
+            flex-shrink: 0;
         }
 
-        .traffic-text strong {
+        .seo-text strong {
             color: #2c3e50;
         }
 
-        .traffic-table-box {
+        /* SEO表格 */
+        .seo-table {
             flex: 1;
-            background: #f8f9fa;
-            border: 2px dashed #cbd5e1;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-size: 13px;
-            text-align: center;
-            min-height: 120px;
-            overflow: hidden;
-        }
-
-        .traffic-table-box img {
             width: 100%;
-            height: 100%;
-            object-fit: contain;
+            border-collapse: collapse;
+            font-size: 11px;
+            min-height: 0;
         }
 
-        /* ===== 6. 外链分析 - 左右布局 ===== */
+        .seo-table th {
+            background: #3498db;
+            color: white;
+            padding: 8px 6px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .seo-table th:first-child { border-radius: 6px 0 0 0; }
+        .seo-table th:last-child { border-radius: 0 6px 0 0; }
+
+        .seo-table td {
+            padding: 7px 6px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #333;
+        }
+
+        .seo-table tr:last-child td:first-child { border-radius: 0 0 0 6px; }
+        .seo-table tr:last-child td:last-child { border-radius: 0 0 6px 0; }
+        .seo-table tr:nth-child(even) { background: #f8fafc; }
+
+        .rank-col { width: 40px; text-align: center; font-weight: 600; color: #3498db; }
+        .keyword-col { font-weight: 500; }
+        .type-col { color: #666; }
+        .traffic-col { text-align: right; font-weight: 600; color: #2c3e50; }
+
+        /* ===== 外链分析 ===== */
         .backlink-content {
             flex: 1;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            align-items: center;
-        }
-
-        /* 左侧：饼图 */
-        .pie-area {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .pie-container {
-            width: 200px;
-            height: 200px;
-            position: relative;
-        }
-
-        .pie-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-
-        .pie-center-value {
-            font-size: 28px;
-            font-weight: 800;
-            color: #2c3e50;
-        }
-
-        .pie-center-label {
-            font-size: 11px;
-            color: #666;
-        }
-
-        .pie-legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px 12px;
-            margin-top: 15px;
-            justify-content: center;
-        }
-
-        .pie-legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 11px;
-            color: #555;
-        }
-
-        /* 右侧：条形图 */
-        .bar-area {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            height: 100%;
-            justify-content: center;
-        }
-
-        .bar-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .bar-label {
-            width: 100px;
-            font-size: 12px;
-            color: #555;
-            text-align: right;
-            flex-shrink: 0;
-            white-space: nowrap;
+            gap: 15px;
             overflow: hidden;
-            text-overflow: ellipsis;
+            min-height: 0;
         }
 
-        .bar-track {
+        .backlink-left {
             flex: 1;
-            height: 26px;
-            background: #f1f5f9;
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .bar-fill {
-            height: 100%;
-            border-radius: 6px;
             display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 10px;
+            flex-direction: column;
+            gap: 6px;
+            min-height: 0;
         }
 
-        .bar-value {
+        .backlink-left .image-box {
+            flex: 1;
+            min-height: 0;
+        }
+
+        .backlink-types-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c3e50;
+            flex-shrink: 0;
+        }
+
+        .backlink-types-text {
+            font-size: 11px;
+            color: #555;
+            line-height: 1.5;
+            flex-shrink: 0;
+        }
+
+        .backlink-right {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 0;
+        }
+
+        .backlink-keywords-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            flex-shrink: 0;
+        }
+
+        .backlink-keywords-text {
             font-size: 12px;
-            font-weight: bold;
-            color: white;
+            color: #555;
+            line-height: 1.6;
+            background: #f8f9fa;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border-left: 3px solid #3498db;
+            flex-shrink: 0;
         }
-
-        .bar-1 .bar-fill { background: linear-gradient(90deg, #4f46e5, #6366f1); }
-        .bar-2 .bar-fill { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
-        .bar-3 .bar-fill { background: linear-gradient(90deg, #10b981, #34d399); }
-        .bar-4 .bar-fill { background: linear-gradient(90deg, #ef4444, #f87171); }
-        .bar-5 .bar-fill { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
-        .bar-6 .bar-fill { background: linear-gradient(90deg, #06b6d4, #22d3ee); }
     </style>
 </head>
 <body>
@@ -433,33 +315,18 @@
                 </div>
             </div>
 
-            <!-- 主内容区 - 2行3列 -->
+            <!-- 主内容区 -->
             <div class="main-content">
                 <!-- 1. 用户定位 -->
-                <div class="card">
+                <div class="card row1-col1">
                     <div class="card-title">用户定位</div>
-                    <div class="donut-area">
-                        <div>
-                            <div class="donut-container">
-                                <svg viewBox="0 0 200 200">
-                                    {{userPosition.svgCircles}}
-                                </svg>
-                                <div class="donut-center">
-                                    <div class="donut-center-value">{{userPosition.corePercent}}</div>
-                                    <div class="donut-center-label">{{userPosition.coreLabel}}</div>
-                                </div>
-                            </div>
-                            <div class="donut-legend">
-                                {{#each userPosition.legends}}
-                                <div class="legend-item"><div class="legend-dot" style="background:{{color}}"></div>{{label}} <span class="legend-value">{{percent}}</span></div>
-                                {{/each}}
-                            </div>
-                        </div>
+                    <div class="image-box">
+                        <img src="{{userPositionImagePath}}" alt="用户定位">
                     </div>
                 </div>
 
                 <!-- 2. 用户需求 -->
-                <div class="card">
+                <div class="card row1-col2">
                     <div class="card-title">用户需求</div>
                     <div class="text-content">
                         <div class="text-block">
@@ -482,7 +349,7 @@
                 </div>
 
                 <!-- 3. 用户画像 -->
-                <div class="card">
+                <div class="card row1-col3">
                     <div class="card-title">用户画像</div>
                     <div class="dual-image-area">
                         <div class="image-box">
@@ -495,63 +362,58 @@
                 </div>
 
                 <!-- 4. 流量模型 -->
-                <div class="card">
+                <div class="card row2-col1">
                     <div class="card-title">流量模型</div>
-                    <div class="flow-area">
-                        <div class="flow-container">
-                            {{#each flowModel.nodes}}
-                            {{#if @index}}<div class="flow-arrow">→</div>{{/if}}
-                            <div class="flow-node {{type}}">
-                                <div>{{title}}</div>
-                                <div class="sub">{{subtitle}}</div>
-                            </div>
-                            {{/each}}
-                        </div>
+                    <div class="image-box">
+                        <img src="{{flowModelImagePath}}" alt="流量模型">
                     </div>
                 </div>
 
-                <!-- 5. 基石流量 -->
-                <div class="card">
+                <!-- 5. 基石流量（SEO关键词） -->
+                <div class="card row2-col2">
                     <div class="card-title">基石流量（SEO 关键词）</div>
-                    <div class="traffic-content">
-                        <div class="traffic-text">{{{seoTraffic.text}}}</div>
-                        <div class="traffic-table-box">
-                            <img src="{{seoTraffic.tableImagePath}}" alt="SEO关键词表格">
-                        </div>
+                    <div class="seo-content">
+                        <div class="seo-text">{{{seoTraffic.text}}}</div>
+                        <table class="seo-table">
+                            <thead>
+                                <tr>
+                                    <th class="rank-col">#</th>
+                                    <th class="keyword-col">关键词</th>
+                                    <th class="type-col">类型</th>
+                                    <th class="traffic-col">流量</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each seoTraffic.keywords}}
+                                <tr>
+                                    <td class="rank-col">{{rank}}</td>
+                                    <td class="keyword-col">{{keyword}}</td>
+                                    <td class="type-col">{{type}}</td>
+                                    <td class="traffic-col">{{traffic}}</td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
                 <!-- 6. 外链分析 -->
-                <div class="card">
+                <div class="card row2-col3">
                     <div class="card-title">外链分析</div>
                     <div class="backlink-content">
-                        <!-- 左侧：饼图 -->
-                        <div class="pie-area">
-                            <div class="pie-container">
-                                <svg viewBox="0 0 200 200">
-                                    {{backlinkAnalysis.svgCircles}}
-                                </svg>
-                                <div class="pie-center">
-                                    <div class="pie-center-value">{{backlinkAnalysis.totalCount}}</div>
-                                    <div class="pie-center-label">{{backlinkAnalysis.totalLabel}}</div>
-                                </div>
-                            </div>
-                            <div class="pie-legend">
-                                {{#each backlinkAnalysis.pieLegends}}
-                                <div class="pie-legend-item"><div class="legend-dot" style="background:{{color}}"></div>{{label}} {{percent}}</div>
-                                {{/each}}
+                        <div class="backlink-left">
+                            <div class="backlink-types-title">外链合作网站类型</div>
+                            <div class="backlink-types-text">{{backlinkTypes}}</div>
+                            <div class="image-box">
+                                <img src="{{backlinkPieImagePath}}" alt="外链来源分布">
                             </div>
                         </div>
-                        <!-- 右侧：条形图 -->
-                        <div class="bar-area">
-                            {{#each backlinkAnalysis.keywordBars}}
-                            <div class="bar-row bar-{{@index}}">
-                                <div class="bar-label">{{keyword}}</div>
-                                <div class="bar-track">
-                                    <div class="bar-fill" style="width:{{width}}%"><span class="bar-value">{{value}}</span></div>
-                                </div>
+                        <div class="backlink-right">
+                            <div class="backlink-keywords-title">外链文章热门关键词</div>
+                            <div class="backlink-keywords-text">{{backlinkKeywords}}</div>
+                            <div class="image-box">
+                                <img src="{{backlinkBarImagePath}}" alt="关键词排名柱状图">
                             </div>
-                            {{/each}}
                         </div>
                     </div>
                 </div>
