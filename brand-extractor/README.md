@@ -99,6 +99,7 @@ cp -r skills/brand-extractor /path/to/your-project/.claude/skills/
 
 ## 版本历史
 
+- v1.1.0 - 新增图片识别SOP：必须先绘制布局结构再定位图片；添加品牌Logo专用识别规则
 - v1.0.0 - 初始版本，支持四种提取模式
 
 ## 许可证
