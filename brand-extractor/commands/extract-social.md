@@ -14,7 +14,6 @@ allowed-tools: [Bash, Read, Write, Glob, Grep]
 1. KOL合作统计图
 2. 社媒风格截图（3张）
 3. 品牌活动截图（3张）
-4. 社媒平台数据
 
 ## 执行步骤
 
@@ -33,12 +32,11 @@ unzip "{ppt_path}" -d ./workspace/unpacked
 ### Step 3: 定位相关页面
 
 扫描所有slide文本，定位以下页面：
-- KOL合作页 → 提取统计图
-- 社媒平台数据页 → 提取平台数据
+- KOL合作页 → 提取统计图 + 摘要数据 + 要点
 - 社媒风格页 → 提取风格截图
 - 品牌活动页 → 提取活动截图
 
-关键词：社媒、KOL、品牌活动、社媒数据、社媒风格
+关键词：社媒、KOL、品牌活动、社媒风格
 
 ### Step 4: 提取图片（7张）
 
@@ -56,17 +54,20 @@ unzip "{ppt_path}" -d ./workspace/unpacked
 
 ```json
 {
+  "brandNumber": "01",
+  "brandName": "BRAND",
+  "logoPath": "../assets/logo.png",
+
   "kolStats": {
-    "summary": "KOL合作数据摘要",
-    "imagePath": "../assets/brand_social/{brand}_kol_chart.png"
-  },
-  "socialMediaData": {
-    "platforms": [
-      {"icon": "ig", "name": "Instagram", "followers": "xxx", "posts": "xxx", "frequency": "x帖/x天", "likes": "xxx"},
-      {"icon": "tt", "name": "TikTok", "followers": "xxx", "posts": "xxx", "frequency": "x帖/x天", "views": "xxx"},
-      {"icon": "yt", "name": "YouTube", "followers": "xxx", "posts": "xxx", "frequency": "x帖/x天", "views": "xxx"}
+    "summary": "KOL合作数据摘要（支持<strong>HTML</strong>加粗）",
+    "imagePath": "../assets/brand_social/{brand}_kol_chart.png",
+    "points": [
+      "要点一：合作重心集中在某平台",
+      "要点二：某方面有增长空间",
+      "要点三：整体趋势描述"
     ]
   },
+
   "socialStyle": {
     "items": [
       {"title": "风格标题1", "imagePath": "../assets/brand_social/{brand}_style_1.png"},
@@ -74,6 +75,7 @@ unzip "{ppt_path}" -d ./workspace/unpacked
       {"title": "风格标题3", "imagePath": "../assets/brand_social/{brand}_style_3.png"}
     ]
   },
+
   "activity1": {
     "title": "活动标题1",
     "description": "活动描述",
@@ -92,6 +94,14 @@ unzip "{ppt_path}" -d ./workspace/unpacked
 }
 ```
 
+**字段说明**：
+- `brandNumber` `brandName` `logoPath` - 品牌基本信息（必需）
+- `kolStats.summary` - KOL合作数据摘要（支持HTML）
+- `kolStats.imagePath` - KOL数据图路径
+- `kolStats.points` - 要点列表（可选，3条左右）
+- `socialStyle.items` - 社媒风格展示（3张图）
+- `activity1/2/3` - 三个活动（各含title, description, imagePath）
+
 ### Step 6: 输出文件
 
 - 图片：`{output_dir}/assets/brand_social/`
@@ -99,17 +109,8 @@ unzip "{ppt_path}" -d ./workspace/unpacked
 
 **注意**：品牌社媒模式下，图片和数据**分开存放**！
 
-## 社媒平台图标
-
-| 平台 | icon值 | 必有字段 |
-|------|--------|----------|
-| Instagram | `ig` | followers, posts, frequency, likes |
-| TikTok | `tt` | followers, posts, frequency, views |
-| YouTube | `yt` | followers, posts, frequency, views |
-
 ## 布局参考
 
 - `skills/brand-extractor/references/layouts/kol_slide.md`
-- `skills/brand-extractor/references/layouts/social_platform_slide.md`
 - `skills/brand-extractor/references/layouts/social_style_slide.md`
 - `skills/brand-extractor/references/layouts/social_activity_slide.md`

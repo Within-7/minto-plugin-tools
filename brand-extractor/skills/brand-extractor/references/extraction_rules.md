@@ -212,17 +212,20 @@
 ### JSON结构
 ```json
 {
+  "brandNumber": "01",
+  "brandName": "BRAND",
+  "logoPath": "../assets/logo.png",
+
   "kolStats": {
-    "summary": "KOL合作数据摘要",
-    "imagePath": "../assets/brand_social/{brand}_kol_chart.png"
-  },
-  "socialMediaData": {
-    "platforms": [
-      {"icon": "ig", "name": "Instagram", "followers": "xxx", "posts": "xxx", "frequency": "x帖/x天", "likes": "xxx"},
-      {"icon": "tt", "name": "TikTok", "followers": "xxx", "posts": "xxx", "frequency": "x帖/x天", "views": "xxx"},
-      {"icon": "yt", "name": "YouTube", "followers": "xxx", "posts": "xxx", "frequency": "x帖/x天", "views": "xxx"}
+    "summary": "KOL合作数据摘要（支持<strong>HTML</strong>加粗）",
+    "imagePath": "../assets/brand_social/{brand}_kol_chart.png",
+    "points": [
+      "要点一：合作重心集中在某平台",
+      "要点二：某方面有增长空间",
+      "要点三：整体趋势描述"
     ]
   },
+
   "socialStyle": {
     "items": [
       {"title": "风格标题1", "imagePath": "../assets/brand_social/{brand}_style_1.png"},
@@ -230,6 +233,7 @@
       {"title": "风格标题3", "imagePath": "../assets/brand_social/{brand}_style_3.png"}
     ]
   },
+
   "activity1": {
     "title": "活动标题1",
     "description": "活动描述",
@@ -268,7 +272,6 @@
 
 ### 布局参考
 - `reference/layouts/kol_slide.md`
-- `reference/layouts/social_platform_slide.md`
 - `reference/layouts/social_style_slide.md`
 - `reference/layouts/social_activity_slide.md`
 
