@@ -1,0 +1,35 @@
+{
+  "mode": "catalog",
+  "description": "品牌目录模式 - 提取品牌封面图",
+  "output": {
+    "images_count": 1,
+    "data_format": "json"
+  },
+  "toc_keywords": ["报告目录", "目录"],
+  "target_section": {
+    "name": "封面",
+    "slide_hint": 1,
+    "description": "封面页，通常在Slide 1"
+  },
+  "image_rules": [
+    {
+      "name": "cover",
+      "output_filename": "{brand}.png",
+      "output_dir": "assets/brands/",
+      "selection": {
+        "method": "largest_or_center",
+        "description": "选择最大或居中的图片作为品牌封面图",
+        "exclude_size": [50, 50],
+        "exclude_types": ["logo", "icon"]
+      }
+    }
+  ],
+  "data_output": {
+    "file": "assets/brands/brand_{brand}_catalog.json",
+    "fields": {
+      "name": "品牌英文名",
+      "nameCN": "品牌中文名 + 一句话介绍",
+      "description": "品牌类型描述"
+    }
+  }
+}

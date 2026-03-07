@@ -1,11 +1,11 @@
 {
   "name": "brand-extractor",
-  "version": "1.3.0",
-  "description": "PPT品牌信息提取器 - 从品牌案例PPT中提取品牌目录、详情、分析、社媒数据，支持四种提取模式",
+  "version": "2.0.0",
+  "description": "PPT品牌信息提取器 v2.0 - 目录结构驱动提取方法，支持品牌目录、详情、分析、社媒四种模式",
   "author": "within-7",
   "homepage": "https://github.com/within-7/minto-plugins",
   "repository": "https://github.com/within-7/minto-plugins",
-  "keywords": ["brand-extractor", "PPT提取", "品牌信息", "品牌分析", "社媒数据", "KOL分析"],
+  "keywords": ["brand-extractor", "PPT提取", "品牌信息", "品牌分析", "社媒数据", "KOL分析", "目录结构驱动"],
   "commands": [
     "./commands/extract-catalog.md",
     "./commands/extract-detail.md",
@@ -16,6 +16,26 @@
     "./skills/brand-extractor"
   ],
   "scripts": [
-    "./scripts/extract_brand.py"
-  ]
+    "./scripts/extractor.py",
+    "./scripts/toc_parser.py",
+    "./scripts/image_identifier.py",
+    "./scripts/writer.py"
+  ],
+  "rules": [
+    "./rules/catalog.json",
+    "./rules/detail.json",
+    "./rules/analysis.json",
+    "./rules/social.json"
+  ],
+  "changelog": {
+    "2.0.0": [
+      "重构：目录结构驱动提取方法，替代关键词搜索",
+      "新增：TOC解析器（toc_parser.py）",
+      "新增：图片识别器（image_identifier.py）",
+      "新增：回写模块（writer.py）",
+      "新增：规则配置文件（rules/*.json）",
+      "改进：外链图片识别精准度",
+      "改进：四种模式的提取流程"
+    ]
+  }
 }

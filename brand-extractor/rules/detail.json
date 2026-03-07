@@ -1,0 +1,71 @@
+{
+  "mode": "detail",
+  "description": "品牌详情模式 - 提取品牌背景、产品、流量分布、KPI数据",
+  "output": {
+    "images_count": 3,
+    "data_format": "markdown"
+  },
+  "toc_keywords": ["报告目录", "目录"],
+  "target_sections": [
+    {
+      "name": "品牌介绍",
+      "keywords": ["品牌介绍", "品牌背景", "品牌简介"],
+      "images": [
+        {
+          "name": "logo",
+          "output_filename": "{brand}_logo.png",
+          "output_dir": "assets/brand_details/",
+          "selection": {
+            "method": "position_and_size",
+            "position_hint": "品牌名称区域",
+            "size_range": [150, 400],
+            "description": "品牌Logo，通常在品牌名称旁边，尺寸200-400宽"
+          }
+        }
+      ],
+      "data_fields": ["基本信息", "用户画像", "品牌使命", "竞争优势"]
+    },
+    {
+      "name": "产品定位",
+      "keywords": ["产品定位", "爆款产品", "产品介绍"],
+      "images": [
+        {
+          "name": "product",
+          "output_filename": "{brand}_product.png",
+          "output_dir": "assets/brand_details/",
+          "selection": {
+            "method": "largest",
+            "description": "产品展示图，通常是页面中最大的图片"
+          }
+        }
+      ],
+      "data_fields": ["产品名称", "产品价格", "产品特点"]
+    },
+    {
+      "name": "流量分布",
+      "keywords": ["流量来源", "流量分布", "独立站流量"],
+      "images": [
+        {
+          "name": "traffic",
+          "output_filename": "{brand}_traffic.png",
+          "output_dir": "assets/brand_details/",
+          "selection": {
+            "method": "chart_type",
+            "chart_type": "bar",
+            "description": "流量分布柱状图"
+          }
+        }
+      ],
+      "data_fields": ["流量来源分布", "核心KPI指标"]
+    }
+  ],
+  "data_output": {
+    "file": "data/brand_{brand}_detail.md",
+    "sections": [
+      "品牌背景与定位",
+      "爆款产品",
+      "流量来源分布",
+      "核心运营指标"
+    ]
+  }
+}

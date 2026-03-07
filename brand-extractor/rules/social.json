@@ -1,0 +1,147 @@
+{
+  "mode": "social",
+  "description": "品牌社媒模式 - 提取KOL合作数据、社媒风格、品牌活动",
+  "output": {
+    "images_count": 7,
+    "data_format": "json"
+  },
+  "toc_keywords": ["报告目录", "目录"],
+  "target_sections": [
+    {
+      "name": "营销活动",
+      "keywords": ["营销活动", "KOL合作", "社媒"],
+      "sub_sections": [
+        {
+          "name": "KOL合作数据",
+          "keywords": ["KOL合作", "KOL数据", "达人合作"],
+          "images": [
+            {
+              "name": "kol_chart",
+              "output_filename": "{brand}_kol_chart.png",
+              "output_dir": "assets/brand_social/",
+              "selection": {
+                "method": "chart_type",
+                "chart_type": "bar_or_table",
+                "description": "KOL合作数据图表"
+              }
+            }
+          ],
+          "data_fields": {
+            "kolStats": {
+              "summary": "KOL合作数据摘要（支持HTML）",
+              "imagePath": "KOL数据图路径",
+              "points": "要点列表（可选，3条左右）"
+            }
+          }
+        },
+        {
+          "name": "官方社媒风格",
+          "keywords": ["社媒风格", "官方社媒", "社媒数据"],
+          "images": [
+            {
+              "name": "style_1",
+              "output_filename": "{brand}_style_1.png",
+              "output_dir": "assets/brand_social/",
+              "selection": {
+                "method": "screenshot",
+                "order": 1,
+                "description": "社媒风格截图1"
+              }
+            },
+            {
+              "name": "style_2",
+              "output_filename": "{brand}_style_2.png",
+              "output_dir": "assets/brand_social/",
+              "selection": {
+                "method": "screenshot",
+                "order": 2,
+                "description": "社媒风格截图2"
+              }
+            },
+            {
+              "name": "style_3",
+              "output_filename": "{brand}_style_3.png",
+              "output_dir": "assets/brand_social/",
+              "selection": {
+                "method": "screenshot",
+                "order": 3,
+                "description": "社媒风格截图3"
+              }
+            }
+          ],
+          "data_fields": {
+            "socialStyle": {
+              "items": "社媒风格展示数组（title, imagePath）"
+            }
+          }
+        },
+        {
+          "name": "品牌活动",
+          "keywords": ["品牌活动", "活动一", "活动二", "活动三"],
+          "images": [
+            {
+              "name": "activity_1",
+              "output_filename": "{brand}_activity_1.png",
+              "output_dir": "assets/brand_social/",
+              "selection": {
+                "method": "screenshot",
+                "order": 1,
+                "description": "品牌活动1截图"
+              }
+            },
+            {
+              "name": "activity_2",
+              "output_filename": "{brand}_activity_2.png",
+              "output_dir": "assets/brand_social/",
+              "selection": {
+                "method": "screenshot",
+                "order": 2,
+                "description": "品牌活动2截图"
+              }
+            },
+            {
+              "name": "activity_3",
+              "output_filename": "{brand}_activity_3.png",
+              "output_dir": "assets/brand_social/",
+              "selection": {
+                "method": "screenshot",
+                "order": 3,
+                "description": "品牌活动3截图"
+              }
+            }
+          ],
+          "data_fields": {
+            "activity1": {
+              "title": "活动标题1",
+              "description": "活动描述1",
+              "imagePath": "活动图片1路径"
+            },
+            "activity2": {
+              "title": "活动标题2",
+              "description": "活动描述2",
+              "imagePath": "活动图片2路径"
+            },
+            "activity3": {
+              "title": "活动标题3",
+              "description": "活动描述3",
+              "imagePath": "活动图片3路径"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "data_output": {
+    "file": "data/brand_{brand}_social.json",
+    "fields": {
+      "brandNumber": "品牌序号",
+      "brandName": "品牌名称",
+      "logoPath": "Logo路径",
+      "kolStats": "KOL合作数据对象",
+      "socialStyle": "社媒风格对象",
+      "activity1": "活动1对象",
+      "activity2": "活动2对象",
+      "activity3": "活动3对象"
+    }
+  }
+}

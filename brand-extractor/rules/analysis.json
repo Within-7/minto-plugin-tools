@@ -1,0 +1,141 @@
+{
+  "mode": "analysis",
+  "description": "品牌分析模式 - 提取用户定位、用户需求、用户画像、流量模型、SEO、外链数据",
+  "output": {
+    "images_count": 6,
+    "data_format": "json"
+  },
+  "toc_keywords": ["报告目录", "目录"],
+  "target_sections": [
+    {
+      "name": "用户定位",
+      "keywords": ["用户定位", "用户分析"],
+      "images": [
+        {
+          "name": "user_position",
+          "output_filename": "{brand}_user_position.png",
+          "output_dir": "assets/brand_analysis/",
+          "selection": {
+            "method": "chart_type",
+            "chart_type": "pie",
+            "description": "用户定位饼图/环形图"
+          }
+        }
+      ],
+      "data_fields": {
+        "userNeeds": {
+          "coreNeeds": "核心诉求",
+          "scenarios": "使用场景",
+          "decisionFactors": "决策因素",
+          "channels": "购买渠道"
+        }
+      }
+    },
+    {
+      "name": "用户画像",
+      "keywords": ["用户画像", "人群画像"],
+      "images": [
+        {
+          "name": "persona_1",
+          "output_filename": "{brand}_persona_1.png",
+          "output_dir": "assets/brand_analysis/",
+          "selection": {
+            "method": "screenshot",
+            "order": 1,
+            "description": "用户画像截图1"
+          }
+        },
+        {
+          "name": "persona_2",
+          "output_filename": "{brand}_persona_2.png",
+          "output_dir": "assets/brand_analysis/",
+          "selection": {
+            "method": "screenshot",
+            "order": 2,
+            "description": "用户画像截图2"
+          }
+        }
+      ]
+    },
+    {
+      "name": "流量模型",
+      "keywords": ["流量模型", "流量路径"],
+      "images": [
+        {
+          "name": "flow_model",
+          "output_filename": "{brand}_flow_model.png",
+          "output_dir": "assets/brand_analysis/",
+          "selection": {
+            "method": "chart_type",
+            "chart_type": "flow",
+            "description": "流量模型流程图"
+          }
+        }
+      ]
+    },
+    {
+      "name": "基石流量",
+      "keywords": ["基石流量", "SEO", "外链"],
+      "sub_sections": [
+        {
+          "name": "SEO分析",
+          "keywords": ["SEO分析", "SEO"],
+          "data_fields": {
+            "seoTraffic": {
+              "text": "SEO说明文字",
+              "keywords": "关键词数组（rank, keyword, type, traffic）"
+            }
+          }
+        },
+        {
+          "name": "外链分析",
+          "keywords": ["外链分析", "外链"],
+          "images": [
+            {
+              "name": "backlink_pie",
+              "output_filename": "{brand}_backlink_pie.png",
+              "output_dir": "assets/brand_analysis/",
+              "selection": {
+                "method": "chart_type",
+                "chart_type": "pie",
+                "description": "外链来源分布饼图"
+              }
+            },
+            {
+              "name": "backlink_bar",
+              "output_filename": "{brand}_backlink_bar.png",
+              "output_dir": "assets/brand_analysis/",
+              "selection": {
+                "method": "chart_type",
+                "chart_type": "horizontal_bar",
+                "description": "外链热门关键词柱状图"
+              }
+            }
+          ],
+          "data_fields": {
+            "backlinkTypes": "外链合作网站类型",
+            "backlinkKeywords": "外链热门关键词"
+          }
+        }
+      ]
+    }
+  ],
+  "data_output": {
+    "file": "data/brand_{brand}_analysis.json",
+    "fields": {
+      "brandNumber": "品牌序号",
+      "brandName": "品牌名称",
+      "logoPath": "Logo路径",
+      "userPositionImagePath": "用户定位图路径",
+      "userNeeds": "用户需求对象",
+      "personaImage1Path": "用户画像1路径",
+      "personaImage2Path": "用户画像2路径",
+      "flowModelImagePath": "流量模型图路径",
+      "seoTraffic": "SEO流量对象",
+      "backlinkTypes": "外链类型",
+      "backlinkKeywords": "外链关键词",
+      "backlinkPieImagePath": "外链饼图路径",
+      "backlinkBarImagePath": "外链柱状图路径"
+    }
+  }
+}
