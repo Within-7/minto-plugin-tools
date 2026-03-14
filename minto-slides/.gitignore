@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+
+# Production
+build/
+dist/
+*.log
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 工作目录（临时测试）
+workspace/
+
+# 输出目录（生成的HTML和资源）
+slides-output/
+
+# 临时文件
+*.zip
+*.pptx
+.termdock/
+*-analysis/
+
+# 临时复制的目录
+skills/ui-ux-pro-max/
+
+# Claude Code 本地配置
+.claude/
+
+# AGENTS.md（临时文档）
+AGENTS.md

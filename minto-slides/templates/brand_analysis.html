@@ -1,424 +1,676 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>品牌分析详情</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>品牌分析详情 - {{brandName}}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: 'Microsoft YaHei', Arial, sans-serif;
-            background-color: #1a1a1a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
+    :root {
+      --text-primary: #1F2329;
+      --text-secondary: #646A73;
+      --text-muted: #8F959E;
+      --accent: #7C3AED;
+      --accent-bg: #F5F3FF;
+      --bg-light: #FAFBFC;
+      --card-border: rgba(0,0,0,0.06);
+      --divider: #8F959E;
+      --success: #10B981;
+      --success-bg: #ECFDF5;
+      --warning: #F59E0B;
+      --info: #3B82F6;
+      --font-h3: 24pt;
+      --font-body: 18pt;
+      --font-sm: 16pt;
+      --font-xs: 14pt;
+      --line-height: 1.5;
+      --radius: 10pt;
+      --radius-sm: 7pt;
+      --margin: 80pt;
+      --shadow-sm: 0 1pt 2pt rgba(0,0,0,0.05);
+      --shadow-accent: 0 4pt 16pt rgba(124, 58, 237, 0.15);
+    }
 
-        .viewport {
-            width: 1920px;
-            height: 1080px;
-        }
+    html, body {
+      width: 1920pt;
+      height: 1080pt;
+      overflow: hidden;
+    }
 
-        .slide-container {
-            width: 1920px;
-            height: 1080px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 50px 60px;
-            display: flex;
-            flex-direction: column;
-        }
+    body {
+      background: linear-gradient(135deg, #F8F9FA 0%, #F3F4F6 50%, #F8F9FA 100%);
+      font-family: "PingFang SC", "苹方", "Microsoft YaHei", sans-serif;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        /* ===== 标题栏 ===== */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 20px;
-            border-bottom: 3px solid #2c3e50;
-            margin-bottom: 25px;
-            flex-shrink: 0;
-        }
+    .header {
+      position: absolute;
+      left: var(--margin);
+      top: 48pt;
+      right: var(--margin);
+      height: 92pt;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
+    .header-left { display: flex; align-items: center; gap: 24pt; }
 
-        .brand-badge {
-            background: #3498db;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 6px;
-            font-size: 22px;
-            font-weight: bold;
-        }
+    .no-box {
+      width: 76pt;
+      height: 38pt;
+      border-radius: 5pt;
+      background: linear-gradient(135deg, var(--accent) 0%, #9333EA 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 17pt;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-accent);
+    }
 
-        .header-title {
-            font-size: 36px;
-            font-weight: bold;
-            color: #2c3e50;
-        }
+    .brand-name { font-size: 48pt; font-weight: 600; color: var(--accent); }
 
-        .header-title .section {
-            color: #3498db;
-        }
+    .page-title {
+      font-size: 19pt;
+      font-weight: 500;
+      color: var(--text-secondary);
+      padding-left: 19pt;
+      border-left: 2pt solid var(--accent);
+      height: 29pt;
+      display: flex;
+      align-items: center;
+    }
 
-        .logo-image {
-            height: 50px;
-            width: auto;
-        }
+    .logo-box { height: 67pt; display: flex; align-items: center; justify-content: flex-end; }
+    .logo-box img { max-height: 67pt; max-width: 100%; object-fit: contain; }
 
-        /* ===== 主内容区 ===== */
-        .main-content {
-            flex: 1;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: 400px 25px 1fr;
-            gap: 0 25px;
-            min-height: 0;
-        }
+    .divider {
+      position: absolute;
+      left: 96pt;
+      top: 160pt;
+      right: 96pt;
+      height: 2pt;
+      background: linear-gradient(90deg, transparent, var(--divider) 20%, var(--divider) 80%, transparent);
+    }
 
-        /* ===== 卡片通用样式 ===== */
-        .card {
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-            overflow: hidden;
-        }
+    .main {
+      position: absolute;
+      left: var(--margin);
+      top: 176pt;
+      right: var(--margin);
+      bottom: var(--margin);
+      display: grid;
+      grid-template-rows: 0.92fr 1.08fr;
+      gap: 19pt;
+      min-height: 0;
+      overflow: hidden;
+    }
 
-        .card-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #3498db;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
-        }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 19pt;
+      min-height: 0;
+    }
 
-        .card-title::before {
-            content: '';
-            width: 4px;
-            height: 18px;
-            background: #3498db;
-            border-radius: 2px;
-        }
+    .card {
+      background: #FFFFFF;
+      border: 1pt solid var(--card-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      box-shadow: var(--shadow-sm);
+    }
 
-        /* ===== 第一行卡片 ===== */
-        .row1-col1 { grid-row: 1 / 2; grid-column: 1 / 2; }
-        .row1-col2 { grid-row: 1 / 2; grid-column: 2 / 3; }
-        .row1-col3 { grid-row: 1 / 2; grid-column: 3 / 4; }
+    .card-head {
+      height: 53pt;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 19pt;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFC 100%);
+      position: relative;
+      border-bottom: 1pt solid var(--card-border);
+    }
 
-        /* ===== 第二行卡片 ===== */
-        .row2-col1 { grid-row: 3 / 4; grid-column: 1 / 2; }
-        .row2-col2 { grid-row: 3 / 4; grid-column: 2 / 3; }
-        .row2-col3 { grid-row: 3 / 4; grid-column: 3 / 4; }
+    .card-head-left { display: flex; align-items: center; gap: 12pt; }
 
-        /* ===== 图片容器通用 ===== */
-        .image-box {
-            flex: 1;
-            background: transparent;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            min-height: 0;
-        }
+    .card-head::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 5pt;
+      height: 19pt;
+      background: linear-gradient(180deg, var(--accent) 0%, #9333EA 100%);
+      border-radius: 0 2pt 2pt 0;
+    }
 
-        .image-box img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
+    .card-head-icon {
+      width: 28pt;
+      height: 28pt;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-bg);
+      border-radius: 6pt;
+    }
 
-        /* ===== 文字内容 ===== */
-        .text-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            overflow: hidden;
-            min-height: 0;
-        }
+    .card-head-icon svg { width: 16pt; height: 16pt; stroke: var(--accent); }
 
-        .text-block {
-            padding: 10px 14px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 3px solid #3498db;
-        }
+    .card-head-text { font-size: var(--font-h3); font-weight: 600; color: var(--text-primary); }
 
-        .text-block-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 4px;
-        }
+    .card-head-badge {
+      font-size: 11pt;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-bg);
+      padding: 4pt 10pt;
+      border-radius: 12pt;
+    }
 
-        .text-block-content {
-            font-size: 12px;
-            color: #555;
-            line-height: 1.5;
-        }
+    .card-body {
+      flex: 1;
+      padding: 17pt;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-        /* ===== 双图并列 ===== */
-        .dual-image-area {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            min-height: 0;
-        }
+    /* 卡片A: 用户定位 + 核心用户 */
+    .position-section {
+      display: flex;
+      gap: 17pt;
+      flex: 1;
+      min-height: 0;
+    }
 
-        /* ===== SEO内容 ===== */
-        .seo-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            overflow: hidden;
-            min-height: 0;
-        }
+    .position-image {
+      flex: 0 0 70%;
+      background: #FFFFFF;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1pt solid var(--card-border);
+      position: relative;
+    }
 
-        .seo-text {
-            font-size: 12px;
-            color: #555;
-            line-height: 1.6;
-            flex-shrink: 0;
-        }
+    .position-image img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-        .seo-text strong {
-            color: #2c3e50;
-        }
+    .flow-badge {
+      position: absolute;
+      top: 10pt;
+      left: 10pt;
+      background: var(--success-bg);
+      color: var(--success);
+      font-size: 10pt;
+      font-weight: 600;
+      padding: 4pt 10pt;
+      border-radius: 4pt;
+    }
 
-        /* SEO表格 */
-        .seo-table {
-            flex: 1;
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 11px;
-            min-height: 0;
-        }
+    .core-user-box {
+      flex: 1;
+      background: linear-gradient(135deg, var(--accent-bg) 0%, #EDE9FE 100%);
+      border-radius: var(--radius-sm);
+      padding: 17pt 19pt;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .seo-table th {
-            background: #3498db;
-            color: white;
-            padding: 8px 6px;
-            text-align: left;
-            font-weight: 600;
-        }
+    .core-user-box::before {
+      content: "";
+      position: absolute;
+      top: -20pt;
+      right: -20pt;
+      width: 80pt;
+      height: 80pt;
+      background: radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 70%);
+    }
 
-        .seo-table th:first-child { border-radius: 6px 0 0 0; }
-        .seo-table th:last-child { border-radius: 0 6px 0 0; }
+    .core-user-label {
+      font-size: var(--font-xs);
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 10pt;
+      display: flex;
+      align-items: center;
+      gap: 6pt;
+    }
 
-        .seo-table td {
-            padding: 7px 6px;
-            border-bottom: 1px solid #e5e7eb;
-            color: #333;
-        }
+    .core-user-label::before { content: "◎"; font-size: 12pt; }
 
-        .seo-table tr:last-child td:first-child { border-radius: 0 0 0 6px; }
-        .seo-table tr:last-child td:last-child { border-radius: 0 0 6px 0; }
-        .seo-table tr:nth-child(even) { background: #f8fafc; }
+    .core-user-text {
+      font-size: var(--font-sm);
+      color: var(--text-primary);
+      line-height: var(--line-height);
+      font-weight: 500;
+      /* 溢出防护：允许2行 */
+      max-height: 3em;
+      overflow: hidden;
+    }
 
-        .rank-col { width: 40px; text-align: center; font-weight: 600; color: #3498db; }
-        .keyword-col { font-weight: 500; }
-        .type-col { color: #666; }
-        .traffic-col { text-align: right; font-weight: 600; color: #2c3e50; }
+    .core-user-text .hl { color: var(--accent); font-weight: 700; }
 
-        /* ===== 外链分析 ===== */
-        .backlink-content {
-            flex: 1;
-            display: flex;
-            gap: 15px;
-            overflow: hidden;
-            min-height: 0;
-        }
+    .core-user-stats { margin-top: 14pt; display: flex; gap: 10pt; }
 
-        .backlink-left {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            min-height: 0;
-        }
+    .stat-chip {
+      background: white;
+      border-radius: 5pt;
+      padding: 6pt 10pt;
+      font-size: 11pt;
+      display: flex;
+      align-items: center;
+      gap: 5pt;
+      box-shadow: var(--shadow-sm);
+    }
 
-        .backlink-left .image-box {
-            flex: 1;
-            min-height: 0;
-        }
+    .stat-chip .num { font-weight: 700; color: var(--accent); }
+    .stat-chip .unit { color: var(--text-secondary); }
 
-        .backlink-types-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: #2c3e50;
-            flex-shrink: 0;
-        }
+    /* 卡片B: 用户画像 + 用户需求 */
+    .persona-needs-section { display: flex; gap: 17pt; flex: 1; min-height: 0; }
 
-        .backlink-types-text {
-            font-size: 11px;
-            color: #555;
-            line-height: 1.5;
-            flex-shrink: 0;
-        }
+    .persona-area {
+      flex: 0 0 42%;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
 
-        .backlink-right {
-            flex: 1.2;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            min-height: 0;
-        }
+    .persona-images {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10pt;
+      min-height: 0;
+    }
 
-        .backlink-keywords-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #2c3e50;
-            flex-shrink: 0;
-        }
+    .persona-img-box {
+      background: #FFFFFF;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1pt solid var(--card-border);
+      position: relative;
+    }
 
-        .backlink-keywords-text {
-            font-size: 12px;
-            color: #555;
-            line-height: 1.6;
-            background: #f8f9fa;
-            padding: 10px 14px;
-            border-radius: 8px;
-            border-left: 3px solid #3498db;
-            flex-shrink: 0;
-        }
-    </style>
+    .persona-img-box img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+    .persona-img-label {
+      position: absolute;
+      bottom: 6pt;
+      left: 6pt;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      font-size: 10pt;
+      padding: 3pt 8pt;
+      border-radius: 4pt;
+    }
+
+    .persona-tag {
+      background: linear-gradient(135deg, var(--accent-bg) 0%, #EDE9FE 100%);
+      border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+      padding: 10pt 14pt;
+      font-size: var(--font-xs);
+      font-weight: 600;
+      color: var(--accent);
+      text-align: center;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8pt;
+    }
+
+    .tag-item { display: flex; align-items: center; gap: 4pt; }
+    .tag-item::before { content: "•"; color: var(--accent); }
+
+    .needs-area { flex: 1; display: flex; flex-direction: column; gap: 10pt; min-height: 0; }
+
+    .need-item {
+      flex: 1;
+      background: var(--bg-light);
+      border-radius: var(--radius-sm);
+      border: 1pt solid var(--card-border);
+      display: flex;
+      align-items: center;
+      padding: 10pt 14pt;
+      gap: 12pt;
+    }
+
+    .need-item .label {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: var(--font-xs);
+      min-width: 56pt;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 5pt;
+    }
+
+    .need-item .label::before { content: "▸"; font-size: 10pt; }
+
+    .need-item .value { color: var(--text-secondary); font-size: var(--font-xs); line-height: var(--line-height); }
+
+    /* 卡片C: 流量模型 */
+    .flow-section { display: flex; gap: 17pt; flex: 1; min-height: 0; }
+
+    .flow-image {
+      flex: 0 0 70%;
+      background: #FFFFFF;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1pt solid var(--card-border);
+      position: relative;
+    }
+
+    .flow-image img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+    .seo-table-wrap { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+
+    .seo-table-title {
+      font-size: var(--font-xs);
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 10pt;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 6pt;
+    }
+
+    .seo-table-title::before { content: "🔍"; font-size: 14pt; }
+
+    .seo-table-mini {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--font-xs);
+      flex: 1;
+      table-layout: fixed;
+    }
+
+    .seo-table-mini th {
+      background: linear-gradient(135deg, var(--accent) 0%, #9333EA 100%);
+      color: white;
+      padding: 8pt 10pt;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .seo-table-mini th:first-child { width: 33.33%; border-radius: var(--radius-sm) 0 0 0; }
+    .seo-table-mini th:nth-child(2) { width: 33.33%; }
+    .seo-table-mini th:last-child { width: 33.33%; border-radius: 0 var(--radius-sm) 0 0; }
+
+    .seo-table-mini td {
+      padding: 8pt 10pt;
+      border-bottom: 1pt solid var(--card-border);
+      color: var(--text-secondary);
+      text-align: center;
+    }
+
+    .seo-table-mini tr:last-child td { border-bottom: none; }
+    .seo-table-mini tbody tr:nth-child(odd) { background: #FFFFFF; }
+    .seo-table-mini tbody tr:nth-child(even) { background: var(--bg-light); }
+
+    .rank-col { font-weight: 600; color: var(--accent); }
+    .keyword-col { font-weight: 500; color: var(--text-primary); }
+    .traffic-col { font-weight: 600; }
+    .traffic-high { color: var(--success); }
+    .traffic-medium { color: var(--warning); }
+
+    /* 卡片D: 外链分析 */
+    .backlink-section { display: flex; flex-direction: column; gap: 12pt; flex: 1; min-height: 0; }
+
+    .backlink-text {
+      background: linear-gradient(135deg, var(--bg-light) 0%, #F0F9FF 100%);
+      border-radius: var(--radius-sm);
+      padding: 12pt 14pt;
+      font-size: var(--font-sm);
+      color: var(--text-secondary);
+      line-height: var(--line-height);
+      flex-shrink: 0;
+      border-left: 3pt solid var(--info);
+      /* 溢出防护：允许2行 */
+      max-height: 3em;
+      overflow: hidden;
+    }
+
+    .backlink-text strong { color: var(--text-primary); font-weight: 600; }
+
+    .backlink-charts {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 14pt;
+      min-height: 0;
+    }
+
+    .chart-box {
+      background: #FFFFFF;
+      border-radius: var(--radius-sm);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1pt solid var(--card-border);
+    }
+
+    .chart-header {
+      padding: 8pt 12pt;
+      background: var(--bg-light);
+      font-size: 11pt;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6pt;
+      border-bottom: 1pt solid var(--card-border);
+    }
+
+    .chart-header .dot { width: 6pt; height: 6pt; border-radius: 50%; background: var(--accent); }
+
+    .chart-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .chart-content img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  </style>
 </head>
 <body>
-    <div class="viewport">
-        <div class="slide-container">
-            <!-- 标题栏 -->
-            <div class="header">
-                <div class="header-left">
-                    <div class="brand-badge">No.{{brandNumber}}</div>
-                    <div class="header-title">
-                        <span class="section">{{brandName}}</span>　　品牌分析详情
-                    </div>
-                </div>
-                <div class="header-logo">
-                    <img src="{{logoPath}}" alt="Logo" class="logo-image">
-                </div>
-            </div>
-
-            <!-- 主内容区 -->
-            <div class="main-content">
-                <!-- 1. 用户定位 -->
-                <div class="card row1-col1">
-                    <div class="card-title">用户定位</div>
-                    <div class="image-box">
-                        <img src="{{userPositionImagePath}}" alt="用户定位">
-                    </div>
-                </div>
-
-                <!-- 2. 用户需求 -->
-                <div class="card row1-col2">
-                    <div class="card-title">用户需求</div>
-                    <div class="text-content">
-                        <div class="text-block">
-                            <div class="text-block-title">核心诉求</div>
-                            <div class="text-block-content">{{userNeeds.coreNeeds}}</div>
-                        </div>
-                        <div class="text-block">
-                            <div class="text-block-title">使用场景</div>
-                            <div class="text-block-content">{{userNeeds.scenarios}}</div>
-                        </div>
-                        <div class="text-block">
-                            <div class="text-block-title">决策因素</div>
-                            <div class="text-block-content">{{userNeeds.decisionFactors}}</div>
-                        </div>
-                        <div class="text-block">
-                            <div class="text-block-title">购买渠道</div>
-                            <div class="text-block-content">{{userNeeds.channels}}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3. 用户画像 -->
-                <div class="card row1-col3">
-                    <div class="card-title">用户画像</div>
-                    <div class="dual-image-area">
-                        <div class="image-box">
-                            <img src="{{personaImage1Path}}" alt="用户画像1">
-                        </div>
-                        <div class="image-box">
-                            <img src="{{personaImage2Path}}" alt="用户画像2">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4. 流量模型 -->
-                <div class="card row2-col1">
-                    <div class="card-title">流量模型</div>
-                    <div class="image-box">
-                        <img src="{{flowModelImagePath}}" alt="流量模型">
-                    </div>
-                </div>
-
-                <!-- 5. 基石流量（SEO关键词） -->
-                <div class="card row2-col2">
-                    <div class="card-title">基石流量（SEO 关键词）</div>
-                    <div class="seo-content">
-                        <div class="seo-text">{{{seoTraffic.text}}}</div>
-                        <table class="seo-table">
-                            <thead>
-                                <tr>
-                                    <th class="rank-col">#</th>
-                                    <th class="keyword-col">关键词</th>
-                                    <th class="type-col">类型</th>
-                                    <th class="traffic-col">流量</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{#each seoTraffic.keywords}}
-                                <tr>
-                                    <td class="rank-col">{{rank}}</td>
-                                    <td class="keyword-col">{{keyword}}</td>
-                                    <td class="type-col">{{type}}</td>
-                                    <td class="traffic-col">{{traffic}}</td>
-                                </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- 6. 外链分析 -->
-                <div class="card row2-col3">
-                    <div class="card-title">外链分析</div>
-                    <div class="backlink-content">
-                        <div class="backlink-left">
-                            <div class="backlink-types-title">外链合作网站类型</div>
-                            <div class="backlink-types-text">{{backlinkTypes}}</div>
-                            <div class="image-box">
-                                <img src="{{backlinkPieImagePath}}" alt="外链来源分布">
-                            </div>
-                        </div>
-                        <div class="backlink-right">
-                            <div class="backlink-keywords-title">外链文章热门关键词</div>
-                            <div class="backlink-keywords-text">{{backlinkKeywords}}</div>
-                            <div class="image-box">
-                                <img src="{{backlinkBarImagePath}}" alt="关键词排名柱状图">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="header">
+    <div class="header-left">
+      <div class="no-box">No.{{brandNumber}}</div>
+      <div class="brand-name">{{brandName}}</div>
+      <div class="page-title">品牌分析详情</div>
     </div>
+    <div class="logo-box">
+      <img src="{{logoPath}}" alt="Logo">
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="main">
+    <div class="row">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="card-head-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </div>
+            <span class="card-head-text">用户定位与核心用户</span>
+          </div>
+          <span class="card-head-badge">PRIMARY</span>
+        </div>
+        <div class="card-body">
+          <div class="position-section">
+            <div class="position-image">
+              <img src="{{userPositionImagePath}}" alt="用户定位">
+            </div>
+            <div class="core-user-box">
+              <div class="core-user-label">核心用户画像</div>
+              <div class="core-user-text">{{coreUserText}}</div>
+              <div class="core-user-stats">
+                <div class="stat-chip"><span class="num">{{stat1Num}}</span><span class="unit">{{stat1Label}}</span></div>
+                <div class="stat-chip"><span class="num">{{stat2Num}}</span><span class="unit">{{stat2Label}}</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="card-head-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+              </svg>
+            </div>
+            <span class="card-head-text">用户画像与需求</span>
+          </div>
+          <span class="card-head-badge">INSIGHTS</span>
+        </div>
+        <div class="card-body">
+          <div class="persona-needs-section">
+            <div class="persona-area">
+              <div class="persona-images">
+                <div class="persona-img-box">
+                  <img src="{{personaImage1Path}}" alt="用户画像1">
+                  <span class="persona-img-label">{{persona1Label}}</span>
+                </div>
+                <div class="persona-img-box">
+                  <img src="{{personaImage2Path}}" alt="用户画像2">
+                  <span class="persona-img-label">{{persona2Label}}</span>
+                </div>
+              </div>
+              <div class="persona-tag">
+                <span class="tag-item">{{personaTag1}}</span>
+                <span class="tag-item">{{personaTag2}}</span>
+                <span class="tag-item">{{personaTag3}}</span>
+              </div>
+            </div>
+            <div class="needs-area">
+              <div class="need-item">
+                <span class="label">核心诉求</span>
+                <span class="value">{{needCore}}</span>
+              </div>
+              <div class="need-item">
+                <span class="label">使用场景</span>
+                <span class="value">{{needScenario}}</span>
+              </div>
+              <div class="need-item">
+                <span class="label">决策因素</span>
+                <span class="value">{{needDecision}}</span>
+              </div>
+              <div class="need-item">
+                <span class="label">购买渠道</span>
+                <span class="value">{{needChannel}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="card-head-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+              </svg>
+            </div>
+            <span class="card-head-text">流量模型</span>
+          </div>
+          <span class="card-head-badge">SEO FOCUS</span>
+        </div>
+        <div class="card-body">
+          <div class="flow-section">
+            <div class="flow-image">
+              <img src="{{flowModelImagePath}}" alt="流量模型">
+              <span class="flow-badge">{{flowBadge}}</span>
+            </div>
+            <div class="seo-table-wrap">
+              <div class="seo-table-title">SEO 关键词排名</div>
+              <table class="seo-table-mini">
+                <thead>
+                  <tr><th>#</th><th>关键词</th><th>流量</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="rank-col">{{seoRank1}}</td><td class="keyword-col">{{seoKeyword1}}</td><td class="traffic-col {{seoTrafficClass1}}">{{seoTraffic1}}</td></tr>
+                  <tr><td class="rank-col">{{seoRank2}}</td><td class="keyword-col">{{seoKeyword2}}</td><td class="traffic-col {{seoTrafficClass2}}">{{seoTraffic2}}</td></tr>
+                  <tr><td class="rank-col">{{seoRank3}}</td><td class="keyword-col">{{seoKeyword3}}</td><td class="traffic-col {{seoTrafficClass3}}">{{seoTraffic3}}</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="card-head-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+              </svg>
+            </div>
+            <span class="card-head-text">外链分析</span>
+          </div>
+          <span class="card-head-badge">BACKLINKS</span>
+        </div>
+        <div class="card-body">
+          <div class="backlink-section">
+            <div class="backlink-text">
+              <strong>外链特征：</strong>{{backlinkText}}
+            </div>
+            <div class="backlink-charts">
+              <div class="chart-box">
+                <div class="chart-header"><span class="dot"></span>外链类型分布</div>
+                <div class="chart-content">
+                  <img src="{{backlinkPieImagePath}}" alt="外链饼图">
+                </div>
+              </div>
+              <div class="chart-box">
+                <div class="chart-header"><span class="dot"></span>TOP外链来源</div>
+                <div class="chart-content">
+                  <img src="{{backlinkBarImagePath}}" alt="外链柱状图">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

@@ -1,436 +1,755 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>品牌深度拆解</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>品牌深度拆解 - {{brandName}}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: 'Microsoft YaHei', Arial, sans-serif;
-            background-color: #1a1a1a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
+    :root {
+      /* 颜色系统 */
+      --text-primary: #1F2329;
+      --text-secondary: #646A73;
+      --text-muted: #8F959E;
+      --accent: #7C3AED;
+      --accent-light: #A78BFA;
+      --accent-bg: #F5F3FF;
+      --bg-card: #F5F6F7;
+      --bg-light: #FAFBFC;
+      --card-border: rgba(0,0,0,0.06);
+      --divider: #8F959E;
+      --success: #10B981;
+      --success-bg: #ECFDF5;
+      --warning: #F59E0B;
+      --warning-bg: #FFFBEB;
+      --info: #3B82F6;
+      --info-bg: #EFF6FF;
 
-        .viewport {
-            width: 1920px;
-            height: 1080px;
-        }
+      /* 字号系统 */
+      --font-h3: 24pt;
+      --font-body: 18pt;
+      --font-sm: 16pt;
+      --font-xs: 14pt;
 
-        .slide-container {
-            width: 1920px;
-            height: 1080px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 50px 60px;
-            display: flex;
-            flex-direction: column;
-        }
+      /* 行距 */
+      --line-height: 1.5;
 
-        /* ===== 标题栏 ===== */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 20px;
-            border-bottom: 3px solid #2c3e50;
-            margin-bottom: 30px;
-            flex-shrink: 0;
-        }
+      /* 圆角 */
+      --radius: 10pt;
+      --radius-sm: 7pt;
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
+      /* 尺寸 */
+      --margin: 80pt;
 
-        .brand-badge {
-            background: #3498db;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 6px;
-            font-size: 22px;
-            font-weight: bold;
-        }
+      /* 阴影 */
+      --shadow-sm: 0 1pt 2pt rgba(0,0,0,0.05);
+      --shadow-md: 0 4pt 12pt rgba(0,0,0,0.08);
+      --shadow-accent: 0 4pt 16pt rgba(124, 58, 237, 0.15);
+    }
 
-        .header-title {
-            font-size: 36px;
-            font-weight: bold;
-            color: #2c3e50;
-        }
+    html, body {
+      width: 1920pt;
+      height: 1080pt;
+      overflow: hidden;
+    }
 
-        .header-title .section {
-            color: #3498db;
-        }
+    body {
+      background: linear-gradient(135deg, #F8F9FA 0%, #F3F4F6 50%, #F8F9FA 100%);
+      font-family: "PingFang SC", "苹方", "Microsoft YaHei", sans-serif;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        .logo-image {
-            height: 50px;
-            width: auto;
-        }
+    /* ========== 顶部标题区 ========== */
+    .header {
+      position: absolute;
+      left: var(--margin);
+      top: 48pt;
+      right: var(--margin);
+      height: 92pt;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        /* ===== 主内容区 - 三列 + 水平对齐 ===== */
-        .main-content {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 560px 500px 1fr;
-            grid-template-rows: 400px 25px 1fr;
-            gap: 0 25px;
-            min-height: 0;
-        }
+    .header-left { display: flex; align-items: center; gap: 24pt; }
 
-        /* ===== 左列上半：品牌信息 ===== */
-        .left-column {
-            grid-row: 1 / 2;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-        }
+    .no-box {
+      width: 76pt;
+      height: 38pt;
+      border-radius: 5pt;
+      background: linear-gradient(135deg, var(--accent) 0%, #9333EA 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 17pt;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-accent);
+    }
 
-        .card-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #3498db;
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .brand-name { font-size: 48pt; font-weight: 600; color: var(--accent); letter-spacing: -0.5pt; }
 
-        .card-title::before {
-            content: '';
-            width: 4px;
-            height: 18px;
-            background: #3498db;
-            border-radius: 2px;
-        }
+    .page-title {
+      font-size: 19pt;
+      font-weight: 500;
+      color: var(--text-secondary);
+      padding-left: 19pt;
+      border-left: 2pt solid var(--accent);
+      height: 29pt;
+      display: flex;
+      align-items: center;
+    }
 
-        .info-list {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
+    .logo-box { height: 67pt; display: flex; align-items: center; justify-content: flex-end; }
+    .logo-box img { max-height: 67pt; object-fit: contain; filter: drop-shadow(0 2pt 4pt rgba(0,0,0,0.1)); }
 
-        .info-row {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-        }
+    /* ========== 分隔线 ========== */
+    .divider {
+      position: absolute;
+      left: 96pt;
+      top: 160pt;
+      right: 96pt;
+      height: 2pt;
+      background: linear-gradient(90deg, transparent, var(--divider) 20%, var(--divider) 80%, transparent);
+    }
 
-        .info-label {
-            width: 90px;
-            height: 36px;
-            flex-shrink: 0;
-            background: #f0f4f8;
-            color: #2c3e50;
-            padding: 0 10px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-        }
+    /* ========== 主结构 ========== */
+    .main {
+      position: absolute;
+      left: var(--margin);
+      top: 176pt;
+      right: var(--margin);
+      bottom: var(--margin);
+      display: grid;
+      grid-template-columns: 2fr 3fr 2fr;
+      grid-template-rows: 1fr;
+      gap: 19pt;
+      min-height: 0;
+    }
 
-        .info-value {
-            flex: 1;
-            font-size: 14px;
-            color: #555;
-            line-height: 1.6;
-            overflow: hidden;
-        }
+    /* ========== 卡片通用 ========== */
+    .card {
+      background: #FFFFFF;
+      border: 1pt solid var(--card-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.3s ease;
+    }
 
-        /* ===== 左列下半：Logo区域 ===== */
-        .left-column-bottom {
-            grid-row: 3 / 4;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-        }
+    .card:hover { box-shadow: var(--shadow-md); }
 
-        .logo-box {
-            flex: 1;
-            background: transparent;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
+    .card-head {
+      height: 53pt;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 19pt;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFC 100%);
+      position: relative;
+      border-bottom: 1pt solid var(--card-border);
+    }
 
-        .brand-logo-image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
+    .card-head-left { display: flex; align-items: center; gap: 12pt; }
 
-        /* ===== 中列上半：产品图 ===== */
-        .middle-column {
-            grid-row: 1 / 2;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-        }
+    .card-head::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 5pt;
+      height: 19pt;
+      background: linear-gradient(180deg, var(--accent) 0%, #9333EA 100%);
+      border-radius: 0 2pt 2pt 0;
+    }
 
-        .product-image-box {
-            flex: 1;
-            background: transparent;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
+    .card-head-icon {
+      width: 28pt;
+      height: 28pt;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-bg);
+      border-radius: 6pt;
+    }
 
-        .product-image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
+    .card-head-icon svg { width: 16pt; height: 16pt; stroke: var(--accent); }
 
-        /* ===== 中列下半：产品信息 ===== */
-        .middle-column-bottom {
-            grid-row: 3 / 4;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-        }
+    .card-head-text { font-size: var(--font-h3); font-weight: 600; color: var(--text-primary); }
 
-        /* 产品名称 - 蓝色 */
-        .product-name {
-            font-size: 22px;
-            font-weight: bold;
-            color: #3498db;
-            margin-bottom: 10px;
-        }
+    .card-head-badge {
+      font-size: 11pt;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-bg);
+      padding: 4pt 10pt;
+      border-radius: 12pt;
+    }
 
-        /* 产品价格 - 黑色 */
-        .product-price {
-            font-size: 26px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 18px;
-        }
+    .card-body {
+      flex: 1;
+      padding: 17pt;
+      min-height: 0;
+      overflow: hidden;
+    }
 
-        .feature-list {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+    /* ========== 左侧品牌区 ========== */
+    .brand-panel-new {
+      display: flex;
+      flex-direction: column;
+      gap: 14pt;
+      height: 100%;
+      overflow: hidden;  /* 打印安全：隐藏超出内容 */
+    }
 
-        .feature-item {
-            font-size: 14px;
-            color: #555;
-            line-height: 1.5;
-            padding-left: 20px;
-            position: relative;
-        }
+    .brand-header-new {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10pt;
+    }
 
-        .feature-item::before {
-            content: "●";
-            color: #3498db;
-            font-size: 8px;
-            position: absolute;
-            left: 0;
-            top: 4px;
-        }
+    .brand-title-main { font-size: var(--font-body); font-weight: 700; color: var(--text-primary); }
 
-        /* ===== 右列上半：流量分布（图片） ===== */
-        .right-top {
-            grid-row: 1 / 2;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-        }
+    .brand-badge-new {
+      background: linear-gradient(135deg, var(--accent) 0%, #9333EA 100%);
+      color: #fff;
+      padding: 4pt 10pt;
+      border-radius: 12pt;
+      font-size: var(--font-xs);
+      font-weight: 600;
+      white-space: nowrap;
+      box-shadow: var(--shadow-sm);
+    }
 
-        .traffic-image-box {
-            flex: 1;
-            background: transparent;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
+    .brand-highlight-new {
+      font-size: var(--font-sm);
+      color: var(--accent);
+      font-weight: 500;
+      line-height: var(--line-height);
+      padding: 14pt 16pt;
+      background: linear-gradient(135deg, var(--accent-bg) 0%, #EDE9FE 100%);
+      border-radius: var(--radius-sm);
+      border-left: 3pt solid var(--accent);
+      /* 溢出防护：允许2-3行 */
+      max-height: 4.5em;
+      overflow: hidden;
+    }
 
-        .traffic-image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
+    .info-grid-new {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10pt;
+    }
 
-        /* ===== 右列下半：KPI ===== */
-        .right-bottom {
-            grid-row: 3 / 4;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-        }
+    .info-item-new {
+      background: var(--bg-light);
+      border-radius: var(--radius-sm);
+      padding: 10pt;
+      text-align: center;
+      border: 1pt solid var(--card-border);
+      transition: all 0.2s ease;
+    }
 
-        .kpi-grid {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 15px;
-        }
+    .info-item-new:hover { background: var(--accent-bg); border-color: var(--accent); }
 
-        .kpi-item {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
+    .info-item-new .num { font-size: var(--font-sm); font-weight: 700; color: var(--accent); display: block; }
+    .info-item-new .label { font-size: 11pt; color: var(--text-secondary); }
 
-        .kpi-value {
-            font-size: 36px;
-            font-weight: 800;
-            color: #2c3e50;
-        }
+    .section-new { display: flex; flex-direction: column; gap: 10pt; }
 
-        .kpi-label {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }
-    </style>
+    .section-title-new {
+      font-size: var(--font-xs);
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6pt;
+    }
+
+    .section-title-new::before { content: "▸"; color: var(--accent); font-size: 10pt; }
+
+    .tag-cloud-new { display: flex; flex-wrap: wrap; gap: 7pt; }
+
+    .tag-new {
+      background: var(--bg-light);
+      color: var(--text-secondary);
+      padding: 5pt 12pt;
+      border-radius: 14pt;
+      font-size: 12pt;
+      border: 1pt solid var(--card-border);
+      transition: all 0.2s ease;
+    }
+
+    .tag-new:hover { background: var(--accent-bg); color: var(--accent); border-color: var(--accent); }
+
+    .channel-list-new { display: flex; flex-wrap: wrap; gap: 7pt; }
+
+    .channel-new {
+      background: linear-gradient(135deg, var(--accent-bg) 0%, #EDE9FE 100%);
+      color: var(--accent);
+      padding: 5pt 12pt;
+      border-radius: 14pt;
+      font-size: 12pt;
+      font-weight: 500;
+      border: 1pt solid rgba(124, 58, 237, 0.2);
+    }
+
+    .advantage-grid-new { display: grid; grid-template-columns: 1fr 1fr; gap: 8pt; }
+
+    .advantage-item-new {
+      display: flex;
+      align-items: center;
+      gap: 8pt;
+      padding: 8pt 12pt;
+      background: var(--bg-light);
+      border-radius: var(--radius-sm);
+      border: 1pt solid var(--card-border);
+      transition: all 0.2s ease;
+    }
+
+    .advantage-item-new:hover { background: var(--success-bg); border-color: var(--success); }
+
+    .advantage-icon-new {
+      width: 24pt;
+      height: 24pt;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--accent) 0%, #9333EA 100%);
+      border-radius: 5pt;
+      font-size: 12pt;
+    }
+
+    .advantage-text-new { font-size: 12pt; color: var(--text-primary); font-weight: 500; }
+
+    .brand-logo-new {
+      min-height: 100pt;
+      max-height: 130pt;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+      border-radius: var(--radius-sm);
+      border: 1pt solid var(--card-border);
+      overflow: hidden;
+      padding: 10pt;
+    }
+
+    .brand-logo-new img { max-width: 100%; max-height: 110pt; object-fit: contain; filter: drop-shadow(0 2pt 4pt rgba(0,0,0,0.1)); }
+
+    /* ========== 中间产品区 ========== */
+    .center-area { display: flex; flex-direction: column; gap: 14pt; min-height: 0; }
+    .hero-panel { flex: 0 0 auto; }
+    .detail-panel { flex: 1; min-height: 0; }
+
+    .hero-layout { display: flex; gap: 17pt; height: 100%; }
+
+    .hero-product {
+      flex: 0 0 45%;
+      background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      border: 1pt solid var(--card-border);
+    }
+
+    .hero-product img { max-width: 90%; max-height: 90%; object-fit: contain; }
+
+    .product-badge {
+      position: absolute;
+      top: 10pt;
+      left: 10pt;
+      background: linear-gradient(135deg, var(--accent) 0%, #9333EA 100%);
+      color: white;
+      font-size: 10pt;
+      font-weight: 600;
+      padding: 4pt 10pt;
+      border-radius: 4pt;
+      display: flex;
+      align-items: center;
+      gap: 4pt;
+      box-shadow: var(--shadow-accent);
+    }
+
+    .product-badge::before { content: "🏆"; }
+
+    .hero-summary { flex: 1; display: flex; flex-direction: column; gap: 12pt; }
+
+    .summary-box { padding: 12pt 14pt; border-radius: var(--radius-sm); }
+
+    .summary-box.title { background: linear-gradient(135deg, var(--accent-bg) 0%, #EDE9FE 100%); border-left: 3pt solid var(--accent); }
+
+    .product-name { font-size: var(--font-body); font-weight: 700; color: var(--text-primary); display: block; margin-bottom: 5pt; }
+    .product-spec { font-size: var(--font-xs); color: var(--text-secondary); }
+
+    .summary-box.price { background: linear-gradient(135deg, var(--accent-bg) 0%, #EDE9FE 100%); border-left: 3pt solid var(--accent); }
+
+    .price-value { font-size: 28pt; font-weight: 700; color: var(--accent); display: block; }
+    .price-note { font-size: var(--font-xs); color: var(--text-secondary); }
+
+    .summary-box.note {
+      background: var(--bg-light);
+      border: 1pt solid var(--card-border);
+      font-size: var(--font-xs);
+      color: var(--text-secondary);
+      line-height: var(--line-height);
+      /* 溢出防护：允许2-3行 */
+      max-height: 4.5em;
+      overflow: hidden;
+    }
+
+    .detail-layout { display: flex; flex-direction: column; gap: 14pt; height: 100%; }
+
+    .detail-bullets {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8pt;
+      min-height: 0;
+      overflow: hidden;  /* 打印安全：隐藏超出内容 */
+    }
+
+    .detail-bullets .line {
+      font-size: var(--font-sm);
+      color: var(--text-secondary);
+      line-height: var(--line-height);
+      padding: 10pt 14pt;
+      background: var(--bg-light);
+      border-radius: var(--radius-sm);
+      border-left: 3pt solid var(--accent);
+      transition: all 0.2s ease;
+    }
+
+    .detail-bullets .line:hover { background: var(--accent-bg); }
+    .detail-bullets .line strong { color: var(--accent); font-weight: 600; }
+
+    .support-box { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; flex-shrink: 0; }
+
+    .support-item {
+      background: linear-gradient(135deg, var(--bg-light) 0%, #F1F5F9 100%);
+      border-radius: var(--radius-sm);
+      padding: 12pt 14pt;
+      border: 1pt solid var(--card-border);
+    }
+
+    .support-label { font-size: 11pt; color: var(--text-muted); margin-bottom: 8pt; font-weight: 600; }
+    .support-value { font-size: var(--font-xs); color: var(--text-primary); line-height: 1.6; }
+
+    /* ========== 右侧数据区 ========== */
+    .data-panel { display: flex; flex-direction: column; gap: 14pt; min-height: 0; }
+    .chart-card { flex: 1; min-height: 0; }
+    .metric-card { flex: 0 0 auto; }
+
+    .chart-body {
+      flex: 1;
+      padding: 14pt;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chart-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+      border-radius: var(--radius-sm);
+      border: 1pt solid var(--card-border);
+      position: relative;
+    }
+
+    .chart-placeholder img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+    .chart-badge {
+      position: absolute;
+      top: 8pt;
+      right: 8pt;
+      background: linear-gradient(135deg, var(--accent-bg) 0%, #EDE9FE 100%);
+      color: var(--accent);
+      font-size: 10pt;
+      font-weight: 600;
+      padding: 4pt 10pt;
+      border-radius: 4pt;
+      border: 1pt solid rgba(124, 58, 237, 0.2);
+    }
+
+    .metric-body { padding: 14pt; }
+
+    .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; }
+
+    .metric {
+      background: linear-gradient(135deg, var(--bg-light) 0%, #F1F5F9 100%);
+      border-radius: var(--radius-sm);
+      padding: 14pt;
+      text-align: center;
+      border: 1pt solid var(--card-border);
+      transition: all 0.2s ease;
+    }
+
+    .metric:hover { background: var(--accent-bg); border-color: var(--accent); transform: translateY(-2pt); }
+
+    .metric-value { font-size: 26pt; font-weight: 700; color: var(--accent); display: block; margin-bottom: 4pt; }
+    .metric-label { font-size: 11pt; color: var(--text-secondary); }
+
+    .metric-trend { display: inline-flex; align-items: center; gap: 3pt; font-size: 10pt; font-weight: 600; margin-left: 4pt; }
+    .metric-trend.up { color: var(--success); }
+    .metric-trend.down { color: #EF4444; }
+  </style>
 </head>
 <body>
-    <div class="viewport">
-        <div class="slide-container">
-            <!-- 标题栏 -->
-            <div class="header">
-                <div class="header-left">
-                    <div class="brand-badge">No.{{brandNumber}}</div>
-                    <div class="header-title">
-                        <span class="section">{{brandName}}</span>　　品牌深度拆解
-                    </div>
-                </div>
-                <div class="header-logo">
-                    <img src="{{logoPath}}" alt="Logo" class="logo-image">
-                </div>
-            </div>
-
-            <!-- 主内容区 -->
-            <div class="main-content">
-                <!-- 左列上半：品牌信息 -->
-                <div class="left-column">
-                    <div class="card-title">品牌背景与定位</div>
-                    <div class="info-list">
-                        <div class="info-row">
-                            <div class="info-label">基本信息</div>
-                            <div class="info-value">{{basicInfo}}</div>
-                        </div>
-                        <div class="info-row">
-                            <div class="info-label">用户画像</div>
-                            <div class="info-value">{{userProfile}}</div>
-                        </div>
-                        <div class="info-row">
-                            <div class="info-label">品牌使命</div>
-                            <div class="info-value">{{brandMission}}</div>
-                        </div>
-                        <div class="info-row">
-                            <div class="info-label">竞争优势</div>
-                            <div class="info-value">{{competitiveAdvantage}}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 中列上半：产品图 -->
-                <div class="middle-column">
-                    <div class="card-title">独立站爆款产品</div>
-                    <div class="product-image-box">
-                        <img src="{{productImagePath}}" alt="{{productName}}" class="product-image">
-                    </div>
-                </div>
-
-                <!-- 右列上半：流量分布（图片） -->
-                <div class="right-top">
-                    <div class="card-title">独立站流量来源分布</div>
-                    <div class="traffic-image-box">
-                        <img src="{{trafficImagePath}}" alt="流量分布" class="traffic-image">
-                    </div>
-                </div>
-
-                <!-- 水平对齐占位 -->
-                <div></div>
-
-                <!-- 左列下半：Logo -->
-                <div class="left-column-bottom">
-                    <div class="card-title">品牌视觉标识</div>
-                    <div class="logo-box">
-                        <img src="{{brandLogoPath}}" alt="{{brandName}} Logo" class="brand-logo-image">
-                    </div>
-                </div>
-
-                <!-- 中列下半：产品信息 -->
-                <div class="middle-column-bottom">
-                    <div class="product-name">{{productName}}</div>
-                    <div class="product-price">{{productPrice}}</div>
-                    <div class="feature-list">
-                        <div class="feature-item">{{feature1}}</div>
-                        <div class="feature-item">{{feature2}}</div>
-                        <div class="feature-item">{{feature3}}</div>
-                        <div class="feature-item">{{feature4}}</div>
-                        <div class="feature-item">{{feature5}}</div>
-                        <div class="feature-item">{{feature6}}</div>
-                        <div class="feature-item">{{feature7}}</div>
-                    </div>
-                </div>
-
-                <!-- 右列下半：KPI -->
-                <div class="right-bottom">
-                    <div class="card-title">网站核心运营指标</div>
-                    <div class="kpi-grid">
-                        <div class="kpi-item">
-                            <div class="kpi-value">{{kpi.dau}}</div>
-                            <div class="kpi-label">日均活跃用户</div>
-                        </div>
-                        <div class="kpi-item">
-                            <div class="kpi-value">{{kpi.duration}}</div>
-                            <div class="kpi-label">平均停留时长</div>
-                        </div>
-                        <div class="kpi-item">
-                            <div class="kpi-value">{{kpi.pages}}</div>
-                            <div class="kpi-label">人均访问页面</div>
-                        </div>
-                        <div class="kpi-item">
-                            <div class="kpi-value">{{kpi.bounceRate}}</div>
-                            <div class="kpi-label">用户跳出率</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="header">
+    <div class="header-left">
+      <div class="no-box">No.{{brandNumber}}</div>
+      <div class="brand-name">{{brandName}}</div>
+      <div class="page-title">品牌深度拆解</div>
     </div>
+    <div class="logo-box">
+      <img src="{{logoPath}}" alt="Logo">
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="main">
+    <!-- 左侧品牌区 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-head-left">
+          <div class="card-head-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>
+          </div>
+          <span class="card-head-text">品牌背景</span>
+        </div>
+        <span class="card-head-badge">OVERVIEW</span>
+      </div>
+      <div class="card-body">
+        <div class="brand-panel-new">
+          <div class="brand-header-new">
+            <span class="brand-title-main">{{brandTitleMain}}</span>
+            <span class="brand-badge-new">{{brandBadgeText}}</span>
+          </div>
+
+          <div class="brand-highlight-new">
+            {{brandMission}}
+          </div>
+
+          <div class="info-grid-new">
+            <div class="info-item-new">
+              <span class="num">{{info1Num}}</span>
+              <span class="label">{{info1Label}}</span>
+            </div>
+            <div class="info-item-new">
+              <span class="num">{{info2Num}}</span>
+              <span class="label">{{info2Label}}</span>
+            </div>
+            <div class="info-item-new">
+              <span class="num">{{info3Num}}</span>
+              <span class="label">{{info3Label}}</span>
+            </div>
+          </div>
+
+          <div class="section-new">
+            <div class="section-title-new">品牌优势</div>
+            <div class="advantage-grid-new">
+              <div class="advantage-item-new">
+                <span class="advantage-icon-new">{{advantage1Icon}}</span>
+                <span class="advantage-text-new">{{advantage1Text}}</span>
+              </div>
+              <div class="advantage-item-new">
+                <span class="advantage-icon-new">{{advantage2Icon}}</span>
+                <span class="advantage-text-new">{{advantage2Text}}</span>
+              </div>
+              <div class="advantage-item-new">
+                <span class="advantage-icon-new">{{advantage3Icon}}</span>
+                <span class="advantage-text-new">{{advantage3Text}}</span>
+              </div>
+              <div class="advantage-item-new">
+                <span class="advantage-icon-new">{{advantage4Icon}}</span>
+                <span class="advantage-text-new">{{advantage4Text}}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-new">
+            <div class="section-title-new">产品线</div>
+            <div class="tag-cloud-new">
+              <span class="tag-new">{{productLine1}}</span>
+              <span class="tag-new">{{productLine2}}</span>
+              <span class="tag-new">{{productLine3}}</span>
+              <span class="tag-new">{{productLine4}}</span>
+              <span class="tag-new">{{productLine5}}</span>
+              <span class="tag-new">{{productLine6}}</span>
+            </div>
+          </div>
+
+          <div class="section-new">
+            <div class="section-title-new">销售渠道</div>
+            <div class="channel-list-new">
+              <span class="channel-new">{{channel1}}</span>
+              <span class="channel-new">{{channel2}}</span>
+              <span class="channel-new">{{channel3}}</span>
+              <span class="channel-new">{{channel4}}</span>
+            </div>
+          </div>
+
+          <div class="section-new">
+            <div class="section-title-new">品牌Logo</div>
+            <div class="brand-logo-new">
+              <img src="{{brandLogoImagePath}}" alt="{{brandName}} Logo">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 中间区域 -->
+    <div class="center-area">
+      <div class="card hero-panel">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="card-head-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+              </svg>
+            </div>
+            <span class="card-head-text">独立站爆款产品</span>
+          </div>
+          <span class="card-head-badge">BEST SELLER</span>
+        </div>
+        <div class="card-body">
+          <div class="hero-layout">
+            <div class="hero-product">
+              <img src="{{productImagePath}}" alt="{{productName}}">
+              <span class="product-badge">{{productBadge}}</span>
+            </div>
+
+            <div class="hero-summary">
+              <div class="summary-box title">
+                <span class="product-name">{{productName}}</span>
+                <span class="product-spec">{{productSpec}}</span>
+              </div>
+              <div class="summary-box price">
+                <span class="price-value">{{productPrice}}</span>
+                <span class="price-note">{{priceNote}}</span>
+              </div>
+              <div class="summary-box note">
+                {{productHighlight}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card detail-panel">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="card-head-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+              </svg>
+            </div>
+            <span class="card-head-text">产品卖点拆解</span>
+          </div>
+          <span class="card-head-badge">FEATURES</span>
+        </div>
+        <div class="card-body">
+          <div class="detail-layout">
+            <div class="detail-bullets">
+              <span class="line">{{feature1}}</span>
+              <span class="line">{{feature2}}</span>
+              <span class="line">{{feature3}}</span>
+              <span class="line">{{feature4}}</span>
+              <span class="line">{{feature5}}</span>
+            </div>
+
+            <div class="support-box">
+              <div class="support-item">
+                <div class="support-label">🎯 目标人群</div>
+                <div class="support-value">{{targetAudience}}</div>
+              </div>
+              <div class="support-item">
+                <div class="support-label">📊 决策因素</div>
+                <div class="support-value">{{decisionFactors}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右侧：流量与指标 -->
+    <div class="data-panel">
+      <div class="card chart-card">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="card-head-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
+              </svg>
+            </div>
+            <span class="card-head-text">流量来源分布</span>
+          </div>
+          <span class="card-head-badge">TRAFFIC</span>
+        </div>
+        <div class="chart-body">
+          <div class="chart-placeholder">
+            <img src="{{trafficImagePath}}" alt="流量分布">
+            <span class="chart-badge">{{trafficBadge}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card metric-card">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="card-head-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </div>
+            <span class="card-head-text">网站核心运营指标</span>
+          </div>
+          <span class="card-head-badge">KPIs</span>
+        </div>
+        <div class="metric-body">
+          <div class="metric-grid">
+            <div class="metric">
+              <span class="metric-value">{{kpi1Value}}<span class="metric-trend up">{{kpi1Trend}}</span></span>
+              <span class="metric-label">{{kpi1Label}}</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">{{kpi2Value}}</span>
+              <span class="metric-label">{{kpi2Label}}</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">{{kpi3Value}}</span>
+              <span class="metric-label">{{kpi3Label}}</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">{{kpi4Value}}<span class="metric-trend down">{{kpi4Trend}}</span></span>
+              <span class="metric-label">{{kpi4Label}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

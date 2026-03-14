@@ -1,351 +1,699 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>品牌社媒营销分析</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>社媒营销分析 - {{brandName}}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        :root {
-            --bg: #1a1a1a;
-            --page-bg: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            --card-bg: #ffffff;
-            --text: #2c3e50;
-            --muted: #555;
-            --blue: #3498db;
-            --shadow: 0 6px 20px rgba(0,0,0,0.06);
-            --radius: 16px;
-        }
+    :root {
+      /* 颜色系统 */
+      --text-primary: #1F2329;
+      --text-secondary: #646A73;
+      --text-muted: #8F959E;
+      --accent: #7C3AED;
+      --accent-light: #A78BFA;
+      --accent-bg: #F5F3FF;
+      --bg-card: #F5F6F7;
+      --bg-light: #FAFBFC;
+      --card-border: rgba(0,0,0,0.06);
+      --divider: #8F959E;
+      --success: #10B981;
+      --success-bg: #ECFDF5;
+      --warning: #F59E0B;
+      --info: #3B82F6;
+      --info-bg: #EFF6FF;
 
-        body {
-            font-family: 'Microsoft YaHei', Arial, sans-serif;
-            background-color: var(--bg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: auto;
-        }
+      /* 字号系统 */
+      --font-h3: 24pt;
+      --font-body: 18pt;
+      --font-sm: 16pt;
+      --font-xs: 14pt;
 
-        .viewport {
-            width: 1920px;
-            height: 1080px;
-        }
+      /* 行距 */
+      --line-height: 1.5;
 
-        .slide-container {
-            width: 1920px;
-            height: 1080px;
-            background: var(--page-bg);
-            padding: 44px 56px 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 22px;
-        }
+      /* 圆角 */
+      --radius: 10pt;
+      --radius-sm: 7pt;
 
-        /* ===== 标题栏 ===== */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 18px;
-            border-bottom: 3px solid var(--text);
-            flex-shrink: 0;
-        }
+      /* 尺寸 */
+      --margin: 80pt;
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
+      /* 阴影 */
+      --shadow-sm: 0 1pt 2pt rgba(0,0,0,0.05);
+      --shadow-md: 0 4pt 12pt rgba(0,0,0,0.08);
+      --shadow-accent: 0 4pt 16pt rgba(124, 58, 237, 0.15);
+    }
 
-        .brand-badge {
-            background: var(--blue);
-            color: white;
-            padding: 8px 18px;
-            border-radius: 6px;
-            font-size: 22px;
-            font-weight: 700;
-            line-height: 1;
-        }
+    html, body {
+      width: 1920pt;
+      height: 1080pt;
+      overflow: hidden;
+    }
 
-        .header-title {
-            font-size: 34px;
-            font-weight: 700;
-            color: var(--text);
-            letter-spacing: .2px;
-        }
+    body {
+      background: linear-gradient(135deg, #F8F9FA 0%, #F3F4F6 50%, #F8F9FA 100%);
+      font-family: "PingFang SC", "苹方", "Microsoft YaHei", sans-serif;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        .header-title .section {
-            color: var(--blue);
-        }
+    /* ========== 顶部标题区 ========== */
+    .header {
+      position: absolute;
+      left: var(--margin);
+      top: 48pt;
+      right: var(--margin);
+      height: 92pt;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .logo-image {
-            height: 50px;
-            width: auto;
-            object-fit: contain;
-        }
+    .header-left { display: flex; align-items: center; gap: 24pt; }
 
-        /* ===== 主体布局 ===== */
-        .main-content {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 1.08fr 0.92fr;
-            gap: 22px;
-            min-height: 0;
-        }
+    .no-box {
+      width: 76pt;
+      height: 38pt;
+      border-radius: 5pt;
+      background: linear-gradient(135deg, var(--accent) 0%, #9333EA 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 17pt;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-accent);
+    }
 
-        .column {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            min-height: 0;
-        }
+    .brand-name { font-size: 48pt; font-weight: 600; color: var(--accent); letter-spacing: -0.5pt; }
 
-        .card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 18px 18px 16px;
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-            overflow: hidden;
-        }
+    .page-title {
+      font-size: 19pt;
+      font-weight: 500;
+      color: var(--text-secondary);
+      padding-left: 19pt;
+      border-left: 2pt solid var(--accent);
+      height: 29pt;
+      display: flex;
+      align-items: center;
+    }
 
-        .card-top { flex: 0 0 45%; }
-        .card-bottom { flex: 1; }
-        .card-equal { flex: 1; }
+    .logo-box { height: 67pt; display: flex; align-items: center; justify-content: flex-end; }
+    .logo-box img { max-height: 67pt; object-fit: contain; filter: drop-shadow(0 2pt 4pt rgba(0,0,0,0.1)); }
 
-        .card-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--blue);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
-            line-height: 1.2;
-        }
+    /* ========== 分隔线 ========== */
+    .divider {
+      position: absolute;
+      left: 96pt;
+      top: 160pt;
+      right: 96pt;
+      height: 2pt;
+      background: linear-gradient(90deg, transparent, var(--divider) 20%, var(--divider) 80%, transparent);
+    }
 
-        .card-title::before {
-            content: '';
-            width: 4px;
-            height: 18px;
-            background: var(--blue);
-            border-radius: 2px;
-            flex: 0 0 auto;
-        }
+    /* ========== 主布局 ========== */
+    .main {
+      position: absolute;
+      left: var(--margin);
+      top: 176pt;
+      right: var(--margin);
+      bottom: var(--margin);
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 19pt;
+      min-height: 0;
+      overflow: hidden;
+    }
 
-        /* ===== 左上 KOL 区 ===== */
-        .kol-layout {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 1.18fr 0.82fr;
-            gap: 18px;
-            min-height: 0;
-            align-items: stretch;
-        }
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 14pt;
+      min-height: 0;
+      overflow: hidden;
+    }
 
-        .kol-image-panel {
-            background: transparent;
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 0;
-            padding: 10px;
-        }
+    /* ========== 卡片通用 ========== */
+    .card {
+      background: #FFFFFF;
+      border: 1pt solid var(--card-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.3s ease;
+    }
 
-        .kol-image-panel img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
-        }
+    .card:hover { box-shadow: var(--shadow-md); }
 
-        .kol-text-panel {
-            background: transparent;
-            border-radius: 12px;
-            padding: 18px 18px 16px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 0;
-        }
+    .card-head {
+      height: 53pt;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 19pt;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFC 100%);
+      position: relative;
+      border-bottom: 1pt solid var(--card-border);
+    }
 
-        .kol-highlight {
-            font-size: 14px;
-            line-height: 1.9;
-            color: var(--muted);
-        }
+    .card-head-left { display: flex; align-items: center; gap: 12pt; }
 
-        .kol-highlight strong {
-            color: var(--text);
-            font-weight: 700;
-        }
+    .card-head::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 5pt;
+      height: 19pt;
+      background: linear-gradient(180deg, var(--accent) 0%, #9333EA 100%);
+      border-radius: 0 2pt 2pt 0;
+    }
 
-        .kol-points {
-            margin-top: 14px;
-            padding-left: 18px;
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 1.9;
-        }
+    .card-head-icon {
+      width: 28pt;
+      height: 28pt;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-bg);
+      border-radius: 6pt;
+    }
 
-        .kol-points li {
-            margin-bottom: 4px;
-        }
+    .card-head-icon svg { width: 16pt; height: 16pt; stroke: var(--accent); }
 
-        /* ===== 左下 风格展示 ===== */
-        .style-content {
-            flex: 1;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-            min-height: 0;
-        }
+    .card-head-text { font-size: var(--font-h3); font-weight: 600; color: var(--text-primary); }
 
-        .style-item {
-            background: transparent;
-            border-radius: 12px;
-            overflow: hidden;
-            min-height: 0;
-        }
+    .card-head-badge {
+      font-size: 11pt;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-bg);
+      padding: 4pt 10pt;
+      border-radius: 12pt;
+    }
 
-        .style-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
-        }
+    .card-body {
+      flex: 1;
+      padding: 17pt;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-        /* ===== 右侧活动卡片 ===== */
-        .activity-layout {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 0.92fr 1.08fr;
-            gap: 14px;
-            min-height: 0;
-            align-items: stretch;
-        }
+    .card-top { flex: 0 0 45%; }
+    .card-bottom { flex: 0 0 55%; }
+    .card-equal { flex: 1; min-height: 0; }
 
-        .activity-text {
-            font-size: 13px;
-            color: var(--muted);
-            line-height: 1.9;
-            display: flex;
-            align-items: flex-start;
-        }
+    /* ========== KOL区域 ========== */
+    .kol-content {
+      display: flex;
+      gap: 17pt;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
 
-        .activity-image {
-            min-height: 150px;
-            background: transparent;
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    .kol-chart {
+      flex: 0 0 48%;
+      background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      min-height: 0;
+      position: relative;
+      border: 1pt solid var(--card-border);
+    }
 
-        .activity-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-    </style>
+    .kol-chart img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+    .kol-badge {
+      position: absolute;
+      top: 10pt;
+      left: 10pt;
+      background: linear-gradient(135deg, var(--accent) 0%, #9333EA 100%);
+      color: white;
+      font-size: 10pt;
+      font-weight: 600;
+      padding: 4pt 10pt;
+      border-radius: 4pt;
+      box-shadow: var(--shadow-accent);
+    }
+
+    .kol-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 10pt;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .kol-summary {
+      font-size: var(--font-sm);
+      color: var(--text-primary);
+      line-height: var(--line-height);
+      padding: 12pt 14pt;
+      background: linear-gradient(135deg, var(--accent-bg) 0%, #EDE9FE 100%);
+      border-radius: var(--radius-sm);
+      border-left: 3pt solid var(--accent);
+      /* 溢出防护：允许2-3行 */
+      max-height: 4.5em;
+      overflow: hidden;
+    }
+
+    .kol-summary strong { color: var(--accent); font-weight: 600; }
+
+    .kol-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8pt;
+      flex-shrink: 0;
+    }
+
+    .kol-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4pt;
+      padding: 6pt 12pt;
+      background: linear-gradient(135deg, var(--accent-bg) 0%, #EDE9FE 100%);
+      color: var(--text-primary);
+      border-radius: 14pt;
+      font-size: 12pt;
+      border: 1pt solid rgba(124, 58, 237, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .kol-tag:hover {
+      background: var(--accent);
+      color: white;
+      transform: translateY(-1pt);
+    }
+
+    .kol-tag strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .kol-tag:hover strong {
+      color: white;
+    }
+
+    .kol-points {
+      list-style: none;
+      font-size: var(--font-xs);
+      color: var(--text-secondary);
+      line-height: var(--line-height);
+    }
+
+    .kol-points li {
+      padding: 8pt 12pt 8pt 24pt;
+      position: relative;
+      background: var(--bg-light);
+      border-radius: var(--radius-sm);
+      margin-bottom: 6pt;
+      border: 1pt solid var(--card-border);
+      transition: all 0.2s ease;
+    }
+
+    .kol-points li:hover { background: var(--accent-bg); border-color: var(--accent); }
+
+    .kol-points li::before {
+      content: "✓";
+      position: absolute;
+      left: 10pt;
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    /* ========== 风格展示区 ========== */
+    .style-content {
+      display: flex;
+      gap: 12pt;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .style-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #FFFFFF;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      min-height: 0;
+      border: 1pt solid var(--card-border);
+      transition: all 0.3s ease;
+    }
+
+    .style-item:hover { box-shadow: var(--shadow-md); transform: translateY(-2pt); }
+
+    .style-item-img {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .style-item-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+    .style-item-label {
+      padding: 8pt 12pt;
+      background: linear-gradient(135deg, var(--accent-bg) 0%, #EDE9FE 100%);
+      font-size: 11pt;
+      font-weight: 600;
+      color: var(--accent);
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    /* ========== 活动区域 ========== */
+    .activity-layout {
+      display: flex;
+      gap: 14pt;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .activity-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8pt;
+      min-height: 0;
+    }
+
+    .activity-header {
+      display: flex;
+      align-items: center;
+      gap: 10pt;
+      flex-shrink: 0;
+    }
+
+    .activity-num {
+      width: 28pt;
+      height: 28pt;
+      background: linear-gradient(135deg, var(--accent) 0%, #9333EA 100%);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 13pt;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-accent);
+    }
+
+    .activity-label {
+      font-size: 14pt;
+      font-weight: 600;
+      color: var(--accent);
+      padding: 4pt 12pt;
+      background: var(--accent-bg);
+      border-radius: 12pt;
+    }
+
+    .activity-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8pt;
+      min-height: 0;
+    }
+
+    .activity-text {
+      font-size: 13pt;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      padding: 10pt 14pt;
+      background: var(--bg-light);
+      border-radius: var(--radius-sm);
+      border-left: 3pt solid var(--accent);
+      /* 溢出防护：允许3-4行 */
+      max-height: 6em;
+      overflow: hidden;
+    }
+
+    .activity-text strong { color: var(--text-primary); font-weight: 600; }
+    .activity-text p { margin: 0; padding: 0; }
+    .activity-text p + p { margin-top: 6pt; }
+
+    .activity-footer {
+      display: flex;
+      align-items: center;
+      gap: 6pt;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+    .activity-tag {
+      padding: 4pt 12pt;
+      background: linear-gradient(135deg, var(--accent-bg) 0%, #EDE9FE 100%);
+      color: var(--accent);
+      border-radius: 12pt;
+      font-size: 11pt;
+      font-weight: 600;
+      white-space: nowrap;
+      border: 1pt solid rgba(124, 58, 237, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .activity-tag:hover { background: var(--accent); color: white; }
+
+    .activity-image {
+      flex: 0 0 38%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border-radius: var(--radius-sm);
+      border: none;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .activity-image img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  </style>
 </head>
 <body>
-    <div class="viewport">
-        <div class="slide-container">
-            <!-- 标题栏 -->
-            <div class="header">
-                <div class="header-left">
-                    <div class="brand-badge">No.{{brandNumber}}</div>
-                    <div class="header-title">
-                        <span class="section">{{brandName}}</span>　　社媒营销分析
-                    </div>
-                </div>
-                <div class="header-logo">
-                    <img src="{{logoPath}}" alt="Logo" class="logo-image" />
-                </div>
-            </div>
-
-            <!-- 主内容区 -->
-            <div class="main-content">
-                <!-- 左列 -->
-                <div class="column">
-                    <!-- 左上：KOL 图左 文字右 -->
-                    <div class="card card-top">
-                        <div class="card-title">KOL合作数量</div>
-                        <div class="kol-layout">
-                            <div class="kol-image-panel">
-                                <img src="{{kolStats.imagePath}}" alt="KOL合作数据" />
-                            </div>
-
-                            <div class="kol-text-panel">
-                                <div class="kol-highlight">{{{kolStats.summary}}}</div>
-                                {{#if kolStats.points}}
-                                <ul class="kol-points">
-                                    {{#each kolStats.points}}
-                                    <li>{{this}}</li>
-                                    {{/each}}
-                                </ul>
-                                {{/if}}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 左下：社媒风格展示 -->
-                    <div class="card card-bottom">
-                        <div class="card-title">官方社媒风格展示</div>
-                        <div class="style-content">
-                            {{#each socialStyle.items}}
-                            <div class="style-item">
-                                <img src="{{imagePath}}" alt="{{title}}" />
-                            </div>
-                            {{/each}}
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 右列 -->
-                <div class="column">
-                    <div class="card card-equal">
-                        <div class="card-title">活动一：{{activity1.title}}</div>
-                        <div class="activity-layout">
-                            <div class="activity-text">{{{activity1.description}}}</div>
-                            <div class="activity-image">
-                                <img src="{{activity1.imagePath}}" alt="活动一" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card card-equal">
-                        <div class="card-title">活动二：{{activity2.title}}</div>
-                        <div class="activity-layout">
-                            <div class="activity-text">{{{activity2.description}}}</div>
-                            <div class="activity-image">
-                                <img src="{{activity2.imagePath}}" alt="活动二" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card card-equal">
-                        <div class="card-title">活动三：{{activity3.title}}</div>
-                        <div class="activity-layout">
-                            <div class="activity-text">{{{activity3.description}}}</div>
-                            <div class="activity-image">
-                                <img src="{{activity3.imagePath}}" alt="活动三" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="header">
+    <div class="header-left">
+      <div class="no-box">No.{{brandNumber}}</div>
+      <div class="brand-name">{{brandName}}</div>
+      <div class="page-title">社媒营销分析</div>
     </div>
+    <div class="logo-box">
+      <img src="{{logoPath}}" alt="Logo">
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="main">
+    <!-- 左列 -->
+    <div class="column">
+      <div class="card card-top">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="card-head-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+            </div>
+            <span class="card-head-text">KOL 合作数据</span>
+          </div>
+          <span class="card-head-badge">INFLUENCER</span>
+        </div>
+        <div class="card-body">
+          <div class="kol-content">
+            <div class="kol-chart">
+              <img src="{{kolImagePath}}" alt="KOL数据">
+              <span class="kol-badge">{{kolBadge}}</span>
+            </div>
+            <div class="kol-info">
+              <p class="kol-summary">{{kolSummary}}</p>
+              <ul class="kol-points">
+                <li>{{kolPoint1}}</li>
+                <li>{{kolPoint2}}</li>
+                <li>{{kolPoint3}}</li>
+              </ul>
+              <div class="kol-tags">
+                <span class="kol-tag"><strong>{{kolTag1Value}}</strong> {{kolTag1Label}}</span>
+                <span class="kol-tag"><strong>{{kolTag2Value}}</strong> {{kolTag2Label}}</span>
+                <span class="kol-tag"><strong>{{kolTag3Value}}</strong> {{kolTag3Label}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-bottom">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="card-head-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <span class="card-head-text">官方社媒风格展示</span>
+          </div>
+          <span class="card-head-badge">GALLERY</span>
+        </div>
+        <div class="card-body">
+          <div class="style-content">
+            <div class="style-item">
+              <div class="style-item-img">
+                <img src="{{styleImage1Path}}" alt="{{styleLabel1}}">
+              </div>
+              <div class="style-item-label">{{styleLabel1}}</div>
+            </div>
+            <div class="style-item">
+              <div class="style-item-img">
+                <img src="{{styleImage2Path}}" alt="{{styleLabel2}}">
+              </div>
+              <div class="style-item-label">{{styleLabel2}}</div>
+            </div>
+            <div class="style-item">
+              <div class="style-item-img">
+                <img src="{{styleImage3Path}}" alt="{{styleLabel3}}">
+              </div>
+              <div class="style-item-label">{{styleLabel3}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右列 -->
+    <div class="column">
+      <div class="card card-equal">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="card-head-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <span class="card-head-text">{{activity1Title}}</span>
+          </div>
+          <span class="card-head-badge">{{activity1Badge}}</span>
+        </div>
+        <div class="card-body">
+          <div class="activity-layout">
+            <div class="activity-content">
+              <div class="activity-header">
+                <span class="activity-num">1</span>
+                <span class="activity-label">{{activity1Label}}</span>
+              </div>
+              <div class="activity-body">
+                <div class="activity-text">
+                  <p>{{activity1Text1}}</p>
+                  <p>{{activity1Text2}}</p>
+                </div>
+                <div class="activity-footer">
+                  <span class="activity-tag">{{activity1Tag1}}</span>
+                  <span class="activity-tag">{{activity1Tag2}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="activity-image">
+              <img src="{{activity1ImagePath}}" alt="活动一">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-equal">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="card-head-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+              </svg>
+            </div>
+            <span class="card-head-text">{{activity2Title}}</span>
+          </div>
+          <span class="card-head-badge">{{activity2Badge}}</span>
+        </div>
+        <div class="card-body">
+          <div class="activity-layout">
+            <div class="activity-content">
+              <div class="activity-header">
+                <span class="activity-num">2</span>
+                <span class="activity-label">{{activity2Label}}</span>
+              </div>
+              <div class="activity-body">
+                <div class="activity-text">
+                  <p>{{activity2Text1}}</p>
+                  <p>{{activity2Text2}}</p>
+                </div>
+                <div class="activity-footer">
+                  <span class="activity-tag">{{activity2Tag1}}</span>
+                  <span class="activity-tag">{{activity2Tag2}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="activity-image">
+              <img src="{{activity2ImagePath}}" alt="活动二">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-equal">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="card-head-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+              </svg>
+            </div>
+            <span class="card-head-text">{{activity3Title}}</span>
+          </div>
+          <span class="card-head-badge">{{activity3Badge}}</span>
+        </div>
+        <div class="card-body">
+          <div class="activity-layout">
+            <div class="activity-content">
+              <div class="activity-header">
+                <span class="activity-num">3</span>
+                <span class="activity-label">{{activity3Label}}</span>
+              </div>
+              <div class="activity-body">
+                <div class="activity-text">
+                  <p>{{activity3Text1}}</p>
+                  <p>{{activity3Text2}}</p>
+                </div>
+                <div class="activity-footer">
+                  <span class="activity-tag">{{activity3Tag1}}</span>
+                  <span class="activity-tag">{{activity3Tag2}}</span>
+                  <span class="activity-tag">{{activity3Tag3}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="activity-image">
+              <img src="{{activity3ImagePath}}" alt="活动三">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
