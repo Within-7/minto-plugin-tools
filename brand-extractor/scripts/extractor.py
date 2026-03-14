@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-PPT品牌信息提取器 v2.0
-核心提取流程：解包 -> 解析TOC -> 定位章节 -> 识别图片 -> 回写数据
+PPT品牌信息提取器 v2.1
+核心提取流程：解包 -> 解析TOC -> Phase1(目录前) + Phase2(目录后) -> 识别图片 -> 回写数据
 
 使用方法：
     python extractor.py <ppt_path> <output_dir> <mode> [brand_name]
@@ -13,7 +13,12 @@ PPT品牌信息提取器 v2.0
     brand_name: 品牌名称（可选，默认从PPT提取）
 
 示例：
-    python extractor.py /path/to/brand.pptx ./output analysis buffy
+    python extractor.py /path/to/brand.pptx ./output detail buffy
+
+v2.1 更新：
+    - Detail模式采用两阶段提取
+    - Phase1: 提取目录页之前的内容（Logo + 品牌概览）
+    - Phase2: 提取目录页之后的内容，截止到"用户定位"之前
 """
 
 import os
@@ -174,33 +179,118 @@ class BrandExtractor:
         return target_slides
 
     def _locate_detail_sections(self, toc_structure: dict) -> dict:
-        """定位detail模式的目标章节"""
+        """
+        定位detail模式的目标章节（v2.1 两阶段提取 + 横幅精准定位）
+
+        Phase 1: 目录页之前
+            - 品牌概览页（Slide 2，通常）→ 提取Logo + 基础信息
+
+        Phase 2: 目录页之后，截止到"用户定位"之前
+            - 品牌简介章节 → 独立站流量数据
+            - 产品定位章节 → 爆款产品
+
+        v2.1 优化：使用横幅文本精准定位章节边界
+        """
         target_slides = {}
-        sections = toc_structure.get('sections', [])
+        toc_slide = toc_structure.get('toc_slide', 4)
+        total_slides = toc_structure.get('total_slides', 100)
 
-        # 查找品牌介绍章节
-        brand_intro = self._find_section_by_keywords(sections, ['品牌介绍', '品牌背景', '品牌简介'])
-        if brand_intro:
-            target_slides['brand_intro'] = {
-                'slides': brand_intro.get('slides', []),
-                'images_needed': ['logo']
+        # ==================== 横幅文本精准定位（v2.1核心优化）====================
+        # 解析所有slides的横幅文本
+        banner_info = self.toc_parser.parse_banners(1, total_slides)
+        slide_sections = banner_info.get('slide_sections', {})
+
+        # 找到"用户定位"章节的第一个slide作为边界
+        user_position_start = self.toc_parser.find_boundary_slide('用户定位')
+
+        if user_position_start:
+            end_slide = user_position_start - 1
+            print(f"  横幅定位: '用户定位' 从 Slide {user_position_start} 开始")
+        else:
+            # 回退到TOC估算方法
+            sections = toc_structure.get('sections', [])
+            user_section = self._find_section_by_keywords(sections, ['用户定位', '用户分析'])
+            end_slide = total_slides
+            if user_section and user_section.get('slides'):
+                end_slide = min(user_section.get('slides', [])) - 1
+            print(f"  TOC估算: 截止到 Slide {end_slide}")
+
+        # ==================== Phase 1: 目录页之前 ====================
+        pre_toc_slides = list(range(2, toc_slide))
+        if pre_toc_slides:
+            target_slides['brand_overview'] = {
+                'slides': pre_toc_slides,
+                'images_needed': ['logo'],
+                'phase': 'pre_toc',
+                'description': '品牌概览页（目录页之前）'
             }
 
-        # 查找产品定位章节
-        product = self._find_section_by_keywords(sections, ['产品定位', '爆款产品', '产品介绍'])
-        if product:
-            target_slides['product'] = {
-                'slides': product.get('slides', []),
-                'images_needed': ['product']
-            }
+        # ==================== Phase 2: 目录页之后（使用横幅精准定位）====================
+        # 使用横幅文本获取每个章节的slides
+        brand_intro_slides = self.toc_parser.get_section_slides('品牌简介')
+        if not brand_intro_slides:
+            brand_intro_slides = self.toc_parser.get_section_slides('品牌介绍')
 
-        # 查找流量分布章节
-        traffic = self._find_section_by_keywords(sections, ['流量来源', '流量分布', '独立站流量'])
-        if traffic:
-            target_slides['traffic'] = {
-                'slides': traffic.get('slides', []),
-                'images_needed': ['traffic']
-            }
+        product_slides = self.toc_parser.get_section_slides('产品定位')
+        if not product_slides:
+            product_slides = self.toc_parser.get_section_slides('产品')
+
+        # 过滤：只保留截止边界之前的slides
+        if brand_intro_slides:
+            filtered = [s for s in brand_intro_slides if s <= end_slide]
+            if filtered:
+                target_slides['brand_intro'] = {
+                    'slides': filtered,
+                    'images_needed': ['traffic'],
+                    'phase': 'post_toc',
+                    'description': '品牌简介章节（独立站流量数据）',
+                    'detection_method': 'banner'
+                }
+                print(f"  横幅定位: '品牌简介' → Slides {filtered}")
+
+        if product_slides:
+            filtered = [s for s in product_slides if s <= end_slide]
+            if filtered:
+                target_slides['product'] = {
+                    'slides': filtered,
+                    'images_needed': ['product'],
+                    'phase': 'post_toc',
+                    'description': '产品定位章节（爆款产品）',
+                    'detection_method': 'banner'
+                }
+                print(f"  横幅定位: '产品定位' → Slides {filtered}")
+
+        # 如果横幅定位失败，回退到TOC估算
+        if not target_slides.get('brand_intro') and not target_slides.get('product'):
+            print("  横幅定位失败，回退到TOC估算方法")
+            sections = toc_structure.get('sections', [])
+
+            brand_intro = self._find_section_by_keywords(sections, ['品牌简介', '品牌介绍'])
+            if brand_intro:
+                intro_slides = [s for s in brand_intro.get('slides', []) if s <= end_slide]
+                if intro_slides:
+                    target_slides['brand_intro'] = {
+                        'slides': intro_slides,
+                        'images_needed': ['traffic'],
+                        'phase': 'post_toc',
+                        'description': '品牌简介章节（独立站流量数据）',
+                        'detection_method': 'toc_estimate'
+                    }
+
+            product = self._find_section_by_keywords(sections, ['产品定位', '爆款产品'])
+            if product:
+                prod_slides = [s for s in product.get('slides', []) if s <= end_slide]
+                if prod_slides:
+                    target_slides['product'] = {
+                        'slides': prod_slides,
+                        'images_needed': ['product'],
+                        'phase': 'post_toc',
+                        'description': '产品定位章节（爆款产品）',
+                        'detection_method': 'toc_estimate'
+                    }
+
+        print(f"  Phase1(目录前): Slides {pre_toc_slides}")
+        print(f"  Phase2(目录后): 截止到 Slide {end_slide}")
 
         return target_slides
 
@@ -282,7 +372,7 @@ class BrandExtractor:
 
     def _identify_images(self, target_slides: dict) -> list:
         """
-        Step 4: 在目标slides中识别图片
+        Step 4: 在目标slides中识别图片（v2.3 支持文字关键词匹配）
 
         Args:
             target_slides: 目标slides信息
@@ -300,6 +390,13 @@ class BrandExtractor:
                 # 获取该slide的所有图片
                 slide_images = self._get_slide_images(slide_num)
 
+                # 【v2.3新增】获取该slide的文字内容
+                slide_texts = self.toc_parser._extract_slide_texts(slide_num)
+
+                # 【v2.3新增】获取该slide的横幅文本（章节名）
+                banner_text = self.toc_parser._extract_banner_section(slide_num)
+                banner_section_name = banner_text.get('section_name', '') if banner_text else ''
+
                 # 使用图片识别器识别
                 for image_type in images_needed:
                     identified = self.image_identifier.identify(
@@ -307,7 +404,9 @@ class BrandExtractor:
                         images=slide_images,
                         image_type=image_type,
                         section_name=section_name,
-                        rules=self.rules
+                        rules=self.rules,
+                        slide_texts=slide_texts,  # v2.3新增
+                        banner_text=banner_section_name  # v2.3新增
                     )
                     if identified:
                         identified_images.append(identified)

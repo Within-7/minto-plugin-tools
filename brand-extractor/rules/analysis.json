@@ -1,6 +1,7 @@
 {
   "mode": "analysis",
-  "description": "品牌分析模式 - 提取用户定位、用户需求、用户画像、流量模型、SEO、外链数据",
+  "version": "2.3",
+  "description": "品牌分析模式 - 横幅+文字双重定位，提取用户定位、用户画像、流量模型、SEO、外链数据",
   "output": {
     "images_count": 6,
     "data_format": "json"
@@ -16,9 +17,12 @@
           "output_filename": "{brand}_user_position.png",
           "output_dir": "assets/brand_analysis/",
           "selection": {
-            "method": "chart_type",
+            "method": "banner_and_text",
+            "banner_keywords": ["用户定位", "3. 用户定位"],
+            "text_keywords": ["用户定位", "核心用户", "目标用户", "用户群体"],
+            "fallback_method": "chart_type",
             "chart_type": "pie",
-            "description": "用户定位饼图/环形图"
+            "description": "用户定位图。横幅'用户定位' + 内容包含'核心用户'"
           }
         }
       ],
@@ -40,9 +44,12 @@
           "output_filename": "{brand}_persona_1.png",
           "output_dir": "assets/brand_analysis/",
           "selection": {
-            "method": "screenshot",
+            "method": "banner_and_text",
+            "banner_keywords": ["用户定位", "3. 用户定位"],
+            "text_keywords": ["核心用户画像", "用户画像", "Persona"],
+            "fallback_method": "screenshot",
             "order": 1,
-            "description": "用户画像截图1"
+            "description": "用户画像1。横幅'用户定位' + 内容包含'核心用户画像'"
           }
         },
         {
@@ -50,9 +57,12 @@
           "output_filename": "{brand}_persona_2.png",
           "output_dir": "assets/brand_analysis/",
           "selection": {
-            "method": "screenshot",
+            "method": "banner_and_text",
+            "banner_keywords": ["用户定位", "3. 用户定位"],
+            "text_keywords": ["核心用户画像", "用户画像", "Persona"],
+            "fallback_method": "screenshot",
             "order": 2,
-            "description": "用户画像截图2"
+            "description": "用户画像2。横幅'用户定位' + 内容包含'核心用户画像'"
           }
         }
       ]
@@ -66,9 +76,12 @@
           "output_filename": "{brand}_flow_model.png",
           "output_dir": "assets/brand_analysis/",
           "selection": {
-            "method": "chart_type",
+            "method": "banner_and_text",
+            "banner_keywords": ["流量模型", "4. 流量模型"],
+            "text_keywords": ["流量模型", "流量路径", "基石流量", "品牌宣传"],
+            "fallback_method": "chart_type",
             "chart_type": "flow",
-            "description": "流量模型流程图"
+            "description": "流量模型图。横幅'流量模型' + 内容包含'流量模型'"
           }
         }
       ]
@@ -96,9 +109,12 @@
               "output_filename": "{brand}_backlink_pie.png",
               "output_dir": "assets/brand_analysis/",
               "selection": {
-                "method": "chart_type",
+                "method": "banner_and_text",
+                "banner_keywords": ["基石流量", "5. 基石流量"],
+                "text_keywords": ["外链分析", "外链来源", "外链分布", "Referring Domain"],
+                "fallback_method": "chart_type",
                 "chart_type": "pie",
-                "description": "外链来源分布饼图"
+                "description": "外链饼图。横幅'基石流量' + 内容包含'外链分析'"
               }
             },
             {
@@ -106,9 +122,12 @@
               "output_filename": "{brand}_backlink_bar.png",
               "output_dir": "assets/brand_analysis/",
               "selection": {
-                "method": "chart_type",
+                "method": "banner_and_text",
+                "banner_keywords": ["基石流量", "5. 基石流量"],
+                "text_keywords": ["外链热门关键词", "外链关键词", "热门关键词", "Anchor Text"],
+                "fallback_method": "chart_type",
                 "chart_type": "horizontal_bar",
-                "description": "外链热门关键词柱状图"
+                "description": "外链柱状图。横幅'基石流量' + 内容包含'外链热门关键词'"
               }
             }
           ],

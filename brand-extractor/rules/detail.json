@@ -1,29 +1,84 @@
 {
   "mode": "detail",
-  "description": "品牌详情模式 - 提取品牌背景、产品、流量分布、KPI数据",
+  "version": "2.3",
+  "description": "品牌详情模式 - 两阶段提取 + 横幅定位 + 文字关键词匹配",
   "output": {
     "images_count": 3,
     "data_format": "markdown"
   },
   "toc_keywords": ["报告目录", "目录"],
-  "target_sections": [
+  "boundary": {
+    "end_before": "用户定位",
+    "description": "Detail模式数据截止到'用户定位'章节之前，'用户定位'及之后属于Analysis模式"
+  },
+  "pre_toc_sections": [
     {
-      "name": "品牌介绍",
-      "keywords": ["品牌介绍", "品牌背景", "品牌简介"],
+      "name": "品牌概览",
+      "keywords": ["品牌概览", "品牌介绍"],
+      "slide_hint": "通常在Slide 2",
       "images": [
         {
           "name": "logo",
           "output_filename": "{brand}_logo.png",
           "output_dir": "assets/brand_details/",
           "selection": {
-            "method": "position_and_size",
+            "method": "text_match_first",
+            "text_keywords": ["品牌概览", "创立于", "品牌使命"],
+            "fallback_method": "position_and_size",
             "position_hint": "品牌名称区域",
-            "size_range": [150, 400],
-            "description": "品牌Logo，通常在品牌名称旁边，尺寸200-400宽"
+            "size_range": [150, 600],
+            "aspect_ratio": "wide",
+            "description": "品牌Logo，通常宽扁形，在品牌名称旁边"
           }
         }
       ],
-      "data_fields": ["基本信息", "用户画像", "品牌使命", "竞争优势"]
+      "data_fields": {
+        "brand_name_en": "品牌英文名",
+        "brand_name_cn": "品牌中文名",
+        "founded": "创立时间",
+        "location": "创立地点",
+        "revenue": "销售额",
+        "mission": "品牌使命",
+        "website": "官网地址"
+      }
+    },
+    {
+      "name": "品牌总体分析",
+      "keywords": ["品牌总体分析", "品牌概述"],
+      "slide_hint": "通常在Slide 3",
+      "data_fields": {
+        "overview": "品牌概述",
+        "product_features": "产品特点",
+        "core_users": "核心用户特征",
+        "marketing_logic": "主要营销逻辑"
+      }
+    }
+  ],
+  "target_sections": [
+    {
+      "name": "品牌简介",
+      "keywords": ["品牌简介", "品牌介绍"],
+      "images": [
+        {
+          "name": "traffic",
+          "output_filename": "{brand}_traffic.png",
+          "output_dir": "assets/brand_details/",
+          "selection": {
+            "method": "text_match_first",
+            "text_keywords": ["独立站流量来源分布", "流量来源分布", "网站基础数据", "日活", "跳出率"],
+            "fallback_method": "chart_type",
+            "chart_type": "bar",
+            "description": "流量分布图。通过文字'独立站流量来源分布'精准定位slide"
+          }
+        }
+      ],
+      "data_fields": {
+        "daily_active_users": "日均活跃用户",
+        "avg_session_duration": "平均停留时间",
+        "pages_per_session": "人均访问页面",
+        "bounce_rate": "跳出率",
+        "traffic_sources": "流量来源分布"
+      }
     },
     {
       "name": "产品定位",
@@ -34,29 +89,19 @@
           "output_filename": "{brand}_product.png",
           "output_dir": "assets/brand_details/",
           "selection": {
-            "method": "largest",
-            "description": "产品展示图，通常是页面中最大的图片"
+            "method": "text_match_first",
+            "text_keywords": ["爆款", "销量最好", "产品系列", "产品名称"],
+            "fallback_method": "largest",
+            "description": "产品展示图。通过文字'爆款'精准定位slide"
           }
         }
       ],
-      "data_fields": ["产品名称", "产品价格", "产品特点"]
-    },
-    {
-      "name": "流量分布",
-      "keywords": ["流量来源", "流量分布", "独立站流量"],
-      "images": [
-        {
-          "name": "traffic",
-          "output_filename": "{brand}_traffic.png",
-          "output_dir": "assets/brand_details/",
-          "selection": {
-            "method": "chart_type",
-            "chart_type": "bar",
-            "description": "流量分布柱状图"
-          }
-        }
-      ],
-      "data_fields": ["流量来源分布", "核心KPI指标"]
+      "data_fields": {
+        "product_name": "产品名称",
+        "product_price": "产品价格",
+        "product_material": "产品材质",
+        "product_features": "产品特点（7条）"
+      }
     }
   ],
   "data_output": {
@@ -67,5 +112,18 @@
       "流量来源分布",
       "核心运营指标"
     ]
+  },
+  "extraction_phases": {
+    "phase1": {
+      "name": "目录页之前",
+      "description": "提取品牌Logo和基础信息",
+      "sources": ["品牌概览", "品牌总体分析"]
+    },
+    "phase2": {
+      "name": "目录页之后",
+      "description": "提取独立站数据和爆款产品",
+      "sources": ["品牌简介", "产品定位"],
+      "boundary": "截止到'用户定位'之前"
+    }
   }
 }

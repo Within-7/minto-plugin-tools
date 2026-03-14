@@ -3,7 +3,10 @@
   "displayName": "PySpider Development",
   "version": "1.0.0",
   "description": "Production-ready PySpider web crawler development toolkit. Covers GET/POST requests, proxy management, header rotation, error handling, pagination, and enterprise-grade crawling patterns. Use when: (1) Creating new PySpider crawlers, (2) Implementing web scraping tasks, (3) Handling complex crawling scenarios with proxies and retries",
-  "author": "within7",
+  "author": {
+    "name": "within7",
+    "email": "within7@example.com"
+  },
   "capabilities": [
     "web-crawling",
     "data-extraction",

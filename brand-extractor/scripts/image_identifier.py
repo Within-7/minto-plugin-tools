@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 """
-图片识别器
+图片识别器 v2.3
 根据规则识别slide中的图片用途
 
 核心逻辑：
 1. 解析slide的图片列表
-2. 根据图片类型（cover/logo/product/chart等）匹配规则
-3. 返回识别结果
+2. 【v2.3新增】优先通过文字关键词匹配定位目标slide
+3. 根据图片类型（cover/logo/product/chart等）匹配规则
+4. 返回识别结果
 
-图表类型识别策略：
-- 饼图/环形图：宽高比接近1:1，通常在中心位置
-- 柱状图：宽度大于高度，或高度大于宽度（横向柱状图）
-- 流程图：宽度明显大于高度，包含多个元素
-- 截图：尺寸较大，通常接近全屏或半屏
-- Logo：尺寸较小，位置在品牌名区域
+v2.3 新增文字关键词匹配：
+- text_match_first: 先检查slide文字是否包含关键词，匹配则选择该slide的图片
+- 流量图：检查是否包含"独立站流量来源分布"、"日活"等
+- 产品图：检查是否包含"爆款"、"销量最好"等
+- Logo：检查是否包含"品牌概览"、"创立于"等
 """
 
 import os
@@ -72,28 +72,33 @@ class ImageIdentifier:
 
     def __init__(self):
         self.identified = {}  # 已识别的图片缓存
+        self.slide_texts_cache = {}  # slide文字缓存
 
     def identify(self, slide_num: int, images: list, image_type: str,
-                 section_name: str, rules: dict) -> Optional[dict]:
+                 section_name: str, rules: dict, slide_texts: list = None,
+                 banner_text: str = None) -> Optional[dict]:
         """
         识别图片用途
 
         Args:
             slide_num: slide编号
             images: 该slide的图片列表
-            image_type: 需要识别的图片类型（如 'cover', 'logo', 'backlink_pie'）
+            image_type: 需要识别的图片类型（如 'cover', 'logo', 'traffic'）
             section_name: 章节名称（用于上下文判断）
             rules: 当前模式的规则配置
+            slide_texts: 该slide的文字内容列表（v2.3新增，用于文字匹配）
+            banner_text: 该slide的横幅文本（v2.3新增，用于横幅匹配）
 
         Returns:
             dict: 识别结果，格式如：
             {
-                'type': 'backlink_pie',
+                'type': 'traffic',
                 'path': '/path/to/image.png',
-                'filename': 'image26.png',
-                'output_filename': 'buffy_backlink_pie.png',
-                'output_dir': 'assets/brand_analysis/',
-                'confidence': 0.85
+                'filename': 'image12.png',
+                'output_filename': 'buffy_traffic.png',
+                'output_dir': 'assets/brand_details/',
+                'confidence': 0.85,
+                'matched_by': 'banner_and_text'  # 匹配方式
             }
             未识别返回None
         """
@@ -106,23 +111,38 @@ class ImageIdentifier:
             print(f"  警告: 未找到图片类型 '{image_type}' 的规则")
             return None
 
-        selection_method = type_rule.get('selection', {}).get('method', 'largest')
+        selection_config = type_rule.get('selection', {})
+        selection_method = selection_config.get('method', 'largest')
+        matched_by = 'default'
 
-        # 根据选择方法识别图片
-        if selection_method == 'largest':
-            result = self._select_largest(images)
-        elif selection_method == 'largest_or_center':
-            result = self._select_largest_or_center(images)
-        elif selection_method == 'position_and_size':
-            result = self._select_by_position_and_size(images, type_rule)
-        elif selection_method == 'chart_type':
-            chart_type = type_rule.get('selection', {}).get('chart_type', 'bar')
-            result = self._select_by_chart_type(images, chart_type, slide_num)
-        elif selection_method == 'screenshot':
-            order = type_rule.get('selection', {}).get('order', 1)
-            result = self._select_screenshot(images, order)
+        # 【v2.3新增】文字关键词优先匹配
+        if selection_method == 'text_match_first':
+            text_keywords = selection_config.get('text_keywords', [])
+            if slide_texts and self._check_text_keywords(slide_texts, text_keywords):
+                # 文字匹配成功，使用fallback方法选择图片
+                fallback_method = selection_config.get('fallback_method', 'largest')
+                result = self._select_by_method(images, fallback_method, type_rule, slide_num, slide_texts, banner_text)
+                matched_by = 'text_keywords'
+                print(f"    文字匹配成功: {image_type} 在 Slide {slide_num} (关键词: {text_keywords})")
+            else:
+                # 文字不匹配，跳过这个slide
+                return None
+
+        # 【v2.3新增】横幅 + 文字双重匹配
+        elif selection_method == 'banner_and_text':
+            result = self._select_by_banner_and_text(images, type_rule, slide_texts, banner_text)
+            if result:
+                matched_by = 'banner_and_text'
+                banner_kw = selection_config.get('banner_keywords', [])
+                text_kw = selection_config.get('text_keywords', [])
+                print(f"    横幅+文字匹配成功: {image_type} 在 Slide {slide_num}")
+            else:
+                return None
+
         else:
-            result = self._select_largest(images)  # 默认选最大的
+            # 使用原有方法
+            result = self._select_by_method(images, selection_method, type_rule, slide_num, slide_texts, banner_text)
+            matched_by = selection_method
 
         if result:
             result.update({
@@ -130,9 +150,111 @@ class ImageIdentifier:
                 'output_filename': type_rule.get('output_filename', result['filename']),
                 'output_dir': type_rule.get('output_dir', 'assets/'),
                 'section': section_name,
+                'matched_by': matched_by,
             })
 
         return result
+
+    def _select_by_method(self, images: list, method: str, type_rule: dict, slide_num: int,
+                            slide_texts: list = None, banner_text: str = None) -> Optional[dict]:
+        """根据方法名称选择图片"""
+        if method == 'largest':
+            return self._select_largest(images)
+        elif method == 'largest_or_center':
+            return self._select_largest_or_center(images)
+        elif method == 'position_and_size':
+            return self._select_by_position_and_size(images, type_rule)
+        elif method == 'chart_type':
+            chart_type = type_rule.get('selection', {}).get('chart_type', 'bar')
+            return self._select_by_chart_type(images, chart_type, slide_num)
+        elif method == 'screenshot':
+            order = type_rule.get('selection', {}).get('order', 1)
+            return self._select_screenshot(images, order)
+        elif method == 'banner_and_text':
+            # v2.3新增：横幅 + 内容文字双重匹配
+            return self._select_by_banner_and_text(images, type_rule, slide_texts, banner_text)
+        else:
+            return self._select_largest(images)
+
+    def _select_by_banner_and_text(self, images: list, type_rule: dict,
+                                    slide_texts: list, banner_text: str) -> Optional[dict]:
+        """
+        横幅 + 内容文字双重匹配选择图片
+
+        匹配逻辑：
+        1. 检查横幅是否匹配 banner_keywords
+        2. 检查内容是否匹配 text_keywords
+        3. 两者都匹配才选择该slide的图片
+        4. 使用 fallback_method 选择具体图片
+
+        Args:
+            images: 图片列表
+            type_rule: 规则配置
+            slide_texts: slide的文字内容
+            banner_text: 横幅文本（已解析的章节名）
+
+        Returns:
+            dict: 选择的图片信息
+        """
+        selection_config = type_rule.get('selection', {})
+        banner_keywords = selection_config.get('banner_keywords', [])
+        text_keywords = selection_config.get('text_keywords', [])
+
+        # Step 1: 检查横幅匹配
+        banner_matched = False
+        if banner_keywords and banner_text:
+            banner_lower = banner_text.lower()
+            for keyword in banner_keywords:
+                if keyword.lower() in banner_lower:
+                    banner_matched = True
+                    break
+
+        # Step 2: 检查内容文字匹配
+        text_matched = False
+        if text_keywords and slide_texts:
+            text_combined = ' '.join(slide_texts).lower()
+            for keyword in text_keywords:
+                if keyword.lower() in text_combined:
+                    text_matched = True
+                    break
+
+        # Step 3: 双重匹配判断
+        # 如果配置了banner_keywords，则必须匹配
+        # 如果配置了text_keywords，则必须匹配
+        require_banner = len(banner_keywords) > 0
+        require_text = len(text_keywords) > 0
+
+        if require_banner and not banner_matched:
+            return None  # 横幅不匹配
+        if require_text and not text_matched:
+            return None  # 内容不匹配
+
+        # 双重匹配成功，使用fallback方法选择图片
+        fallback_method = selection_config.get('fallback_method', 'largest')
+        return self._select_by_method(images, fallback_method, type_rule, 0, None, None)
+
+    def _check_text_keywords(self, slide_texts: list, keywords: list) -> bool:
+        """
+        检查slide文字是否包含任一关键词
+
+        Args:
+            slide_texts: slide的文字列表
+            keywords: 关键词列表
+
+        Returns:
+            bool: 是否匹配
+        """
+        if not slide_texts or not keywords:
+            return False
+
+        # 合并所有文字
+        text_combined = ' '.join(slide_texts).lower()
+
+        for keyword in keywords:
+            if keyword.lower() in text_combined:
+                return True
+
+        return False
 
     def _get_type_rule(self, image_type: str, rules: dict) -> Optional[dict]:
         """从规则配置中获取指定图片类型的规则"""
@@ -147,6 +269,12 @@ class ImageIdentifier:
                 for img_rule in sub.get('images', []):
                     if img_rule.get('name') == image_type:
                         return img_rule
+
+        # 【v2.3新增】也检查pre_toc_sections
+        for section in rules.get('pre_toc_sections', []):
+            for img_rule in section.get('images', []):
+                if img_rule.get('name') == image_type:
+                    return img_rule
 
         return None
 

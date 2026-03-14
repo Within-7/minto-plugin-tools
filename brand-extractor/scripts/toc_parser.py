@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 """
-TOC（目录）解析器
+TOC（目录）解析器 v2.1
 解析PPT的目录页，建立章节名称到slide范围的映射
 
 核心逻辑：
 1. 定位TOC页（通常是Slide 4，特征是包含"报告目录"或"目录"）
 2. 提取目录结构（章节名称、层级关系）
-3. 根据目录结构，估算每个章节对应的slide范围
+3. 【v2.1新增】解析每个slide的横幅文本，精准定位章节
+
+横幅文本结构：
+┌─────────────────────────────────────────────────────┐
+│  Within-7.com    PARACHUTE    3. 用户定位    任小姐  │
+│  [网站标识]     [品牌名]     [章节编号+名称]  [来源]  │
+└─────────────────────────────────────────────────────┘
 """
 
 import os
@@ -21,6 +27,239 @@ class TOCParser:
     def __init__(self):
         self.toc_slide_num = None
         self.toc_structure = {}
+        self.banner_sections = {}  # 存储每个slide的横幅章节信息
+
+    # ==================== 横幅文本解析（v2.1新增）====================
+
+    def parse_banners(self, start_slide: int = 1, end_slide: int = None) -> dict:
+        """
+        解析所有slides的横幅文本，建立精准的章节映射
+
+        Args:
+            start_slide: 起始slide编号
+            end_slide: 结束slide编号（默认到最后）
+
+        Returns:
+            dict: {
+                'slide_sections': {slide_num: section_name, ...},
+                'section_slides': {section_name: [slide_nums], ...}
+            }
+        """
+        if end_slide is None:
+            end_slide = self._get_total_slides()
+
+        slide_sections = {}  # slide -> section
+        section_slides = {}  # section -> [slides]
+
+        for slide_num in range(start_slide, end_slide + 1):
+            banner_info = self._extract_banner_section(slide_num)
+            if banner_info:
+                section_name = banner_info.get('section_name')
+                if section_name:
+                    slide_sections[slide_num] = section_name
+                    if section_name not in section_slides:
+                        section_slides[section_name] = []
+                    section_slides[section_name].append(slide_num)
+
+        self.banner_sections = {
+            'slide_sections': slide_sections,
+            'section_slides': section_slides
+        }
+
+        return self.banner_sections
+
+    def _extract_banner_section(self, slide_num: int) -> Optional[dict]:
+        """
+        从slide中提取横幅文本，解析章节信息
+
+        横幅文本格式：
+        - "1. 品牌简介" / "2. 产品定位" / "3. 用户定位" 等
+        - 通常在slide的前几个文本元素中
+
+        Args:
+            slide_num: slide编号
+
+        Returns:
+            dict: {
+                'section_number': 3,
+                'section_name': '用户定位',
+                'brand_name': 'PARACHUTE',
+                'source': '任小姐 出海战略咨询'
+            }
+        """
+        texts = self._extract_slide_texts(slide_num)
+        if not texts:
+            return None
+
+        # 横幅文本通常在前10个文本中
+        banner_texts = texts[:10]
+
+        result = {}
+
+        for i, text in enumerate(banner_texts):
+            text = text.strip()
+
+            # 匹配章节编号 "1." "2." "3." 等
+            if re.match(r'^\d+\.$', text):
+                # 下一个文本通常是章节名称
+                if i + 1 < len(banner_texts):
+                    next_text = banner_texts[i + 1].strip()
+                    # 检查是否是有效的章节名称
+                    if self._is_valid_section_name(next_text):
+                        result['section_number'] = int(text.rstrip('.'))
+                        result['section_name'] = next_text
+
+        # 提取品牌名称（通常是大写英文）
+        for text in banner_texts:
+            if re.match(r'^[A-Z]{3,}$', text) and text not in ['SEO', 'SEM', 'KOL']:
+                result['brand_name'] = text
+                break
+
+        return result if result.get('section_name') else None
+
+    def _is_valid_section_name(self, name: str) -> bool:
+        """检查是否是有效的章节名称"""
+        valid_sections = [
+            '品牌简介', '品牌介绍', '品牌概览',
+            '产品定位', '爆款产品', '产品介绍',
+            '用户定位', '用户分析', '用户画像',
+            '流量模型', '流量路径',
+            '基石流量', 'SEO', 'SEM',
+            '营销活动', 'KOL', '社媒'
+        ]
+
+        name_lower = name.lower()
+        for valid in valid_sections:
+            if valid.lower() in name_lower or name_lower in valid.lower():
+                return True
+        return False
+
+    def get_slide_section(self, slide_num: int) -> Optional[str]:
+        """
+        获取指定slide所属的章节名称
+
+        Args:
+            slide_num: slide编号
+
+        Returns:
+            str: 章节名称，未找到返回None
+        """
+        if not self.banner_sections:
+            self.parse_banners()
+
+        return self.banner_sections.get('slide_sections', {}).get(slide_num)
+
+    def get_section_slides(self, section_name: str) -> List[int]:
+        """
+        获取指定章节的所有slide编号
+
+        Args:
+            section_name: 章节名称（支持模糊匹配）
+
+        Returns:
+            list: slide编号列表
+        """
+        if not self.banner_sections:
+            self.parse_banners()
+
+        section_slides = self.banner_sections.get('section_slides', {})
+
+        # 精确匹配
+        if section_name in section_slides:
+            return section_slides[section_name]
+
+        # 模糊匹配
+        for name, slides in section_slides.items():
+            if section_name.lower() in name.lower() or name.lower() in section_name.lower():
+                return slides
+
+        return []
+
+    def find_boundary_slide(self, section_name: str) -> Optional[int]:
+        """
+        找到指定章节的第一个slide（作为边界）
+
+        Args:
+            section_name: 章节名称
+
+        Returns:
+            int: 该章节的第一个slide编号，未找到返回None
+        """
+        slides = self.get_section_slides(section_name)
+        return min(slides) if slides else None
+
+    def _extract_banner_section(self, slide_num: int) -> Optional[dict]:
+        """
+        提取指定slide的横幅章节信息
+
+        横幅格式：
+        ┌─────────────────────────────────────────────────────┐
+        │  Within-7.com    PARACHUTE    3. 用户定位    任小姐  │
+        │  [网站标识]     [品牌名]     [章节编号+名称]  [来源]  │
+        └─────────────────────────────────────────────────────┘
+
+        Args:
+            slide_num: slide编号
+
+        Returns:
+            dict: {
+                'section_number': 3,
+                'section_name': '用户定位',
+                'brand_name': 'PARACHUTE',
+                'source': '任小姐 出海战略咨询'
+            }
+        """
+        texts = self._extract_slide_texts(slide_num)
+        if not texts:
+            return None
+
+        # 横幅文本通常在前10个文本中
+        banner_texts = texts[:10]
+
+        result = {}
+
+        for i, text in enumerate(banner_texts):
+            text = text.strip()
+
+            # 匹配章节编号 "1." "2." "3." 等
+            if re.match(r'^\d+\.$', text):
+                # 下一个文本通常是章节名称
+                if i + 1 < len(banner_texts):
+                    next_text = banner_texts[i + 1].strip()
+                    # 检查是否是有效的章节名称
+                    if self._is_valid_section_name(next_text):
+                        result['section_number'] = int(text.rstrip('.'))
+                        result['section_name'] = next_text
+
+        # 提取品牌名称（通常是大写英文）
+        for text in banner_texts:
+            if re.match(r'^[A-Z]{3,}$', text) and text not in ['SEO', 'SEM', 'KOL']:
+                result['brand_name'] = text
+                break
+
+        return result if result.get('section_name') else None
+
+    def _extract_slide_texts(self, slide_num: int) -> List[str]:
+        """从slide中提取所有文本"""
+        slide_path = os.path.join(self.unpacked_dir, f'ppt/slides/slide{slide_num}.xml')
+        texts = []
+
+        if not os.path.exists(slide_path):
+            return texts
+
+        try:
+            with open(slide_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+
+            # 提取<a:t>标签中的文本
+            for match in re.finditer(r'<a:t>([^<]*)</a:t>', content):
+                text = match.group(1).strip()
+                if text:
+                    texts.append(text)
+        except Exception as e:
+            print(f"  警告: 提取文本失败 - {e}")
+
+        return texts
 
     def parse(self, unpacked_dir: str) -> dict:
         """

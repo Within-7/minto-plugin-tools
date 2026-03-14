@@ -1,11 +1,11 @@
 {
   "name": "brand-extractor",
-  "version": "2.0.0",
-  "description": "PPT品牌信息提取器 v2.0 - 目录结构驱动提取方法，支持品牌目录、详情、分析、社媒四种模式",
+  "version": "2.3.1",
+  "description": "PPT品牌信息提取器 v2.3.1 - 横幅+文字双重匹配 + 横幅精准定位 + 两阶段提取",
   "author": "within-7",
   "homepage": "https://github.com/within-7/minto-plugins",
   "repository": "https://github.com/within-7/minto-plugins",
-  "keywords": ["brand-extractor", "PPT提取", "品牌信息", "品牌分析", "社媒数据", "KOL分析", "目录结构驱动"],
+  "keywords": ["brand-extractor", "PPT提取", "品牌信息", "品牌分析", "社媒数据", "KOL分析", "目录结构驱动", "两阶段提取", "横幅定位", "文字关键词匹配"],
   "commands": [
     "./commands/extract-catalog.md",
     "./commands/extract-detail.md",
@@ -28,6 +28,27 @@
     "./rules/social.json"
   ],
   "changelog": {
+    "2.3.0": [
+      "新增：文字关键词精准匹配图片功能",
+      "新增：text_match_first方法，优先通过slide文字内容定位图片",
+      "新增：rules配置支持text_keywords字段",
+      "改进：流量图通过'独立站流量来源分布'文字精准定位",
+      "改进：产品图通过'爆款'文字精准定位",
+      "改进：Logo通过'品牌概览'文字精准定位"
+    ],
+    "2.2.0": [
+      "新增：横幅文本解析功能，精准定位每个slide所属章节",
+      "改进：章节定位不再依赖估算，直接从横幅文本判断",
+      "优化：Detail模式使用横幅定位，提高边界判断准确性",
+      "新增：toc_parser.py 添加 parse_banners() 等方法"
+    ],
+    "2.1.0": [
+      "优化：Detail模式采用两阶段提取",
+      "新增：Phase1提取目录页之前的内容（Logo + 品牌概览）",
+      "新增：Phase2提取目录页之后的内容，截止到'用户定位'之前",
+      "改进：明确Logo从品牌概览页提取",
+      "改进：rules/detail.json新增pre_toc_sections配置"
+    ],
     "2.0.0": [
       "重构：目录结构驱动提取方法，替代关键词搜索",
       "新增：TOC解析器（toc_parser.py）",
