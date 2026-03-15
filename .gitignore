@@ -211,3 +211,8 @@ __marimo__/
 
 # 测试文件
 test/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
